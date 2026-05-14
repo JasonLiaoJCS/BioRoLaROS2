@@ -1,0 +1,2 @@
+uint32 position_bus
+uint32 position_encoder
