@@ -1,0 +1,10 @@
+{
+  "boot_id": "2c7d12b7-ca34-4b03-9cd3-7f4ccf585d9c",
+  "recorded_at": "2026-09-09 19:47:09 +0800",
+  "site_sha256": "9d37bd6af731953ca8cd771e66a1881be603351575d0bcfdd02ccf3e3859bde8",
+  "provided_first_reason": "STANDING SAFETY STOP: standing position timeout: R2 pos=27866.000000 target=27648.000000 error=218.000000 elapsed=20.000786",
+  "standing_original_tolerance": 200,
+  "standing_original_timeout_s": 20,
+  "error_degrees_at_55296_cpr": 1.4192708333333333,
+  "raw_1927_log_present_in_tmp": false
+}

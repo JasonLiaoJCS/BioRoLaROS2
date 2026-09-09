@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="24" failures="0" disabled="0" errors="0" time="1.821" timestamp="2026-09-09T21:07:59" name="AllTests">
+  <testsuite name="ConfigTest" tests="24" failures="0" disabled="0" errors="0" time="1.821" timestamp="2026-09-09T21:07:59">
+    <testcase name="EveryMaskRoundTripsAndPreservesSafetyParameters" status="run" result="completed" time="1.177" timestamp="2026-09-09T21:07:59" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ManagementOperationsNormalizeAreAtomicAndIdempotent" status="run" result="completed" time="0.081" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts" status="run" result="completed" time="0.063" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="CorruptMissingUnsupportedAndConflictingConfigFailClosed" status="run" result="completed" time="0.052" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="UnreadableConfigurationFailsWithoutReinitialization" status="run" result="completed" time="0.016" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="LocksRejectChangesAndConcurrentMotionUntilStopped" status="run" result="completed" time="0.022" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="IndependentWriterLockAndReaderSnapshot" status="run" result="completed" time="0.004" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ConfigurationChangesAndNewAttemptsInvalidateStageReceipts" status="run" result="completed" time="0.05" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ManualEditsCannotReuseCalibrationAtSameRevision" status="run" result="completed" time="0.008" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="AllDisabledCanBeSavedButNoMotionStageCanStart" status="run" result="completed" time="0.025" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt" status="run" result="completed" time="0.018" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot" status="run" result="completed" time="0.038" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ReadinessCheckDoesNotChangeOrCreateStageReceipts" status="run" result="completed" time="0.018" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ProcessInspectionDistinguishesMotionFromCommunication" status="run" result="completed" time="0.002" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningPreservesOnlyValidUnchangedPrerequisites" status="run" result="completed" time="0.023" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningPreviewIsReadOnlyEvenDuringMotion" status="run" result="completed" time="0.013" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningNeverCreatesMissingOrInvalidReceipts" status="run" result="completed" time="0.032" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters" status="run" result="completed" time="0.004" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers" status="run" result="completed" time="0.035" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts" status="run" result="completed" time="0.009" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings" status="run" result="completed" time="0.027" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy" status="run" result="completed" time="0.047" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodRawPwm3300IsTypedAtomicAndDoesNotRaiseOtherControllerCaps" status="run" result="completed" time="0.036" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodSlewIsOptionalAndOnlyTripodSettingsChange" status="run" result="completed" time="0.021" timestamp="2026-09-09T21:08:00" classname="rinbo_fsm.ConfigTest" />
+  </testsuite>
+</testsuites>

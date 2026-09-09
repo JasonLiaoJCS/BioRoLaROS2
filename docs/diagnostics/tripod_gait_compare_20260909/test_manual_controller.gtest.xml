@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="13" failures="0" disabled="0" errors="0" time="16.188" timestamp="2026-09-09T21:08:24" name="AllTests">
+  <testsuite name="ManualControllerTest" tests="3" failures="0" disabled="0" errors="0" time="0.127" timestamp="2026-09-09T21:08:24">
+    <testcase name="MissingFeedbackStopsAndInvalidatesCalibration" status="run" result="completed" time="0.053" timestamp="2026-09-09T21:08:24" classname="rinbo_fsm.ManualControllerTest" />
+    <testcase name="UsesAuthoritativeStandingEffortProfile" status="run" result="completed" time="0.05" timestamp="2026-09-09T21:08:24" classname="rinbo_fsm.ManualControllerTest" />
+    <testcase name="StopIsLatchedAndNormalStopPreservesCalibration" status="run" result="completed" time="0.024" timestamp="2026-09-09T21:08:24" classname="rinbo_fsm.ManualControllerTest" />
+  </testsuite>
+  <testsuite name="IsolatedDomain/ManualWireTest" tests="10" failures="0" disabled="0" errors="0" time="16.061" timestamp="2026-09-09T21:08:24">
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/0" value_param="4-byte object &lt;00-00 00-00&gt;" status="run" result="completed" time="5.364" timestamp="2026-09-09T21:08:24" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/1" value_param="4-byte object &lt;01-00 00-00&gt;" status="run" result="completed" time="0.658" timestamp="2026-09-09T21:08:30" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/2" value_param="4-byte object &lt;02-00 00-00&gt;" status="run" result="completed" time="0.909" timestamp="2026-09-09T21:08:30" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/3" value_param="4-byte object &lt;03-00 00-00&gt;" status="run" result="completed" time="0.416" timestamp="2026-09-09T21:08:31" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/4" value_param="4-byte object &lt;04-00 00-00&gt;" status="run" result="completed" time="0.418" timestamp="2026-09-09T21:08:32" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/5" value_param="4-byte object &lt;05-00 00-00&gt;" status="run" result="completed" time="0.659" timestamp="2026-09-09T21:08:32" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/6" value_param="4-byte object &lt;06-00 00-00&gt;" status="run" result="completed" time="0.415" timestamp="2026-09-09T21:08:33" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/7" value_param="4-byte object &lt;07-00 00-00&gt;" status="run" result="completed" time="0.418" timestamp="2026-09-09T21:08:33" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/8" value_param="4-byte object &lt;08-00 00-00&gt;" status="run" result="completed" time="1.4" timestamp="2026-09-09T21:08:33" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+    <testcase name="RealRosHandshakeMotionAndFailClosedOutput/9" value_param="4-byte object &lt;09-00 00-00&gt;" status="run" result="completed" time="5.401" timestamp="2026-09-09T21:08:35" classname="rinbo_fsm.IsolatedDomain/ManualWireTest" />
+  </testsuite>
+</testsuites>

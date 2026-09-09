@@ -1,0 +1,2 @@
+Power tool shared loader integration passed without ROS init/publish/socket calls.
+{'path': '/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml', 'schema_version': 1, 'revision': 1, 'hash': 'f2c5e2d0d10b6eb149b2f7f3b27316203bf4248267e55957a0fc06c4d63b867e', 'disabled_legs': [], 'enabled_legs': ['L1', 'L2', 'L3', 'R1', 'R2', 'R3']}

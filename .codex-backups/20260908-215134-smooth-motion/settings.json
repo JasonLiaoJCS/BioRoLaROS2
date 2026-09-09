@@ -1,0 +1,17 @@
+{
+  "ip": "192.168.30.254",
+  "jetson_ip": "192.168.30.8",
+  "port": 50051,
+  "plan": {
+    "duration_s": 3.0,
+    "max_pwm": 70.0,
+    "max_speed_deg_s": 10.0,
+    "acceleration_deg_s2": 10.0,
+    "legs": {
+      "L2": {
+        "mode": "velocity",
+        "speed_deg_s": 5.0
+      }
+    }
+  }
+}

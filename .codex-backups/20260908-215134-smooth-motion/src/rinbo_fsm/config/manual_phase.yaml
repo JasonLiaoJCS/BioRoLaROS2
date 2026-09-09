@@ -1,0 +1,12 @@
+# Suspended rotation demo, NOT a walking gait. L1 is intentionally omitted.
+# Align all selected main motors, then start on a shared clock.
+duration_s: 10.0
+max_pwm: 20.0
+max_speed_deg_s: 30.0
+acceleration_deg_s2: 30.0
+legs:
+  L2: {mode: cycle, speed_deg_s: 20.0, phase_deg: 180.0}
+  L3: {mode: cycle, speed_deg_s: 20.0, phase_deg: 0.0}
+  R1: {mode: cycle, speed_deg_s: 20.0, phase_deg: 180.0}
+  R2: {mode: cycle, speed_deg_s: 20.0, phase_deg: 0.0}
+  R3: {mode: cycle, speed_deg_s: 20.0, phase_deg: 180.0}

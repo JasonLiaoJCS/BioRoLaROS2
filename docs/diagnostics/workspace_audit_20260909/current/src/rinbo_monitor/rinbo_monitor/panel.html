@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rinbo 即時監控</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101722;color:#e6edf5}body{margin:0;padding:24px;max-width:1600px;margin:auto}h1{font-size:25px;margin:0}h2{font-size:18px;margin:0 0 14px}p{color:#aebed0;line-height:1.6;margin:10px 0}header,.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}a,button,select{font:inherit;color:#e6edf5;background:#253349;border:1px solid #425774;padding:8px 12px;border-radius:7px;text-decoration:none;cursor:pointer}.banner{background:#19382e;border:1px solid #33745b;border-radius:8px;padding:12px;margin:16px 0}.bad{background:#4a242a!important;border-color:#b85462!important;color:#ffd3d9!important}.muted{color:#aebed0;font-size:13px}.sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:16px}.source,.card,.plots,.events{background:#192332;border:1px solid #314359;border-radius:10px;padding:14px}.source{font-size:13px;overflow-wrap:anywhere}.source strong{display:block;margin-bottom:5px}.legs{display:grid;grid-template-columns:repeat(3,minmax(310px,1fr));gap:12px}.card h2{display:flex;justify-content:space-between}.pill{font-size:12px;color:#95d9c6}table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}td,th{padding:6px 3px;text-align:right;border-bottom:1px solid #2c3c50}td:first-child,th:first-child{text-align:left;color:#aebed0}.actual{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.actual div{background:#101a27;border-radius:6px;padding:9px}.actual b{display:block;font-size:18px;font-variant-numeric:tabular-nums;margin-top:3px}.plots,.events{margin-top:16px}.charts{display:grid;grid-template-columns:1fr 1fr;gap:18px}canvas{width:100%;height:205px;display:block}.legend{font-size:13px;color:#aebed0}.cyan{color:#6edbd0}.gold{color:#ffc778}.event-list{max-height:300px;overflow:auto;margin-top:12px;font-family:monospace;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}.event-list div{padding:5px;border-bottom:1px solid #29384b}.error{color:#ff9ca9}.reset{color:#ffc778}@media(max-width:1050px){.legs{grid-template-columns:repeat(2,minmax(290px,1fr))}}@media(max-width:670px){body{padding:12px}.legs,.charts{grid-template-columns:1fr}}
+</style>
+<header><div><h1>Rinbo 即時監控</h1><p>六腿命令與感測器回讀 · 唯讀</p></div><div class="toolbar"><span id="domain" class="muted"></span><button id="pause">暫停畫面</button><a href="/api/export">下載最近 60 秒快照</a></div></header>
+<section class="events"><div class="toolbar"><h2>手動錄製 · 10 Hz 快照＋事件</h2><div class="toolbar"><button id="record-start">開始錄製</button><button id="record-stop" disabled>停止錄製</button><a id="record-download" href="/api/recording/download" hidden>下載本次錄製 JSON</a></div></div><p id="record-status">尚未開始錄製</p><p class="muted">開始／停止只控制資料存檔；不啟動或停止機器。停止後檔案保留在 Orin，開始下一次不覆蓋舊檔。每次最多 30 分鐘或約 64 MiB，達限制自動停止。暫停畫面不會停止錄製。</p></section>
+<div id="connection" class="banner bad">正在連接監控服務…</div>
+<div class="sources" id="sources"></div>
+<p class="muted">「收到」為 Bridge 收到的控制器命令；「轉送」為 Bridge 已交給傳輸層的命令，不代表 sbRIO 已執行。命令與回讀各自更新，並非硬體同步取樣。主馬達的 voltage 欄位在此控制器代表 PWM 幅度，並非量測電壓。</p>
+<main class="legs" id="legs"></main>
+<section class="plots"><div class="toolbar"><h2>10 Hz 顯示曲線 · 原始 counts，未做 2π 折返</h2><div class="toolbar"><select id="selected" aria-label="選擇曲線腿"></select><select id="window" aria-label="時間範圍"><option value="10">最近 10 秒</option><option value="30">最近 30 秒</option><option value="60" selected>最近 60 秒</option></select></div></div><div class="charts"><div><p class="legend cyan">主馬達位置 counts（獨立縱軸）</p><canvas id="mainplot"></canvas></div><div><p class="legend gold">轉送 PWM 幅度（獨立縱軸，0 起算）</p><canvas id="pwmplot"></canvas></div><div><p class="legend"><span class="cyan">伺服回讀 counts</span> · <span class="gold">伺服轉送目標 counts</span></p><canvas id="servoplot"></canvas></div></div><p class="muted">紅色直線代表此腿的 reset 請求接收事件，不是硬體歸零確認；歸零前後的位置不當作連續移動連線。時間 +Xs 從面板程序啟動起算。曲線是降頻顯示，缺資料處留白，不能證明硬體收到命令。</p></section>
+<section class="events"><h2>近期事件與控制器日誌</h2><p class="muted">保留最新 300 筆事件；reset 次數是面板啟動後觀察到的請求封包数，不是完成次數。停止原因會保持在紀錄中。</p><div id="events" class="event-list"></div></section>
+<script>
+'use strict';
+const names=['l1','l2','l3','r1','r2','r3'];
+const labels={requested:'命令 · 收到',forwarded:'命令 · 轉送',motor:'馬達回讀',power:'電源回讀',output:'輸出許可',ready:'Bridge ready'};
+const $=id=>document.getElementById(id);
+let paused=false,last=null,recordBusy=false;
+const fmt=(v,d=0)=>v===null||v===undefined?'—':typeof v==='number'?v.toFixed(d):String(v);
+const bit=v=>v===undefined||v===null?'—':v?'1':'0';
+function cell(value){const t=document.createElement('td');t.textContent=value;return t;}
+function row(table,label,a,b){const r=document.createElement('tr');r.append(cell(label),cell(a),cell(b));table.append(r);}
+function fresh(s){return s&&!s.stale?s.data:null;}
+for(const n of names){const o=document.createElement('option');o.value=n;o.textContent=n.toUpperCase();$('selected').append(o);}
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'繼續更新':'暫停畫面';if(paused){$('connection').textContent='畫面已暫停 · 顯示凍結資料，後端仍收集事件';$('connection').className='banner bad';}else if(last)render(last);};
+$('selected').onchange=()=>{if(last)plots(last);};
+$('window').onchange=()=>{if(last)plots(last);};
+function renderRecording(rec){
+ rec=rec||{state:'idle'};const active=rec.state==='recording',saving=rec.state==='finalizing';
+ $('record-start').disabled=recordBusy||active||saving;$('record-stop').disabled=recordBusy||!active;$('record-download').hidden=!rec.download_ready;
+ const state={idle:'尚未開始錄製',recording:'● 錄製中',finalizing:'正在完成存檔',stopped:'錄製已停止',error:'錄製失敗'}[rec.state]||rec.state;
+ const reasons={user:'手動停止',duration_limit:'已達時間上限',size_limit:'已達檔案大小上限',writer_queue_full:'寫入速度不足，已停止並標記缺漏',monitor_shutdown:'監控程序結束'};
+ $('record-status').textContent=state+(rec.duration_s===undefined?'':' · '+fmt(rec.duration_s,1)+' 秒 · '+rec.samples+' 筆快照 · '+rec.events+' 筆事件')+(rec.reason?' · '+(reasons[rec.reason]||rec.reason):'')+(rec.path?' · 儲存於 '+rec.path:'');
+}
+async function recordingAction(action){
+ if(recordBusy)return;recordBusy=true;$('record-start').disabled=true;$('record-stop').disabled=true;
+ try{const r=await fetch('/api/recording/'+action,{method:'POST',headers:{'X-Rinbo-Recording':'1'},signal:AbortSignal.timeout(5000)});const result=await r.json();if(!r.ok)throw Error(result.error||r.status);recordBusy=false;renderRecording(result);}
+ catch(error){$('record-status').textContent='錄製操作未確認：'+error.message+'。請等狀態更新。';recordBusy=false;}
+}
+$('record-start').onclick=()=>recordingAction('start');$('record-stop').onclick=()=>recordingAction('stop');
+function render(data){
+ last=data;renderRecording(data.recording);const s=data.sources;$('domain').textContent='ROS domain '+data.ros_domain_id;
+ const missing=['requested','forwarded','motor','power'].filter(k=>s[k].stale);
+ $('connection').className='banner'+(missing.length?' bad':'');
+ $('connection').textContent=missing.length?'等待／過期：'+missing.map(k=>labels[k]).join('、')+'。若命令鏡像一直沒有資料，請確認已啟動新版 Bridge。':'正在更新 · 只有唯讀監控，未提供動作按鈕';
+ $('sources').replaceChildren();
+ for(const [k,title] of Object.entries(labels)){const v=s[k],box=document.createElement('div');box.className='source'+(v.stale?' bad':'');const h=document.createElement('strong');h.textContent=title+(k==='output'||k==='ready'?' = '+(v.stale?'未知':bit(v.data?.data)):'');const details=document.createElement('div');details.textContent=(v.age_s===null?'尚無資料':(v.stale?'過期 · ':'')+fmt(v.age_s,2)+' 秒前 · '+v.count+' 筆')+(v.source_age_s===null?'':' · 來源時戳距今 '+fmt(v.source_age_s,2)+' s');box.append(h,details);$('sources').append(box);}
+ const req=s.requested.data,out=s.forwarded.data,motor=s.motor.data,power=s.power.data;
+ $('legs').replaceChildren();
+ names.forEach((n,i)=>{const card=document.createElement('article');card.className='card';const h=document.createElement('h2');h.textContent=n.toUpperCase();const tag=document.createElement('span');tag.className='pill';tag.textContent='Main + S'+n.toUpperCase();h.append(tag);card.append(h);
+ const table=document.createElement('table');const head=document.createElement('tr');for(const v of ['命令欄位','收到'+(s.requested.stale?' ⚠':''),'轉送'+(s.forwarded.stale?' ⚠':'')]){const th=document.createElement('th');th.textContent=v;head.append(th);}table.append(head);
+ row(table,'enable / direction',req?bit(req[n].enable)+' / '+bit(req[n].direction):'—',out?bit(out[n].enable)+' / '+bit(out[n].direction):'—');
+ row(table,'PWM 幅度',fmt(req?.[n]?.voltage,1),fmt(out?.[n]?.voltage,1));
+ row(table,'state / reset',req?fmt(req[n].state)+' / '+bit(req[n].reset_position):'—',out?fmt(out[n].state)+' / '+bit(out[n].reset_position):'—');
+ row(table,'伺服目標 counts',fmt(req?.['s'+n]?.position_encoder),fmt(out?.['s'+n]?.position_encoder));
+ row(table,'伺服 mode（全域）',fmt(req?.servo_control_mode),fmt(out?.servo_control_mode));
+ row(table,'觀察到 reset 封包',data.reset_counts.requested[n],data.reset_counts.forwarded[n]);
+ row(table,'來源 seq',fmt(req?.header?.seq),fmt(out?.header?.seq));card.append(table);
+ const actual=document.createElement('div');actual.className='actual';const add=(label,value,stale)=>{const d=document.createElement('div');if(stale)d.className='bad';const l=document.createElement('span');l.className='muted';l.textContent=label+(stale?'（過期／未知）':'');const b=document.createElement('b');b.textContent=value;d.append(l,b);actual.append(d);};
+ add('主馬達 counts',fmt(motor?.[n]?.position,1),s.motor.stale);
+ const hall=motor?.[n]?.hall_effect;add('Hall 原始值',hall===undefined?'—':bit(hall)+(hall?' · 未觸發':' · 原點觸發'),s.motor.stale);
+ add('伺服回讀 counts',fmt(motor?.['s'+n]?.position_encoder),s.motor.stale);
+ const mf=fresh(s.motor),of=fresh(s.forwarded);const target=of?.['s'+n]?.position_encoder,actualServo=mf?.['s'+n]?.position_encoder;
+ add('伺服誤差（目標−回讀）',of?.servo_control_mode&&target!==undefined&&actualServo!==undefined?fmt(target-actualServo):'—',s.motor.stale||s.forwarded.stale);
+ add('電流 ch'+(i+1)+' A',fmt(power?.['i_'+(i+1)],3),s.power.stale);
+ add('tick_count',fmt(motor?.[n]?.tick_count),s.motor.stale);
+ card.append(actual);$('legs').append(card);
+ });
+ const powerBox=document.createElement('div');powerBox.className='source'+(s.power.stale?' bad':'');powerBox.textContent='Relay '+(s.power.stale?'未知':bit(power?.power))+' · Bus ch7 '+fmt(power?.v_7,2)+' V · '+fmt(power?.i_7,2)+' A';$('sources').append(powerBox);
+ const ev=$('events'),nearBottom=ev.scrollHeight-ev.scrollTop-ev.clientHeight<45;ev.replaceChildren();for(const e of data.events){const d=document.createElement('div');d.className=e.kind;d.textContent='+'+fmt(e.t,3)+'s '+e.text;ev.append(d);}if(nearBottom)ev.scrollTop=ev.scrollHeight;
+ plots(data);
+}
+function plots(data){const i=names.indexOf($('selected').value);draw($('mainplot'),data.history,i,0,null,false,data.events);draw($('pwmplot'),data.history,i,1,null,true,[]);draw($('servoplot'),data.history,i,3,2,false,[]);}
+function draw(canvas,history,index,colA,colB,pwm,events){
+ const ratio=window.devicePixelRatio||1,w=canvas.clientWidth,h=205;canvas.width=w*ratio;canvas.height=h*ratio;const ctx=canvas.getContext('2d');ctx.scale(ratio,ratio);ctx.font='11px system-ui';
+ const left=60,right=w-20,top=20,bottom=175;if(!history.length){ctx.fillStyle='#aebed0';ctx.fillText('等待資料',left,80);return;}
+ const seconds=Number($('window').value)||60,end=history[history.length-1].t,start=Math.max(0,end-seconds),points=history.filter(p=>p.t>=start);
+ const vals=c=>points.map(p=>p.legs[index][c]).filter(v=>v!==null&&Number.isFinite(v));
+ function range(v){if(!v.length)return[0,1];const low=Math.min(...v),high=Math.max(...v),pad=Math.max(1,(high-low)*.1);return[low-pad,high+pad];}
+ const values=colB===null?vals(colA):vals(colA).concat(vals(colB));
+ const scale=pwm?[0,Math.max(80,...values)]:range(values);
+ const resets=events.filter(e=>e.kind==='reset'&&e.text.includes(names[index].toUpperCase()+' reset=true')&&e.t>=start&&e.t<=end);
+ const xOf=t=>left+(t-start)/Math.max(1,end-start)*(right-left);
+ ctx.strokeStyle='#314359';ctx.fillStyle='#aebed0';for(let j=0;j<4;j++){const y=top+j*(bottom-top)/3;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();ctx.fillText(fmt(scale[1]-j*(scale[1]-scale[0])/3),0,y+4);}
+ function line(col,color){ctx.strokeStyle=color;ctx.lineWidth=1.6;ctx.beginPath();let pen=false,prev=null,prevY=null;for(const p of points){const v=p.legs[index][col];if(v===null||!Number.isFinite(v)){pen=false;continue;}const x=xOf(p.t),y=bottom-(v-scale[0])/(scale[1]-scale[0])*(bottom-top);if(!pen||prev===null||p.t-prev>.5||resets.some(e=>e.t>prev&&e.t<=p.t))ctx.moveTo(x,y);else if(pwm){ctx.lineTo(x,prevY);ctx.lineTo(x,y);}else ctx.lineTo(x,y);pen=true;prev=p.t;prevY=y;}ctx.stroke();}
+ line(colA,pwm?'#ffc778':'#6edbd0');if(colB!==null)line(colB,'#ffc778');
+ ctx.strokeStyle='#ff9ca9';ctx.fillStyle='#ff9ca9';for(const e of resets){const x=xOf(e.t);ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bottom);ctx.stroke();ctx.fillText('reset',Math.min(x+3,right-35),top-5);}
+ ctx.fillStyle='#aebed0';ctx.fillText('+'+fmt(start,1)+'s',left,198);ctx.fillText('+'+fmt(end,1)+'s',right-45,198);
+}
+async function poll(){try{const r=await fetch('/api/snapshot',{signal:AbortSignal.timeout(2000),cache:'no-store'});if(!r.ok)throw Error(r.status);const data=await r.json();if(paused)renderRecording(data.recording);else render(data);}catch(e){$('connection').className='banner bad';$('connection').textContent='監控服務連線中斷 · 下方為最後畫面，數值已停止更新';document.querySelectorAll('.source,.actual div').forEach(e=>e.classList.add('bad'));}finally{setTimeout(poll,200);}}
+poll();
+</script>
+</html>

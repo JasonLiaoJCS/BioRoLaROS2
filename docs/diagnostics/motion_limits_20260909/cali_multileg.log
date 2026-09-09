@@ -1,0 +1,1943 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 15 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 15 tests from CaliMultiLegTest
+[ RUN      ] CaliMultiLegTest.WrongDirectionCannotBeHiddenByFindingHall
+[INFO] [1788954728.248922144] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.249564886] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.249613624] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.249643673] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.249668505] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.249695738] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954728.254716647] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954728.254804554] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.254838571] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.254866892] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.254889837] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954728.255058995] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954728.255116981] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.255174679] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/1 | SKIPPED: 5 | Hall: [1 1 1 1 1 1]
+[ERROR] [1788954728.255288187] [rinbo_cali]: CALIBRATION SAFETY STOP: opposite encoder travel: L1 start=0.000000 actual=501.000000 expected=decreasing counts
+CALIBRATION SAFETY STOP: opposite encoder travel: L1 start=0.000000 actual=501.000000 expected=decreasing counts
+[INFO] [1788954728.273420458] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.273906363] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.273953629] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.274007678] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.274041600] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.274068033] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954728.276665050] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954728.276731196] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.276766365] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.276805343] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.276834240] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954728.276857024] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954728.276883681] [rinbo_cali]: DC motors initialized!
+[ERROR] [1788954728.276936355] [rinbo_cali]: CALIBRATION SAFETY STOP: opposite encoder travel: L1 start=0.000000 actual=501.000000 expected=decreasing counts
+CALIBRATION SAFETY STOP: opposite encoder travel: L1 start=0.000000 actual=501.000000 expected=decreasing counts
+[       OK ] CaliMultiLegTest.WrongDirectionCannotBeHiddenByFindingHall (84 ms)
+[ RUN      ] CaliMultiLegTest.ManualPlanValuesOnlySelectLegsAndDoNotOverrideCalibrationParameters
+[INFO] [1788954728.298742609] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.299202369] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.299247683] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.299275940] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.299301444] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.299323525] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.301801594] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954728.301869885] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.301903358] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.301930431] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.301951840] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954728.301968096] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954728.320415579] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.320960653] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.321009167] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.321037936] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.321055953] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.321072753] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954728.323535910] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954728.323606280] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.323637545] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.323663978] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.323685771] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954728.323703404] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[       OK ] CaliMultiLegTest.ManualPlanValuesOnlySelectLegsAndDoNotOverrideCalibrationParameters (50 ms)
+[ RUN      ] CaliMultiLegTest.All64MasksUseActualHealthyCalibrationTransitions
+[INFO] [1788954728.345102860] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.348059729] [rinbo_cali]: === Calibration FSM Started: 6 healthy legs ===
+[INFO] [1788954728.348139028] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.348172981] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.348204054] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.348229431] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954728.348259960] [rinbo_cali]: WAIT_SERVO | Servos: [740 2565 3283 1944 2071 989] | All homed: YES
+[INFO] [1788954728.348284121] [rinbo_cali]: All 6 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.348305146] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.348324602] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.348340795] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.348354651] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.348369756] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.348386012] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.348399421] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.348417822] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.348434878] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.348448863] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.348462207] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.348475584] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.348488320] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.348502944] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.348520769] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.348535234] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.348548162] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.348560834] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.348605188] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.353151616] [rinbo_cali]: === ALL 6 HEALTHY LEGS CALIBRATED (0 disabled) ===
+[INFO] [1788954728.353219107] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.370858081] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.371325681] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.373752677] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954728.373815239] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.373844968] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.373869833] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.373932747] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.373961484] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.374066864] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.374110961] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.374140434] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.374166515] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.374188692] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.374211285] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.374232021] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.374261686] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.374284695] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.374304856] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.374324217] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.374342009] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.374363834] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.374381691] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.374397275] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.374412284] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.374429820] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.378826067] [rinbo_cali]: === ALL 5 HEALTHY LEGS CALIBRATED (1 disabled) ===
+[INFO] [1788954728.378893558] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.396383727] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.396854239] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.399320500] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954728.399394039] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.399426936] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.399457401] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.399487898] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.399519835] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.399560444] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.399594750] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.399622015] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.399644703] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.399693729] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.399710402] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.399727426] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.399749987] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.399769188] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.399784644] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.399799557] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.399815973] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.399833478] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.399849510] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.399864327] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.399902952] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.399921545] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.404447429] [rinbo_cali]: === ALL 5 HEALTHY LEGS CALIBRATED (1 disabled) ===
+[INFO] [1788954728.404515751] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.421908253] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.422502705] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.422550355] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.424988967] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.425056745] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.425087146] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.425116171] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.425145612] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.425169773] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.425205838] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.425233391] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.425253968] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.425269617] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.425284049] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.425297586] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.425318258] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.425336819] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.425352883] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.425369748] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.425389205] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.425406965] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.425422806] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.425436822] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.430069430] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.430145144] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.447512462] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.447976670] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.450639289] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954728.450710908] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.450736860] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.450760541] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.450811327] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.450833248] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.450866465] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.450896354] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.450918531] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.450939555] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.450957188] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.450975525] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.451016614] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.451044871] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.451066312] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.451083784] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.451100041] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.451114665] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.451132906] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.451151499] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.451166347] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.451179596] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.451195372] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.455712904] [rinbo_cali]: === ALL 5 HEALTHY LEGS CALIBRATED (1 disabled) ===
+[INFO] [1788954728.455783690] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.473276580] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.473740564] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.473784277] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.476446865] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.476525747] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.476557908] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.476587414] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.476616791] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.476640663] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.476675833] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.476702969] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.476722970] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.476740443] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.476757083] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.476773532] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.476797373] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.476817309] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.476833054] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.476848158] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.476868511] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.476888960] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.476905664] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.476954626] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.481391259] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.481459677] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.499976506] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.500490508] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.500535053] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.503059428] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.503136615] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.503161127] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.503188680] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.503260875] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.503287660] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.503318925] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.503346638] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.503366222] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.503384175] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.503399184] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.503414800] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.503436369] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.503453937] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.503469170] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.503483923] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.503503315] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.503518644] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.503532468] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.503545749] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.508488511] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.508581954] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.528021950] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.528567089] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.528613427] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.528646996] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.531376946] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.531450292] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.531477749] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.531504118] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.531525207] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.531545016] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.531578073] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.531606938] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.531629530] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.531648795] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.531665916] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.531885443] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.531915940] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.531936965] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.531960454] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.531979014] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.531993831] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.536923217] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.537006643] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.555318217] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.555826171] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.558846723] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954728.558915045] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.558945510] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.558974471] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.558996296] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.559018536] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.559052650] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.559080491] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.559101035] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.559118540] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.559136428] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.559153421] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.559170990] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.559195983] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.559217295] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.559234768] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.559253456] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.559271217] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.559295794] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.559315635] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.559332307] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.559348980] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.559363732] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.563876624] [rinbo_cali]: === ALL 5 HEALTHY LEGS CALIBRATED (1 disabled) ===
+[INFO] [1788954728.563943794] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.581478157] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.581968254] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.582038656] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.584642202] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.584707740] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.584735197] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.584762174] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.584785215] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.584807775] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.584872482] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.584900067] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.584918595] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.584933828] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.584949572] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.584963877] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.584983877] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.585003526] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.585019143] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.585055944] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.585078729] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.585096649] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.585111466] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.585124458] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.589637861] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.589707720] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.607305125] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.607770133] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.607813975] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.610363854] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.610435633] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.610474226] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.610506195] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.610532340] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.610556949] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.610593814] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.610622103] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.610645400] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.610665689] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.610687321] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.610704858] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.610730907] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.610751804] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.610770108] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.610786653] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.610805885] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.610822814] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.610838143] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.610851647] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.615298296] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.615366042] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.633199968] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.633705521] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.633756627] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.633820725] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.636360716] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.636430671] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.636462064] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.636489169] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.636515154] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.636535762] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.636605909] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.636636790] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.636657719] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.636673943] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.636689464] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.636711128] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.636729337] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.636744666] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.636761370] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.636778043] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.636792315] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.641901291] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.641976653] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.659976088] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.660440008] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.660484266] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.663052034] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.663120933] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.663154054] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.663186055] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.663215176] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.663242473] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.663277130] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.663304331] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.663326188] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.663345292] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.663362669] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.663380110] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.663405134] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.663424911] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.663440272] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.663454928] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.663475409] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.663493969] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.663509138] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.663524339] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.668069103] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.668138065] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.685598250] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.686234400] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.686287969] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.686318210] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.688759094] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.688822297] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.688856730] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.688887163] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.688951197] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.688976862] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.689010431] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.689037696] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.689058977] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.689077665] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.689093666] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.689120803] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.689139779] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.689156388] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.689178085] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.689194949] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.689210374] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.693729633] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.693804484] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.711444739] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.711914291] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.711958452] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.711985493] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.714567534] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.714636400] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.714667889] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.714694226] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.714716883] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.714738548] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.714771573] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.714797622] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.714817559] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.714833975] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.714850616] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.714872280] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.714891449] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.714906874] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.714958939] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.714976924] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.714990941] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.719472247] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.719540857] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.737144918] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.737611270] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.737656232] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.737680905] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.737698473] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.740203808] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954728.740272738] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.740303331] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.740333316] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.740357605] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.740381638] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.740415975] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.740444328] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.740464873] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954728.740481833] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.740504618] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.740524267] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.740546763] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.740563884] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.745173483] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954728.745244621] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.762919309] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.763376189] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.765857554] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954728.765924116] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.765956565] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.766070457] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.766119707] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.766151100] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.766189789] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.766220766] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.766241759] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.766257856] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.766271968] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.766285153] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.766298529] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.766312674] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/5 | SKIPPED: 1 | Hall: [0 0 0 0 1 0]
+[INFO] [1788954728.766373348] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.766394404] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.766409829] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.766424389] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.766438822] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.766458535] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.766475463] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.766491016] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.766504776] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.766517993] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.770880255] [rinbo_cali]: === ALL 5 HEALTHY LEGS CALIBRATED (1 disabled) ===
+[INFO] [1788954728.770971042] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.788560063] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.789029007] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.789072656] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.791525541] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.791594503] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.791621896] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.791646601] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.791666345] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.791687018] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.791717579] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.791743948] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.791763597] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.791778957] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.791795662] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.791809582] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.791829903] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.791846960] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.791861648] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.791875473] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.791892529] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.791908754] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.791925778] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.791939571] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.796439982] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.796509744] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.814161775] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.814618655] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.814662592] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.817093812] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.817159446] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.817196120] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.817227801] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.817253817] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.817308475] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.817341693] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.817368317] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.817388542] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.817404479] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.817418655] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.817435680] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.817456832] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.817499042] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.817516515] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.817531587] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.817548900] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.817565444] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.817580901] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.817597349] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.822037502] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.822105344] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.841063372] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.841572862] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.841618751] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.841641408] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.844193592] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.844267419] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.844296508] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.844325181] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.844346269] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.844367678] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.844400511] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.844427808] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.844539140] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.844569765] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.844590086] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.844618119] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.844636391] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.844651496] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.844669768] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.844685161] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.844698153] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.849397195] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.849472366] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.869435548] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.869895212] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.869938733] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.872418851] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.872493669] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.872532167] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.872565960] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.872590825] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.872614921] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.872652395] [rinbo_cali]: WAIT_SERVO | Servos: [740 2565 0 1944 0 989] | All homed: YES
+[INFO] [1788954728.872719181] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.872748206] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.872768719] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.872785423] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.872800272] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.872814576] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.872837073] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.872859634] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.872877266] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.872892691] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.872911732] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.872927924] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.872942805] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.872956917] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.877593493] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.877664375] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.895722148] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.896181268] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.896226133] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.896255766] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.898696522] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.898775309] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.898813550] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.898849104] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.898879889] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.898908562] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.898945203] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.898975668] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.898999605] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.899018357] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.899037654] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.899062839] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.899084984] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.899104984] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.899127737] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.899144986] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.899192571] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.903686070] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.903754136] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.921463321] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.921915497] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.921958474] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.922108656] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.924547203] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954728.924616646] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.924696617] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.924731594] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.924760395] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.924788236] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.924823501] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.924852238] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.924873647] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.924891567] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.924908304] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.924930385] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.924950385] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.924968274] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.924992115] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.925012499] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.925028180] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.929522767] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954728.929591025] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.947236272] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.947705536] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.947751553] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954728.947778402] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954728.947804387] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.950433374] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954728.950508288] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.950541921] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.950568578] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.950591587] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.950620964] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.950653413] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.950681734] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.950701383] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954728.950720552] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.950743592] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.950792682] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.950822091] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.950843820] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.955250403] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954728.955321670] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.972837536] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.973306640] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.973353330] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954728.975987021] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954728.976069423] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954728.976153042] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954728.976189107] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954728.976215956] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954728.976239157] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954728.976273782] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954728.976302103] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954728.976322936] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954728.976339577] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954728.976355929] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954728.976369978] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954728.976391642] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.976411963] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.976427292] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.976441852] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954728.976459709] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954728.976477053] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954728.976491230] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.976505534] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954728.981126205] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954728.981197120] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954728.999005124] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954728.999482869] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954728.999531926] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954728.999559319] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.001977226] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.002323862] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.002362840] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.002398041] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.002426234] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.002449915] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.002485788] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.002512541] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.002533501] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.002579263] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.002596032] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.002618784] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.002638817] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.002656866] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.002680771] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.002700643] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.002716708] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.007033944] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.007100986] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.024730616] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.025191271] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.025237257] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.025262250] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.027718014] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.027792257] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.027824706] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.027854979] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.027881028] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.027910085] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.027947654] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.027980295] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.028006824] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.028031145] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.028053962] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.028085995] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.028113964] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.028136749] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.028159981] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.028180750] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.028196687] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.032649191] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.032722730] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.050418345] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.050879993] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.050927611] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.050959516] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.050985565] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.053395632] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.053466450] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.053501971] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.053534356] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.053559637] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.053583894] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.053648984] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.053684250] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.053708666] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.053731355] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.053758076] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.053779485] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.053801022] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.053819486] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.058309560] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.058420796] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.076222239] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.076703472] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.076745905] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.076766130] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.079257672] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.079331082] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.079364011] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.079389836] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.079412237] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.079438414] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.079475887] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.079509712] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.079534481] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.079555154] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.079572818] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.079599635] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.079620532] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.079637749] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.079658229] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.079676310] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.079691959] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.084258835] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.084330390] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.102265182] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.102743758] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.102788176] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.102815824] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.102838289] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.105243524] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.105309350] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.105344039] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.105375496] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.105401097] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.105423274] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.105485228] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.105513101] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.105534126] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.105550766] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.105578319] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.105601328] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.105625009] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.105669842] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.110290385] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.110357779] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.128081076] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.128551396] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.128597830] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.128627783] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.128651815] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.131227104] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.131302274] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.131336676] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.131368133] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.131394374] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.131420391] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.131454216] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.131485001] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.131507722] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.131527402] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.131556811] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.131578956] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.131600397] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.131619757] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.136051238] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.136122248] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.154133202] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.154603362] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.154648516] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.154676293] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.154701350] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.154719942] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.157109689] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954729.157178395] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.157210012] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.157234045] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.157254109] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.157307423] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.157341728] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.157370849] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.157391970] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.157417987] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.157442468] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.162082915] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954729.162160966] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.180088205] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.180560798] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.183027090] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954729.183102805] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.183135190] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.183169559] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.183194136] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.183218041] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.183252410] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.183282523] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.183304124] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.183322364] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.183338301] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.183353054] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.183367518] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.183388831] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.183408991] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.183424608] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.183439584] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.183454081] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.183471330] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.183489314] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.183504195] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.183518755] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.183531972] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.187976796] [rinbo_cali]: === ALL 5 HEALTHY LEGS CALIBRATED (1 disabled) ===
+[INFO] [1788954729.188049247] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.205673948] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.206214958] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.206269840] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.208683043] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954729.208750597] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.208787143] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.208820552] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.208849001] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.208904939] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.208942252] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.208971501] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.208992686] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.209009358] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.209025167] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.209041903] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.209096945] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.209121138] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.209139155] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.209158387] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.209178164] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.209196565] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.209214325] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.209232502] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.213683503] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954729.213754449] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.231474450] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.231942370] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.231991939] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.234559932] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954729.234636446] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.234670271] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.234700512] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.234730593] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.234758978] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.234797572] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.234824805] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.234843813] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.234862374] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.234880487] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.234895751] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.234917416] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.234935080] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.234950281] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.234965802] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.234984106] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.235000011] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.235014571] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.235028812] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.239532102] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954729.239602601] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.257281544] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.257783161] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.257826330] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.257847771] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.260301487] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.260372434] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.260399251] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.260422804] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.260441812] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.260462453] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.260529367] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.260557272] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.260576345] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.260592185] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.260606138] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.260627771] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.260645115] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.260660220] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.260679004] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.260694077] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.260708253] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.265559972] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.265691848] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.285490256] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.285971361] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.286050019] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.288560282] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954729.288639292] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.288668573] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.288699134] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.288723711] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.288747872] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.288781601] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.288809890] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.288831043] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.288848419] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.288863972] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.288878436] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.288893541] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/4 | SKIPPED: 2 | Hall: [0 0 1 0 0 1]
+[INFO] [1788954729.288922022] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.288939847] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.288954919] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.288969512] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.289030634] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.289048650] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.289063979] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.289078155] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.293900849] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954729.293973843] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.312819770] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.313285226] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.313331596] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.313353549] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.315867331] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.315942854] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.315980711] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.316017800] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.316045865] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.316074026] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.316111019] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.316140140] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.316161773] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.316178446] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.316192526] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.316215055] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.316237168] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.316254224] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.316276273] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.316295890] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.316315090] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.320757131] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.320827597] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.338720244] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.339183652] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.339228069] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.339254790] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.341654456] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.341726267] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.341758044] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.341785149] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.341809246] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.341832703] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.341865600] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.341892577] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.341913217] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.341966435] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.342184267] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.342233708] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.342264813] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.342285966] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.342311759] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.342333712] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.342350736] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.346934030] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.347002544] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.365610511] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.366236100] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.366284550] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.366308903] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.366330728] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.368765755] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.368835070] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.368867647] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.368898656] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.368924609] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.368947073] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.368981923] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.369008900] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.369032100] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.369048741] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.369071078] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.369092262] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.369119143] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.369138280] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.373668260] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.373741318] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.391667662] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.392133181] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.392176895] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.394642004] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954729.394716182] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.394744503] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.394772952] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.394794681] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.394819642] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.394854811] [rinbo_cali]: WAIT_SERVO | Servos: [740 2565 3283 0 2071 0] | All homed: YES
+[INFO] [1788954729.394878428] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.394927965] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.394947742] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.394964351] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.394981151] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.394995360] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.395016544] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.395036225] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.395052450] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.395066434] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.395084323] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.395102243] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.395141829] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.395160837] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.399618494] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954729.399690145] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.417203002] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.417667498] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.417713164] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.417740365] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.420289988] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.420368519] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.420402056] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.420433321] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.420459210] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.420486603] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.420520172] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.420553453] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.420575822] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.420591695] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.420606543] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.420629168] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.420646896] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.420662545] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.420680882] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.420696722] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.420711315] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.425218221] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.425290224] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.443129396] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.443600100] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.443643462] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.443666279] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.446151388] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.446231071] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.446264736] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.446292673] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.446347171] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.446371108] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.446405541] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.446432678] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.446453222] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.446470375] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.446488072] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.446510152] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.446555850] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.446578635] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.446601580] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.446620940] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.446635533] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.451176457] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.451266252] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.469044782] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.469505854] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.469548159] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.469572832] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.469592193] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.472084086] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.472156185] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.472187386] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.472216507] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.472241532] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.472265309] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.472300158] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.472328191] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.472349472] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.472366112] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.472389985] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.472411362] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.472434722] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.472454211] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.476883451] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.476953438] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.494419733] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.494886309] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.494930727] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.494955432] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.497362938] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.497433821] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.497503391] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.497542016] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.497576098] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.497607907] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.497643364] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.497670725] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.497690662] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.497706982] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.497749704] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.497777257] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.497795689] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.497812874] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.497831882] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.497850091] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.497865612] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.502429544] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.502500331] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.520102631] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.520563031] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.520606424] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.520635353] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.520661882] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.523307637] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.523386584] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.523421689] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.523455674] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.523484475] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.523513980] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.523555454] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.523589439] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.523616608] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.523638560] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.523666241] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.523688098] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.523710563] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.523731556] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.528158268] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.528233694] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.545820538] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.546326219] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.546378221] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.546410382] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.546438991] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.548863362] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.548934917] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.548966822] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.548998311] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.549028136] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.549056681] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.549093482] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.549160813] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.549187246] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.549207086] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.549230735] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.549252368] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.549273873] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.549292593] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.553760683] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.553832109] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.571585871] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.572034366] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.572076415] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.572100128] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.572123201] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.572143362] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.574605078] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954729.574679865] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.574713978] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.574744219] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.574773820] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.574804157] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.574844062] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.574876736] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.574903488] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.574936738] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.574968867] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.579399483] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954729.579469149] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.597146300] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.597607916] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.597649421] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.600293672] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954729.600370987] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.600407116] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.600438477] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.600492367] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.600520560] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.600556145] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.600585650] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.600606771] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.600625236] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.600641812] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.600655509] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.600700854] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.600723479] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.600740696] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.600758776] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.600778329] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.600797465] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.600812698] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.600826490] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.605236562] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954729.605305396] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.623063350] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.623523974] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.623569543] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.623600072] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.626098270] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.626178273] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.626213666] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.626245411] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.626273988] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.626303653] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.626343815] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.626375336] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.626400553] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.626423241] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.626440842] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.626467915] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.626489388] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.626505292] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.626525581] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.626542061] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.626556750] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.630929540] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.630995942] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.648560737] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.649023313] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.649100692] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.649133333] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.651645323] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.651722350] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.651753583] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.651785616] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.651812753] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.651838546] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.651907220] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.651936053] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.651957718] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.651974359] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.651991255] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.652017624] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.652038393] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.652055001] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.652076794] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.652093851] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.652111931] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.656577141] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.656643287] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.674174737] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.674631008] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.674673058] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.674698435] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.674717411] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.677092853] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.677163063] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.677196216] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.677229690] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.677257691] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.677285084] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.677319357] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.677348446] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.677369726] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.677385791] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.677408096] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.677428736] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.677450785] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.677470658] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.681934811] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.682021726] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.699542072] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.700026408] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.700068842] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.700092555] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.702527550] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.702600353] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.702630594] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.702658435] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.702681891] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.702704228] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.702771527] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.702799560] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.702821576] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.702838153] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.702852809] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.702878122] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.702897739] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.702913931] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.702933868] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.702949805] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.702964557] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.707475336] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.707546442] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.725039811] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.725509779] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.725551957] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.725580758] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.725605206] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.728095788] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.728169199] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.728197936] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.728226128] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.728250929] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.728277202] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.728313235] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.728341748] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.728366325] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.728389302] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.728418103] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.728441144] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.728462521] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.728482489] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.732943122] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.733030645] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.750527246] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.750979518] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.751020767] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.751044800] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.751066497] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.753461459] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.753528533] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.753559702] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.753588343] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.753656730] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.753687291] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.753728508] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.753760829] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.753785662] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.753810079] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.753840704] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.753866497] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.753893410] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.753916130] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.758330106] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.758399900] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.775978360] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.776433224] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.776477033] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.776501354] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.776519339] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.776535019] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.779159429] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954729.779243720] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.779275433] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.779301962] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.779325291] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.779347052] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.779380653] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.779406734] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.779427822] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.779452207] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.779476240] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.783959562] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954729.784033740] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.801777614] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.802337089] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.802390083] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.802422436] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.804838455] [rinbo_cali]: === Calibration FSM Started: 3 healthy legs ===
+[INFO] [1788954729.804911545] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.804945658] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.804975931] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.805002940] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.805032061] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.805112640] [rinbo_cali]: All 3 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.805145953] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.805170786] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.805190755] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.805208835] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.805226404] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/3 | SKIPPED: 3 | Hall: [0 0 0 1 1 1]
+[INFO] [1788954729.805254245] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.805274726] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.805291206] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.805314855] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.805332584] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.805349768] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.809978887] [rinbo_cali]: === ALL 3 HEALTHY LEGS CALIBRATED (3 disabled) ===
+[INFO] [1788954729.810133389] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.828235258] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.828695658] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.828740267] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.828762028] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.828783469] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.831292739] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.831370566] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.831407367] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.831441288] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.831469353] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.831496938] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.831535563] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.831566444] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.831593165] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.831615694] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.831642031] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.831663408] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.831684144] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.831702641] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.836176459] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.836261838] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.854889645] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.855410623] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.855467841] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.855496546] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.855519075] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.858787923] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.858895511] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.858925944] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.859004250] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.859034779] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.859062492] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.859098430] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.859125311] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.859145023] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.859160896] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.859184129] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.859202241] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.859221538] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.859239203] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.863990726] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.864101961] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.883448002] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.883919890] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.883961971] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.883988852] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.884015253] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.884038102] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.886582253] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954729.886660656] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.886695985] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.886727954] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.886756563] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.886785364] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.886822422] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.886851286] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.886872343] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954729.886897880] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.886922073] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954729.891371698] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954729.891442068] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.909315802] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.909810059] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.909852620] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.909876845] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.909899726] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.912494439] [rinbo_cali]: === Calibration FSM Started: 2 healthy legs ===
+[INFO] [1788954729.912571946] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.912608747] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.912640076] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.912667181] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.912692302] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.912761648] [rinbo_cali]: WAIT_SERVO | Servos: [740 2565 0 0 0 0] | All homed: YES
+[INFO] [1788954729.912788081] [rinbo_cali]: All 2 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.912812690] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.912833011] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.912849171] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.912872116] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.912890933] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.912911669] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.912929654] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.917414480] [rinbo_cali]: === ALL 2 HEALTHY LEGS CALIBRATED (4 disabled) ===
+[INFO] [1788954729.917484466] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.935377785] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.935840264] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.935885386] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.935912139] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.935936748] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.935955852] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.938373439] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954729.938448034] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.938477251] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.938504292] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.938532613] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.938555302] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.938587559] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.938614088] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.938636968] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.938661929] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.938686762] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.943184325] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954729.943258631] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954729.960934022] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.961429239] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954729.961474553] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.961503930] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954729.961529626] [rinbo_cali]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954729.961553851] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954729.963959086] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954729.964034320] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.964071346] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.964106515] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.964138004] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.964168437] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.964251416] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.964285081] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.964311002] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954729.964339227] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.964363452] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.968932249] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954729.969001243] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[       OK ] CaliMultiLegTest.All64MasksUseActualHealthyCalibrationTransitions (1648 ms)
+[ RUN      ] CaliMultiLegTest.L1AndL3MissingOnlyPassWhenBothExplicitlyMasked
+[INFO] [1788954729.992716777] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954729.993173017] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954729.993217722] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954729.995641294] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954729.995715504] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954729.995749457] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954729.995778258] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954729.995804531] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954729.995831444] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954729.995866709] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954729.995891990] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954729.995912951] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954729.995930263] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954729.995949240] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954729.995967769] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954729.995992762] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.996013370] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.996030139] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.996045691] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954729.996062460] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.996079549] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954729.996094173] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954729.996108286] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954730.000504181] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954730.000605112] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.018349144] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.018809800] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954730.021169241] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954730.021241147] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.021273692] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.021307774] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.021334495] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954730.021363264] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954730.021442594] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.021469731] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954730.021489956] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954730.021506756] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954730.021521893] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954730.021544134] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.021581383] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.021602984] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.021618888] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.021636329] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.021653161] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954730.021668170] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.021682762] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[ERROR] [1788954730.021718348] [rinbo_cali]: CALIBRATION SAFETY STOP: hall search timeout: L3
+CALIBRATION SAFETY STOP: hall search timeout: L3
+[       OK ] CaliMultiLegTest.L1AndL3MissingOnlyPassWhenBothExplicitlyMasked (50 ms)
+[ RUN      ] CaliMultiLegTest.SelectedL2IgnoresOtherHallsAndOnlyCertifiesL2
+[INFO] [1788954730.046401946] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.046855497] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954730.046903883] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.046932588] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.046957613] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.046977677] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.049382048] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.049452674] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.049480803] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.049506500] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.049528549] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.049553862] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.049581863] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.049605992] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.049624840] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954730.049651529] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.049675882] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.054023775] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.054109506] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[       OK ] CaliMultiLegTest.SelectedL2IgnoresOtherHallsAndOnlyCertifiesL2 (36 ms)
+[ RUN      ] CaliMultiLegTest.EverySingleLegCompletesWithoutWaitingForFiveUnselectedLegs
+[INFO] [1788954730.079358627] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.079820403] [rinbo_cali]: L2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.079869109] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.079898038] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.079924247] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.079942647] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.082536848] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.082614899] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.082643284] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.082669365] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.082692502] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.082712534] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.082777496] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.082804313] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.082823482] [rinbo_cali]: L1: Hall detected! Stopping...
+[INFO] [1788954730.082851771] [rinbo_cali]: L1: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.082874620] [rinbo_cali]: L1: DONE! Zero feedback confirmed.
+[INFO] [1788954730.087232977] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.087297683] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.107397284] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.107854196] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.107899701] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.107926870] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.107952695] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.107974328] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.110399755] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.110471438] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.110500783] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.110525519] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.110544976] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.110561809] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.110589650] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.110613363] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.110631411] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954730.110663188] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.110690869] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.115125421] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.115196080] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.135481767] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.135949079] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.135992152] [rinbo_cali]: L2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.136047162] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.136068347] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.136090300] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.138499534] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.138575153] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.138603826] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.138631571] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.138654964] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.138672916] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.138701557] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.138724662] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.138744471] [rinbo_cali]: L3: Hall detected! Stopping...
+[INFO] [1788954730.138772664] [rinbo_cali]: L3: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.138796728] [rinbo_cali]: L3: DONE! Zero feedback confirmed.
+[INFO] [1788954730.143168526] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.143272402] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.163218782] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.163688238] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.163731119] [rinbo_cali]: L2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.163755088] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.163776465] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.163796369] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.166356841] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.166432812] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.166464173] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.166490222] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.166510222] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.166530799] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.166558448] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.166582417] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.166602833] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954730.166631026] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.166658323] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954730.170989448] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.171059754] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.191182140] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.191647724] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.191689709] [rinbo_cali]: L2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.191715246] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.191737967] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.191755664] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.194332552] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.194412939] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.194479853] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.194515950] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.194547727] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.194574608] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.194604369] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.194628978] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.194648595] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954730.194679572] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.194712885] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.199051786] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.199119852] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.218952660] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.219421444] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.219466181] [rinbo_cali]: L2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.219493318] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.219520391] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.219585289] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.221924186] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.222096191] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.222146337] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.222181346] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.222209923] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.222234692] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.222269445] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.222298822] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.222324199] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954730.222357768] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.222386153] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954730.226711774] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.226777216] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[       OK ] CaliMultiLegTest.EverySingleLegCompletesWithoutWaitingForFiveUnselectedLegs (170 ms)
+[ RUN      ] CaliMultiLegTest.StopSignalsAfterDoneKeepContextAliveUntilCallbacksEndAndPreserveReceipt
+[INFO] [1788954730.249380231] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.249837718] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.249880280] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.249904345] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.249925113] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.249942138] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.252472785] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.252550483] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.252586101] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.252621174] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.252649303] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.252673463] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.252739866] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.252771707] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.252797692] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954730.252831069] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.252857790] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.257279349] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.257353560] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.441704006] [rinbo_cali]: CALIBRATION HANDOFF READY: callbacks stopped, motor output disabled, receipt preserved.
+[INFO] [1788954730.479023813] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.479837217] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.479911908] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.479955589] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.479992327] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.480028328] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.484151541] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.484264889] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.484321915] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.484435711] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.484486689] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.484526178] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.484582340] [rinbo_cali]: WAIT_SERVO | Servos: [0 2565 0 0 0 0] | All homed: YES
+[INFO] [1788954730.484627174] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.484665671] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.484700264] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954730.484732841] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/1 | SKIPPED: 5 | Hall: [1 0 1 1 1 1]
+[INFO] [1788954730.484787339] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.484829932] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.492540661] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.492655417] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[INFO] [1788954730.676396082] [rinbo_cali]: CALIBRATION HANDOFF READY: callbacks stopped, motor output disabled, receipt preserved.
+[       OK ] CaliMultiLegTest.StopSignalsAfterDoneKeepContextAliveUntilCallbacksEndAndPreserveReceipt (457 ms)
+[ RUN      ] CaliMultiLegTest.StopBeforeCompletionCannotLeaveAnApprovedReceipt
+[INFO] [1788954730.740703598] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.741498570] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.741574028] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.741626158] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.741672624] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.741713521] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.745898912] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.746074406] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.746143433] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.746197131] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.746239340] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.746273069] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[ERROR] [1788954730.748925320] [rinbo_cali]: CALIBRATION SAFETY STOP: calibration interrupted before completion
+CALIBRATION SAFETY STOP: calibration interrupted before completion
+[       OK ] CaliMultiLegTest.StopBeforeCompletionCannotLeaveAnApprovedReceipt (235 ms)
+[ RUN      ] CaliMultiLegTest.RealFailureAfterDoneIsNotHiddenByNormalShutdown
+[INFO] [1788954730.975702693] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954730.976502752] [rinbo_cali]: L1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.976580355] [rinbo_cali]: L3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.976632389] [rinbo_cali]: R1: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.976668582] [rinbo_cali]: R2: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.976702215] [rinbo_cali]: R3: SKIPPED (not selected for this calibration)
+[INFO] [1788954730.980929080] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954730.981046556] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954730.981108670] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954730.981157088] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954730.981197921] [rinbo_cali]: State: SERVO_HOMING
+[INFO] [1788954730.981232194] [rinbo_cali]: Selected-leg calibration: 1 legs. Other main drives stay disabled; unselected servos hold feedback positions (global servo control remains shared).
+[INFO] [1788954730.981286084] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954730.981327430] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954730.981361767] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954730.981413417] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954730.981456522] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954730.989230932] [rinbo_cali]: === ALL 1 HEALTHY LEGS CALIBRATED (5 disabled) ===
+[INFO] [1788954730.989347128] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[ERROR] [1788954730.989446268] [rinbo_cali]: CALIBRATION SAFETY STOP: real input failure after completion
+CALIBRATION SAFETY STOP: real input failure after completion
+[       OK ] CaliMultiLegTest.RealFailureAfterDoneIsNotHiddenByNormalShutdown (238 ms)
+[ RUN      ] CaliMultiLegTest.ResetWithoutZeroFeedbackFailsAndCannotCreateReceipt
+[INFO] [1788954731.213551249] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954731.214501137] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954731.214594356] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954731.218751682] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954731.218871623] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954731.218938761] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954731.218996523] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954731.219044845] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954731.219093806] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954731.219149232] [rinbo_cali]: WAIT_SERVO | Servos: [0 2565 0 1944 2071 989] | All homed: YES
+[INFO] [1788954731.219190737] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954731.219227731] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954731.219260212] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954731.219291157] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954731.219361175] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954731.219394264] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954731.219426810] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/4 | SKIPPED: 2 | Hall: [1 0 1 0 0 0]
+[INFO] [1788954731.219482555] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.219518877] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.219551646] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.219582783] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[ERROR] [1788954731.219658209] [rinbo_cali]: CALIBRATION SAFETY STOP: position reset timeout: L2 pos=1000.000000 velocity=0.000000 elapsed=2.600000
+CALIBRATION SAFETY STOP: position reset timeout: L2 pos=1000.000000 velocity=0.000000 elapsed=2.600000
+[       OK ] CaliMultiLegTest.ResetWithoutZeroFeedbackFailsAndCannotCreateReceipt (74 ms)
+[ RUN      ] CaliMultiLegTest.ReenabledServoMustHomeAgain
+[INFO] [1788954731.263529119] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954731.264325338] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954731.268364964] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ===
+[INFO] [1788954731.268487464] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954731.268542954] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954731.268591756] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954731.268630349] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954731.268668430] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[       OK ] CaliMultiLegTest.ReenabledServoMustHomeAgain (36 ms)
+[ RUN      ] CaliMultiLegTest.LostResetRetriesOnlyWhileStationaryAndNeverCompletesWithoutFeedback
+[INFO] [1788954731.295445827] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954731.296138170] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954731.296202653] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954731.299743126] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954731.299853305] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954731.299904891] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954731.300002911] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954731.300045952] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954731.300086465] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954731.300138115] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954731.300177061] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954731.300204037] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954731.300228774] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954731.300248967] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954731.300269224] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954731.300302409] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.300332586] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.300359179] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.300384908] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.300422093] [rinbo_cali]: L2: reset retry | pos=1000 velocity=0 elapsed=0.11
+[INFO] [1788954731.300482351] [rinbo_cali]: R1: reset retry | pos=1000 velocity=0 elapsed=0.11
+[INFO] [1788954731.300516144] [rinbo_cali]: R2: reset retry | pos=1000 velocity=0 elapsed=0.11
+[INFO] [1788954731.300546545] [rinbo_cali]: R3: reset retry | pos=1000 velocity=0 elapsed=0.11
+[INFO] [1788954731.300593139] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954731.300622100] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954731.300648341] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954731.300673878] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954731.306794919] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954731.306906795] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[       OK ] CaliMultiLegTest.LostResetRetriesOnlyWhileStationaryAndNeverCompletesWithoutFeedback (38 ms)
+[ RUN      ] CaliMultiLegTest.LostResetStillTimesOutAtOriginalDeadlineWithDiagnosticValues
+[INFO] [1788954731.331989477] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954731.332579833] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954731.332636539] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954731.335757286] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954731.335854633] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954731.335896459] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954731.335932844] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954731.335962605] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954731.335992494] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954731.336035503] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954731.336068913] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954731.336094417] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954731.336116882] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954731.336136499] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954731.336156660] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954731.336186933] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.336211893] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.336234326] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.336257239] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.336281624] [rinbo_cali]: L2: reset retry | pos=1000 velocity=0 elapsed=0.60
+[INFO] [1788954731.336357306] [rinbo_cali]: R1: reset retry | pos=1000 velocity=0 elapsed=0.60
+[INFO] [1788954731.336389212] [rinbo_cali]: R2: reset retry | pos=1000 velocity=0 elapsed=0.60
+[INFO] [1788954731.336416701] [rinbo_cali]: R3: reset retry | pos=1000 velocity=0 elapsed=0.60
+[ERROR] [1788954731.336472574] [rinbo_cali]: CALIBRATION SAFETY STOP: position reset timeout: L2 pos=1000.000000 velocity=0.000000 elapsed=2.010000
+CALIBRATION SAFETY STOP: position reset timeout: L2 pos=1000.000000 velocity=0.000000 elapsed=2.010000
+[       OK ] CaliMultiLegTest.LostResetStillTimesOutAtOriginalDeadlineWithDiagnosticValues (29 ms)
+[ RUN      ] CaliMultiLegTest.RelaxedResetWaitStillRequiresActualZeroFeedback
+[INFO] [1788954731.361876164] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954731.362469272] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954731.362530490] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954731.365243223] [rinbo_cali]: === Calibration FSM Started: 4 healthy legs ===
+[INFO] [1788954731.365321786] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954731.365394972] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954731.365433085] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954731.365464318] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954731.365494047] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954731.365531905] [rinbo_cali]: All 4 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954731.365558914] [rinbo_cali]: DC motors initialized!
+[INFO] [1788954731.365581666] [rinbo_cali]: L2: Hall detected! Stopping...
+[INFO] [1788954731.365600131] [rinbo_cali]: R1: Hall detected! Stopping...
+[INFO] [1788954731.365617860] [rinbo_cali]: R2: Hall detected! Stopping...
+[INFO] [1788954731.365634468] [rinbo_cali]: R3: Hall detected! Stopping...
+[INFO] [1788954731.365662597] [rinbo_cali]: L2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.365684870] [rinbo_cali]: R1: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.365703367] [rinbo_cali]: R2: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.365722183] [rinbo_cali]: R3: RESETTING (waiting for zero feedback)
+[INFO] [1788954731.365743784] [rinbo_cali]: L2: reset retry | pos=1000 velocity=0 elapsed=2.60
+[INFO] [1788954731.365772489] [rinbo_cali]: R1: reset retry | pos=1000 velocity=0 elapsed=2.60
+[INFO] [1788954731.365799466] [rinbo_cali]: R2: reset retry | pos=1000 velocity=0 elapsed=2.60
+[INFO] [1788954731.365824235] [rinbo_cali]: R3: reset retry | pos=1000 velocity=0 elapsed=2.60
+[INFO] [1788954731.365851148] [rinbo_cali]: L2: DONE! Zero feedback confirmed.
+[INFO] [1788954731.365873196] [rinbo_cali]: R1: DONE! Zero feedback confirmed.
+[INFO] [1788954731.365891437] [rinbo_cali]: R2: DONE! Zero feedback confirmed.
+[INFO] [1788954731.365909422] [rinbo_cali]: R3: DONE! Zero feedback confirmed.
+[INFO] [1788954731.371232324] [rinbo_cali]: === ALL 4 HEALTHY LEGS CALIBRATED (2 disabled) ===
+[INFO] [1788954731.371327559] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)
+[       OK ] CaliMultiLegTest.RelaxedResetWaitStillRequiresActualZeroFeedback (34 ms)
+[ RUN      ] CaliMultiLegTest.LongerHallWaitStillRequiresRealHallAndCannotApproveCalibration
+[INFO] [1788954731.394675078] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954731.395193592] [rinbo_cali]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954731.395240025] [rinbo_cali]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954731.395267162] [rinbo_cali]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954731.395291995] [rinbo_cali]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954731.395314044] [rinbo_cali]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954731.397857427] [rinbo_cali]: === Calibration FSM Started: 1 healthy legs ===
+[INFO] [1788954731.397942358] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989
+[INFO] [1788954731.397976215] [rinbo_cali]: DC target velocity: 0.63 rad/s
+[INFO] [1788954731.398109499] [rinbo_cali]: Main-drive PWM cap: 80.0
+[INFO] [1788954731.398190270] [rinbo_cali]: State: SERVO_HOMING
+[WARN] [1788954731.398221631] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954731.398261089] [rinbo_cali]: All 1 healthy servos homed! State: DC_SPINNING
+[INFO] [1788954731.398286017] [rinbo_cali]: DC motors initialized!
+[ERROR] [1788954731.398343811] [rinbo_cali]: CALIBRATION SAFETY STOP: hall search timeout: R2
+CALIBRATION SAFETY STOP: hall search timeout: R2
+[       OK ] CaliMultiLegTest.LongerHallWaitStillRequiresRealHallAndCannotApproveCalibration (32 ms)
+[----------] 15 tests from CaliMultiLegTest (3211 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 1 test suite ran. (3221 ms total)
+[  PASSED  ] 15 tests.

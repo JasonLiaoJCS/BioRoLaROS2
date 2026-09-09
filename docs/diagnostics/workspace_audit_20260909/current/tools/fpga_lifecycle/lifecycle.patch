@@ -1,0 +1,650 @@
+--- a/include/console.hpp
++++ b/include/console.hpp
+@@ -25,6 +25,7 @@
+     std::thread ui_;
+     FILE* terminal_out_ = nullptr;
+     FILE* terminal_in_ = nullptr;
++    int original_stdout_flags_ = -1;
+     int saved_stdout_ = -1;
+     int saved_stderr_ = -1;
+ };
+--- /dev/null
++++ b/include/driver_lifecycle.hpp
+@@ -0,0 +1,81 @@
++#pragma once
++#include <atomic>
++#include <cerrno>
++#include <csignal>
++#include <cstdio>
++#include <cstring>
++#include <dirent.h>
++#include <fcntl.h>
++#include <fstream>
++#include <poll.h>
++#include <stdexcept>
++#include <string>
++#include <sys/file.h>
++#include <time.h>
++#include <unistd.h>
++
++namespace lifecycle {
++extern volatile sig_atomic_t stop_signal;
++extern std::atomic<bool> terminal_lost;
++extern bool headless;
++inline bool stopping() { return stop_signal != 0 || terminal_lost.load(); }
++inline void signal_stop(int value) { stop_signal = value; }
++inline void install_signals() {
++    struct sigaction action{};
++    action.sa_handler = signal_stop;
++    sigemptyset(&action.sa_mask);
++    for (int sig : {SIGINT, SIGTERM, SIGHUP, SIGPIPE})
++        if (sigaction(sig, &action, nullptr) != 0)
++            throw std::runtime_error("Cannot install stop signal handler");
++}
++inline void event(const char* message) {
++    timespec now{};
++    clock_gettime(CLOCK_MONOTONIC, &now);
++    std::string boot;
++    std::ifstream("/proc/sys/kernel/random/boot_id") >> boot;
++    fprintf(stderr, "LIFECYCLE pid=%ld boot=%s mono=%ld.%03ld %s\n",
++            static_cast<long>(getpid()), boot.c_str(), now.tv_sec,
++            now.tv_nsec / 1000000, message);
++    fflush(stderr);
++}
++inline void lose_terminal(const char* reason) {
++    if (!terminal_lost.exchange(true)) event(reason);
++}
++// poll's error bits are reported even if no input was requested.
++inline bool endpoint_lost(int input, int output) {
++    pollfd fds[2] = {{input, POLLIN, 0}, {output, 0, 0}};
++    int rc = poll(fds, 2, 0);
++    if (rc < 0) return errno != EINTR;
++    return ((fds[0].revents | fds[1].revents) & (POLLHUP | POLLERR | POLLNVAL)) != 0;
++}
++// Held before constructing FpgaHandler, through its destructor. Never unlink
++// the lock file: doing so would let two processes lock different inodes.
++class DriverLock {
++    int fd_ = -1;
++public:
++    explicit DriverLock(const char* path = "/tmp/rslip-fpga-driver.lock") {
++        fd_ = open(path, O_RDWR | O_CREAT | O_CLOEXEC | O_NOFOLLOW, 0600);
++        if (fd_ < 0 || flock(fd_, LOCK_EX | LOCK_NB) != 0) {
++            if (fd_ >= 0) close(fd_);
++            throw std::runtime_error("Driver lock unavailable; no FPGA initialization");
++        }
++        // Also refuse an already-running legacy binary that predates this lock.
++        DIR* proc = opendir("/proc");
++        if (!proc) { close(fd_); throw std::runtime_error("Cannot inspect existing drivers"); }
++        bool duplicate = false;
++        while (dirent* entry = readdir(proc)) {
++            char* end = nullptr;
++            long pid = strtol(entry->d_name, &end, 10);
++            if (!end || *end || pid <= 0 || pid == getpid()) continue;
++            std::string comm;
++            std::ifstream(std::string("/proc/") + entry->d_name + "/comm") >> comm;
++            if (comm == "fpga_driver") { duplicate = true; break; }
++        }
++        closedir(proc);
++        if (duplicate) { close(fd_); throw std::runtime_error("Existing fpga_driver; no FPGA initialization"); }
++    }
++    ~DriverLock() { if (fd_ >= 0) close(fd_); }
++    DriverLock(const DriverLock&) = delete;
++    DriverLock& operator=(const DriverLock&) = delete;
++};
++}
+--- a/include/fpga_handler.hpp
++++ b/include/fpga_handler.hpp
+@@ -82,7 +82,11 @@
+   FpgaHandler();
+   ~FpgaHandler();
+   ModuleIO moduleIO;
+-  NiFpga_Session session_;
++  NiFpga_Session session_ = 0;
++  bool session_open_ = false;
++  bool shutdown_attempted_ = false;
++  bool shutdown_ok_ = false;
++  bool safe_shutdown();
+   NiFpga_Status status_;
+ 
+   // powerboard
+--- a/include/fpga_server.hpp
++++ b/include/fpga_server.hpp
+@@ -1,69 +1,70 @@
+-#ifndef FPGA_SERVER_HPP
+-#define FPGA_SERVER_HPP
+-
+-#include "fpga_handler.hpp"
+-#include "console.hpp"
+-
+-#include <NodeHandler.h>
+-#include <sys/time.h>
+-#include <fstream>
+-#include <yaml.h>
+-#include <string>
+-#include <vector>
+-#include <mutex>
+-
+-#ifndef CONFIG_PATH
+-#define CONFIG_PATH "/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/config/config.yaml"
+-#endif
+-
+-void inthand(int signum);
+-bool is_sys_stop();
+-
+-
+-void inthand(int signum);
+-bool is_sys_stop();
+-
+-class Rinbo{
+-    public:
+-        Rinbo();
+-
+-        FpgaHandler fpga_;
+-        YAML::Node yaml_node_;
+-
+-        /* console */
+-        std::mutex main_mtx_;
+-        Console console_;
+-
+-        /* header msg */
+-        struct timeval t_stamp;
+-        uint32_t seq;
+-
+-        /* powerboard state */
+-        std::vector<bool> powerboard_state_;
+-        bool digital_switch_;
+-        bool signal_switch_;
+-        bool power_switch_;
+-
+-        uint32_t servo_control_mode_;
+-
+-        void load_config_();
+-
+-        void interruptHandler(core::Subscriber<power_msg::PowerCmdStamped>& cmd_pb_sub_,
+-            core::Publisher<power_msg::PowerStateStamped>& state_pb_pub_,
+-            core::Subscriber<motor_msg::MotorCmdStamped>& cmd_sub_,
+-            core::Publisher<motor_msg::MotorStateStamped>& state_pub_);
+-
+-        void powerboardPack(power_msg::PowerStateStamped &power_fb_msg);
+-
+-        void motorPack(motor_msg::MotorStateStamped& motor_state_reply);
+-
+-        void processMotorCommands();
+-
+-        void mainLoop_(core::Subscriber<power_msg::PowerCmdStamped>& cmd_pb_sub_,
+-            core::Publisher<power_msg::PowerStateStamped>& state_pb_pub_,
+-            core::Subscriber<motor_msg::MotorCmdStamped>& cmd_sub_,
+-            core::Publisher<motor_msg::MotorStateStamped>& state_pub_);
+-
+-};
+-
++#ifndef FPGA_SERVER_HPP
++#define FPGA_SERVER_HPP
++
++#include "fpga_handler.hpp"
++#include "console.hpp"
++
++#include <NodeHandler.h>
++#include <sys/time.h>
++#include <fstream>
++#include <yaml.h>
++#include <string>
++#include <vector>
++#include <mutex>
++
++#ifndef CONFIG_PATH
++#define CONFIG_PATH "/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/config/config.yaml"
++#endif
++
++void inthand(int signum);
++bool is_sys_stop();
++
++
++void inthand(int signum);
++bool is_sys_stop();
++
++class Rinbo{
++    public:
++        Rinbo();
++        ~Rinbo();
++
++        FpgaHandler fpga_;
++        YAML::Node yaml_node_;
++
++        /* console */
++        std::mutex main_mtx_;
++        Console console_;
++
++        /* header msg */
++        struct timeval t_stamp;
++        uint32_t seq;
++
++        /* powerboard state */
++        std::vector<bool> powerboard_state_;
++        bool digital_switch_;
++        bool signal_switch_;
++        bool power_switch_;
++
++        uint32_t servo_control_mode_;
++
++        void load_config_();
++
++        void interruptHandler(core::Subscriber<power_msg::PowerCmdStamped>& cmd_pb_sub_,
++            core::Publisher<power_msg::PowerStateStamped>& state_pb_pub_,
++            core::Subscriber<motor_msg::MotorCmdStamped>& cmd_sub_,
++            core::Publisher<motor_msg::MotorStateStamped>& state_pub_);
++
++        void powerboardPack(power_msg::PowerStateStamped &power_fb_msg);
++
++        void motorPack(motor_msg::MotorStateStamped& motor_state_reply);
++
++        void processMotorCommands();
++
++        void mainLoop_(core::Subscriber<power_msg::PowerCmdStamped>& cmd_pb_sub_,
++            core::Publisher<power_msg::PowerStateStamped>& state_pb_pub_,
++            core::Subscriber<motor_msg::MotorCmdStamped>& cmd_sub_,
++            core::Publisher<motor_msg::MotorStateStamped>& state_pub_);
++
++};
++
+ #endif--- a/src/console.cpp
++++ b/src/console.cpp
+@@ -1,4 +1,7 @@
+ #include "console.hpp"
++#include "driver_lifecycle.hpp"
++#include <chrono>
++#include <cerrno>
+ #include <ncurses.h>
+ #include <algorithm>
+ #include <climits>
+@@ -28,7 +31,7 @@
+     power_ = power;
+     device_mutex_ = mutex;
+     // Headless launches keep their ordinary stdout log and create no curses UI.
+-    if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO)) return;
++    if (lifecycle::headless || !isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO)) return;
+     terminal_out_ = fdopen(dup(STDOUT_FILENO), "w");
+     terminal_in_ = fdopen(dup(STDIN_FILENO), "r");
+     saved_stdout_ = dup(STDOUT_FILENO);
+@@ -37,7 +40,15 @@
+         stop();
+         throw std::runtime_error("Cannot open dedicated console terminal");
+     }
+-    const char* log_path = "/tmp/fpga_driver_console.log";
++    // A full/closed UI output must not prevent safe shutdown from joining us.
++    int flags = fcntl(fileno(terminal_out_), F_GETFL);
++    original_stdout_flags_ = flags;
++    if (flags < 0 || fcntl(fileno(terminal_out_), F_SETFL, flags | O_NONBLOCK) < 0)
++        throw std::runtime_error("Cannot make console output nonblocking");
++#ifndef FPGA_CONSOLE_LOG
++#define FPGA_CONSOLE_LOG "/tmp/fpga_driver_console.log"
++#endif
++    const char* log_path = FPGA_CONSOLE_LOG;
+     int log_fd = open(log_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+     if (log_fd < 0) {
+         stop();
+@@ -65,21 +76,26 @@
+     std::cout.flush();
+     std::cerr.flush();
+     fflush(nullptr);
++    // Flush/close the UI while it is still nonblocking. Restore the shared
++    // open-file flags via the saved fd so an interactive parent shell is unchanged.
++    if (terminal_out_) { fclose(terminal_out_); terminal_out_ = nullptr; }
+     if (saved_stdout_ >= 0) {
+-        dup2(saved_stdout_, STDOUT_FILENO);
++        if (original_stdout_flags_ >= 0)
++            fcntl(saved_stdout_, F_SETFL, original_stdout_flags_);
++        // Keep lifecycle/shutdown evidence in the log after the TTY disappears.
+         close(saved_stdout_);
+         saved_stdout_ = -1;
+     }
+     if (saved_stderr_ >= 0) {
+-        dup2(saved_stderr_, STDERR_FILENO);
++        // Do not restore stderr to a disconnected terminal.
+         close(saved_stderr_);
+         saved_stderr_ = -1;
+     }
+-    if (terminal_out_) { fclose(terminal_out_); terminal_out_ = nullptr; }
+     if (terminal_in_) { fclose(terminal_in_); terminal_in_ = nullptr; }
+ }
+ 
+ std::string Console::execute(const std::string& input) {
++    if (lifecycle::stopping()) return "STOPPING: command rejected";
+     std::string text = input;
+     if (!text.empty() && text.front() == ':') text.erase(0, 1);
+     std::istringstream stream(text);
+@@ -95,6 +111,8 @@
+             (words[1] != "D" && words[1] != "S" && words[1] != "P"))
+             return "ERROR: use :P D 0/1, :P S 0/1 or :P P 0/1";
+         std::lock_guard<std::mutex> lock(*device_mutex_);
++        if (lifecycle::stopping() || NiFpga_IsError(fpga_->status_) ||
++            NiFpga_IsError(fpga_->moduleIO.status_)) return "STOPPING/FAULT: command rejected";
+         const int index = words[1] == "D" ? 0 : (words[1] == "S" ? 1 : 2);
+         power_->at(index) = value != 0;
+     } else if (words[0] == "M") {
+@@ -106,6 +124,8 @@
+         if ((op == "I" && value > 4096) || (op != "I" && value > 1))
+             return "ERROR: I requires 0..4096; E/D/S/R require 0 or 1";
+         std::lock_guard<std::mutex> lock(*device_mutex_);
++        if (lifecycle::stopping() || NiFpga_IsError(fpga_->status_) ||
++            NiFpga_IsError(fpga_->moduleIO.status_)) return "STOPPING/FAULT: command rejected";
+         if (op == "E") fpga_->moduleIO.write_en_(id, value != 0);
+         if (op == "D") fpga_->moduleIO.write_dir_(id, value != 0);
+         if (op == "I") fpga_->moduleIO.write_iv_(id, value);
+@@ -119,6 +139,8 @@
+             words[2] != "P" || !number(words[3], value) || value > 65535)
+             return "ERROR: use :S id(0..5) P value(0..65535); mode changes are not supported here";
+         std::lock_guard<std::mutex> lock(*device_mutex_);
++        if (lifecycle::stopping() || NiFpga_IsError(fpga_->status_) ||
++            NiFpga_IsError(fpga_->moduleIO.status_)) return "STOPPING/FAULT: command rejected";
+         fpga_->moduleIO.write_position_bus_(id, value);
+     } else return "ERROR: unknown command. Type help then Enter.";
+     return "Accepted: " + input + " (software command; verify hardware feedback)";
+@@ -130,6 +152,7 @@
+     if (!screen) {
+         fprintf(terminal_out_, "Console could not initialize. Set TERM=xterm and restart.\n");
+         fflush(terminal_out_);
++        lifecycle::lose_terminal("terminal_init_failed");
+         running_ = false;
+         return;
+     }
+@@ -149,7 +172,14 @@
+     std::string command;
+     std::string status = "Ready. Type at Command> below; Enter sends. Esc clears. Ctrl+L redraws.";
+     unsigned long frame = 0;
+-    while (running_) {
++    unsigned ready_errors = 0;
++    while (running_ && !lifecycle::stopping()) {
++        const auto frame_start = std::chrono::steady_clock::now();
++        if (lifecycle::endpoint_lost(fileno(terminal_in_), fileno(terminal_out_)) ||
++            feof(terminal_in_) || ferror(terminal_in_) || ferror(terminal_out_)) {
++            lifecycle::lose_terminal("terminal_EOF_HUP_ERR");
++            break;
++        }
+         int rows = 0, cols = 0;
+         getmaxyx(stdscr, rows, cols);
+         erase();
+@@ -193,9 +223,28 @@
+         line(rows - 1, "Command> " + visible, cols);
+         attroff(A_REVERSE);
+         if (rows > 0 && cols > 1) move(rows - 1, std::min(cols - 2, 9 + static_cast<int>(visible.size())));
+-        refresh();
++        if (refresh() == ERR || ferror(terminal_out_)) {
++            lifecycle::lose_terminal("terminal_output_ERR");
++            break;
++        }
+         const int key = getch();
+-        if (key == ERR) continue;
++        if (key == ERR) {
++            pollfd input{fileno(terminal_in_), POLLIN, 0};
++            const int rc = poll(&input, 1, 0);
++            if (lifecycle::endpoint_lost(fileno(terminal_in_), fileno(terminal_out_)) ||
++                feof(terminal_in_) || ferror(terminal_in_) ||
++                (rc > 0 && (input.revents & POLLIN) && ++ready_errors >= 3)) {
++                lifecycle::lose_terminal("terminal_read_EOF_ERR");
++                break;
++            }
++            if (rc == 0) ready_errors = 0;
++            // ERR can return immediately. Bound CPU even on a broken curses/TTY.
++            std::this_thread::sleep_until(frame_start + std::chrono::milliseconds(100));
++            continue;
++        }
++        ready_errors = 0;
++        if (key == 4) { lifecycle::lose_terminal("terminal_EOF_CtrlD"); break; }
++        if (lifecycle::stopping()) break;
+         if (key == KEY_RESIZE) { clearok(stdscr, true); continue; }
+         if (key == 0x600) { paste = true; paste_rejected = false; continue; }
+         if (key == 0x601) { paste = false; continue; }
+--- a/src/fpga_handler.cpp
++++ b/src/fpga_handler.cpp
+@@ -1,4 +1,5 @@
+ #include <fpga_handler.hpp>
++#include "driver_lifecycle.hpp"
+ 
+ ModuleIO::ModuleIO(NiFpga_Status _status, NiFpga_Session _fpga_session){
+ 
+@@ -198,8 +199,10 @@
+         return; 
+     }
+     
++    session_open_ = true;
+     important_message("[FPGA Handler] Session opened (Success)");
+ 
++    if (lifecycle::stopping()) return;
+     important_message("[FPGA Handler] Starting FPGA VI execution...");
+     NiFpga_MergeStatus(&status_, NiFpga_Run(session_, 0));
+     
+@@ -232,7 +235,10 @@
+ FpgaHandler::~FpgaHandler()
+ {
+ 
+-    NiFpga_MergeStatus(&status_, NiFpga_Close(session_, 0));
++    if (session_open_) {
++        if (!shutdown_attempted_) safe_shutdown();
++        NiFpga_MergeStatus(&status_, NiFpga_Close(session_, 0));
++    }
+     important_message("[FPGA Handler] Session Closed");
+ 
+     NiFpga_MergeStatus(&status_, NiFpga_Finalize());
+@@ -258,3 +264,69 @@
+         if (i % 2 == 1)powerboard_V_list_[(i - 1) / 2] = rx_arr[i] * powerboard_Vfactor[(i - 1) / 2] + powerboard_Voffset[(i - 1) / 2];
+     }
+ }
++
++bool FpgaHandler::safe_shutdown()
++{
++    if (shutdown_attempted_) return shutdown_ok_;
++    shutdown_attempted_ = true;
++    lifecycle::event("shutdown_begin commands_inhibited");
++    if (!session_open_) {
++        lifecycle::event("shutdown_FAILED no_session PowerUnknown");
++        return false;
++    }
++    // Independent status: an earlier NI error must not suppress later off writes.
++    // Use constants, because construction may have failed before ModuleIO setup.
++    NiFpga_Status off_status = 0;
++    bool matched = true;
++    const uint32_t r_en_[] = {
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_EN,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_EN2,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_EN3,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_EN4,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_EN5,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_EN6};
++    const uint32_t r_iv_[] = {
++        NiFpga_FPGA_POWER_RS485_v2_ControlU16_input_voltage,
++        NiFpga_FPGA_POWER_RS485_v2_ControlU16_input_voltage2,
++        NiFpga_FPGA_POWER_RS485_v2_ControlU16_input_voltage3,
++        NiFpga_FPGA_POWER_RS485_v2_ControlU16_input_voltage4,
++        NiFpga_FPGA_POWER_RS485_v2_ControlU16_input_voltage5,
++        NiFpga_FPGA_POWER_RS485_v2_ControlU16_input_voltage6};
++    const uint32_t r_state_[] = {
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_state,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_state2,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_state3,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_state4,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_state5,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_state6};
++    for (int i = 0; i < 6; ++i) {
++        NiFpga_MergeStatus(&off_status, NiFpga_WriteBool(session_, r_en_[i], NiFpga_False));
++        NiFpga_MergeStatus(&off_status, NiFpga_WriteU16(session_, r_iv_[i], 0));
++        NiFpga_MergeStatus(&off_status, NiFpga_WriteBool(session_, r_state_[i], NiFpga_False));
++    }
++    const uint32_t power[] = {
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_Power,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_Signal,
++        NiFpga_FPGA_POWER_RS485_v2_ControlBool_Digital};
++    for (uint32_t reg : power)
++        NiFpga_MergeStatus(&off_status, NiFpga_WriteBool(session_, reg, NiFpga_False));
++    for (int i = 0; i < 6; ++i) {
++        NiFpga_Bool enabled = NiFpga_True, state = NiFpga_True;
++        uint16_t pwm = 65535;
++        NiFpga_MergeStatus(&off_status, NiFpga_ReadBool(session_, r_en_[i], &enabled));
++        NiFpga_MergeStatus(&off_status, NiFpga_ReadU16(session_, r_iv_[i], &pwm));
++        NiFpga_MergeStatus(&off_status, NiFpga_ReadBool(session_, r_state_[i], &state));
++        matched = matched && !enabled && !state && pwm == 0;
++    }
++    for (uint32_t reg : power) {
++        NiFpga_Bool value = NiFpga_True;
++        NiFpga_MergeStatus(&off_status, NiFpga_ReadBool(session_, reg, &value));
++        matched = matched && !value;
++    }
++    shutdown_ok_ = NiFpga_IsNotError(off_status) && matched;
++    NiFpga_MergeStatus(&status_, off_status);
++    lifecycle::event(shutdown_ok_
++        ? "shutdown_controls_verified physical_power_unverified"
++        : "shutdown_FAILED PowerUnknown");
++    return shutdown_ok_;
++}
+--- a/src/fpga_server.cpp
++++ b/src/fpga_server.cpp
+@@ -1,4 +1,11 @@
+ #include "fpga_server.hpp"
++#include "driver_lifecycle.hpp"
++
++namespace lifecycle {
++volatile sig_atomic_t stop_signal = 0;
++std::atomic<bool> terminal_lost{false};
++bool headless = false;
++}
+ 
+ volatile int motor_message_updated = 0;
+ volatile int fpga_message_updated = 0;
+@@ -9,6 +16,7 @@
+ void motor_data_cb(motor_msg::MotorCmdStamped motor_msg)
+ {
+     mutex_.lock();
++    if (lifecycle::stopping()) { mutex_.unlock(); return; }
+     motor_message_updated = 1;
+     motor_cmd_data = motor_msg;
+     mutex_.unlock();
+@@ -18,24 +26,26 @@
+ void power_data_cb(power_msg::PowerCmdStamped power_msg)
+ {
+     mutex_.lock();
++    if (lifecycle::stopping()) { mutex_.unlock(); return; }
+     fpga_message_updated = 1;
+     power_cmd_data = power_msg;
+     mutex_.unlock();
+ }
+ 
+-volatile sig_atomic_t sys_stop = 0;
+ void inthand(int signum)
+ {
+-    sys_stop = 1;
++    lifecycle::signal_stop(signum);
+ }
+ 
+ bool is_sys_stop()
+ {
+-    return sys_stop;
++    return lifecycle::stopping();
+ }
+ 
+ Rinbo::Rinbo()
+ {
++    if (NiFpga_IsError(fpga_.status_) || lifecycle::stopping())
++        throw std::runtime_error("FPGA startup failed or interrupted");
+     seq = 0;
+     digital_switch_ = false;
+     signal_switch_ = false;
+@@ -62,6 +72,12 @@
+     console_.init(&fpga_, &powerboard_state_, &main_mtx_);
+ }
+ 
++
++Rinbo::~Rinbo()
++{
++    console_.stop();
++    fpga_.safe_shutdown();
++}
+ 
+ void Rinbo::load_config_()
+ {
+@@ -95,8 +111,12 @@
+                 core::Subscriber<motor_msg::MotorCmdStamped>& cmd_sub_,
+ 				core::Publisher<motor_msg::MotorStateStamped>& state_pub_)
+ {
+-    while (NiFpga_IsNotError(fpga_.status_) && !sys_stop)
++    while (!lifecycle::stopping())
+     {
++        {
++            std::lock_guard<std::mutex> device_lock(main_mtx_);
++            if (NiFpga_IsError(fpga_.status_) || NiFpga_IsError(fpga_.moduleIO.status_)) break;
++        }
+         mainLoop_(cmd_pb_sub_, state_pb_pub_, cmd_sub_, state_pub_);
+         if (NiFpga_IsError(fpga_.status_))
+         {
+@@ -206,7 +226,7 @@
+ 
+ void Rinbo::processMotorCommands()
+ {
+-    if (!motor_message_updated) return;
++    if (lifecycle::stopping() || !motor_message_updated) return;
+     
+     const motor_msg::LegCmd* cmds[6] = {
+         &motor_cmd_data.l1(),
+@@ -266,6 +286,8 @@
+ {
+     core::spinOnce();
+     std::lock_guard<std::mutex> device_lock(main_mtx_);
++    if (lifecycle::stopping() || NiFpga_IsError(fpga_.status_) ||
++        NiFpga_IsError(fpga_.moduleIO.status_)) return;
+     mutex_.lock();
+     processMotorCommands();
+     if (fpga_message_updated)
+@@ -297,7 +319,22 @@
+     if (!getenv("CORE_LOCAL_IP")) {
+         setenv("CORE_LOCAL_IP", "192.168.30.12", 1);     
+     }
+-    signal(SIGINT, inthand);
++    // Parse and validate before any FpgaHandler construction / NI initialization.
++    if (argc == 2 && std::string(argv[1]) == "--help") {
++        std::cout << "fpga_driver [--headless|--interactive]\n"
++                     "No args: legacy auto-TTY mode. Monitoring must use logs/ROS.\n";
++        return 0;
++    }
++    if (argc > 2 || (argc == 2 && std::string(argv[1]) != "--headless" &&
++                     std::string(argv[1]) != "--interactive")) return 64;
++    lifecycle::headless = argc == 2 && std::string(argv[1]) == "--headless";
++    if (argc == 2 && std::string(argv[1]) == "--interactive" &&
++        (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))) return 64;
++    try {
++    lifecycle::install_signals();
++    lifecycle::DriverLock driver_lock;
++    lifecycle::event(lifecycle::headless ? "start headless" : "start auto_or_interactive");
++    if (lifecycle::stopping()) return 2;
+ 
+     important_message("[FPGA Server] : Launched");
+     
+@@ -315,11 +352,22 @@
+ 
+     rinbo.interruptHandler(power_sub, power_pub, motor_sub, motor_pub);
+ 
+-    if (NiFpga_IsError(rinbo.fpga_.status_)) std::cout << red << "[FPGA Server] Error! Exiting program. LabVIEW error code: " << rinbo.fpga_.status_ << reset << std::endl;
+-    else
+-    {
+-        rinbo.console_.stop();
+-        important_message("\n[FPGA Server] : Exit Safely");
+-    }
+-    return 0;
+-}
++    // Stop/join UI before off writes. No command callback is consumed afterward.
++    rinbo.console_.stop();
++    bool fault = NiFpga_IsError(rinbo.fpga_.status_) ||
++                 NiFpga_IsError(rinbo.fpga_.moduleIO.status_);
++    bool off_ok = rinbo.fpga_.safe_shutdown();
++    const int code = !off_ok ? 3 : (fault || lifecycle::terminal_lost ||
++                     lifecycle::stop_signal == SIGHUP || lifecycle::stop_signal == SIGPIPE ? 2 : 0);
++    const std::string result = "exit reason_signal=" + std::to_string(lifecycle::stop_signal) +
++        " terminal_lost=" + std::to_string(lifecycle::terminal_lost.load()) +
++        " code=" + std::to_string(code);
++    lifecycle::event(result.c_str());
++    return code;
++    } catch (const std::exception& error) {
++        // Rinbo / FpgaHandler destructors attempt off writes during unwinding.
++        lifecycle::event(error.what());
++        lifecycle::event("exit exception code=3 PowerUnknown");
++        return 3;
++    }
++}

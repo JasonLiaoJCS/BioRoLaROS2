@@ -1,0 +1,4 @@
+Only in a fresh /tmp/rslip-lifecycle-native.XXXXXX containing candidate include/ and src/:
+work=/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver
+g++ -std=gnu++14 -pthread -O2 -I"$stage/include" -I"$work/include" -I"$work/build/src" -I/home/admin/rinbo_sbRIO_ws/install/include/yaml-cpp -I/home/admin/rinbo_sbRIO_ws/install/include -I/home/admin/rinbo_sbRIO_ws/install/ssl/include -c "$stage/src/$unit.cpp" -o "$stage/$unit.o"
+Repeated for unit=console, fpga_server, fpga_handler. No linking, no driver execution.

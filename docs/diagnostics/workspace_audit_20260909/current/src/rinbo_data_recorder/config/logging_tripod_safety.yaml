@@ -1,0 +1,34 @@
+rinbo_data_recorder:
+  ros__parameters:
+    output_root: "~/rinbo_logs"
+    workspace_root: "~/rinbo_ros_ws"
+    profile: "tripod_safety"
+    run_name: "rinbo_run"
+    auto_start: true
+    record_csv: true
+    summary_hz: 100.0
+    csv_flush_every_n_rows: 1
+
+    log:
+      time: true
+      motor_state: true
+      motor_command: true
+      power_state: true
+      power_command: true
+      pid_data: true
+      controller_debug: true
+      safety: true
+
+    bag_topics:
+      - "/motor/state"
+      - "/motor/command"
+      - "/rinbo/monitor/motor_requested"
+      - "/rinbo/monitor/motor_forwarded"
+      - "/rinbo/motor_output_enabled"
+      - "/rinbo/motor_arbiter_ready"
+      - "/power/state"
+      - "/power/command"
+      - "/pid/data"
+      - "/rinbo/controller_debug"
+      - "/rinbo/safety_event"
+      - "/rosout"

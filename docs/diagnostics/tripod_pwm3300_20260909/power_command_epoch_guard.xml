@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="16" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T20:09:49" name="AllTests">
+  <testsuite name="PowerCommandEpochGuard" tests="16" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T20:09:49">
+    <testcase name="ClassifiesAndSanitizesTrueAllOff" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="ClassifiesOnlyValidEnergizingPayloads" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="DifferentProcessOffSequenceRelayIsAccepted" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="SameSourceRelayOffOpensSafePublisherHandoff" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="PublisherChangeWithoutBoundaryRejectsAndDoesNotTakeOver" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="TrueAllOffAllowsAReplacementPublisher" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="UnauthenticatedSequenceCannotOpenHandoffBoundary" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="SkippedSamePublisherSequenceRejectsWithoutAdvancing" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RequiresExactlyOnePublisher" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RejectsPublisherGraphQueryFailure" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="CallbackGidMustMatchTheSoleGraphPublisher" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RejectsWrongPublisherNodeOrNamespace" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RejectsZeroDuplicateBackwardAndSkippedSequences" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RejectsMalformedStaleAndFutureStamps" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RejectsDuplicateOrBackwardStamp" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+    <testcase name="RejectsNonEnergizingKindAtAuthenticatedGate" status="run" result="completed" time="0" timestamp="2026-09-09T20:09:49" classname="PowerCommandEpochGuard" />
+  </testsuite>
+</testsuites>

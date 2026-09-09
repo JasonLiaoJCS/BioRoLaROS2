@@ -1,0 +1,110 @@
+{
+  "counts_per_rev_tripod": 54984.83,
+  "counts_per_rev_cali_standing": 55296,
+  "center": 0.055127704298111084,
+  "center_velocity_unscaled": 112518.65976140612,
+  "flight_top_unscaled": 219942.29090361984,
+  "threshold_degrees_conditional": {
+    "54984.83": {
+      "9000": 58.92534359022297,
+      "18000": 117.85068718044595,
+      "18008.929688": 117.90915217306299
+    },
+    "55296": {
+      "9000": 58.59375,
+      "18000": 117.1875,
+      "18008.929688": 117.24563598958333
+    }
+  },
+  "profiles": [
+    {
+      "startup_duration": 8,
+      "ratio": 4,
+      "startup": {
+        "peak_velocity_counts_s": 12887.069531250001,
+        "peak_ff_pwm": 104.43534765625,
+        "peak_ff_slew": 200.59676568739525
+      },
+      "running": {
+        "peak_velocity_counts_s": 54985.57272590496,
+        "peak_ff_pwm": 314.9278636295248,
+        "peak_ff_slew": 6345.038010398859
+      }
+    },
+    {
+      "startup_duration": 8,
+      "ratio": 8,
+      "startup": {
+        "peak_velocity_counts_s": 12887.069531250001,
+        "peak_ff_pwm": 104.43534765625,
+        "peak_ff_slew": 200.59676568739525
+      },
+      "running": {
+        "peak_velocity_counts_s": 27492.78636295248,
+        "peak_ff_pwm": 177.4639318147624,
+        "peak_ff_slew": 2221.6372462114964
+      }
+    },
+    {
+      "startup_duration": 16,
+      "ratio": 32,
+      "startup": {
+        "peak_velocity_counts_s": 6443.534765625001,
+        "peak_ff_pwm": 72.217673828125,
+        "peak_ff_slew": 69.66380763556046
+      },
+      "running": {
+        "peak_velocity_counts_s": 6873.19659073812,
+        "peak_ff_pwm": 74.3659829536906,
+        "peak_ff_slew": 268.16453695898343
+      }
+    },
+    {
+      "startup_duration": 20,
+      "ratio": 40,
+      "startup": {
+        "peak_velocity_counts_s": 5154.827812500001,
+        "peak_ff_pwm": 65.77413906250001,
+        "peak_ff_slew": 49.481690029338665
+      },
+      "running": {
+        "peak_velocity_counts_s": 5498.557272590496,
+        "peak_ff_pwm": 67.49278636295247,
+        "peak_ff_slew": 190.23385536643772
+      }
+    },
+    {
+      "startup_duration": 30,
+      "ratio": 60,
+      "startup": {
+        "peak_velocity_counts_s": 3436.551875,
+        "peak_ff_pwm": 57.182759375,
+        "peak_ff_slew": 26.507558483719624
+      },
+      "running": {
+        "peak_velocity_counts_s": 3665.704848393664,
+        "peak_ff_pwm": 58.328524241968324,
+        "peak_ff_slew": 101.60674682930751
+      }
+    },
+    {
+      "startup_duration": 30,
+      "ratio": 80,
+      "startup": {
+        "peak_velocity_counts_s": 3436.551875,
+        "peak_ff_pwm": 57.182759375,
+        "peak_ff_slew": 26.507558483719624
+      },
+      "running": {
+        "peak_velocity_counts_s": 2749.278636295248,
+        "peak_ff_pwm": 53.74639318147622,
+        "peak_ff_slew": 64.91021252137399
+      }
+    }
+  ],
+  "original_running_ratio8": {
+    "peak_velocity_counts_s": 27492.78636295248,
+    "peak_ff_pwm": 177.4639318147624,
+    "peak_ff_slew": 221.573496447301
+  }
+}

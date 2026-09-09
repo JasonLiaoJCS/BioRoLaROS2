@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Rinbo Monitor
+Name[zh_TW]=開啟 Rinbo 監控面板
+Comment=Start the read-only command and sensor monitor on Orin
+Exec=/home/jetson/rinbo_ros_ws/start_rinbo_monitor.sh
+Path=/home/jetson/rinbo_ros_ws
+Icon=utilities-system-monitor
+Terminal=true
+Categories=Development;

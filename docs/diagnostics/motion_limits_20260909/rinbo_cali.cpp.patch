@@ -1,0 +1,17 @@
+--- before/rinbo_cali.cpp
++++ after/rinbo_cali.cpp
+@@ -114,11 +114,11 @@
+         motor_state_required_after_s_ = this->declare_parameter<double>("safety.motor_state_required_after_s", 2.0);
+         rinbo_fsm::validate_pwm(max_pwm_, "Calibration");
+         rinbo_fsm::validate_bounded_timeout(
+-            servo_homing_timeout_s_, 60.0, "safety.servo_homing_timeout_s");
++            servo_homing_timeout_s_, 600.0, "safety.servo_homing_timeout_s");
+         rinbo_fsm::validate_bounded_timeout(
+-            hall_search_timeout_s_, 60.0, "safety.hall_search_timeout_s");
++            hall_search_timeout_s_, 600.0, "safety.hall_search_timeout_s");
+         rinbo_fsm::validate_bounded_timeout(
+-            stop_timeout_s_, 60.0, "safety.stop_timeout_s");
++            stop_timeout_s_, 600.0, "safety.stop_timeout_s");
+         rinbo_fsm::validate_motor_state_watchdog(
+             motor_state_timeout_s_, motor_state_required_after_s_, "Calibration");
+         power_guard_ = std::make_unique<rinbo_fsm::RinboPowerGuard>(

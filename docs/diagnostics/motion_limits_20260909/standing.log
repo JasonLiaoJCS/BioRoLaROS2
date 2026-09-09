@@ -1,0 +1,1258 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 10 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 9 tests from StandingMultiLegTest
+[ RUN      ] StandingMultiLegTest.All64MasksRequireActualHealthyStandingTransitions
+[INFO] [1788954700.583193455] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.583603070] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.588949599] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.589044259] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.589072260] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.589103717] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.589155143] [rinbo_standing]: Main-drive PWM cap: 80.0
+[INFO] [1788954700.589214537] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954700.589252298] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954700.589289516] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.589325325] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.589358958] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.589393935] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.589546613] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L2: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L3: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R2: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R3: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0
+[INFO] [1788954700.589592182] [rinbo_standing]: Healthy complete: 0/6 | SKIPPED: 0 | Hall: [0 0 0 0 0 0]
+[INFO] [1788954700.589735708] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.589781629] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.589816927] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.589852096] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.589885729] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.589917442] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.594888534] [rinbo_standing]: === ALL 6 HEALTHY LEGS STANDING (0 disabled) ===
+[INFO] [1788954700.629552090] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.629781411] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954700.629887526] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.632785455] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.632864722] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.632897395] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.632927540] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.632959093] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.632988822] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.633041016] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954700.633075962] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.633132380] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.633160445] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.633185054] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.633267809] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.633357796] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.633396965] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.633431366] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.633462600] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.668925673] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.669160337] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954700.669259381] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.672172766] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.672250593] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.672289154] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.672315779] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.672342916] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.672368165] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.672416327] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954700.672445224] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.672467593] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.672488170] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.672509162] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.672586957] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.672627247] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.672660720] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.672692145] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.672722866] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.707825958] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.708060399] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954700.708104977] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954700.708206516] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.711216865] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.711293764] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.711324101] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.711348166] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.711375207] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.711409704] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.711485483] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.711518668] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.711547501] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.711605647] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.711692306] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.711730004] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.711760245] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.711786230] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.746627264] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.746890282] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954700.746993582] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.750257124] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.750342215] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.750377448] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.750399945] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.750425930] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.750451051] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.750499980] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954700.750531149] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954700.750560239] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.750584047] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.750609136] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.750693299] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.750735477] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.750770678] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.750803927] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.750836889] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.785558495] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.785783719] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954700.785823753] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954700.785911084] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.788696304] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.788776787] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.788816149] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.788848214] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.788881783] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.788917144] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.789000667] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954700.789034045] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.789087967] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.789114368] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.789199651] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.789242020] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.789274789] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.789305926] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.823997516] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.824226516] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954700.824268534] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954700.824356441] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.828330857] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.828425868] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.828455405] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.828477166] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.828502447] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.828528656] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.828577105] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954700.828611923] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.828633555] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.828653364] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.828739255] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.828784089] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.828817274] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.828843451] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.868611256] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.868878178] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954700.868923939] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954700.868951428] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954700.869033959] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.872424578] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.872509797] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.872541190] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.872570087] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.872604168] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.872641674] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.872819632] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954700.872859505] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.872915955] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.873009175] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.873050552] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.873088954] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.908454456] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.908681344] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954700.908774627] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.911643371] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.911721550] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.911751759] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.911775568] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.911798064] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.911823089] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.911868275] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954700.911898484] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954700.911918453] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.911936629] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.911955062] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.912029849] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.912066970] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.912093499] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.912121468] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.912144669] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.946844643] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.947070443] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954700.947109708] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954700.947192367] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.950123929] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.950205148] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.950234973] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.950261470] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.950289727] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.950317984] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.950393571] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954700.950429316] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.950455141] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.950480134] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.950595690] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.950636812] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.950673005] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.950706190] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.985385331] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954700.985623100] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954700.985666077] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954700.985757121] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954700.988552646] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954700.988631336] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954700.988660585] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954700.988683754] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954700.988707211] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954700.988732588] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954700.988781678] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954700.988814895] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954700.988838096] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954700.988859729] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954700.988937908] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.988979189] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954700.989013206] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954700.989045239] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.024216205] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.024468406] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.024512760] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.024541849] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.024642844] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.027430561] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.027513892] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.027548133] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.027574822] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.027605191] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.027640648] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.027723403] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.027758061] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.027782958] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.027862801] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.027933299] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.027969844] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.062520722] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.062745595] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.062786044] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.062871135] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.065618530] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.065694213] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.065727686] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.065751367] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.065773544] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.065797481] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.065843594] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.065872427] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.065895404] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.065915213] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.066086707] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.066147701] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.066192727] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.066225816] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.100764342] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.100987294] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.101025279] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.101051072] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.101130915] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.103906151] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.103985834] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.104014795] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.104035724] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.104059533] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.104085198] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.104134735] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.104163120] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.104212498] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.104278613] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | L2: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L3: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | R1: raw=nan target_raw=nan velocity=nan pwm=-0 enable=0 dir=0 | R2: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R3: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0
+[INFO] [1788954701.104337623] [rinbo_standing]: Healthy complete: 0/3 | SKIPPED: 3 | Hall: [1 0 1 1 0 0]
+[INFO] [1788954701.104410969] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.104452955] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.104487996] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.139168799] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.139395623] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.139436137] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.139460841] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.139544332] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.142396083] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.142476086] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.142504855] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.142529880] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.142556793] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.142586522] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.142637724] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.142666269] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.142686270] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.142760640] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.142798978] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.142832707] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.177481381] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.177729326] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.177770735] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.177796496] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.177818481] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.177902612] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.180799516] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.180888064] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.180914400] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.180934369] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.180958658] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.180983235] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.181068294] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.181111080] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.181238604] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.181290798] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.217402340] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.217630253] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.217723216] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.220518197] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.220598296] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.220629881] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.220655834] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.220683867] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.220709340] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.220758174] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.220788735] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.220811615] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.220832928] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.220853537] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.220932164] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.220971493] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.221004326] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.221029191] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.221051176] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.256197340] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.256422788] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.256461541] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.256542760] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.259294891] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.259375246] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.259405167] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.259432016] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.259465234] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.259496435] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.259549461] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.259584054] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.259639416] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.259664825] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.259747964] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.259819390] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.259856224] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.259889761] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.294522850] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.294764331] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.294806188] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.294891887] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.297622098] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.297700117] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.297734166] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.297758199] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.297783832] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.297808728] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.297854650] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.297882043] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.297901244] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.297921180] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.298094499] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.298151397] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.298193318] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.298227400] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.332697987] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.332926859] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.332970957] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.332999790] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.333099057] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.336057020] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.336161152] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.336193249] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.336217026] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.336243043] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.336270116] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.336319109] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.336350086] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.336405704] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.336489323] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.336525421] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.336585263] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.371696481] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.371928266] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.371967243] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.372051918] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.374898965] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.374979736] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.375011705] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.375038202] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.375067259] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.375094908] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.375142142] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.375173375] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.375195359] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.375215168] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.375291811] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.375330212] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.375364518] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.375396839] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.410040488] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.410262128] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.410302354] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.410327123] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.410410614] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.413170457] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.413245052] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.413277277] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.413303294] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.413334079] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.413361824] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.413410562] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.413441571] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.413462884] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.413540582] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.413609033] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.413715405] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.448653529] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.448942275] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.448983973] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.449011366] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.449091145] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.451825259] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.451907022] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.451938671] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.451964464] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.451989809] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.452014962] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.452059924] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.452089013] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.452109173] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.452187640] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.452227482] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.452263163] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.486943166] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.487178854] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.487221480] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.487249737] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.487271402] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.487354381] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.490189267] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.490273558] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.490305879] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.490336120] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.490368409] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.490399322] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.490450076] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.490480381] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.490569729] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.490613442] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.525045212] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.525303717] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.525344679] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.525431082] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.528283889] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.528365428] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.528397077] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.528419926] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.528444375] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.528469719] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.528517401] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.528549690] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.528572219] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.528591452] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.528668703] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.528709184] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.528746081] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.528782243] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.563438757] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.563675981] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.563718031] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.563743728] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.563825843] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.566677529] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.566777629] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.566807870] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.566828511] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.566851360] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.566876737] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.566923426] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.566948579] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.566967972] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.567044455] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.567081672] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.567109993] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.604449036] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.604695893] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.604795224] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.604857371] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.604951070] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.608054670] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.608290422] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.608323672] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.608353593] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.608385882] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.608419771] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.608473821] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.608503902] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.608526303] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.608593569] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L2: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | L3: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=nan target_raw=nan velocity=nan pwm=-0 enable=0 dir=0 | R2: raw=nan target_raw=nan velocity=nan pwm=-0 enable=0 dir=0 | R3: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0
+[INFO] [1788954701.608625410] [rinbo_standing]: Healthy complete: 0/3 | SKIPPED: 3 | Hall: [0 1 0 1 1 0]
+[INFO] [1788954701.608702373] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.608741191] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.608770920] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.643882426] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.644153732] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.644198949] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.644231591] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.644259272] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.644348683] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.647220978] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.647300469] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.647328310] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.647352567] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.647379416] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.647412633] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.647465243] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.647500540] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.647582879] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.647621441] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.682646064] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.682897497] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.682938171] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.682964316] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.683053599] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.686222993] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.686311412] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.686341781] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.686367382] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.686395671] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.686423640] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.686473274] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.686506107] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.686531964] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.686616927] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.686655297] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.686687042] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.721578188] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.721801556] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.721843798] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.721870807] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.721898552] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.722135680] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.724940549] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.725018312] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.725050729] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.725074442] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.725106219] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.725135180] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.725184686] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.725213551] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.725295570] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.725333300] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.760196989] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.760425189] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.760466599] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.760494216] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.760520809] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.760614316] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.763554870] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.763632921] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.763699387] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.763724604] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.763753597] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.763784510] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.763833248] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.763861729] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.763939556] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.763975653] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.798444032] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.798712874] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.798755788] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.798781005] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.798802669] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954701.798825198] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954701.798906673] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.802186375] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.802268234] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.802295787] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.802316652] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.802340845] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.802366062] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R2]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.802416144] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954701.802504467] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.837140212] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.837397949] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954701.837501761] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.840794520] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.840872123] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.840902268] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.840925373] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.840955134] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.840990111] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.841065026] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.841097731] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.841121508] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.841145253] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.841194118] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.841281033] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.841319723] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.841354348] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.841387469] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.841416430] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.876047343] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.876279288] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.876321049] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954701.876405756] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.879187329] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.879264387] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.879298853] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.879328518] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.879361927] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.879395176] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.879446122] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.879474891] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.879498316] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.879521453] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.879602192] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.879643089] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.879674834] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.879705235] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.914889064] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.915132241] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.915174834] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954701.915263638] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.918108636] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.918191871] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.918224992] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.918248929] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.918277858] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.918306115] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.918379974] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.918409063] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.918452873] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.918476746] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.918555372] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.918590318] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.918622031] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.918649680] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.953160620] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.953446391] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954701.953490744] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954701.953517273] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954701.953607261] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.956556871] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.956641898] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.956673867] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.956698412] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.956724141] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.956754894] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.956803760] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954701.956832881] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.956854802] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.956933525] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.956970518] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.957002039] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.991720059] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954701.991958916] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954701.992003365] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954701.992088520] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954701.994960208] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954701.995038451] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954701.995066740] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954701.995087285] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954701.995110549] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954701.995135542] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954701.995182328] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954701.995239514] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954701.995265531] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954701.995285660] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954701.995402016] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.995441857] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954701.995475843] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954701.995506436] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.030194661] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.030429198] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.030471439] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.030498288] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.030585907] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.033369560] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.033444986] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.033475515] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.033500476] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.033529373] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.033554206] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.033604480] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.033632673] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.033654786] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.033731813] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.033769862] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.033798535] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.068462663] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.068693871] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.068733297] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.068758386] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.068849237] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.071645946] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.071724668] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.071757374] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.071783870] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.071808287] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.071831840] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.071878978] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.071909507] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.071962853] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.072049032] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.072087081] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.072155372] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.106867918] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.107097974] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.107136951] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.107162296] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.107187609] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.107272924] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.110141923] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.110224742] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.110257064] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.110278728] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.110302345] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.110325930] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.110372140] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.110399341] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.110462895] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | L2: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | L3: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | R1: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R2: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R3: raw=nan target_raw=nan velocity=nan pwm=-0 enable=0 dir=0
+[INFO] [1788954702.110493968] [rinbo_standing]: Healthy complete: 0/2 | SKIPPED: 4 | Hall: [1 1 1 0 0 1]
+[INFO] [1788954702.110562867] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.110600244] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.145362839] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.145592352] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.145635745] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.145723524] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.148523081] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.148602092] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.148636941] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.148667022] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.148701936] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.148742289] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.148802643] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.148878582] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.148918743] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.148957337] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.149101214] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.149151264] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.149190785] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.149222274] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.184490552] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.184741921] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.184784739] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.184818532] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.184913767] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.187943124] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.188023895] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.188052760] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.188073593] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.188096698] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.188121147] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.188169916] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.188201662] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.188224638] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.188304801] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.188342531] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.188378660] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.224146220] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.224381204] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.224424086] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.224456503] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.224542266] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.227408481] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.227488740] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.227516197] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.227537766] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.227562055] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.227589992] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.227640617] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.227673131] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.227726061] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.227814192] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.227856337] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.227919764] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.262245927] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.262479600] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.262522449] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.262548050] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.262573075] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.262664182] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.265422682] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.265501565] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.265531070] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.265553822] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.265577151] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.265601632] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.265648290] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.265678435] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.265761414] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.265810024] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.300521193] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.300747729] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.300790195] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.300818708] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.300907607] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.303706460] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.303786847] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.303815104] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.303838337] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.303865346] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.303893027] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.303940004] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.303969093] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.303991494] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.304071017] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.304112683] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.304146444] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.338628549] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.338849389] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.338938608] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.338973170] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.339003219] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.339102774] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.342222119] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.342310730] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.342343435] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.342367020] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.342396173] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.342426062] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.342476048] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.342505041] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.342589140] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.342626581] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.377170609] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.377391353] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.377429530] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.377457499] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.377481532] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.377562975] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.380318978] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.380400101] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.380429670] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.380451303] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.380481864] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.380507049] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.380552618] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.380579819] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.380657454] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.380697648] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.414866782] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.415093158] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.415132839] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.415156168] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.415176905] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.415224011] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.415304302] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.418139508] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.418224407] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.418250424] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.418269144] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.418293625] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.418317754] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.418364796] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954702.418451199] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.455654202] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.455890947] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.455931076] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.456017639] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.458900911] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.458985682] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.459011763] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.459031316] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.459053589] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.459078037] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.459127415] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.459155096] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.459176153] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.459196506] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.459275101] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.459313758] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.459343295] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.459367872] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.494069185] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.494305578] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.494348683] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.494374604] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.494463759] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.497220115] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.497296213] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.497331735] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.497388089] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.497418394] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.497448923] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.497529566] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.497560255] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.497583680] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.497664035] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.497699876] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.497728997] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.532768658] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.532995547] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.533035740] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.533060221] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.533137664] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.535925380] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.536006919] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.536040968] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.536067113] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.536097034] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.536129739] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.536183501] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.536216911] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.536243759] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.536329779] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.536370548] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.536407125] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.571130199] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.571359520] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.571400769] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.571426434] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.571447811] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.571525606] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.574400877] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.574483216] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.574511505] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.574531858] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.574557587] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.574585268] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.574684599] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.574714936] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.574797243] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.574832669] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.609462235] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.609690308] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.609729893] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.609755590] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.609843465] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.612685999] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.612768210] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.612795923] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.612816020] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.612838101] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.612862998] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.612912280] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.612940377] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.612961401] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.613025564] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L2: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L3: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | R1: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R2: raw=nan target_raw=nan velocity=nan pwm=-0 enable=0 dir=0 | R3: raw=nan target_raw=nan velocity=nan pwm=-0 enable=0 dir=0
+[INFO] [1788954702.613056669] [rinbo_standing]: Healthy complete: 0/3 | SKIPPED: 3 | Hall: [0 0 1 0 1 1]
+[INFO] [1788954702.613123743] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.613161761] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.613199010] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.617738117] [rinbo_standing]: === ALL 3 HEALTHY LEGS STANDING (3 disabled) ===
+[INFO] [1788954702.648238799] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.648465976] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.648508665] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.648535930] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.648560507] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.648642238] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.651482628] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.651562183] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.651622569] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.651647466] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.651675019] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.651703596] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.651780559] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.651810352] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.651893299] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.651932596] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.686317290] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.686607029] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.686654614] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.686680055] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.686702648] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.686782363] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.690670279] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.690774507] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.690803436] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.690824141] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.690849773] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.690873742] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.690921520] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.690955505] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.691046709] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.691086934] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.727347695] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.727784031] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.727926020] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.728044841] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.728156845] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.728270097] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.728459927] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.731477348] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.731681867] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.731802128] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.731915156] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.732037176] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.732160349] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.732328003] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954702.732512201] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954702.767768063] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.768047625] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.768103595] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.768186862] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.768335923] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.771262716] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.771345471] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.771374880] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.771433795] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.771482980] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.771569031] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.771654603] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.771728045] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.771796144] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.771934517] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.772012183] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.772090746] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.806463248] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.806753242] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.806798012] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.806855454] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.806934689] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.807077414] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.809847177] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.809921452] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.809947405] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.809967310] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.810191478] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.810241720] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.810298010] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.810330683] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.810417726] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.810460480] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.844978938] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.845240100] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.845284517] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.845313798] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.845371688] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.845474732] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.848277873] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.848358644] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.848386101] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.848410070] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.848438263] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.848467448] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.848515674] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.848543643] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.848625342] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.848664991] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.883524198] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.883740462] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.883781679] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.883808720] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.883834481] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.883857106] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.883954037] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.886814236] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.886900223] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.886926688] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.886948225] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.886969986] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.886994275] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.887041957] [rinbo_standing]: L3: Hall at 0, target: -27648
+[INFO] [1788954702.887130632] [rinbo_standing]: L3: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.921773959] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.922054449] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.922107635] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.922141556] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.922170229] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.922266041] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.925076382] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.925160129] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.925190178] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.925211619] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.925295814] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.925331751] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.925384489] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954702.925421674] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.925510925] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.925554095] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.960332787] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.960563035] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954702.960606077] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.960636222] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.960658143] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.960678848] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.960761539] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954702.963583624] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954702.963670667] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954702.963700844] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954702.963723117] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954702.963748462] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954702.963777903] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954702.963823729] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954702.963911316] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954702.998337163] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954702.998577044] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954702.998622582] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954702.998646966] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954702.998670519] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954702.998689848] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954702.998772859] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954703.001504285] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.001596353] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.001631010] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.001660099] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.001686820] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.001714917] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.001792552] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954703.001914284] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[       OK ] StandingMultiLegTest.All64MasksRequireActualHealthyStandingTransitions (2489 ms)
+[ RUN      ] StandingMultiLegTest.ReenabledL3IsRequiredAndItsHallTimeoutInvalidatesReceipts
+[INFO] [1788954703.042560577] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.042797225] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954703.042908141] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954703.045665169] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.045744531] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.045775477] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.045799125] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.045830070] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.045861848] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.045900569] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954703.045931226] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954703.045952411] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954703.045970716] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954703.046134561] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954703.046186915] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954703.046227877] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954703.046262630] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+STANDING SAFETY STOP: hall search timeout: L3
+[       OK ] StandingMultiLegTest.ReenabledL3IsRequiredAndItsHallTimeoutInvalidatesReceipts (35 ms)
+[ RUN      ] StandingMultiLegTest.ShutdownPublicationFailureStillInvalidatesCompletedReceipt
+[INFO] [1788954703.077048536] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.077269792] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954703.077313346] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.077401701] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954703.080178409] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.080265356] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.080298765] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.080321678] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.080347055] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.080371824] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.080406097] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954703.080460083] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954703.080482516] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954703.080501876] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954703.080585431] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954703.080623225] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954703.080654810] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954703.080685243] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[FATAL] stop command publication failed: injected stop publication failure
+STANDING SAFETY STOP: test: ROS context already stopped
+[       OK ] StandingMultiLegTest.ShutdownPublicationFailureStillInvalidatesCompletedReceipt (39 ms)
+[ RUN      ] StandingMultiLegTest.RelaxedRotateDeadlineAllowsLateArrivalButStillRequiresTarget
+[INFO] [1788954703.118830166] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.119103008] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954703.119147105] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.119233540] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=20.0s, hold=12000.0 counts
+[INFO] [1788954703.122081195] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.122166958] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.122197583] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.122221008] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.122247665] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.122276242] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.122313779] [rinbo_standing]: L2: Hall at 0, target: -27648
+[INFO] [1788954703.122343380] [rinbo_standing]: R1: Hall at 0, target: 27648
+[INFO] [1788954703.122366933] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954703.122389174] [rinbo_standing]: R3: Hall at 0, target: 27648
+[INFO] [1788954703.122455672] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | L2: raw=0 target_raw=0 velocity=-0 pwm=0 enable=0 dir=0 | L3: raw=nan target_raw=nan velocity=-nan pwm=0 enable=0 dir=0 | R1: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R2: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0 | R3: raw=0 target_raw=0 velocity=0 pwm=-0 enable=0 dir=0
+[INFO] [1788954703.122488697] [rinbo_standing]: Healthy complete: 0/4 | SKIPPED: 2 | Hall: [1 0 1 0 0 0]
+[INFO] [1788954703.122561916] [rinbo_standing]: L2: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+[INFO] [1788954703.122601085] [rinbo_standing]: R1: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954703.122635071] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[INFO] [1788954703.122667168] [rinbo_standing]: R3: DONE! stationary for 0.300s, pos: 27648, err: 0, tolerance: 200
+[       OK ] StandingMultiLegTest.RelaxedRotateDeadlineAllowsLateArrivalButStillRequiresTarget (38 ms)
+[ RUN      ] StandingMultiLegTest.OppositeL1FeedbackStopsBeforeItCanChaseAnotherRevolution
+[INFO] [1788954703.154116906] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.154373139] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954703.154420661] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.154482935] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954703.154509624] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954703.154533849] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954703.154618588] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954703.157758093] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.157835728] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.157869489] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.157894706] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.157923283] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.157952116] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.158070392] [rinbo_standing]: L1: Hall at 0, target: -27648
+STANDING SAFETY STOP: opposite encoder travel: L1 start=0.000000 actual=501.000000 expected=decreasing counts
+[       OK ] StandingMultiLegTest.OppositeL1FeedbackStopsBeforeItCanChaseAnotherRevolution (31 ms)
+[ RUN      ] StandingMultiLegTest.PassingTargetAtSpeedCannotCompleteAndHoldDivergenceInvalidates
+[INFO] [1788954703.185327819] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.185559860] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954703.185603701] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.185628566] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954703.185650551] [rinbo_standing]: R2: SKIPPED (main drive disabled)
+[INFO] [1788954703.185667384] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954703.185748347] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954703.188671524] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.188752231] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.188782728] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.188808393] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.188840522] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.188875051] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L2,L3,R1,R2,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.188909868] [rinbo_standing]: L1: Hall at 0, target: -27648
+[INFO] [1788954703.188988783] [rinbo_standing]: L1: DONE! stationary for 0.300s, pos: -27648, err: 0, tolerance: 200
+STANDING SAFETY STOP: standing hold position lost: L1 actual=-42000.000000 target=-27648.000000 error=-14352.000000 limit=12000.000000
+[       OK ] StandingMultiLegTest.PassingTargetAtSpeedCannotCompleteAndHoldDivergenceInvalidates (39 ms)
+[ RUN      ] StandingMultiLegTest.CommandDirectionsMatchCalibrationConventionForBothSigns
+[INFO] [1788954703.224800790] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.225076160] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=7.0s, hold=12000.0 counts
+[INFO] [1788954703.227891877] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.227973032] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.228028042] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.228051883] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.228078860] [rinbo_standing]: Main-drive PWM cap: 80.0
+[       OK ] StandingMultiLegTest.CommandDirectionsMatchCalibrationConventionForBothSigns (30 ms)
+[ RUN      ] StandingMultiLegTest.ReportedR2Error218FailsOldToleranceAndPassesConfiguredTolerance
+[INFO] [1788954703.256621069] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.256883415] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954703.256926104] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954703.256952857] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.256978810] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954703.256998715] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954703.257081982] [rinbo_standing]: STANDING_LIMITS arrival=200.0 counts (1.302 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=20.0s, hold=12000.0 counts
+[INFO] [1788954703.260358516] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.260436663] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.260464728] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.260488664] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.260519930] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.260553595] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.260591260] [rinbo_standing]: R2: Hall at 0, target: 27648
+STANDING SAFETY STOP: standing position timeout: R2 pos=27866.000000 target=27648.000000 error=218.000000 elapsed=20.001000 tolerance_counts=200.000000 velocity_counts_s=0.000000 velocity_limit=500.000000 stable_required_s=0.300000 timeout_s=20.000000
+[INFO] [1788954703.289152479] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.289422600] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954703.289464810] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954703.289488171] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.289508011] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954703.289525548] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954703.289601711] [rinbo_standing]: STANDING_LIMITS arrival=1000.0 counts (6.510 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=20.0s, hold=12000.0 counts
+[INFO] [1788954703.292410804] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.292491767] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.292517591] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.292539992] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.292568377] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.292597594] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.292635164] [rinbo_standing]: R2: Hall at 0, target: 27648
+[INFO] [1788954703.292715903] [rinbo_standing]: R2: DONE! stationary for 0.300s, pos: 27866, err: 218, tolerance: 1000
+[       OK ] StandingMultiLegTest.ReportedR2Error218FailsOldToleranceAndPassesConfiguredTolerance (70 ms)
+[ RUN      ] StandingMultiLegTest.WiderArrivalToleranceStillRejectsPersistentErrorOutsideBand
+[INFO] [1788954703.326554719] [rinbo_standing]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6
+[INFO] [1788954703.326821448] [rinbo_standing]: L1: SKIPPED (main drive disabled)
+[INFO] [1788954703.326866730] [rinbo_standing]: L2: SKIPPED (main drive disabled)
+[INFO] [1788954703.326897163] [rinbo_standing]: L3: SKIPPED (main drive disabled)
+[INFO] [1788954703.326924108] [rinbo_standing]: R1: SKIPPED (main drive disabled)
+[INFO] [1788954703.326951821] [rinbo_standing]: R3: SKIPPED (main drive disabled)
+[INFO] [1788954703.327055505] [rinbo_standing]: STANDING_LIMITS arrival=1000.0 counts (6.510 deg using 55296 counts/rev), velocity=500.0 counts/s, stable=0.300s, wait=60.0s, hold=12000.0 counts
+[INFO] [1788954703.330309926] [rinbo_standing]: === Standing Controller ===
+[INFO] [1788954703.330397897] [rinbo_standing]: Step 1: Find Hall (PID trajectory tracking)
+[INFO] [1788954703.330429674] [rinbo_standing]: Step 2: Rotate 180 degrees (PID)
+[INFO] [1788954703.330454027] [rinbo_standing]: Velocity: 0.63 rad/s
+[INFO] [1788954703.330482956] [rinbo_standing]: Main-drive PWM cap: 80.0
+[WARN] [1788954703.330511629] [rinbo_standing]: supported_leg_test: hardware.disabled_legs=[L1,L2,L3,R1,R3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788954703.330548174] [rinbo_standing]: R2: Hall at 0, target: 27648
+STANDING SAFETY STOP: standing position timeout: R2 pos=28649.000000 target=27648.000000 error=1001.000000 elapsed=60.001000 tolerance_counts=1000.000000 velocity_counts_s=0.000000 velocity_limit=500.000000 stable_required_s=0.300000 timeout_s=60.000000
+[       OK ] StandingMultiLegTest.WiderArrivalToleranceStillRejectsPersistentErrorOutsideBand (34 ms)
+[----------] 9 tests from StandingMultiLegTest (2805 ms total)
+
+[----------] 1 test from StandingReference
+[ RUN      ] StandingReference.SmoothStartAndStopNeverAskForReverseOrExceedCruiseSpeed
+[       OK ] StandingReference.SmoothStartAndStopNeverAskForReverseOrExceedCruiseSpeed (1 ms)
+[----------] 1 test from StandingReference (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 2 test suites ran. (2847 ms total)
+[  PASSED  ] 10 tests.

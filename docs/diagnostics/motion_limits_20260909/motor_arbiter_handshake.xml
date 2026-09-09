@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="42" failures="0" disabled="0" errors="0" time="0.145" timestamp="2026-09-09T19:52:21" name="AllTests">
+  <testsuite name="MotorArbiterPublisherIdentityTest" tests="6" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T19:52:21">
+    <testcase name="SoleExpectedPublisherAndCallbackGidIsTrusted" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterPublisherIdentityTest" />
+    <testcase name="NoPublisherIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterPublisherIdentityTest" />
+    <testcase name="MultiplePublishersAreRejected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterPublisherIdentityTest" />
+    <testcase name="WrongNodeIsRejectedEvenWhenGidMatches" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterPublisherIdentityTest" />
+    <testcase name="SameNameInWrongNamespaceIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterPublisherIdentityTest" />
+    <testcase name="WrongCallbackGidIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterPublisherIdentityTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterSubscriptionIdentityTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T19:52:21">
+    <testcase name="RequiresExpectedNodeInRootNamespace" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterSubscriptionIdentityTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterEndpointPinStateTest" tests="4" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T19:52:21">
+    <testcase name="FirstAndSameEndpointAreAccepted" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEndpointPinStateTest" />
+    <testcase name="UncommittedEndpointChangeRebasesPin" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEndpointPinStateTest" />
+    <testcase name="CommittedStatusEndpointChangeIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEndpointPinStateTest" />
+    <testcase name="CommandSubscriptionGidChangeIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEndpointPinStateTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterHeartbeatStateTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T19:52:21">
+    <testcase name="GraphQueryDelayCannotExtendCallbackEntryFreshness" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHeartbeatStateTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterEpochStateTest" tests="4" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T19:52:21">
+    <testcase name="SameEpochIsStable" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEpochStateTest" />
+    <testcase name="LatchGenerationChangeIsSticky" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEpochStateTest" />
+    <testcase name="BridgeRestartIsDetected" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEpochStateTest" />
+    <testcase name="UncommittedRearmCanAdoptNewEpochBaseline" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterEpochStateTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterHandshakeStateTest" tests="11" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T19:52:21">
+    <testcase name="HistoricalReadyCannotReplaceRearmAck" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="RearmRequiresExactlyOneCommandSubscriber" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="AckForUnpublishedSequenceIsIgnored" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="LateRearmAckMatchesBeyondOldFivePacketBudget" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="DelayedReadyAfterAckCompletesRearm" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="EndpointFaultAfterRearmAckIsStickyBeforeArming" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="RelatchAfterArmingIsTerminal" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="DuplicateSubscriberAfterArmingIsViolation" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="ActiveAckMustMatchPublishedSequence" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="AnyRecordedProbeCanBeAcknowledged" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+    <testcase name="LateActiveAckMatchesBeyondOldFivePacketBudget" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="MotorArbiterHandshakeStateTest" />
+  </testsuite>
+  <testsuite name="RinboPowerGuardTest" tests="11" failures="0" disabled="0" errors="0" time="0.132" timestamp="2026-09-09T19:52:21">
+    <testcase name="FreshInitialRelayOffRemainsSafeWait" status="run" result="completed" time="0.022" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="RelayDropAfterSafePowerIsViolation" status="run" result="completed" time="0.011" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="MissingTelemetryStillFaultsAfterDeadline" status="run" result="completed" time="0.01" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="InvalidTelemetryFaultsWhileRelayOff" status="run" result="completed" time="0.011" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="NonFiniteStaleTimeoutIsRejected" status="run" result="completed" time="0.009" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="BackwardSafetyClockIsFailSafe" status="run" result="completed" time="0.01" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="DisabledLegCurrentChannelIsTheOnlyPerLegExemption" status="run" result="completed" time="0.01" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="RosInputGuardRejectsZeroAndReplayedHeaders" status="run" result="completed" time="0.01" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="ConstructorRejectsDisabledCorePowerFlag" status="run" result="completed" time="0.01" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="SourceAgeOverridesCanOnlyTighten" status="run" result="completed" time="0.019" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+    <testcase name="RunningOutputToleratesTransientButPersistentCurrentStillTrips" status="run" result="completed" time="0.01" timestamp="2026-09-09T19:52:21" classname="RinboPowerGuardTest" />
+  </testsuite>
+  <testsuite name="SafetyInvariantsTest" tests="4" failures="0" disabled="0" errors="0" time="0.001" timestamp="2026-09-09T19:52:21">
+    <testcase name="CorePowerGuardsCannotBeDisabled" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="SafetyInvariantsTest" />
+    <testcase name="PowerEnvelopeAndMappingRemainBounded" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="SafetyInvariantsTest" />
+    <testcase name="TripodErrorAndSlewGuardsRemainBounded" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="SafetyInvariantsTest" />
+    <testcase name="MotorArbiterIdentityAndTimeoutsAreHardBounded" status="run" result="completed" time="0" timestamp="2026-09-09T19:52:21" classname="SafetyInvariantsTest" />
+  </testsuite>
+</testsuites>

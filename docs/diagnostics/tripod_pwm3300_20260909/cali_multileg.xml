@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="15" failures="0" disabled="0" errors="0" time="3.217" timestamp="2026-09-09T20:16:27" name="AllTests">
+  <testsuite name="CaliMultiLegTest" tests="15" failures="0" disabled="0" errors="0" time="3.203" timestamp="2026-09-09T20:16:27">
+    <testcase name="WrongDirectionCannotBeHiddenByFindingHall" status="run" result="completed" time="0.062" timestamp="2026-09-09T20:16:27" classname="CaliMultiLegTest" />
+    <testcase name="ManualPlanValuesOnlySelectLegsAndDoNotOverrideCalibrationParameters" status="run" result="completed" time="0.05" timestamp="2026-09-09T20:16:27" classname="CaliMultiLegTest" />
+    <testcase name="All64MasksUseActualHealthyCalibrationTransitions" status="run" result="completed" time="1.635" timestamp="2026-09-09T20:16:27" classname="CaliMultiLegTest" />
+    <testcase name="L1AndL3MissingOnlyPassWhenBothExplicitlyMasked" status="run" result="completed" time="0.05" timestamp="2026-09-09T20:16:29" classname="CaliMultiLegTest" />
+    <testcase name="SelectedL2IgnoresOtherHallsAndOnlyCertifiesL2" status="run" result="completed" time="0.036" timestamp="2026-09-09T20:16:29" classname="CaliMultiLegTest" />
+    <testcase name="EverySingleLegCompletesWithoutWaitingForFiveUnselectedLegs" status="run" result="completed" time="0.17" timestamp="2026-09-09T20:16:29" classname="CaliMultiLegTest" />
+    <testcase name="StopSignalsAfterDoneKeepContextAliveUntilCallbacksEndAndPreserveReceipt" status="run" result="completed" time="0.482" timestamp="2026-09-09T20:16:29" classname="CaliMultiLegTest" />
+    <testcase name="StopBeforeCompletionCannotLeaveAnApprovedReceipt" status="run" result="completed" time="0.236" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="RealFailureAfterDoneIsNotHiddenByNormalShutdown" status="run" result="completed" time="0.238" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="ResetWithoutZeroFeedbackFailsAndCannotCreateReceipt" status="run" result="completed" time="0.072" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="ReenabledServoMustHomeAgain" status="run" result="completed" time="0.036" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="LostResetRetriesOnlyWhileStationaryAndNeverCompletesWithoutFeedback" status="run" result="completed" time="0.04" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="LostResetStillTimesOutAtOriginalDeadlineWithDiagnosticValues" status="run" result="completed" time="0.03" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="RelaxedResetWaitStillRequiresActualZeroFeedback" status="run" result="completed" time="0.035" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+    <testcase name="LongerHallWaitStillRequiresRealHallAndCannotApproveCalibration" status="run" result="completed" time="0.03" timestamp="2026-09-09T20:16:30" classname="CaliMultiLegTest" />
+  </testsuite>
+</testsuites>

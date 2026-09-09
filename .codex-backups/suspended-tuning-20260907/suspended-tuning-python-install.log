@@ -1,0 +1,15 @@
+[0.966s] colcon.colcon_core.package_selection WARNING Some selected packages are already built in one or more underlay workspaces:
+	'redrhex_lowlevel_bridge' is in: /home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding redrhex_lowlevel_bridge
+
+This may be promoted to an error in a future release of colcon-override-check.
+Starting >>> redrhex_rl_controller
+Finished <<< redrhex_rl_controller [2.46s]
+Starting >>> redrhex_lowlevel_bridge
+Finished <<< redrhex_lowlevel_bridge [2.41s]
+
+Summary: 2 packages finished [5.60s]

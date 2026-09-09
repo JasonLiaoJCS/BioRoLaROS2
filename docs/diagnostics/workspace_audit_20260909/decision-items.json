@@ -1,0 +1,1489 @@
+{
+  "metadata": {
+    "audit_id": "workspace_audit_20260909",
+    "generated_at": "2026-09-09T21:58:01.545398+08:00",
+    "upstream_commit": "ddcbce9fecdf039af17784385839eb55baeed2a3",
+    "local_head": "20a0151b9641d733140b710fe3b0128ca08f8b7b",
+    "site_revision": 14,
+    "site_sha256": "c657c377f47f4277a6b4f1b7e2abb08e1f68eca36c5541df5a28d8e6587dda90",
+    "changes_authorized": false,
+    "choices_meaning": {
+      "A": "恢復GitHub舊版此項",
+      "B": "保留本次盤點現況",
+      "C": "交由助理評估此項後調整"
+    }
+  },
+  "items": [
+    {
+      "id": "C01",
+      "group": "Calibration 校正",
+      "title": "KP 位置修正係數",
+      "old": "0.35",
+      "current": "0.08",
+      "effect": "變更位置誤差造成的 PWM；與 KD、前饋和 PWM 上限一起檢視。",
+      "recommendation": "C：依實測選值；不要把 Tripod 的 0.38 自動套到這裡",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前現場調整可確認；最近 Tripod 恢復沒有更動此值",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C02",
+      "group": "Calibration 校正",
+      "title": "KD 速度修正係數",
+      "old": "0.002",
+      "current": "0.006",
+      "effect": "現值為原版 3 倍；實際影響也取決於速度濾波。",
+      "recommendation": "C：與該階段速度回饋共同評估",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C03",
+      "group": "Calibration 校正",
+      "title": "K_FF 速度前饋",
+      "old": "0.02",
+      "current": "0.005",
+      "effect": "相同目標速度下前饋為原版四分之一；不是位置保護。",
+      "recommendation": "C：與 PWM／摩擦補償成套评估",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "src/rinbo_fsm/src/motion_effort.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C04",
+      "group": "Calibration 校正",
+      "title": "額外摩擦補償",
+      "old": "無，0 PWM",
+      "current": "40×tanh(target_velocity/153.6) PWM",
+      "effect": "速度接近零時平滑歸零；目前 80 PWM 上限下影響比例大。",
+      "recommendation": "C：量測後決定，不能以固定補償取代控制調校",
+      "sources": [
+        "src/rinbo_fsm/src/motion_effort.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C05",
+      "group": "Calibration 校正",
+      "title": "控制速度濾波",
+      "old": "原始位置差分，無濾波",
+      "current": "固定 20 ms；原始速度仍供停穩等判斷",
+      "effect": "減少速度尖峰，也增加回饋延遲；不等於輸出 slew。",
+      "recommendation": "C：比較原始／短時間常數；不要直接改共用預設影響別的模式",
+      "sources": [
+        "src/rinbo_fsm/src/control_velocity.hpp",
+        "src/rinbo_fsm/src/rinbo_cali.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C06",
+      "group": "Calibration 校正",
+      "title": "主驅動最大 PWM",
+      "old": "500",
+      "current": "80，且原生共用硬上限也為 80",
+      "effect": "只改 YAML 到 500 會被拒絕；需同步驗證器，Standing 上限還影響 Manual。",
+      "recommendation": "C：與增益、負載和該模式一起評估，不沿用 Tripod 3300",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "src/rinbo_fsm/src/safety_invariants.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C07",
+      "group": "Calibration 校正",
+      "title": "尋 Hall 巡航速度",
+      "old": "0.2π rad/s＝36°/s＝5529.6 counts/s",
+      "current": "相同",
+      "effect": "這個速度並未被降低；不可把較低 PWM 誤認成目標速度變慢。",
+      "recommendation": "B：相同，無須回復",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C08",
+      "group": "Calibration 校正",
+      "title": "尋 Hall 起步曲線",
+      "old": "直接切到固定速度的線性位置參考",
+      "current": "0.5 秒加速到同一巡航速度",
+      "effect": "速度上限不變；移除 ramp 會恢復起步速度跳變。",
+      "recommendation": "B：保留平滑起步",
+      "sources": [
+        "src/rinbo_fsm/src/motor_tracking.hpp",
+        "src/rinbo_fsm/src/rinbo_cali.cpp"
+      ],
+      "provenance": "9/8 方向／到位診斷文件記載的修正",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C09",
+      "group": "Calibration 校正",
+      "title": "伺服定位等待上限",
+      "old": "無明確 timeout",
+      "current": "60 秒；可設範圍 >0～600 秒",
+      "effect": "原版可能永遠等不到定位；目前逾時報出第一個原因。",
+      "recommendation": "B：目前 60 秒；若確有慢速需求可選 C",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C10",
+      "group": "Calibration 校正",
+      "title": "主馬達尋 Hall 等待上限",
+      "old": "無明確 timeout",
+      "current": "60 秒；可設範圍 >0～600 秒",
+      "effect": "位置／尋零等待，不是通訊失聯期限。",
+      "recommendation": "B：目前 60 秒",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C11",
+      "group": "Calibration 校正",
+      "title": "停穩／歸零等待上限",
+      "old": "無明確 timeout",
+      "current": "各階段 15 秒；可設範圍 >0～600 秒",
+      "effect": "停止與歸零各有期限；操作台等待预算也依這些設定計算。",
+      "recommendation": "B：15 秒；與歸零確認一起保留",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C12",
+      "group": "Calibration 校正",
+      "title": "Hall 後停穩與歸零完成判定",
+      "old": "速度 <500 counts/s 持續 0.3 秒，送一次 reset 就 DONE",
+      "current": "先停穩，再等待 |raw position|≤100 counts 且低速回讀；允許有界 reset 重送",
+      "effect": "原版送出命令不代表歸零已完成；恢復可能影響下一步站立原點。",
+      "recommendation": "B：保留回讀確認",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp"
+      ],
+      "provenance": "既有校正修正；最近 Tripod 改動保留此行為",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C13",
+      "group": "Calibration 校正",
+      "title": "伺服中立目標／到位容差",
+      "old": "[740,2565,3283,1944,2071,989]；容差 100",
+      "current": "相同；差值改用較寬的帶符號整數計算",
+      "effect": "硬體零點不由程式猜；全域 servo_control_mode 仍可能控制所有已接伺服。",
+      "recommendation": "B：保留既有目標與數值修正",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "C14",
+      "group": "Calibration 校正",
+      "title": "只校正選中腳與成功紀錄",
+      "old": "固定全六腿，沒有分腳成功憑據",
+      "current": "支援 --plan 選中腳；其他主驅動不參與；保存已確認腳位紀錄",
+      "effect": "與 robot.sh 逐腳控制、L3 屏蔽相依；不能單獨刪除憑據流程。",
+      "recommendation": "B：保留逐腳校正能力",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "src/rinbo_fsm/src/robot_config.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S01",
+      "group": "Standing 站立",
+      "title": "KP 位置修正係數",
+      "old": "0.35",
+      "current": "0.08",
+      "effect": "變更位置誤差造成的 PWM；與 KD、前饋和 PWM 上限一起檢視。",
+      "recommendation": "C：依實測選值；不要把 Tripod 的 0.38 自動套到這裡",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前現場調整可確認；最近 Tripod 恢復沒有更動此值",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S02",
+      "group": "Standing 站立",
+      "title": "KD 速度修正係數",
+      "old": "0.002",
+      "current": "0.006",
+      "effect": "現值為原版 3 倍；實際影響也取決於速度濾波。",
+      "recommendation": "C：與該階段速度回饋共同評估",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S03",
+      "group": "Standing 站立",
+      "title": "K_FF 速度前饋",
+      "old": "0.02",
+      "current": "0.005",
+      "effect": "相同目標速度下前饋為原版四分之一；不是位置保護。",
+      "recommendation": "C：與 PWM／摩擦補償成套评估",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "src/rinbo_fsm/src/motion_effort.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S04",
+      "group": "Standing 站立",
+      "title": "額外摩擦補償",
+      "old": "無，0 PWM",
+      "current": "40×tanh(target_velocity/153.6) PWM",
+      "effect": "速度接近零時平滑歸零；目前 80 PWM 上限下影響比例大。",
+      "recommendation": "C：量測後決定，不能以固定補償取代控制調校",
+      "sources": [
+        "src/rinbo_fsm/src/motion_effort.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S05",
+      "group": "Standing 站立",
+      "title": "控制速度濾波",
+      "old": "原始位置差分，無濾波",
+      "current": "固定 20 ms；原始速度仍供停穩等判斷",
+      "effect": "減少速度尖峰，也增加回饋延遲；不等於輸出 slew。",
+      "recommendation": "C：比較原始／短時間常數；不要直接改共用預設影響別的模式",
+      "sources": [
+        "src/rinbo_fsm/src/control_velocity.hpp",
+        "src/rinbo_fsm/src/rinbo_standing.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S06",
+      "group": "Standing 站立",
+      "title": "主驅動最大 PWM",
+      "old": "500",
+      "current": "80，且原生共用硬上限也為 80",
+      "effect": "只改 YAML 到 500 會被拒絕；需同步驗證器，Standing 上限還影響 Manual。",
+      "recommendation": "C：與增益、負載和該模式一起評估，不沿用 Tripod 3300",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "src/rinbo_fsm/src/safety_invariants.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S07",
+      "group": "Standing 站立",
+      "title": "尋 Hall／半圈軌跡",
+      "old": "尋零直接36°/s；半圈約5秒，終點速度直接歸零",
+      "current": "尋零0.5秒加速；半圈加減速，約5.5秒；仍36°/s／180°",
+      "effect": "最高速度與半圈終點相同，時間與速度連續性不同。",
+      "recommendation": "B：保留平滑切換",
+      "sources": [
+        "src/rinbo_fsm/src/motor_tracking.hpp",
+        "src/rinbo_fsm/src/rinbo_standing.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S08",
+      "group": "Standing 站立",
+      "title": "到位容許位置誤差",
+      "old": "<200 counts，約1.30°",
+      "current": "<1000 counts，約6.51°（以55296 counts/rev換算）",
+      "effect": "這是到位門檻；不是 Tripod 的9000/18000追蹤門檻。",
+      "recommendation": "B：依先前明確要求放寬後的值",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 19:53 motion_limits 部署記錄可追溯",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S09",
+      "group": "Standing 站立",
+      "title": "到位停穩條件",
+      "old": "只檢查到時且位置到位",
+      "current": "還需速度 <500 counts/s、連續0.3秒",
+      "effect": "避免高速經過目標就被判定完成；可分別在備註指定速度／時間。",
+      "recommendation": "B：保留停穩確認",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "src/rinbo_fsm/src/robot_config.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S10",
+      "group": "Standing 站立",
+      "title": "尋 Hall／轉半圈等待上限",
+      "old": "均無明確 timeout",
+      "current": "均60秒；可設 >0～600秒",
+      "effect": "兩個階段分別计時；未完成會留下實際位置、誤差和速度。",
+      "recommendation": "B：保留60秒，有需求再選 C 分別調整",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S11",
+      "group": "Standing 站立",
+      "title": "到位後保持出力",
+      "old": "0.1×位置誤差，PWM限幅±300，沒有速度阻尼",
+      "current": "min(KP,0.1)×誤差−KD×濾波速度；現值0.08/0.006，限幅±80",
+      "effect": "不只是到位門檻；它影響等候 Tripod 前的姿態保持。",
+      "recommendation": "C：保持阻尼，與上限／KP成套評估",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S12",
+      "group": "Standing 站立",
+      "title": "保持位置遺失保護",
+      "old": "無",
+      "current": ">12000 counts 時停止，約78.13°；可設上界55296 counts",
+      "effect": "此停止仍存在；未被 Tripod 的 warn_only 影響。",
+      "recommendation": "C：區分保持失效與一般到位，不只改錯誤文字",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "src/rinbo_fsm/src/robot_config.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "S13",
+      "group": "Standing 站立",
+      "title": "Standing 完成與退出",
+      "old": "全6腳DONE後持續保持，印ALL LEGS STANDING",
+      "current": "全部健康腳DONE後持續保持，寫成功紀錄；SIGINT走新版停止",
+      "effect": "正常完成不是自動退出；恢復舊版需同步六腿條件與流程。",
+      "recommendation": "B：保留新版停止及可驗證完成",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "src/rinbo_fsm/src/robot_config.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T01",
+      "group": "Tripod 步態",
+      "title": "KP",
+      "old": "0.38",
+      "current": "0.38",
+      "effect": "已恢復，無額外改值。",
+      "recommendation": "B：已與原版相同",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T02",
+      "group": "Tripod 步態",
+      "title": "KD",
+      "old": "0.003",
+      "current": "0.003",
+      "effect": "使用者已確認不是0.03。",
+      "recommendation": "B：已與原版相同",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T03",
+      "group": "Tripod 步態",
+      "title": "K_FF",
+      "old": "0.005",
+      "current": "0.005",
+      "effect": "速度前饋相同。",
+      "recommendation": "B：已與原版相同",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T04",
+      "group": "Tripod 步態",
+      "title": "摩擦補償",
+      "old": "0",
+      "current": "0",
+      "effect": "已取消先前40 PWM補償。",
+      "recommendation": "B：已與原版相同",
+      "sources": [
+        "src/rinbo_fsm/src/motion_effort.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T05",
+      "group": "Tripod 步態",
+      "title": "速度回饋",
+      "old": "原始差分",
+      "current": "5 ms濾波；設0可用原始差分",
+      "effect": "5ms為離線折衷，尚非實機最佳值。",
+      "recommendation": "B：先保留5ms；要純原版比較可選A",
+      "sources": [
+        "src/rinbo_fsm/src/control_velocity.hpp",
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T06",
+      "group": "Tripod 步態",
+      "title": "起步時間",
+      "old": "4秒",
+      "current": "8秒",
+      "effect": "8秒也已存在本機已提交HEAD；不是全部由最近修改引入。",
+      "recommendation": "B：依你明確指定8秒",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T07",
+      "group": "Tripod 步態",
+      "title": "起步曲線／銜接",
+      "old": "三次曲線，起步末端帶步態速度",
+      "current": "五次靜止到靜止，接短暫平滑相位進入",
+      "effect": "總行程仍一圈；不只是延長時間。",
+      "recommendation": "B：保留平滑銜接，若選A須與起步時間一起驗證",
+      "sources": [
+        "src/rinbo_fsm/src/tripod_reference.hpp",
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T08",
+      "group": "Tripod 步態",
+      "title": "起步結束的位置基準",
+      "old": "各腿實際位置",
+      "current": "相同，另留TRIPOD_REBASE紀錄",
+      "effect": "起步残差會留紀錄，但不再追補到規劃終點。",
+      "recommendation": "B：已恢復原版",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T09",
+      "group": "Tripod 步態",
+      "title": "Group B 啟動基準",
+      "old": "B組啟動時再取B組實際位置",
+      "current": "相同，但略過L3；只做一次",
+      "effect": "不重設A組、不重設硬體encoder、不每次跟著實際位置改零點。",
+      "recommendation": "B：已恢復原版",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T10",
+      "group": "Tripod 步態",
+      "title": "T-ratio 起點／目標",
+      "old": "8→1",
+      "current": "8→1",
+      "effect": "到1後持續RUNNING；T-ratio是時間縮放，不是位置保護threshold。",
+      "recommendation": "B：已恢復原版",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T11",
+      "group": "Tripod 步態",
+      "title": "加速計時方式",
+      "old": "每callback減0.0002；1kHz時約35秒由8到1",
+      "current": "同名ratio_step=-0.0002，乘dt/0.001；每秒減0.2",
+      "effect": "原版速度取決於回讀頻率；目前用實際經過時間。",
+      "recommendation": "B：保留原版名目速度與新版時間計算",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T12",
+      "group": "Tripod 步態",
+      "title": "最大PWM／額外slew",
+      "old": "3300；無額外PWM slew",
+      "current": "3300；slew OFF，250/s僅為未啟用的儲存值",
+      "effect": "不能看到設定裡250就誤判它仍限制Tripod。",
+      "recommendation": "B：已與原版出力上限一致",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T13",
+      "group": "Tripod 步態",
+      "title": "步態多項式／A、B分組",
+      "old": "A=R1,L2,R3；B=L1,R2,L3；B延後半週期",
+      "current": "相同基本軌跡與分組；L3不輸出",
+      "effect": "常數與平滑進入後的軌跡已做數值比對；不是重新設計A/B。",
+      "recommendation": "B：相同；L3另看G01",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "src/rinbo_fsm/src/tripod_reference.hpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T14",
+      "group": "Tripod 步態",
+      "title": "負相位與跨圈",
+      "old": "floor後負相位再減一圈，會重複扣圈",
+      "current": "移除多減的一圈，保留多圈位置，不採最短角度差",
+      "effect": "此為已確認邊界錯誤；正常活動腳通常不走負相位，非所有實跑異常的原因。",
+      "recommendation": "B：保留修正",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T15",
+      "group": "Tripod 步態",
+      "title": "有限位置誤差保護",
+      "old": "沒有這組軟／硬位置停止",
+      "current": "現場warn_only；軟9000、10筆且0.5秒；硬18000在stop模式才停",
+      "effect": "警告值不代表目前會自動停；無效數字仍獨立停止。",
+      "recommendation": "B：保留你選擇的warn_only與診斷",
+      "sources": [
+        "src/rinbo_fsm/src/tripod_reference.hpp",
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T16",
+      "group": "Tripod 步態",
+      "title": "正常停止與執行時間",
+      "old": "STOPPING每callback ratio+0.002直到10；沒有RUNNING總時限",
+      "current": "從最後參考2秒減速、5秒期限；RUNNING仍無總時限",
+      "effect": "目前不會在到target ratio後自動完成；仍依停止輸入結束。",
+      "recommendation": "B：依你明確指定保留新版停止",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp",
+        "src/rinbo_fsm/src/tripod_reference.hpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "T17",
+      "group": "Tripod 步態",
+      "title": "觸發前後診斷",
+      "old": "pid/data與一般日誌，無完整首因／觸發框",
+      "current": "TRACE/history、target/actual、raw/filtered速度、原始/限幅PWM、飽和時間、首個原因",
+      "effect": "追蹤已確認的命令限制問題；不更改控制目標。",
+      "recommendation": "B：保留可核對紀錄",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_tripod.cpp"
+      ],
+      "provenance": "9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G01",
+      "group": "共用設定、座標與保護",
+      "title": "L3及全域主驅動屏蔽",
+      "old": "固定六腿，沒有共享mask",
+      "current": "原生FSM L3屏蔽，supported_leg_test",
+      "effect": "選A會涉及恢復六腿；你目前明確說L3仍故障。Servo全域模式不是逐腳主驅動mask。",
+      "recommendation": "B：保留L3；不把其他項A當成解除L3",
+      "sources": [
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+        "src/rinbo_fsm/src/disabled_legs.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G02",
+      "group": "共用設定、座標與保護",
+      "title": "編碼器比例／方向／零點",
+      "old": "Cali/Standing 55296且左反號；Tripod54984.83且右反號",
+      "current": "兩套历史慣例均保留；未盲目統一",
+      "effect": "比例差約0.56%；C不能用猜測取代齒比、編碼器或一圈量測。",
+      "recommendation": "B：先保留；實體規格未確認",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "src/rinbo_fsm/src/rinbo_standing.cpp",
+        "src/rinbo_fsm/src/tripod_reference.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G03",
+      "group": "共用設定、座標與保護",
+      "title": "Cali/Standing反方向行程保護",
+      "old": "沒有",
+      "current": "相對起點反向超過500 counts即停止",
+      "effect": "不是禁止所有反向PWM；是辨識實際encoder總行程方向。",
+      "recommendation": "B：保留辨識；要調數字可選C",
+      "sources": [
+        "src/rinbo_fsm/src/motor_tracking.hpp",
+        "src/rinbo_fsm/src/rinbo_cali.cpp",
+        "src/rinbo_fsm/src/rinbo_standing.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G04",
+      "group": "共用設定、座標與保護",
+      "title": "供電電壓範圍",
+      "old": "FSM未檢查PowerState",
+      "current": "現場18～42V；超界5筆觸發；原生可設定硬界18～42V",
+      "effect": "動作限制與供電界線是不同層；上電前工具另有門檻。",
+      "recommendation": "B：保留供電檢查",
+      "sources": [
+        "src/rinbo_fsm/src/safety_invariants.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G05",
+      "group": "共用設定、座標與保護",
+      "title": "腿電流／bus電流保護",
+      "old": "FSM未檢查",
+      "current": "腿5A連續25筆；可設硬界10A/100筆；bus30A設定但stop_on_bus_current_limit=false",
+      "effect": "不能宣稱bus30A目前會自動停止；單位是回讀電流，非PWM。",
+      "recommendation": "B：保留現場腿保護；C需硬體額定依據",
+      "sources": [
+        "src/rinbo_fsm/src/safety_invariants.hpp",
+        "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G06",
+      "group": "共用設定、座標與保護",
+      "title": "馬達／電源回讀失聯期限",
+      "old": "沒有完整watchdog",
+      "current": "馬達0.25s、電源0.5s；初次資料最多2s；motor來源年齡0.10s、power0.35s",
+      "effect": "失聯時舊命令不可視為有效；与Bridge100ms命令watchdog是不同方向。",
+      "recommendation": "B：保留有效通訊檢查",
+      "sources": [
+        "src/rinbo_fsm/src/safety_invariants.hpp",
+        "src/rinbo_fsm/src/ros_input_guard.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G07",
+      "group": "共用設定、座標與保護",
+      "title": "來源身分／序號／QoS",
+      "old": "一般訂閱；Cali/Standing/Tripod queue10",
+      "current": "最新資料QoS、唯一Bridge來源GID／序號／時間檢查；啟動graph準備最多8s",
+      "effect": "部分命令與回讀握手欄位依賴新版Bridge。",
+      "recommendation": "B：保留整組，不能只換舊Bridge",
+      "sources": [
+        "src/rinbo_fsm/src/ros_input_guard.hpp",
+        "src/rinbo_fsm/src/latest_state_qos.hpp",
+        "src/rinbo_fsm/src/bridge_input_discovery.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G08",
+      "group": "共用設定、座標與保護",
+      "title": "馬達啟用握手",
+      "old": "收到回讀就能開始產生有效命令",
+      "current": "等待Bridge epoch、disabled rearm及相關active ack；ready5s、heartbeat/ack0.25s",
+      "effect": "用來區分送出命令與Bridge接受命令；兩端必須相容。",
+      "recommendation": "B：保留新版Bridge/FSM配套",
+      "sources": [
+        "src/rinbo_fsm/src/motor_arbiter_handshake.hpp",
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G09",
+      "group": "共用設定、座標與保護",
+      "title": "唯一設定來源與可調範圍",
+      "old": "大多C++常數，各檔獨立",
+      "current": "固定site YAML；未知參數／-p／params-file覆寫被拒絕；有原子tune入口",
+      "effect": "恢復常數可能讓GUI顯示值與實際值分離；改超出硬上界必須連驗證器一起修改。",
+      "recommendation": "B：保留單一來源；數值按各行決定",
+      "sources": [
+        "src/rinbo_fsm/src/robot_config.cpp",
+        "src/rinbo_fsm/src/robot_config.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "G10",
+      "group": "共用設定、座標與保護",
+      "title": "成功紀錄與單一動作限制",
+      "old": "無跨程序成功憑據／排他鎖",
+      "current": "revision/hash/boot ID綁定；未完成不能偽造；共享鎖排除同時動作",
+      "effect": "與Control Panel重試、校正快取、Windows核對相依。",
+      "recommendation": "B：保留，優化錯誤說明可選C",
+      "sources": [
+        "src/rinbo_fsm/src/robot_config.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B01",
+      "group": "Bridge 通訊與停止",
+      "title": "Core目標IP與環境變數",
+      "old": "程式setenv CORE_IP=192.168.30.12",
+      "current": "啟動參數實際192.168.30.254；YAML預設.2；CORE_MASTER_ADDR=.254:50051；Jetson=.8",
+      "effect": "原版IP不是當前設備位址；不能逐字回復造成連錯。",
+      "recommendation": "B：保留現場位址",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp",
+        "src/rinbo_ros_bridge/config/redrhex_safe.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B02",
+      "group": "Bridge 通訊與停止",
+      "title": "Bridge motor PWM／servo範圍驗證",
+      "old": "直接轉送，Bridge無此數值檢查",
+      "current": "PWM 0～3300；servo encoder0～65535，無效命令拒絕",
+      "effect": "Tripod3300與Bridge3300已一致；Windows仍需期望值3300。",
+      "recommendation": "B：保留驗證與3300",
+      "sources": [
+        "src/rinbo_ros_bridge/src/motor_output_limits.hpp",
+        "src/rinbo_ros_bridge/config/redrhex_safe.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B03",
+      "group": "Bridge 通訊與停止",
+      "title": "命令失聯與過期",
+      "old": "無100ms命令watchdog／時戳上限",
+      "current": "motor命令timeout100ms、max age100ms；power age200ms",
+      "effect": "不應把UI動作時長當成有效命令期限。",
+      "recommendation": "B：保留",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp",
+        "src/rinbo_ros_bridge/config/redrhex_safe.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B04",
+      "group": "Bridge 通訊與停止",
+      "title": "單一發布者／rearm／ack",
+      "old": "任何發布者命令可直接轉送",
+      "current": "唯一來源；換來源先5筆停用命令；epoch及相關ack",
+      "effect": "現行FSM不能直接搭配完全原版Bridge，否則等不到ack。",
+      "recommendation": "B：保留兩端配套",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp",
+        "src/rinbo_fsm/src/motor_arbiter_handshake.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B05",
+      "group": "Bridge 通訊與停止",
+      "title": "軟體急停與上電命令epoch",
+      "old": "沒有目前的鎖定與跨epoch機制",
+      "current": "estop鎖定；false不直接解除；上電命令限制來源與順序，全關電命令有独立處理",
+      "effect": "保留急停、關電語意，不用位置誤差放寬來清除急停狀態。",
+      "recommendation": "B：保留",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp",
+        "src/rinbo_ros_bridge/src/power_command_epoch_guard.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B06",
+      "group": "Bridge 通訊與停止",
+      "title": "回讀時間戳與重播處理",
+      "old": "直接將sbRIO stamp換成ROS stamp",
+      "current": "ROS stamp採Jetson收到新回讀時間；保留seq；完全重播封包不轉送",
+      "effect": "兩台時鐘不同時可避免錯判；也不是已量到完整端到端延遲。",
+      "recommendation": "B：保留已驗證的來源時間契約",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B07",
+      "group": "Bridge 通訊與停止",
+      "title": "停止重送／心跳／關閉",
+      "old": "主迴圈結束後shutdown，缺明確停用重送",
+      "current": "停用重送20ms；心跳50ms；輸出狀態20ms；退出8筆disabled+3筆off",
+      "effect": "Bridge退出與只停止Tripod不同；舊版原始碼不等於已證實安全關電。",
+      "recommendation": "B：保留",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp",
+        "src/rinbo_ros_bridge/config/redrhex_safe.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "B08",
+      "group": "Bridge 通訊與停止",
+      "title": "通訊主迴圈／消息數值映射",
+      "old": "主迴圈1000Hz；六腿按原順序直接映射enable/dir/voltage",
+      "current": "主迴圈仍1000Hz；保留主要訊息映射，新增驗證與診斷鏡像",
+      "effect": "名目1000Hz不是實測收到的封包率；PWM未被換算成百分比。",
+      "recommendation": "B：核心映射相同",
+      "sources": [
+        "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "M01",
+      "group": "逐腳動作",
+      "title": "逐腳動作模式與參考",
+      "old": "無rinbo_manual；舊PID測試不是等價入口",
+      "current": "相對位移／定點／速度／相位；平滑對齊、加減速與收尾",
+      "effect": "選A代表回到不使用此新增入口；不能直接以舊PID测试取代。",
+      "recommendation": "B：保留逐腳操作",
+      "sources": [
+        "src/rinbo_fsm/src/manual_motion.hpp",
+        "src/rinbo_fsm/src/rinbo_manual.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "M02",
+      "group": "逐腳動作",
+      "title": "逐腳KP/KD/FF與摩擦",
+      "old": "無此控制器",
+      "current": "沿用Standing設定：0.08/0.006/0.005、摩擦40、20ms濾波",
+      "effect": "調Standing係數會同時影響此路徑；需先拆設定才能完全獨立。",
+      "recommendation": "C：評估拆成獨立參數，避免互相牽動",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_manual.cpp",
+        "src/rinbo_fsm/src/robot_config.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "M03",
+      "group": "逐腳動作",
+      "title": "逐腳PWM cap與slew",
+      "old": "無此控制器",
+      "current": "min(plan cap,Standing cap)=80；硬slew250 PWM/s",
+      "effect": "Tripod移除slew不影響Manual；可能限制快速動作，需個別評估。",
+      "recommendation": "C：用逐腳需求評估，不直接套Tripod3300",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_manual.cpp",
+        "src/rinbo_fsm/src/safety_invariants.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "M04",
+      "group": "逐腳動作",
+      "title": "逐腳追蹤門檻／錯誤文字",
+      "old": "無此控制器",
+      "current": "實際>12000 counts停止，但訊息仍寫>5000",
+      "effect": "已確認訊息與實際程式不一致；本輪不改，先列入恢復決策。",
+      "recommendation": "C：修正文案對齊12000；是否改門檻另註明",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_manual.cpp",
+        "src/rinbo_fsm/src/safety_invariants.hpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "M05",
+      "group": "逐腳動作",
+      "title": "逐腳對齊完成條件",
+      "old": "無此控制器",
+      "current": "對齊後位置差≤2°、速度≤5°/s；超過不進入主動作",
+      "effect": "與持續追蹤門檻不同。",
+      "recommendation": "C：依實際對齊需求評估",
+      "sources": [
+        "src/rinbo_fsm/src/rinbo_manual.cpp"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "M06",
+      "group": "逐腳動作",
+      "title": "逐腳時間／速度／加速度",
+      "old": "無此控制器",
+      "current": "原生可填時間1～60s、速度/加速度1～90；GUI目前L2速度90°/s、加速度10°/s²、10s、PWM80",
+      "effect": "這是儲存的下次動作設定，不代表正在執行；GUI預設10°/s而原生Plan預設30。",
+      "recommendation": "C：檢視目前90°/s需求與80/250相容性",
+      "sources": [
+        "src/rinbo_fsm/src/manual_motion.hpp",
+        "src/rinbo_control/rinbo_control/plans.py",
+        "/home/jetson/.local/state/rinbo_control/settings.json"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "U01",
+      "group": "操作台與連線流程",
+      "title": "文字Control Panel與步驟",
+      "old": "GitHub只有另一套PyQt GUI",
+      "current": "robot.sh：選脚/計畫/五階段執行/快捷與收藏/現場模式/到位限制",
+      "effect": "目前文字台主動作是Manual，沒有直接複製Windows Tripod整套流程。",
+      "recommendation": "B：保留文字入口",
+      "sources": [
+        "robot.sh",
+        "src/rinbo_control/rinbo_control/console.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "U02",
+      "group": "操作台與連線流程",
+      "title": "第1步連線自動整理",
+      "old": "舊GUI只Popen本機Bridge",
+      "current": "按1核對並正常停止已識別動作、整理過期owned紀錄、重建自有SSH；重用有效Core/driver/Bridge",
+      "effect": "不清除無關SSH；登入本身不動作。第3步仍拒絕其他動作占用。",
+      "recommendation": "B：保留已明確選擇的第1步行為",
+      "sources": [
+        "src/rinbo_control/rinbo_control/connection_recovery.py",
+        "src/rinbo_control/rinbo_control/runtime.py",
+        "src/rinbo_control/rinbo_control/sbrio.py"
+      ],
+      "provenance": "本次對話與connection_recovery文件可追溯",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "U03",
+      "group": "操作台與連線流程",
+      "title": "操作台消失／子程序生命週期",
+      "old": "舊GUI在closeEvent主動送SIGINT，無parent-death wrapper",
+      "current": "guardian用parent-death SIGINT通知子程序；含其啟動的Bridge",
+      "effect": "與Windows nohup wrapper不同；不能混稱關閉任意監看都會關Bridge。",
+      "recommendation": "B：保留受控子程序語意；獨立背景服務另選C",
+      "sources": [
+        "src/rinbo_control/rinbo_control/guardian.py",
+        "src/rinbo_control/rinbo_control/runtime.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "U04",
+      "group": "操作台與連線流程",
+      "title": "正常完成／失敗後供電流程",
+      "old": "舊GUI按鈕直接發power command；reset全關",
+      "current": "Manual正常完成用sensors模式保留感測器、關relay；執行階段失败/取消嘗試all-off",
+      "effect": "Tripod單獨SIGINT不等同此Manual流程，也不等同整機停止。",
+      "recommendation": "B：保留清楚區分；如要統一流程可選C",
+      "sources": [
+        "src/rinbo_control/rinbo_control/runtime.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "U05",
+      "group": "操作台與連線流程",
+      "title": "上電前工具門檻",
+      "old": "舊GUI沒有同等核對",
+      "current": "power tool健康腿電流須<3A，與FSM動作時5A不同",
+      "effect": "不同階段／層的門檻；不要只改FSM後以為所有地方都放寬。",
+      "recommendation": "C：依上電前與運轉中用途分别評估",
+      "sources": [
+        "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py",
+        "src/rinbo_control/rinbo_control/runtime.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "U06",
+      "group": "操作台與連線流程",
+      "title": "校正快取／重試與錯誤說明",
+      "old": "沒有sensor_epoch與原生成功紀錄核對",
+      "current": "本次操作台完成校正、sensor_epoch未變、原生紀錄有效才沿用；失敗不自動重跑",
+      "effect": "選A需重做整個狀態判斷，不是清除一個error旗標。",
+      "recommendation": "B：保留紀錄核對；精簡流程可選C",
+      "sources": [
+        "src/rinbo_control/rinbo_control/runtime.py",
+        "src/rinbo_control/rinbo_control/feedback.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R01",
+      "group": "Sim2Real／策略與轉接",
+      "title": "Sim2Real整體與所選profile",
+      "old": "GitHub没有這三套redrhex套件",
+      "current": "有redrhex_msgs、lowlevel_bridge、rl_controller與多組profile；目前未觀察到運行中的策略程序",
+      "effect": "沒有可直接恢復的舊版RL數字；A代表停用新增路徑而非填0。",
+      "recommendation": "B：保留原始碼；啟用profile需另確認",
+      "sources": [
+        "src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml",
+        "src/redrhex_rl_controller/config/redrhex_policy.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R02",
+      "group": "Sim2Real／策略與轉接",
+      "title": "Sim2Real的腿位mask",
+      "old": "無RL設定",
+      "current": "原生FSM=L3；site full_feedback兩份=[]；sensor_v2兩份=[L1]",
+      "effect": "这些檔案不自動等同原生site mask；必須按實際launch配置配對。沒有因此修改L3。",
+      "recommendation": "C：在選定profile後對齊L3，不能現在盲改全部模板",
+      "sources": [
+        "/home/jetson/redrhex_site/redrhex_policy_full_feedback_rig.yaml",
+        "/home/jetson/redrhex_site/redrhex_policy_sensor_v2_suspended_experimental.yaml",
+        "src/redrhex_rl_controller/redrhex_rl_controller/rinbo_leg_mask.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R03",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL速度到PWM轉換／限幅",
+      "old": "無",
+      "current": "基礎rinbo adapter：40 PWM/(rad/s)、cap80、slew250/s",
+      "effect": "不是Tripod PD公式，也不是SBReal已量測的馬達模型；部分profile不同。",
+      "recommendation": "C：確認實際profile及馬達關係後調整",
+      "sources": [
+        "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py",
+        "src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R04",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL encoder／方向／伺服換算",
+      "old": "無RL對照",
+      "current": "基礎54984.83 counts/rev、encoder左負右正；ABAD1000 counts/rad為待校準值",
+      "effect": "引用Tripod的counts常數不是硬體規格證據；方向還有命令sign hook。",
+      "recommendation": "C：量測後設定，不猜比例與方向",
+      "sources": [
+        "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py",
+        "src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R05",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL初始站姿到位",
+      "old": "無",
+      "current": "base：2s參考/12s timeout/.12rad/.25rad/s/.5s；site兩份timeout30s",
+      "effect": "不是rinbo_standing；Control Panel選15的Sim2Real頁只改明確選中的profile。",
+      "recommendation": "C：按選定profile評估，不改Cali/Standing",
+      "sources": [
+        "src/rinbo_control/rinbo_control/sim_motion_limits.py",
+        "src/redrhex_rl_controller/config/redrhex_policy.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R06",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL主驅動與ABAD動作限幅",
+      "old": "無",
+      "current": "base：主速度30rad/s、slew120rad/s²；ABAD角0.7rad、slew6rad/s；site rig通常12與1",
+      "effect": "不同profile數字差異很大，完整值另附CSV；不宣稱base目前生效。",
+      "recommendation": "C：選定profile後統一操作需求",
+      "sources": [
+        "src/redrhex_rl_controller/config/redrhex_policy.yaml",
+        "src/redrhex_rl_controller/redrhex_rl_controller/safety_filter.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R07",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL資料、推論、姿態等保護",
+      "old": "無",
+      "current": "base有姿態0.7rad、sensor0.10s、cmd0.25s、推論8ms／loop30ms等；profile有更嚴格契約",
+      "effect": "硬體觀測缺失、ONNX契約或mask不符不能由提高PWM修復。",
+      "recommendation": "B：保留有效資料；閾值C需個別評估",
+      "sources": [
+        "src/redrhex_rl_controller/redrhex_rl_controller/rl_controller_node.py",
+        "src/redrhex_rl_controller/config/redrhex_policy.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R08",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL policy檔案／契約／啟動使能",
+      "old": "無",
+      "current": "ONNX觀測/動作契約、hash與啟動輸出檢查；基礎enable_policy_on_start=false、enable_motor_output_on_start=false",
+      "effect": "模型／硬體校準未證實；本輪不載入模型或執行推論／動作。",
+      "recommendation": "B：保留契約檢查與明確啟動",
+      "sources": [
+        "src/redrhex_rl_controller/redrhex_rl_controller/policy_validation.py",
+        "src/redrhex_rl_controller/config/redrhex_policy.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "R09",
+      "group": "Sim2Real／策略與轉接",
+      "title": "RL供電與通訊門檻",
+      "old": "無",
+      "current": "base adapter18～30V/3A/3筆；site rig18～42V/5A；state0.25s、power0.35s、cmd0.10s",
+      "effect": "再次說明profile與native FSM不同；不是全部平台已統一成同一數字。",
+      "recommendation": "C：確認所選profile；保留供電／通訊功能",
+      "sources": [
+        "src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml",
+        "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "D01",
+      "group": "記錄、監控與訊息",
+      "title": "資料記錄內容與CSV介面",
+      "old": "trigger後依pid/data寫單一CSV；actual右腿反號",
+      "current": "summary.csv/events.csv/metadata；100Hz摘要；原始motor state、命令、power、debug、首因；auto_start預設true",
+      "effect": "欄名／座標不能直接拿舊分析程式套用；CSV摘要不是每筆控制回讀。",
+      "recommendation": "B：保留完整記錄；需要舊格式可選C加相容匯出",
+      "sources": [
+        "src/rinbo_data_recorder/src/rinbo_data_recorder.cpp",
+        "src/rinbo_data_recorder/config/logging_tripod_safety.yaml"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "D02",
+      "group": "記錄、監控與訊息",
+      "title": "浏览器監控／錄製",
+      "old": "無rinbo_monitor",
+      "current": "唯讀狀態、原始/轉送PWM、錄製；port8088、顯示過期0.5s",
+      "effect": "顯示門檻不會改控制器保護；頁面無上電／馬達控制路由。",
+      "recommendation": "B：保留獨立監看",
+      "sources": [
+        "src/rinbo_monitor/rinbo_monitor/server.py",
+        "src/rinbo_monitor/rinbo_monitor/panel.html"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "D03",
+      "group": "記錄、監控與訊息",
+      "title": "ROS消息契約",
+      "old": "9個基本.msg",
+      "current": "基本.msg內容相同（只有換行差）；新增ControllerDebugStamped、SafetyEventStamped",
+      "effect": "不是把原來motor/command欄位重編碼；新增型別需相容建置。",
+      "recommendation": "B：保留新增診斷型別",
+      "sources": [
+        "src/rinbo_msgs/CMakeLists.txt",
+        "src/rinbo_msgs/msg/ControllerDebugStamped.msg",
+        "src/rinbo_msgs/msg/SafetyEventStamped.msg"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "O01",
+      "group": "舊版其他套件／建置",
+      "title": "舊PyQt GUI與啟動名稱",
+      "old": "有rinbo_panel；Tripod按鈕呼叫rinbo_tripod_rslip，但同倉庫CMake只產生rinbo_tripod",
+      "current": "本機沒有此package；Windows桌面App也不是這份原始碼",
+      "effect": "已確認舊GUI／CMake入口名稱不一致；整包照抄不能保證可用。",
+      "recommendation": "C：若要恢復舊GUI，保留外觀但修正入口與新版握手",
+      "sources": [
+        "docs/diagnostics/workspace_audit_20260909/upstream/src/rinbo_panel/scripts/rinbo_control_panel.py",
+        "docs/diagnostics/workspace_audit_20260909/upstream/src/rinbo_fsm/CMakeLists.txt"
+      ],
+      "provenance": "此package在本機HEAD本來就不存在，不能歸因為本次助理刪除",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "O02",
+      "group": "舊版其他套件／建置",
+      "title": "舊PID測試／單腿RSLIP",
+      "old": "有rinbo_pid_test：正弦5000 counts、0.2Hz、PWM500；另有rinbo_traj_rslip",
+      "current": "本機沒有這兩支；另有rinbo_sin_sweep退役stub及Manual入口",
+      "effect": "原版測試直接發布motor命令；不同於新版逐腳控制，不適合未核對直接混用。",
+      "recommendation": "C：如需測PID，做相容獨立測試入口",
+      "sources": [
+        "docs/diagnostics/workspace_audit_20260909/upstream/src/rinbo_pid_test/src/rinbo_pid_test.cpp",
+        "src/rinbo_fsm/src/rinbo_sin_sweep.cpp"
+      ],
+      "provenance": "舊package在本機HEAD不存在；退役stub是目前新增層",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "O03",
+      "group": "舊版其他套件／建置",
+      "title": "IMU子模組",
+      "old": "gitlink src/microstrain_inertial",
+      "current": "本機src沒有此子模組",
+      "effect": "GitHub樹只有指向commit；沒有同倉庫.gitmodules，不能假裝已拿到完整IMU驅動內容。",
+      "recommendation": "C：若需要IMU，先確認實際型號、來源與安裝位置",
+      "sources": [
+        "docs/diagnostics/workspace_audit_20260909/inventory.json"
+      ],
+      "provenance": "本機HEAD也沒有該gitlink；不是本次刪除",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "O04",
+      "group": "舊版其他套件／建置",
+      "title": "建置與README",
+      "old": "ROS2 ament CMake；README混有Corgi/ROS1 catkin說明",
+      "current": "新增yaml-cpp/OpenSSL/診斷消息、robot_config靜態庫與測試；README改為當前入口",
+      "effect": "不能用舊README判定整包應改回ROS1；恢復來源要同步相依套件與執行檔名稱。",
+      "recommendation": "B：保留當前建置；只按所選控制項調整",
+      "sources": [
+        "src/rinbo_fsm/CMakeLists.txt",
+        "src/rinbo_ros_bridge/CMakeLists.txt",
+        "README.md"
+      ],
+      "provenance": "目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "F01",
+      "group": "FPGA 與 Windows 邊界",
+      "title": "FPGA console生命週期候選",
+      "old": "本GitHub沒有FPGA driver原始碼，無法以此倉庫定義原版",
+      "current": "tools/fpga_lifecycle是依sbRIO歷史正式源碼製作的候選；文件標示未部署",
+      "effect": "候選修正EOF/HUP/ERR/忙迴圈、背景/監看責任及off流程；不能當成目前sbRIO已運行版本。",
+      "recommendation": "B：保留候選供另案部署決策，不自動替換驅動",
+      "sources": [
+        "tools/fpga_lifecycle/README.md",
+        "tools/fpga_lifecycle/baseline/console.cpp",
+        "tools/fpga_lifecycle/src/console.cpp"
+      ],
+      "provenance": "本次對話／候選測試紀錄可追溯；本轮沒有遠端部署",
+      "choice": "",
+      "note": ""
+    },
+    {
+      "id": "F02",
+      "group": "FPGA 與 Windows 邊界",
+      "title": "Windows期待值／停止入口",
+      "old": "本GitHub的PyQt GUI不是現用Windows程式；無Windows source",
+      "current": "已有交接prompt；Bridge expected PWM需3300、site revision/hash動態讀取；Tripod stop≠all-off",
+      "effect": "無法在這台Orin核對Windows目前實作；不能說已替Windows修改完成。",
+      "recommendation": "C：Windows提供當前程式後另比對；Orin先保留現況",
+      "sources": [
+        "docs/windows_bridge_pwm3300_prompt_20260909_zh_TW.md",
+        "docs/tripod_restore_20260909_zh_TW.md"
+      ],
+      "provenance": "本次對話有Windows日誌與交接紀錄，無其原始碼",
+      "choice": "",
+      "note": ""
+    }
+  ]
+}

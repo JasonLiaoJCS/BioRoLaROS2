@@ -1,0 +1,18 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+Note: Google Test filter = ConfigTest.TripodTuning*
+[==========] Running 4 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 4 tests from ConfigTest
+[ RUN      ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites
+[       OK ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites (82 ms)
+[ RUN      ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion
+[       OK ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion (26 ms)
+[ RUN      ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts
+[       OK ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts (57 ms)
+[ RUN      ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters
+[       OK ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters (8 ms)
+[----------] 4 tests from ConfigTest (173 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test suite ran. (173 ms total)
+[  PASSED  ] 4 tests.

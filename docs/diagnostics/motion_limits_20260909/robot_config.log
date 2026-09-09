@@ -1,0 +1,53 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 22 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 22 tests from ConfigTest
+[ RUN      ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters
+[       OK ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters (1665 ms)
+[ RUN      ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent
+[       OK ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent (115 ms)
+[ RUN      ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts
+[       OK ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts (89 ms)
+[ RUN      ] ConfigTest.CorruptMissingUnsupportedAndConflictingConfigFailClosed
+[       OK ] ConfigTest.CorruptMissingUnsupportedAndConflictingConfigFailClosed (57 ms)
+[ RUN      ] ConfigTest.UnreadableConfigurationFailsWithoutReinitialization
+[       OK ] ConfigTest.UnreadableConfigurationFailsWithoutReinitialization (18 ms)
+[ RUN      ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped
+[       OK ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped (26 ms)
+[ RUN      ] ConfigTest.IndependentWriterLockAndReaderSnapshot
+[       OK ] ConfigTest.IndependentWriterLockAndReaderSnapshot (6 ms)
+[ RUN      ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts
+[       OK ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts (75 ms)
+[ RUN      ] ConfigTest.ManualEditsCannotReuseCalibrationAtSameRevision
+[       OK ] ConfigTest.ManualEditsCannotReuseCalibrationAtSameRevision (13 ms)
+[ RUN      ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart
+[       OK ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart (38 ms)
+[ RUN      ] ConfigTest.ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt
+[       OK ] ConfigTest.ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt (31 ms)
+[ RUN      ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot
+[       OK ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot (57 ms)
+[ RUN      ] ConfigTest.ReadinessCheckDoesNotChangeOrCreateStageReceipts
+[       OK ] ConfigTest.ReadinessCheckDoesNotChangeOrCreateStageReceipts (29 ms)
+[ RUN      ] ConfigTest.ProcessInspectionDistinguishesMotionFromCommunication
+[       OK ] ConfigTest.ProcessInspectionDistinguishesMotionFromCommunication (2 ms)
+[ RUN      ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites
+[       OK ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites (38 ms)
+[ RUN      ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion
+[       OK ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion (23 ms)
+[ RUN      ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts
+[       OK ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts (48 ms)
+[ RUN      ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters
+[       OK ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters (8 ms)
+[ RUN      ] ConfigTest.TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers
+[       OK ] ConfigTest.TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers (56 ms)
+[ RUN      ] ConfigTest.TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts
+[       OK ] ConfigTest.TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts (14 ms)
+[ RUN      ] ConfigTest.MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings
+[       OK ] ConfigTest.MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings (48 ms)
+[ RUN      ] ConfigTest.MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy
+[       OK ] ConfigTest.MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy (75 ms)
+[----------] 22 tests from ConfigTest (2532 ms total)
+
+[----------] Global test environment tear-down
+[==========] 22 tests from 1 test suite ran. (2533 ms total)
+[  PASSED  ] 22 tests.

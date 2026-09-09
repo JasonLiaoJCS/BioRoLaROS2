@@ -1,0 +1,7 @@
+Consolidate compiler generated dependencies of target robot_config
+[ 25%] Built target gtest_main
+[ 50%] Built target robot_config
+[ 75%] Built target gtest
+[ 87%] Building CXX object CMakeFiles/test_tripod_multileg.dir/test/test_tripod_multileg.cpp.o
+[100%] Linking CXX executable test_tripod_multileg
+[100%] Built target test_tripod_multileg

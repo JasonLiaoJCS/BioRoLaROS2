@@ -1,0 +1,9 @@
+std_msgs/Header header
+string[] joint_names
+float64[] target_position_rad
+float64[] target_velocity_rad_s
+float64[] kp
+float64[] kd
+float64[] effort_limit_nm
+bool enable
+uint8 mode

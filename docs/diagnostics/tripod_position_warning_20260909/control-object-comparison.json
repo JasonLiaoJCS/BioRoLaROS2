@@ -1,0 +1,12 @@
+{
+  "rinbo_cali": {
+    "control_object_identical": true,
+    "original_sha256": "1a5b7c96bd41f24b77565cedaf224a00e88ea307f5715488334d119dc226ab68",
+    "candidate_sha256": "1a5b7c96bd41f24b77565cedaf224a00e88ea307f5715488334d119dc226ab68"
+  },
+  "rinbo_standing": {
+    "control_object_identical": true,
+    "original_sha256": "85491b2920a3b761c7648f788fa505fc1ec6d572f2f3f81a2c9e45785bb2a057",
+    "candidate_sha256": "85491b2920a3b761c7648f788fa505fc1ec6d572f2f3f81a2c9e45785bb2a057"
+  }
+}

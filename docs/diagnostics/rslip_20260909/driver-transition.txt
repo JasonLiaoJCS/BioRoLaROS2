@@ -1,0 +1,42 @@
+Tue Sep  8 19:42:08 UTC 2026
+64ed8560-4fd6-411a-af52-15dbf953c1ad
+1564.90 5994.46
+PID=4190
+absent
+PID=4187
+absent
+PID=4774
+4774 (sshd) S 1695 4774 4774 0 -1 4210944 545 264 0 0 12 17 2 0 20 0 1 0 149254 74031104 2050 18446744073709551615 94616404828160 94616405560688 140725284778272 0 0 0 0 4096 81926 1 0 0 17 3 0 0 0 0 0 94616407661168 94616407672880 94616413982720 140725284781716 140725284781734 140725284781734 140725284782057 0
+sshd: admin@pts/0 
+PID=4777
+4777 (fpga_driver) S 4774 4777 4777 34816 4777 4210944 4313 539 0 0 589 232 0 2 20 0 20 0 149273 604925952 3949 18446744073709551615 4194304 12898220 140724253179744 0 0 0 0 4096 134758402 0 0 0 17 0 0 0 0 0 0 14996800 15187936 30670848 140724253187534 140724253187548 140724253187548 140724253188025 0
+./fpga_driver 
+2026-09-08T19:37:49.795+00:00 NI-sbRIO-9629-020D704D sshd[4187]: rexec line 93: Deprecated option UsePrivilegeSeparation
+2026-09-08T19:37:49.928+00:00 NI-sbRIO-9629-020D704D sshd[4187]: Accepted keyboard-interactive/pam for admin from 192.168.30.213 port 53093 ssh2
+2026-09-08T19:37:49.930+00:00 NI-sbRIO-9629-020D704D sshd[4187]: pam_unix(sshd:session): session opened for user admin by (uid=0)
+2026-09-08T19:40:40.639+00:00 NI-sbRIO-9629-020D704D sshd[4187]: Received disconnect from 192.168.30.213 port 53093:11: disconnected by user
+2026-09-08T19:40:40.639+00:00 NI-sbRIO-9629-020D704D sshd[4187]: Disconnected from user admin 192.168.30.213 port 53093
+2026-09-08T19:40:40.639+00:00 NI-sbRIO-9629-020D704D sshd[4187]: pam_unix(sshd:session): session closed for user admin
+2026-09-08T19:40:56.143+00:00 NI-sbRIO-9629-020D704D sshd[4774]: rexec line 93: Deprecated option UsePrivilegeSeparation
+2026-09-08T19:40:56.274+00:00 NI-sbRIO-9629-020D704D sshd[4774]: Accepted keyboard-interactive/pam for admin from 192.168.30.213 port 58107 ssh2
+2026-09-08T19:40:56.276+00:00 NI-sbRIO-9629-020D704D sshd[4774]: pam_unix(sshd:session): session opened for user admin by (uid=0)
+total 32
+drwxrwxrwt    6 admin    administ       380 Sep  8 19:42 .
+-rw-r--r--    1 admin    administ      8652 Sep  8 19:42 fpga_driver_console.log
+-rw-r--r--    1 admin    administ         0 Sep  8 19:40 rslip-fpga-console.lock
+drwxr-xr-x    2 admin    administ       200 Sep  8 19:39 rslip-diagnosis-offline-20260909
+drwxr-xr-x    4 admin    administ       220 Sep  8 19:35 rslip-console-fix-20260909
+-rw-r--r--    1 admin    administ      4096 Sep  8 19:29 grpccore.log
+-rw-r--r--    1 admin    administ         0 Sep  8 19:17 fpga_server_debug.log
+-rw-r--r--    1 admin    administ      2310 Sep  8 19:16 nitsm.status
+srwxrw-r-x    1 lvuser   ni               0 Sep  8 19:16 niPortableRegistry
+drwxrwxrwx    2 nidaqmxr nidaqmxr       100 Sep  8 19:16 nipal
+-rw-r--r--    1 admin    administ         2 Sep  8 19:16 nitsm.bringDownCount
+-rw-r--r--    1 admin    administ         2 Sep  8 19:16 nitsm.bringUpCount
+-rw-rw-rw-    1 admin    administ   1048576 Sep  8 19:16 MXS:EventSharedMemory
+-rw-r--r--    1 admin    administ         0 Sep  8 19:16 NetworkInterfacesChanged
+drwxrwxrwx    3 admin    administ        60 Sep  8 19:16 natinst
+-rw-r--r--    1 admin    administ         0 Sep  8 19:16 nipalk-load.log
+-rw-rw----    1 lvuser   ni               8 Sep  8 19:16 ni_boot_mode_input
+-rw-r--r--    1 admin    administ         0 Sep  8 19:16 .automount-mmcblk0p1
+drwxrwxrwt    5 admin    administ       100 Sep  8 19:16 ..

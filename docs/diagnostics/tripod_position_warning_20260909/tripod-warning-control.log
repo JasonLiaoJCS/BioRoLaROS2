@@ -1,0 +1,98 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 28 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 28 tests from TripodMultiLegTest
+[ RUN      ] TripodMultiLegTest.WarningOnlyLargeFiniteErrorsNeverStopOrInvalidateReceipts
+[       OK ] TripodMultiLegTest.WarningOnlyLargeFiniteErrorsNeverStopOrInvalidateReceipts (140 ms)
+[ RUN      ] TripodMultiLegTest.WarningOnlyModeRunsPastStartupWithLagAndStillStopsOnRequest
+[       OK ] TripodMultiLegTest.WarningOnlyModeRunsPastStartupWithLagAndStillStopsOnRequest (315 ms)
+[ RUN      ] TripodMultiLegTest.WarningOnlyModeStillStopsOnNonfiniteHealthyFeedback
+TRIPOD SAFETY STOP: hard position error: L2 counts=nan hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+TRIPOD SAFETY STOP: hard position error: L2 counts=inf hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.WarningOnlyModeStillStopsOnNonfiniteHealthyFeedback (199 ms)
+[ RUN      ] TripodMultiLegTest.WarningOnlyModeStillHonorsEstopImmediately
+TRIPOD SAFETY STOP: software /estop asserted
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.WarningOnlyModeStillHonorsEstopImmediately (72 ms)
+[ RUN      ] TripodMultiLegTest.OriginalSiteModelWarningDoesNotAddAnOperationInterlock
+[       OK ] TripodMultiLegTest.OriginalSiteModelWarningDoesNotAddAnOperationInterlock (49 ms)
+[ RUN      ] TripodMultiLegTest.Suggested20SecondRatio40ProfileFitsNominalBudget
+[       OK ] TripodMultiLegTest.Suggested20SecondRatio40ProfileFitsNominalBudget (72 ms)
+[ RUN      ] TripodMultiLegTest.RestToRestStartupIsMonotoneWithContinuousEndpoints
+[       OK ] TripodMultiLegTest.RestToRestStartupIsMonotoneWithContinuousEndpoints (1 ms)
+[ RUN      ] TripodMultiLegTest.PhaseLaunchIsContinuousAndKeepsTheUnwrappedPhase
+[       OK ] TripodMultiLegTest.PhaseLaunchIsContinuousAndKeepsTheUnwrappedPhase (0 ms)
+[ RUN      ] TripodMultiLegTest.NegativePhaseAndGaitJoinsPreserveMultipleRevolutions
+[       OK ] TripodMultiLegTest.NegativePhaseAndGaitJoinsPreserveMultipleRevolutions (63 ms)
+[ RUN      ] TripodMultiLegTest.HistoricalPolarityAndRawCountsRemainExplicit
+[       OK ] TripodMultiLegTest.HistoricalPolarityAndRawCountsRemainExplicit (0 ms)
+[ RUN      ] TripodMultiLegTest.All64MasksCoverStartupBothGroupsAndControlledStop
+[       OK ] TripodMultiLegTest.All64MasksCoverStartupBothGroupsAndControlledStop (4892 ms)
+[ RUN      ] TripodMultiLegTest.NormalTrackingAcrossStartupAndGroupBLaunch
+[       OK ] TripodMultiLegTest.NormalTrackingAcrossStartupAndGroupBLaunch (328 ms)
+[ RUN      ] TripodMultiLegTest.StartupErrorIsNotErasedByRebasingAndWaitingBRemainsProtected
+TRIPOD SAFETY STOP: hard position error: L1 counts=18001.000000 hard_limit=18000
+TRIPOD_PREFAULT frame_s=10.1 phase=STARTUP startup_s=30.1 tau=0.0551277042978 ratio=80 group_b_active=1 phase_A=0 phase_B=-0.201758427792 source_seq=17642 source_s=10.1 arrival_s=10.1 source_age_s=0 position_policy=stop soft=9000 samples_required=10 seconds_required=0.5 hard=18000 | L1 group=B masked=0 raw_counts=54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0.000149999992573 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | L2 group=A masked=0 raw_counts=54884.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=54984.828125 target_counts=54984.828125 actual_counts=54884.828125 signed_error=100.001876831 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=8.00014972687 pwm_capped=8.00014972687 pwm_slew_candidate=8.00014972687 pwm_output=8.00014972687 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | L3 group=B masked=1 raw_counts=nan origin_counts=0 home_counts=0 target_raw_counts=nan target_counts=nan actual_counts=nan signed_error=0 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0 pwm_capped=0 pwm_slew_candidate=0 pwm_output=0 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R1 group=A masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0.000149999992573 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R2 group=B masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0.000149999992573 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R3 group=A masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0.000149999992573 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0
+TRIPOD_FAULT_FRAME reason=hard position error: L1 counts=18001.000000 hard_limit=18000 observation_s=1788930538.584404469 frame_s=10.12 phase=RUNNING startup_s=30.1 tau=0.0553777042978 ratio=80 group_b_active=0 phase_A=0.00025 phase_B=-0.201508427792 source_seq=17644 source_s=10.12 arrival_s=10.12 source_age_s=0 position_policy=stop soft=9000 samples_required=10 seconds_required=0.5 hard=18000 | L1 group=B masked=0 raw_counts=36983.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=54984.828125 target_counts=54984.828125 actual_counts=36983.828125 signed_error=18001 target_v=0 actual_v=-1800100 filtered_v=-600033.3125 ff_pwm=0 pwm_raw=0 pwm_capped=0 pwm_slew_candidate=0 pwm_output=0 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | L2 group=A masked=0 raw_counts=54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0 target_v=0.154799059033 actual_v=10000 filtered_v=3333.33325195 ff_pwm=0.0410862366038 pwm_raw=-19.9579849243 pwm_capped=-19.9579849243 pwm_slew_candidate=5.5105266571 pwm_output=0 command_dir=1 saturation_s=0 slew_limited_s=0.01 guard_count=0 guard_s=0 | L3 group=B masked=1 raw_counts=nan origin_counts=0 home_counts=0 target_raw_counts=nan target_counts=nan actual_counts=nan signed_error=0 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0 pwm_capped=0 pwm_slew_candidate=0 pwm_output=0 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R1 group=A masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0 target_v=0.154799059033 actual_v=0 filtered_v=0 ff_pwm=0.0410862366038 pwm_raw=0.0420150309801 pwm_capped=0.0420150309801 pwm_slew_candidate=0.0420150309801 pwm_output=0 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R2 group=B masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0 pwm_capped=0 pwm_slew_candidate=0 pwm_output=0 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R3 group=A masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=54984.828125 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0 target_v=0.154799059033 actual_v=0 filtered_v=0 ff_pwm=0.0410862366038 pwm_raw=0.0420150309801 pwm_capped=0.0420150309801 pwm_slew_candidate=0.0420150309801 pwm_output=0 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0
+[       OK ] TripodMultiLegTest.StartupErrorIsNotErasedByRebasingAndWaitingBRemainsProtected (85 ms)
+[ RUN      ] TripodMultiLegTest.HealthyBlockedStartupCannotEnterRunningOrRetainReceipts
+TRIPOD SAFETY STOP: hard position error: L2 counts=54984.828125 hard_limit=18000
+TRIPOD_FAULT_FRAME reason=hard position error: L2 counts=54984.828125 hard_limit=18000 observation_s=1788930538.641336203 frame_s=10.01 phase=STARTUP startup_s=30.01 tau=0 ratio=80 group_b_active=1 phase_A=-0.0551277042978 phase_B=-0.25688613209 source_seq=17645 source_s=10.01 arrival_s=10.01 source_age_s=0 position_policy=stop soft=9000 samples_required=10 seconds_required=0.5 hard=18000 | L1 group=B masked=0 raw_counts=54984.828125 origin_counts=0 home_counts=0 target_raw_counts=54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | L2 group=A masked=0 raw_counts=0 origin_counts=0 home_counts=0 target_raw_counts=54984.828125 target_counts=54984.828125 actual_counts=0 signed_error=54984.828125 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=4398.78613281 pwm_capped=80 pwm_slew_candidate=2.5 pwm_output=0 command_dir=1 saturation_s=0.01 slew_limited_s=0.01 guard_count=0 guard_s=0 | L3 group=B masked=1 raw_counts=nan origin_counts=0 home_counts=0 target_raw_counts=nan target_counts=nan actual_counts=nan signed_error=0 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0 pwm_capped=0 pwm_slew_candidate=0 pwm_output=0 command_dir=1 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R1 group=A masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=0 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R2 group=B masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=0 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0 | R3 group=A masked=0 raw_counts=-54984.828125 origin_counts=0 home_counts=0 target_raw_counts=-54984.828125 target_counts=54984.828125 actual_counts=54984.828125 signed_error=0.00187499995809 target_v=0 actual_v=0 filtered_v=0 ff_pwm=0 pwm_raw=0.000149999992573 pwm_capped=0.000149999992573 pwm_slew_candidate=0.000149999992573 pwm_output=0 command_dir=0 saturation_s=0 slew_limited_s=0 guard_count=0 guard_s=0
+[       OK ] TripodMultiLegTest.HealthyBlockedStartupCannotEnterRunningOrRetainReceipts (62 ms)
+[ RUN      ] TripodMultiLegTest.StartupKeepsExistingAlignmentToleranceWithoutAnExtraInterlock
+[       OK ] TripodMultiLegTest.StartupKeepsExistingAlignmentToleranceWithoutAnExtraInterlock (57 ms)
+[ RUN      ] TripodMultiLegTest.TransientLagRecoversButContinuousLagTripsAfterSamplesAndTime
+TRIPOD SAFETY STOP: position error L2=10000 counts threshold=9000 duration=0.51s required=0.5s errors=[0 -10000 0 0 0 0]
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.TransientLagRecoversButContinuousLagTripsAfterSamplesAndTime (58 ms)
+[ RUN      ] TripodMultiLegTest.SoftGuardRequiresBothTenSamplesAndHalfASecond
+TRIPOD SAFETY STOP: position error L2=9001 counts threshold=9000 duration=0.9s required=0.5s errors=[0 9001 0 0 0 0]
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.SoftGuardRequiresBothTenSamplesAndHalfASecond (60 ms)
+[ RUN      ] TripodMultiLegTest.HardBoundaryAndInvalidFeedbackBypassTransientAllowance
+TRIPOD SAFETY STOP: hard position error: L2 counts=18000.009766 hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+TRIPOD SAFETY STOP: hard position error: L2 counts=18000.009766 hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+TRIPOD SAFETY STOP: hard position error: L2 counts=nan hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+TRIPOD SAFETY STOP: hard position error: L2 counts=inf hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.HardBoundaryAndInvalidFeedbackBypassTransientAllowance (212 ms)
+[ RUN      ] TripodMultiLegTest.PositionProtectionIgnoresExactlyL3Mask
+TRIPOD SAFETY STOP: hard position error: L2 counts=18001.000000 hard_limit=18000
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.PositionProtectionIgnoresExactlyL3Mask (54 ms)
+[ RUN      ] TripodMultiLegTest.TriggerFrameRetainsRawSignedDataAndFirstReason
+[       OK ] TripodMultiLegTest.TriggerFrameRetainsRawSignedDataAndFirstReason (52 ms)
+[ RUN      ] TripodMultiLegTest.SlewUsesRealElapsedTimeAndImmediateStopBypassesIt
+[       OK ] TripodMultiLegTest.SlewUsesRealElapsedTimeAndImmediateStopBypassesIt (51 ms)
+[ RUN      ] TripodMultiLegTest.RatioRampIsIndependentOfCallbackRate
+[       OK ] TripodMultiLegTest.RatioRampIsIndependentOfCallbackRate (56 ms)
+[ RUN      ] TripodMultiLegTest.TargetRatioAndElapsedTimeNeverAutoCompleteRunning
+[       OK ] TripodMultiLegTest.TargetRatioAndElapsedTimeNeverAutoCompleteRunning (670 ms)
+[ RUN      ] TripodMultiLegTest.ShutdownBrakesFromCurrentReferenceIncludingStartup
+[       OK ] TripodMultiLegTest.ShutdownBrakesFromCurrentReferenceIncludingStartup (81 ms)
+[ RUN      ] TripodMultiLegTest.NormalStopPublishesDisabledCommandThenEnds
+[       OK ] TripodMultiLegTest.NormalStopPublishesDisabledCommandThenEnds (52 ms)
+[ RUN      ] TripodMultiLegTest.NonPositiveSampleTimeFailsClosed
+TRIPOD SAFETY STOP: non-positive motion sample interval
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.NonPositiveSampleTimeFailsClosed (55 ms)
+[ RUN      ] TripodMultiLegTest.ShutdownPublishFailuresCannotPreservePrerequisiteReceipts
+[FATAL] stop command publication failed: injected stop publication failure
+TRIPOD SAFETY STOP: ROS context stopped
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[FATAL] safety event publication failed: injected safety event publication failure
+[       OK ] TripodMultiLegTest.ShutdownPublishFailuresCannotPreservePrerequisiteReceipts (61 ms)
+[ RUN      ] TripodMultiLegTest.SafetyStoppedActionHonorsShutdownWithoutFeedback
+TRIPOD SAFETY STOP: first position error
+TRIPOD_FAULT_FRAME unavailable: no calculated motion sample
+[       OK ] TripodMultiLegTest.SafetyStoppedActionHonorsShutdownWithoutFeedback (64 ms)
+[----------] 28 tests from TripodMultiLegTest (7863 ms total)
+
+[----------] Global test environment tear-down
+[==========] 28 tests from 1 test suite ran. (7863 ms total)
+[  PASSED  ] 28 tests.

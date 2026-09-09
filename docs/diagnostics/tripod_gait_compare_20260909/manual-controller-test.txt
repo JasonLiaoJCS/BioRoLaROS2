@@ -1,0 +1,11 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-slew-build
+Test project /tmp/rinbo-tripod-slew-build
+    Start 9: test_manual_controller
+1/1 Test #9: test_manual_controller ...........   Passed   16.48 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+gtest    =  16.48 sec*proc (1 test)
+
+Total Test time (real) =  16.48 sec

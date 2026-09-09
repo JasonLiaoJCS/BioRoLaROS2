@@ -1,0 +1,115 @@
+schema_version: 1
+revision: 7
+disabled_legs: [L3]
+test_mode: supported_leg_test
+parameters:
+  rinbo_cali:
+    max_pwm: 80.0
+    safety:
+      servo_homing_timeout_s: 20.0
+      hall_search_timeout_s: 30.0
+      stop_timeout_s: 5.0
+      motor_state_timeout_s: 0.25
+      motor_state_source_max_age_s: 0.1
+      power_state_source_max_age_s: 0.35
+      motor_state_required_after_s: 2.0
+      power_guard_enabled: true
+      stop_on_power_stale: true
+      stop_on_voltage: true
+      stop_on_current_limit: true
+      stop_on_bus_current_limit: false
+      require_power_relay: true
+      power_bus_voltage_channel: 7
+      leg_current_channels:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      min_bus_voltage: 18.0
+      max_bus_voltage: 42.0
+      max_current: 5.0
+      max_bus_current: 30.0
+      power_stale_seconds: 0.5
+      power_required_after_seconds: 2.0
+      voltage_trip_samples: 5
+      current_trip_samples: 25
+  rinbo_standing:
+    max_pwm: 80.0
+    safety:
+      hall_search_timeout_s: 30.0
+      rotate_timeout_s: 20.0
+      motor_state_timeout_s: 0.25
+      motor_state_source_max_age_s: 0.1
+      power_state_source_max_age_s: 0.35
+      motor_state_required_after_s: 2.0
+      power_guard_enabled: true
+      stop_on_power_stale: true
+      stop_on_voltage: true
+      stop_on_current_limit: true
+      stop_on_bus_current_limit: false
+      require_power_relay: true
+      power_bus_voltage_channel: 7
+      leg_current_channels:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      min_bus_voltage: 18.0
+      max_bus_voltage: 42.0
+      max_current: 5.0
+      max_bus_current: 30.0
+      power_stale_seconds: 0.5
+      power_required_after_seconds: 2.0
+      voltage_trip_samples: 5
+      current_trip_samples: 25
+  rinbo_tripod_rslip:
+    kp: 0.38
+    kd: 0.003
+    k_ff: 0.005
+    startup_duration: 8.0
+    max_pwm: 80.0
+    start_ratio: 8.0
+    target_ratio: 4.0
+    ratio_step: -5.0e-05
+    slowdown_step: 0.002
+    shutdown:
+      slowdown_duration_s: 2.0
+      timeout_s: 5.0
+    safety:
+      enabled: true
+      stop_on_voltage_sag: true
+      stop_on_over_voltage: true
+      stop_on_current_limit: true
+      stop_on_bus_current_limit: false
+      require_power_relay: true
+      stop_on_power_stale: true
+      stop_on_position_error: true
+      enable_pwm_slew_limit: true
+      power_bus_voltage_channel: 7
+      leg_current_channels:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      min_bus_voltage: 18.0
+      max_bus_voltage: 42.0
+      max_current: 5.0
+      max_bus_current: 30.0
+      max_position_error_counts: 9000.0
+      pwm_slew_rate_per_sec: 250.0
+      power_stale_seconds: 0.5
+      power_required_after_seconds: 2.0
+      motor_state_stale_seconds: 0.25
+      motor_state_source_max_age_s: 0.1
+      power_state_source_max_age_s: 0.35
+      motor_state_required_after_seconds: 2.0
+      voltage_trip_samples: 5
+      current_trip_samples: 25
+      position_error_trip_samples: 10
+      position_error_trip_seconds: 0.5

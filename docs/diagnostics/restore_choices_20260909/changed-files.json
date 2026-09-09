@@ -1,0 +1,19 @@
+[
+  "src/rinbo_fsm/src/rinbo_cali.cpp",
+  "src/rinbo_fsm/src/rinbo_standing.cpp",
+  "src/rinbo_fsm/test/test_standing_multileg.cpp",
+  "src/rinbo_fsm/test/test_manual_motion.cpp",
+  "src/rinbo_fsm/test/test_manual_controller.cpp",
+  "src/rinbo_fsm/test/test_robot_config.cpp",
+  "src/rinbo_fsm/test/test_cali_multileg.cpp",
+  "src/rinbo_fsm/src/safety_invariants.hpp",
+  "src/rinbo_fsm/src/rinbo_manual.cpp",
+  "src/rinbo_fsm/src/manual_motion.hpp",
+  "src/rinbo_fsm/src/robot_config.cpp",
+  "src/rinbo_control/rinbo_control/motion_limits.py",
+  "src/rinbo_control/rinbo_control/console.py",
+  "src/rinbo_control/rinbo_control/presentation.py",
+  "src/rinbo_control/rinbo_control/plans.py",
+  "src/rinbo_control/test/test_plans.py",
+  "src/rinbo_control/test/test_presentation.py"
+]

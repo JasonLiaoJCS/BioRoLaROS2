@@ -1,0 +1,24 @@
+--- before/src/rinbo_fsm/src/safety_invariants.hpp
++++ after/src/rinbo_fsm/src/safety_invariants.hpp
+@@ -26,6 +26,8 @@
+ inline constexpr double kHardMaxMotorSourceAgeS = 0.10;
+ inline constexpr double kHardMaxPowerSourceAgeS = 0.35;
+ inline constexpr double kHardMaxPwm = 80.0;
++// Tripod operator-selected raw FPGA command ceiling; other controllers keep 80.
++inline constexpr double kHardMaxTripodPwm = 3300.0;
+ inline constexpr double kHardMaxMotorArbiterReadyTimeoutS = 5.0;
+ inline constexpr double kHardMaxMotorArbiterHeartbeatStaleS = 0.25;
+ inline constexpr double kHardMaxMotorCommandAckTimeoutS = 0.25;
+@@ -118,6 +120,12 @@
+     }
+ }
+ 
++inline void validate_tripod_pwm(double max_pwm) {
++    if (!std::isfinite(max_pwm) || max_pwm <= 0.0 || max_pwm > kHardMaxTripodPwm) {
++        throw std::invalid_argument("Tripod max_pwm must be finite and in (0,3300] raw FPGA command units");
++    }
++}
++
+ inline void validate_motor_arbiter_contract(
+     const std::string& expected_node_name,
+     double ready_timeout_seconds,

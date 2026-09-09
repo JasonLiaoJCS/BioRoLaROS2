@@ -1,0 +1,21 @@
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        # Rinbo Control Panel (GUI)
+        Node(
+            package='rinbo_panel',
+            executable='rinbo_control_panel.py',
+            name='rinbo_control_panel',
+            output='screen',
+        ),
+        
+        # Rinbo Data Recorder
+        Node(
+            package='rinbo_data_recorder',
+            executable='rinbo_data_recorder',
+            name='rinbo_data_recorder',
+            output='screen',
+        ),
+    ])

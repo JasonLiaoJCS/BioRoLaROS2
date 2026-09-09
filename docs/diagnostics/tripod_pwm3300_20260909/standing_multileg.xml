@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="10" failures="0" disabled="0" errors="0" time="2.73" timestamp="2026-09-09T20:15:57" name="AllTests">
+  <testsuite name="StandingMultiLegTest" tests="9" failures="0" disabled="0" errors="0" time="2.69" timestamp="2026-09-09T20:15:57">
+    <testcase name="All64MasksRequireActualHealthyStandingTransitions" status="run" result="completed" time="2.383" timestamp="2026-09-09T20:15:57" classname="StandingMultiLegTest" />
+    <testcase name="ReenabledL3IsRequiredAndItsHallTimeoutInvalidatesReceipts" status="run" result="completed" time="0.033" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="ShutdownPublicationFailureStillInvalidatesCompletedReceipt" status="run" result="completed" time="0.038" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="RelaxedRotateDeadlineAllowsLateArrivalButStillRequiresTarget" status="run" result="completed" time="0.037" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="OppositeL1FeedbackStopsBeforeItCanChaseAnotherRevolution" status="run" result="completed" time="0.03" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="PassingTargetAtSpeedCannotCompleteAndHoldDivergenceInvalidates" status="run" result="completed" time="0.038" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="CommandDirectionsMatchCalibrationConventionForBothSigns" status="run" result="completed" time="0.029" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="ReportedR2Error218FailsOldToleranceAndPassesConfiguredTolerance" status="run" result="completed" time="0.069" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+    <testcase name="WiderArrivalToleranceStillRejectsPersistentErrorOutsideBand" status="run" result="completed" time="0.032" timestamp="2026-09-09T20:16:00" classname="StandingMultiLegTest" />
+  </testsuite>
+  <testsuite name="StandingReference" tests="1" failures="0" disabled="0" errors="0" time="0.001" timestamp="2026-09-09T20:16:00">
+    <testcase name="SmoothStartAndStopNeverAskForReverseOrExceedCruiseSpeed" status="run" result="completed" time="0.001" timestamp="2026-09-09T20:16:00" classname="StandingReference" />
+  </testsuite>
+</testsuites>

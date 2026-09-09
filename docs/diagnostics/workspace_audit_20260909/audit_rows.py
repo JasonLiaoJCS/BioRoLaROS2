@@ -1,0 +1,100 @@
+"""Reviewed semantic comparison; choices are deliberately unset."""
+from collections import Counter
+ROWS=[]
+COUNTS=Counter()
+GROUPS={'C':'Calibration 校正','S':'Standing 站立','T':'Tripod 步態','G':'共用設定、座標與保護','B':'Bridge 通訊與停止','M':'逐腳動作','U':'操作台與連線流程','R':'Sim2Real／策略與轉接','D':'記錄、監控與訊息','O':'舊版其他套件／建置','F':'FPGA 與 Windows 邊界'}
+C='src/rinbo_fsm/src/rinbo_cali.cpp';S='src/rinbo_fsm/src/rinbo_standing.cpp';T='src/rinbo_fsm/src/rinbo_tripod.cpp';CFG='src/rinbo_fsm/src/robot_config.cpp';SITE='/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml';SAFE='src/rinbo_fsm/src/safety_invariants.hpp';B='src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp';M='src/rinbo_fsm/src/rinbo_manual.cpp';R='src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py'
+def add(group,title,old,current,effect,advice,sources,provenance='目前源碼／設定可確認；完整逐行作者無法由未提交檔案判定'):
+ COUNTS[group]+=1
+ ROWS.append(dict(id=f'{group}{COUNTS[group]:02}',group=GROUPS[group],title=title,old=old,current=current,effect=effect,recommendation=advice,sources=sources.split(';'),provenance=provenance,choice='',note=''))
+for g,src in [('C',C),('S',S)]:
+ add(g,'KP 位置修正係數','0.35','0.08','變更位置誤差造成的 PWM；與 KD、前饋和 PWM 上限一起檢視。','C：依實測選值；不要把 Tripod 的 0.38 自動套到這裡',src+';'+SITE,'目前現場調整可確認；最近 Tripod 恢復沒有更動此值')
+ add(g,'KD 速度修正係數','0.002','0.006','現值為原版 3 倍；實際影響也取決於速度濾波。','C：與該階段速度回饋共同評估',src+';'+SITE)
+ add(g,'K_FF 速度前饋','0.02','0.005','相同目標速度下前饋為原版四分之一；不是位置保護。','C：與 PWM／摩擦補償成套评估',src+';src/rinbo_fsm/src/motion_effort.hpp;'+SITE)
+ add(g,'額外摩擦補償','無，0 PWM','40×tanh(target_velocity/153.6) PWM','速度接近零時平滑歸零；目前 80 PWM 上限下影響比例大。','C：量測後決定，不能以固定補償取代控制調校','src/rinbo_fsm/src/motion_effort.hpp;'+SITE)
+ add(g,'控制速度濾波','原始位置差分，無濾波','固定 20 ms；原始速度仍供停穩等判斷','減少速度尖峰，也增加回饋延遲；不等於輸出 slew。','C：比較原始／短時間常數；不要直接改共用預設影響別的模式','src/rinbo_fsm/src/control_velocity.hpp;'+src)
+ add(g,'主驅動最大 PWM','500','80，且原生共用硬上限也為 80','只改 YAML 到 500 會被拒絕；需同步驗證器，Standing 上限還影響 Manual。','C：與增益、負載和該模式一起評估，不沿用 Tripod 3300',src+';'+SAFE+';'+SITE)
+ if g=='C':
+  add(g,'尋 Hall 巡航速度','0.2π rad/s＝36°/s＝5529.6 counts/s','相同','這個速度並未被降低；不可把較低 PWM 誤認成目標速度變慢。','B：相同，無須回復',src)
+  add(g,'尋 Hall 起步曲線','直接切到固定速度的線性位置參考','0.5 秒加速到同一巡航速度','速度上限不變；移除 ramp 會恢復起步速度跳變。','B：保留平滑起步','src/rinbo_fsm/src/motor_tracking.hpp;'+src,'9/8 方向／到位診斷文件記載的修正')
+  add(g,'伺服定位等待上限','無明確 timeout','60 秒；可設範圍 >0～600 秒','原版可能永遠等不到定位；目前逾時報出第一個原因。','B：目前 60 秒；若確有慢速需求可選 C',src+';'+SITE)
+  add(g,'主馬達尋 Hall 等待上限','無明確 timeout','60 秒；可設範圍 >0～600 秒','位置／尋零等待，不是通訊失聯期限。','B：目前 60 秒',src+';'+SITE)
+  add(g,'停穩／歸零等待上限','無明確 timeout','各階段 15 秒；可設範圍 >0～600 秒','停止與歸零各有期限；操作台等待预算也依這些設定計算。','B：15 秒；與歸零確認一起保留',src+';'+SITE)
+  add(g,'Hall 後停穩與歸零完成判定','速度 <500 counts/s 持續 0.3 秒，送一次 reset 就 DONE','先停穩，再等待 |raw position|≤100 counts 且低速回讀；允許有界 reset 重送','原版送出命令不代表歸零已完成；恢復可能影響下一步站立原點。','B：保留回讀確認',src,'既有校正修正；最近 Tripod 改動保留此行為')
+  add(g,'伺服中立目標／到位容差','[740,2565,3283,1944,2071,989]；容差 100','相同；差值改用較寬的帶符號整數計算','硬體零點不由程式猜；全域 servo_control_mode 仍可能控制所有已接伺服。','B：保留既有目標與數值修正',src)
+  add(g,'只校正選中腳與成功紀錄','固定全六腿，沒有分腳成功憑據','支援 --plan 選中腳；其他主驅動不參與；保存已確認腳位紀錄','與 robot.sh 逐腳控制、L3 屏蔽相依；不能單獨刪除憑據流程。','B：保留逐腳校正能力',src+';'+CFG)
+ else:
+  add(g,'尋 Hall／半圈軌跡','尋零直接36°/s；半圈約5秒，終點速度直接歸零','尋零0.5秒加速；半圈加減速，約5.5秒；仍36°/s／180°','最高速度與半圈終點相同，時間與速度連續性不同。','B：保留平滑切換','src/rinbo_fsm/src/motor_tracking.hpp;'+src)
+  add(g,'到位容許位置誤差','<200 counts，約1.30°','<1000 counts，約6.51°（以55296 counts/rev換算）','這是到位門檻；不是 Tripod 的9000/18000追蹤門檻。','B：依先前明確要求放寬後的值',src+';'+SITE,'9/9 19:53 motion_limits 部署記錄可追溯')
+  add(g,'到位停穩條件','只檢查到時且位置到位','還需速度 <500 counts/s、連續0.3秒','避免高速經過目標就被判定完成；可分別在備註指定速度／時間。','B：保留停穩確認',src+';'+CFG)
+  add(g,'尋 Hall／轉半圈等待上限','均無明確 timeout','均60秒；可設 >0～600秒','兩個階段分別计時；未完成會留下實際位置、誤差和速度。','B：保留60秒，有需求再選 C 分別調整',src+';'+SITE)
+  add(g,'到位後保持出力','0.1×位置誤差，PWM限幅±300，沒有速度阻尼','min(KP,0.1)×誤差−KD×濾波速度；現值0.08/0.006，限幅±80','不只是到位門檻；它影響等候 Tripod 前的姿態保持。','C：保持阻尼，與上限／KP成套評估',src)
+  add(g,'保持位置遺失保護','無','>12000 counts 時停止，約78.13°；可設上界55296 counts','此停止仍存在；未被 Tripod 的 warn_only 影響。','C：區分保持失效與一般到位，不只改錯誤文字',src+';'+CFG)
+  add(g,'Standing 完成與退出','全6腳DONE後持續保持，印ALL LEGS STANDING','全部健康腳DONE後持續保持，寫成功紀錄；SIGINT走新版停止','正常完成不是自動退出；恢復舊版需同步六腿條件與流程。','B：保留新版停止及可驗證完成',src+';'+CFG)
+# Tripod: values already restored at revision 14 remain separately selectable.
+for title,old,now,effect,advice,source in [
+ ('KP','0.38','0.38','已恢復，無額外改值。','B：已與原版相同',T+';'+SITE),
+ ('KD','0.003','0.003','使用者已確認不是0.03。','B：已與原版相同',T+';'+SITE),
+ ('K_FF','0.005','0.005','速度前饋相同。','B：已與原版相同',T+';'+SITE),
+ ('摩擦補償','0','0','已取消先前40 PWM補償。','B：已與原版相同','src/rinbo_fsm/src/motion_effort.hpp;'+SITE),
+ ('速度回饋','原始差分','5 ms濾波；設0可用原始差分','5ms為離線折衷，尚非實機最佳值。','B：先保留5ms；要純原版比較可選A','src/rinbo_fsm/src/control_velocity.hpp;'+T),
+ ('起步時間','4秒','8秒','8秒也已存在本機已提交HEAD；不是全部由最近修改引入。','B：依你明確指定8秒',T+';'+SITE),
+ ('起步曲線／銜接','三次曲線，起步末端帶步態速度','五次靜止到靜止，接短暫平滑相位進入','總行程仍一圈；不只是延長時間。','B：保留平滑銜接，若選A須與起步時間一起驗證','src/rinbo_fsm/src/tripod_reference.hpp;'+T),
+ ('起步結束的位置基準','各腿實際位置','相同，另留TRIPOD_REBASE紀錄','起步残差會留紀錄，但不再追補到規劃終點。','B：已恢復原版',T),
+ ('Group B 啟動基準','B組啟動時再取B組實際位置','相同，但略過L3；只做一次','不重設A組、不重設硬體encoder、不每次跟著實際位置改零點。','B：已恢復原版',T),
+ ('T-ratio 起點／目標','8→1','8→1','到1後持續RUNNING；T-ratio是時間縮放，不是位置保護threshold。','B：已恢復原版',T+';'+SITE),
+ ('加速計時方式','每callback減0.0002；1kHz時約35秒由8到1','同名ratio_step=-0.0002，乘dt/0.001；每秒減0.2','原版速度取決於回讀頻率；目前用實際經過時間。','B：保留原版名目速度與新版時間計算',T),
+ ('最大PWM／額外slew','3300；無額外PWM slew','3300；slew OFF，250/s僅為未啟用的儲存值','不能看到設定裡250就誤判它仍限制Tripod。','B：已與原版出力上限一致',T+';'+SITE),
+ ('步態多項式／A、B分組','A=R1,L2,R3；B=L1,R2,L3；B延後半週期','相同基本軌跡與分組；L3不輸出','常數與平滑進入後的軌跡已做數值比對；不是重新設計A/B。','B：相同；L3另看G01',T+';src/rinbo_fsm/src/tripod_reference.hpp'),
+ ('負相位與跨圈','floor後負相位再減一圈，會重複扣圈','移除多減的一圈，保留多圈位置，不採最短角度差','此為已確認邊界錯誤；正常活動腳通常不走負相位，非所有實跑異常的原因。','B：保留修正',T),
+ ('有限位置誤差保護','沒有這組軟／硬位置停止','現場warn_only；軟9000、10筆且0.5秒；硬18000在stop模式才停','警告值不代表目前會自動停；無效數字仍獨立停止。','B：保留你選擇的warn_only與診斷','src/rinbo_fsm/src/tripod_reference.hpp;'+T+';'+SITE),
+ ('正常停止與執行時間','STOPPING每callback ratio+0.002直到10；沒有RUNNING總時限','從最後參考2秒減速、5秒期限；RUNNING仍無總時限','目前不會在到target ratio後自動完成；仍依停止輸入結束。','B：依你明確指定保留新版停止',T+';src/rinbo_fsm/src/tripod_reference.hpp'),
+ ('觸發前後診斷','pid/data與一般日誌，無完整首因／觸發框','TRACE/history、target/actual、raw/filtered速度、原始/限幅PWM、飽和時間、首個原因','追蹤已確認的命令限制問題；不更改控制目標。','B：保留可核對紀錄',T)]:add('T',title,old,now,effect,advice,source,'9/9 Tripod比對、21:09與21:42部署／本次對話可追溯；原版相同項另列')
+add('G','L3及全域主驅動屏蔽','固定六腿，沒有共享mask','原生FSM L3屏蔽，supported_leg_test','選A會涉及恢復六腿；你目前明確說L3仍故障。Servo全域模式不是逐腳主驅動mask。','B：保留L3；不把其他項A當成解除L3',SITE+';src/rinbo_fsm/src/disabled_legs.hpp')
+add('G','編碼器比例／方向／零點','Cali/Standing 55296且左反號；Tripod54984.83且右反號','兩套历史慣例均保留；未盲目統一','比例差約0.56%；C不能用猜測取代齒比、編碼器或一圈量測。','B：先保留；實體規格未確認',C+';'+S+';src/rinbo_fsm/src/tripod_reference.hpp')
+add('G','Cali/Standing反方向行程保護','沒有','相對起點反向超過500 counts即停止','不是禁止所有反向PWM；是辨識實際encoder總行程方向。','B：保留辨識；要調數字可選C','src/rinbo_fsm/src/motor_tracking.hpp;'+C+';'+S)
+add('G','供電電壓範圍','FSM未檢查PowerState','現場18～42V；超界5筆觸發；原生可設定硬界18～42V','動作限制與供電界線是不同層；上電前工具另有門檻。','B：保留供電檢查',SAFE+';'+SITE)
+add('G','腿電流／bus電流保護','FSM未檢查','腿5A連續25筆；可設硬界10A/100筆；bus30A設定但stop_on_bus_current_limit=false','不能宣稱bus30A目前會自動停止；單位是回讀電流，非PWM。','B：保留現場腿保護；C需硬體額定依據',SAFE+';'+SITE)
+add('G','馬達／電源回讀失聯期限','沒有完整watchdog','馬達0.25s、電源0.5s；初次資料最多2s；motor來源年齡0.10s、power0.35s','失聯時舊命令不可視為有效；与Bridge100ms命令watchdog是不同方向。','B：保留有效通訊檢查',SAFE+';src/rinbo_fsm/src/ros_input_guard.hpp')
+add('G','來源身分／序號／QoS','一般訂閱；Cali/Standing/Tripod queue10','最新資料QoS、唯一Bridge來源GID／序號／時間檢查；啟動graph準備最多8s','部分命令與回讀握手欄位依賴新版Bridge。','B：保留整組，不能只換舊Bridge','src/rinbo_fsm/src/ros_input_guard.hpp;src/rinbo_fsm/src/latest_state_qos.hpp;src/rinbo_fsm/src/bridge_input_discovery.hpp')
+add('G','馬達啟用握手','收到回讀就能開始產生有效命令','等待Bridge epoch、disabled rearm及相關active ack；ready5s、heartbeat/ack0.25s','用來區分送出命令與Bridge接受命令；兩端必須相容。','B：保留新版Bridge/FSM配套','src/rinbo_fsm/src/motor_arbiter_handshake.hpp;'+B)
+add('G','唯一設定來源與可調範圍','大多C++常數，各檔獨立','固定site YAML；未知參數／-p／params-file覆寫被拒絕；有原子tune入口','恢復常數可能讓GUI顯示值與實際值分離；改超出硬上界必須連驗證器一起修改。','B：保留單一來源；數值按各行決定',CFG+';src/rinbo_fsm/src/robot_config.hpp')
+add('G','成功紀錄與單一動作限制','無跨程序成功憑據／排他鎖','revision/hash/boot ID綁定；未完成不能偽造；共享鎖排除同時動作','與Control Panel重試、校正快取、Windows核對相依。','B：保留，優化錯誤說明可選C',CFG)
+add('B','Core目標IP與環境變數','程式setenv CORE_IP=192.168.30.12','啟動參數實際192.168.30.254；YAML預設.2；CORE_MASTER_ADDR=.254:50051；Jetson=.8','原版IP不是當前設備位址；不能逐字回復造成連錯。','B：保留現場位址',B+';src/rinbo_ros_bridge/config/redrhex_safe.yaml')
+add('B','Bridge motor PWM／servo範圍驗證','直接轉送，Bridge無此數值檢查','PWM 0～3300；servo encoder0～65535，無效命令拒絕','Tripod3300與Bridge3300已一致；Windows仍需期望值3300。','B：保留驗證與3300','src/rinbo_ros_bridge/src/motor_output_limits.hpp;src/rinbo_ros_bridge/config/redrhex_safe.yaml')
+add('B','命令失聯與過期','無100ms命令watchdog／時戳上限','motor命令timeout100ms、max age100ms；power age200ms','不應把UI動作時長當成有效命令期限。','B：保留',B+';src/rinbo_ros_bridge/config/redrhex_safe.yaml')
+add('B','單一發布者／rearm／ack','任何發布者命令可直接轉送','唯一來源；換來源先5筆停用命令；epoch及相關ack','現行FSM不能直接搭配完全原版Bridge，否則等不到ack。','B：保留兩端配套',B+';src/rinbo_fsm/src/motor_arbiter_handshake.hpp')
+add('B','軟體急停與上電命令epoch','沒有目前的鎖定與跨epoch機制','estop鎖定；false不直接解除；上電命令限制來源與順序，全關電命令有独立處理','保留急停、關電語意，不用位置誤差放寬來清除急停狀態。','B：保留',B+';src/rinbo_ros_bridge/src/power_command_epoch_guard.hpp')
+add('B','回讀時間戳與重播處理','直接將sbRIO stamp換成ROS stamp','ROS stamp採Jetson收到新回讀時間；保留seq；完全重播封包不轉送','兩台時鐘不同時可避免錯判；也不是已量到完整端到端延遲。','B：保留已驗證的來源時間契約',B)
+add('B','停止重送／心跳／關閉','主迴圈結束後shutdown，缺明確停用重送','停用重送20ms；心跳50ms；輸出狀態20ms；退出8筆disabled+3筆off','Bridge退出與只停止Tripod不同；舊版原始碼不等於已證實安全關電。','B：保留',B+';src/rinbo_ros_bridge/config/redrhex_safe.yaml')
+add('B','通訊主迴圈／消息數值映射','主迴圈1000Hz；六腿按原順序直接映射enable/dir/voltage','主迴圈仍1000Hz；保留主要訊息映射，新增驗證與診斷鏡像','名目1000Hz不是實測收到的封包率；PWM未被換算成百分比。','B：核心映射相同',B)
+add('M','逐腳動作模式與參考','無rinbo_manual；舊PID測試不是等價入口','相對位移／定點／速度／相位；平滑對齊、加減速與收尾','選A代表回到不使用此新增入口；不能直接以舊PID测试取代。','B：保留逐腳操作','src/rinbo_fsm/src/manual_motion.hpp;'+M)
+add('M','逐腳KP/KD/FF與摩擦','無此控制器','沿用Standing設定：0.08/0.006/0.005、摩擦40、20ms濾波','調Standing係數會同時影響此路徑；需先拆設定才能完全獨立。','C：評估拆成獨立參數，避免互相牽動',M+';'+CFG)
+add('M','逐腳PWM cap與slew','無此控制器','min(plan cap,Standing cap)=80；硬slew250 PWM/s','Tripod移除slew不影響Manual；可能限制快速動作，需個別評估。','C：用逐腳需求評估，不直接套Tripod3300',M+';'+SAFE)
+add('M','逐腳追蹤門檻／錯誤文字','無此控制器','實際>12000 counts停止，但訊息仍寫>5000','已確認訊息與實際程式不一致；本輪不改，先列入恢復決策。','C：修正文案對齊12000；是否改門檻另註明',M+';'+SAFE)
+add('M','逐腳對齊完成條件','無此控制器','對齊後位置差≤2°、速度≤5°/s；超過不進入主動作','與持續追蹤門檻不同。','C：依實際對齊需求評估',M)
+add('M','逐腳時間／速度／加速度','無此控制器','原生可填時間1～60s、速度/加速度1～90；GUI目前L2速度90°/s、加速度10°/s²、10s、PWM80','這是儲存的下次動作設定，不代表正在執行；GUI預設10°/s而原生Plan預設30。','C：檢視目前90°/s需求與80/250相容性','src/rinbo_fsm/src/manual_motion.hpp;src/rinbo_control/rinbo_control/plans.py;/home/jetson/.local/state/rinbo_control/settings.json')
+add('U','文字Control Panel與步驟','GitHub只有另一套PyQt GUI','robot.sh：選脚/計畫/五階段執行/快捷與收藏/現場模式/到位限制','目前文字台主動作是Manual，沒有直接複製Windows Tripod整套流程。','B：保留文字入口','robot.sh;src/rinbo_control/rinbo_control/console.py')
+add('U','第1步連線自動整理','舊GUI只Popen本機Bridge','按1核對並正常停止已識別動作、整理過期owned紀錄、重建自有SSH；重用有效Core/driver/Bridge','不清除無關SSH；登入本身不動作。第3步仍拒絕其他動作占用。','B：保留已明確選擇的第1步行為','src/rinbo_control/rinbo_control/connection_recovery.py;src/rinbo_control/rinbo_control/runtime.py;src/rinbo_control/rinbo_control/sbrio.py','本次對話與connection_recovery文件可追溯')
+add('U','操作台消失／子程序生命週期','舊GUI在closeEvent主動送SIGINT，無parent-death wrapper','guardian用parent-death SIGINT通知子程序；含其啟動的Bridge','與Windows nohup wrapper不同；不能混稱關閉任意監看都會關Bridge。','B：保留受控子程序語意；獨立背景服務另選C','src/rinbo_control/rinbo_control/guardian.py;src/rinbo_control/rinbo_control/runtime.py')
+add('U','正常完成／失敗後供電流程','舊GUI按鈕直接發power command；reset全關','Manual正常完成用sensors模式保留感測器、關relay；執行階段失败/取消嘗試all-off','Tripod單獨SIGINT不等同此Manual流程，也不等同整機停止。','B：保留清楚區分；如要統一流程可選C','src/rinbo_control/rinbo_control/runtime.py')
+add('U','上電前工具門檻','舊GUI沒有同等核對','power tool健康腿電流須<3A，與FSM動作時5A不同','不同階段／層的門檻；不要只改FSM後以為所有地方都放寬。','C：依上電前與運轉中用途分别評估','src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py;src/rinbo_control/rinbo_control/runtime.py')
+add('U','校正快取／重試與錯誤說明','沒有sensor_epoch與原生成功紀錄核對','本次操作台完成校正、sensor_epoch未變、原生紀錄有效才沿用；失敗不自動重跑','選A需重做整個狀態判斷，不是清除一個error旗標。','B：保留紀錄核對；精簡流程可選C','src/rinbo_control/rinbo_control/runtime.py;src/rinbo_control/rinbo_control/feedback.py')
+add('R','Sim2Real整體與所選profile','GitHub没有這三套redrhex套件','有redrhex_msgs、lowlevel_bridge、rl_controller與多組profile；目前未觀察到運行中的策略程序','沒有可直接恢復的舊版RL數字；A代表停用新增路徑而非填0。','B：保留原始碼；啟用profile需另確認','src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml;src/redrhex_rl_controller/config/redrhex_policy.yaml')
+add('R','Sim2Real的腿位mask','無RL設定','原生FSM=L3；site full_feedback兩份=[]；sensor_v2兩份=[L1]','这些檔案不自動等同原生site mask；必須按實際launch配置配對。沒有因此修改L3。','C：在選定profile後對齊L3，不能現在盲改全部模板','/home/jetson/redrhex_site/redrhex_policy_full_feedback_rig.yaml;/home/jetson/redrhex_site/redrhex_policy_sensor_v2_suspended_experimental.yaml;src/redrhex_rl_controller/redrhex_rl_controller/rinbo_leg_mask.py')
+add('R','RL速度到PWM轉換／限幅','無','基礎rinbo adapter：40 PWM/(rad/s)、cap80、slew250/s','不是Tripod PD公式，也不是SBReal已量測的馬達模型；部分profile不同。','C：確認實際profile及馬達關係後調整',R+';src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml')
+add('R','RL encoder／方向／伺服換算','無RL對照','基礎54984.83 counts/rev、encoder左負右正；ABAD1000 counts/rad為待校準值','引用Tripod的counts常數不是硬體規格證據；方向還有命令sign hook。','C：量測後設定，不猜比例與方向',R+';src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml')
+add('R','RL初始站姿到位','無','base：2s參考/12s timeout/.12rad/.25rad/s/.5s；site兩份timeout30s','不是rinbo_standing；Control Panel選15的Sim2Real頁只改明確選中的profile。','C：按選定profile評估，不改Cali/Standing','src/rinbo_control/rinbo_control/sim_motion_limits.py;src/redrhex_rl_controller/config/redrhex_policy.yaml')
+add('R','RL主驅動與ABAD動作限幅','無','base：主速度30rad/s、slew120rad/s²；ABAD角0.7rad、slew6rad/s；site rig通常12與1','不同profile數字差異很大，完整值另附CSV；不宣稱base目前生效。','C：選定profile後統一操作需求','src/redrhex_rl_controller/config/redrhex_policy.yaml;src/redrhex_rl_controller/redrhex_rl_controller/safety_filter.py')
+add('R','RL資料、推論、姿態等保護','無','base有姿態0.7rad、sensor0.10s、cmd0.25s、推論8ms／loop30ms等；profile有更嚴格契約','硬體觀測缺失、ONNX契約或mask不符不能由提高PWM修復。','B：保留有效資料；閾值C需個別評估','src/redrhex_rl_controller/redrhex_rl_controller/rl_controller_node.py;src/redrhex_rl_controller/config/redrhex_policy.yaml')
+add('R','RL policy檔案／契約／啟動使能','無','ONNX觀測/動作契約、hash與啟動輸出檢查；基礎enable_policy_on_start=false、enable_motor_output_on_start=false','模型／硬體校準未證實；本輪不載入模型或執行推論／動作。','B：保留契約檢查與明確啟動','src/redrhex_rl_controller/redrhex_rl_controller/policy_validation.py;src/redrhex_rl_controller/config/redrhex_policy.yaml')
+add('R','RL供電與通訊門檻','無','base adapter18～30V/3A/3筆；site rig18～42V/5A；state0.25s、power0.35s、cmd0.10s','再次說明profile與native FSM不同；不是全部平台已統一成同一數字。','C：確認所選profile；保留供電／通訊功能','src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml;'+R)
+add('D','資料記錄內容與CSV介面','trigger後依pid/data寫單一CSV；actual右腿反號','summary.csv/events.csv/metadata；100Hz摘要；原始motor state、命令、power、debug、首因；auto_start預設true','欄名／座標不能直接拿舊分析程式套用；CSV摘要不是每筆控制回讀。','B：保留完整記錄；需要舊格式可選C加相容匯出','src/rinbo_data_recorder/src/rinbo_data_recorder.cpp;src/rinbo_data_recorder/config/logging_tripod_safety.yaml')
+add('D','浏览器監控／錄製','無rinbo_monitor','唯讀狀態、原始/轉送PWM、錄製；port8088、顯示過期0.5s','顯示門檻不會改控制器保護；頁面無上電／馬達控制路由。','B：保留獨立監看','src/rinbo_monitor/rinbo_monitor/server.py;src/rinbo_monitor/rinbo_monitor/panel.html')
+add('D','ROS消息契約','9個基本.msg','基本.msg內容相同（只有換行差）；新增ControllerDebugStamped、SafetyEventStamped','不是把原來motor/command欄位重編碼；新增型別需相容建置。','B：保留新增診斷型別','src/rinbo_msgs/CMakeLists.txt;src/rinbo_msgs/msg/ControllerDebugStamped.msg;src/rinbo_msgs/msg/SafetyEventStamped.msg')
+add('O','舊PyQt GUI與啟動名稱','有rinbo_panel；Tripod按鈕呼叫rinbo_tripod_rslip，但同倉庫CMake只產生rinbo_tripod','本機沒有此package；Windows桌面App也不是這份原始碼','已確認舊GUI／CMake入口名稱不一致；整包照抄不能保證可用。','C：若要恢復舊GUI，保留外觀但修正入口與新版握手','docs/diagnostics/workspace_audit_20260909/upstream/src/rinbo_panel/scripts/rinbo_control_panel.py;docs/diagnostics/workspace_audit_20260909/upstream/src/rinbo_fsm/CMakeLists.txt','此package在本機HEAD本來就不存在，不能歸因為本次助理刪除')
+add('O','舊PID測試／單腿RSLIP','有rinbo_pid_test：正弦5000 counts、0.2Hz、PWM500；另有rinbo_traj_rslip','本機沒有這兩支；另有rinbo_sin_sweep退役stub及Manual入口','原版測試直接發布motor命令；不同於新版逐腳控制，不適合未核對直接混用。','C：如需測PID，做相容獨立測試入口','docs/diagnostics/workspace_audit_20260909/upstream/src/rinbo_pid_test/src/rinbo_pid_test.cpp;src/rinbo_fsm/src/rinbo_sin_sweep.cpp','舊package在本機HEAD不存在；退役stub是目前新增層')
+add('O','IMU子模組','gitlink src/microstrain_inertial','本機src沒有此子模組','GitHub樹只有指向commit；沒有同倉庫.gitmodules，不能假裝已拿到完整IMU驅動內容。','C：若需要IMU，先確認實際型號、來源與安裝位置','docs/diagnostics/workspace_audit_20260909/inventory.json','本機HEAD也沒有該gitlink；不是本次刪除')
+add('O','建置與README','ROS2 ament CMake；README混有Corgi/ROS1 catkin說明','新增yaml-cpp/OpenSSL/診斷消息、robot_config靜態庫與測試；README改為當前入口','不能用舊README判定整包應改回ROS1；恢復來源要同步相依套件與執行檔名稱。','B：保留當前建置；只按所選控制項調整','src/rinbo_fsm/CMakeLists.txt;src/rinbo_ros_bridge/CMakeLists.txt;README.md')
+add('F','FPGA console生命週期候選','本GitHub沒有FPGA driver原始碼，無法以此倉庫定義原版','tools/fpga_lifecycle是依sbRIO歷史正式源碼製作的候選；文件標示未部署','候選修正EOF/HUP/ERR/忙迴圈、背景/監看責任及off流程；不能當成目前sbRIO已運行版本。','B：保留候選供另案部署決策，不自動替換驅動','tools/fpga_lifecycle/README.md;tools/fpga_lifecycle/baseline/console.cpp;tools/fpga_lifecycle/src/console.cpp','本次對話／候選測試紀錄可追溯；本轮沒有遠端部署')
+add('F','Windows期待值／停止入口','本GitHub的PyQt GUI不是現用Windows程式；無Windows source','已有交接prompt；Bridge expected PWM需3300、site revision/hash動態讀取；Tripod stop≠all-off','無法在這台Orin核對Windows目前實作；不能說已替Windows修改完成。','C：Windows提供當前程式後另比對；Orin先保留現況','docs/windows_bridge_pwm3300_prompt_20260909_zh_TW.md;docs/tripod_restore_20260909_zh_TW.md','本次對話有Windows日誌與交接紀錄，無其原始碼')

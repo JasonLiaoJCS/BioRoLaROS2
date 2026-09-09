@@ -1,0 +1,40 @@
+{
+  "tests": 49,
+  "failures": 0,
+  "errors": 0,
+  "suites": [
+    {
+      "suite": "test_tripod_multileg.gtest.xml",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 5.487
+    },
+    {
+      "suite": "test_cali_multileg.gtest.xml",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 3.185
+    },
+    {
+      "suite": "test_standing_multileg.gtest.xml",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 2.65
+    },
+    {
+      "suite": "tripod-tuning-tests.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 0.173
+    }
+  ],
+  "hardware_exercised": false,
+  "live_deployment": false,
+  "build_dir": "/tmp/rinbo-tripod-fix-build",
+  "ros_domain_id": 231,
+  "ros_localhost_only": true
+}

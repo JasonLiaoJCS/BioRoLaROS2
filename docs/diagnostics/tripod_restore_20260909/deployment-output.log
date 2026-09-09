@@ -1,0 +1,37 @@
+{
+  "deployed_at": "2026-09-09 21:42:43 +0800",
+  "backup": "/home/jetson/.local/state/rinbo-control-backups/tripod-restore-pa9q_9em",
+  "revision": 14,
+  "site_sha256": "c657c377f47f4277a6b4f1b7e2abb08e1f68eca36c5541df5a28d8e6587dda90",
+  "tripod_updates": {
+    "kp": 0.38,
+    "kd": 0.003,
+    "k_ff": 0.005,
+    "friction_pwm": 0.0,
+    "startup_duration": 8.0,
+    "start_ratio": 8.0,
+    "target_ratio": 1.0,
+    "ratio_step": -0.0002,
+    "velocity_filter_time_constant_s": 0.005
+  },
+  "binaries": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": "8084d10c2fa69867df082db21e308c7ef52810a6de151a64fe026a683fe94218",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": "145272c43eb7dbca2c39259063f9ab6c56ec3e227cc73b368bfaad39bd94569d",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": "7013d32d37da21eeaaabe0d7c20740e361928082995c10fd3d7878e3189e3d5c",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": "2afb1b2562e2b0c67ccc9e12defd82324cfaf7454db2f9334dbc5f8ef936d505",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": "c20c56243d7812da3b3474641480a20833946bb2abc2058ad5d0515d8bad570d"
+  },
+  "native_tests": {
+    "test_cali_multileg.gtest": 15,
+    "test_control_velocity.gtest": 5,
+    "test_latest_state_safety.gtest": 29,
+    "test_manual_controller.gtest": 13,
+    "test_manual_motion.gtest": 7,
+    "test_motion_effort.gtest": 4,
+    "test_motor_arbiter_handshake.gtest": 42,
+    "test_robot_config.gtest": 25,
+    "test_standing_multileg.gtest": 10,
+    "test_tripod_multileg.gtest": 33
+  },
+  "hardware_actions": []
+}

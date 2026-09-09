@@ -1,0 +1,3 @@
+<launch>
+    <node name="rinbo_ros_bridge" pkg="rinbo_ros_bridge" type="rinbo_ros_bridge.sh" output="screen" />
+</launch>

@@ -1,0 +1,11 @@
+本次原始Orin日誌已確認L2硬位置誤差18020.730469 > 18000，並非時間到或target_ratio到達而停止。最後ratio約7.91，目標4；STARTUP完成後仍持續RUNNING約2.2秒才觸發保護。
+
+Windows擷取片段在啟動成功後結束，Orin原始日誌有後續故障。GUI的「操作已完成」代表啟動工作的返回，不能代表Tripod正常完成或持續健康運轉；Windows程式需查其實際監看／狀態轉換實作。
+
+PID75799實際映像SHA256 bba154b0b7fa84ed7770853b294e5be12327c23d8d9ad702a18b0464dc6d47f5，與先前基線一致；候選版SHA256 cfc11004b5a2498e0c439a99a56ce9bd939180052e615284fb6aa11b7d29c869。候選版尚未部署，這次故障不是候選版新加入的時間限制。
+
+核對舊基線與目前原始碼：RUNNING到target_ratio後仍累積tau並持續計算／發布命令；startup_duration僅供STARTUP使用。shutdown.slowdown_duration_s及shutdown.timeout_s僅在已要求停止的STOPPING狀態生效。沒有總運轉時間或cycle_count完成條件。
+
+本次只讀取現場、保存證據並增加模擬持續運轉回歸；沒有傳送任何停止、上電或運動命令。
+
+新增 TargetRatioAndElapsedTimeNeverAutoCompleteRunning 回歸通過：模擬250秒，ratio 81降到80後維持RUNNING，超過5圈；只有明確要求停止後才停用並退出。此測試為離線模擬，不是實機耐久測試。

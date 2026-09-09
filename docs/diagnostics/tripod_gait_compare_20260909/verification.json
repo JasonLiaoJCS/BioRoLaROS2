@@ -1,0 +1,19 @@
+{
+  "unchanged": {
+    "src/rinbo_fsm/src/rinbo_cali.cpp": true,
+    "src/rinbo_fsm/src/rinbo_standing.cpp": true,
+    "Bridge binary unchanged": true,
+    "Bridge config unchanged": true
+  },
+  "native_gtest_cases": 178,
+  "retired_entry_check": 1,
+  "panel_test_cases": 74,
+  "total_checks_passed": 253,
+  "deployed_sources": {
+    "src/rinbo_fsm/src/rinbo_tripod.cpp": "2543b705c277bb2246bd1c84072b597a3b8fc06d67b21d97d6d1e1f5714c7c8c",
+    "src/rinbo_fsm/src/robot_config.cpp": "918f09b3f4d7d7f02d1182138d6bfdd7db3de5533a32c634a260c1bd6a1f7c06",
+    "src/rinbo_fsm/src/safety_invariants.hpp": "cbbc3f82d40d837c091c63a745367ae39ed397b3b0be2925a54cfc01e45d4cf2",
+    "src/rinbo_control/rinbo_control/motion_limits.py": "3b95144bd7902832a216f8f5e644cf0074b959ffb882371abc0a682973954f59",
+    "src/rinbo_control/rinbo_control/runtime.py": "a1d77457d67207eb86924075075030a3b1f4506a7ded003cb9be151e29b4e71d"
+  }
+}

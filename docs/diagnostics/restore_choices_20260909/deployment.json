@@ -1,0 +1,30 @@
+{
+  "deployed_at": "2026-09-09T22:34:31.901921+08:00",
+  "backup": "/home/jetson/.local/state/rinbo-control-backups/restore-choices-qowhg1nw",
+  "revision": 15,
+  "site_sha256": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+  "native_tests": {
+    "test_control_velocity.gtest": 5,
+    "test_tripod_multileg.gtest": 33,
+    "test_latest_state_safety.gtest": 29,
+    "test_motor_arbiter_handshake.gtest": 42,
+    "test_manual_controller.gtest": 14,
+    "test_robot_config.gtest": 27,
+    "test_cali_multileg.gtest": 16,
+    "test_manual_motion.gtest": 9,
+    "test_standing_multileg.gtest": 11,
+    "test_motion_effort.gtest": 4
+  },
+  "panel_passed": 256,
+  "panel_skipped": 1,
+  "binaries": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": "3ba6b4dd107de9ecfa936f3d471229e8c2507aa09202a4ac2eb6dc0619b5718e",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": "a34a7326bff5b0e16b855517d4c15528a0a690e3afeec5b667c0d853e8e78917",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": "42e9ae6b798febec963583b674e0714b75e6c005fde7d3e56a5c562d799a4fc1",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": "9360dde73defa0f484b9bd384b7d886759f6451e20a1c8f53307241802d0b2a3",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": "c9f8ae33a72696903fc94334a95954b3f9b2a890a86d9006ca42fe0570424b39"
+  },
+  "receipts": "Calibration and Standing invalidated; no motion performed",
+  "hardware_actions": [],
+  "control_panel_entry": "robot.sh imports src/rinbo_control directly"
+}

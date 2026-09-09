@@ -1,0 +1,15 @@
+test_bad_revision_requires_explicit_new_revision (test_parameter_baseline.StandardTests) ... ok
+test_both_native_locks_refuse_concurrent_restore (test_parameter_baseline.StandardTests) ... ok
+test_busy_process_does_not_change_files (test_parameter_baseline.StandardTests) ... ok
+test_matching_standard_is_noop_and_preserves_receipts (test_parameter_baseline.StandardTests) ... ok
+test_native_readback_mismatch_rolls_back_and_keeps_receipts_invalid (test_parameter_baseline.StandardTests) ... ok
+test_optional_plan_restores_only_plan_preserves_other_preferences (test_parameter_baseline.StandardTests) ... ok
+test_restore_all_native_values_revision_backup_and_no_motor_actions (test_parameter_baseline.StandardTests) ... ok
+test_revision_cannot_go_backwards (test_parameter_baseline.StandardTests) ... ok
+test_source_change_is_reported_not_overwritten (test_parameter_baseline.StandardTests) ... ok
+test_tampered_baseline_fails_integrity_before_any_restore (test_parameter_baseline.StandardTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.333s
+
+OK

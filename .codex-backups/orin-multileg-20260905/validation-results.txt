@@ -1,0 +1,32 @@
+Completed 2026-09-05 on Jetson Orin; no real motion entry was executed.
+Effective source: /home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml
+Schema version: 1; revision: 1; disabled_legs: [] (explicit user choice)
+Enabled: L1,L2,L3,R1,R2,R3
+SHA256: f2c5e2d0d10b6eb149b2f7f3b27316203bf4248267e55957a0fc06c4d63b867e
+
+Build: colcon build --symlink-install --packages-select rinbo_fsm redrhex_lowlevel_bridge --executor sequential --cmake-clean-first --cmake-args -DBUILD_TESTING=ON
+Result: 2 packages built successfully (MAKEFLAGS=-j2).
+Build/install three FSM executable symlinks match. rinbo_legs registered and installed.
+Site bytes preserved through builds. Existing guard/handshake helper bytes unchanged.
+
+FSM: 87 C++ tests passed, zero failures/errors, plus retired sin-sweep entry CMake check; all 7 CTest targets passed.
+- Original 41 handshake/power invariant and 24 input/QoS/mask regression tests retained (65 total).
+- 10 shared-config tests: all64 masks, normalization/typos/duplicates, missing/corrupt/version/type/range/permission failures, idempotence, atomic writes, interprocess locks, running-process rejection, revision/hash/boot-bound receipts.
+- Calibration 4 tests: all64 masks; L1+L3 missing feedback succeeds only when masked; L1-only requires L3 and Hall timeout fails; zero feedback required after reset; reenabled servo required.
+- Standing 3 tests: all64 masks, healthy Hall/position completion, masked hold/stop commands, reenabled L3 failure, receipt invalidation even after ROS shutdown/publication error.
+- Tripod 5 tests: all64 masks including either phase group empty, healthy startup failure, per-leg position protection, controlled/normal stop, exception-safe receipt invalidation.
+
+Python: 248 tests passed across power_tool, active_rinbo_safety_contract, and legacy rinbo_leg_mask regression suites.
+Bridge: 16 existing power-command epoch guard tests passed (bridge production code unchanged).
+Entrypoints: 18 checks passed (9 direct build probes across cwd=/, temporary directory, workspace; 3 ros2 run probes; 6 legacy parameter-override rejections).
+Read-only canary blocks rcl_init/rmw_init/node/publisher init/rcl_publish/socket. No such call occurred for --check-config, rinbo_legs status, or real power-loader integration.
+Noninteractive environment tested with empty environment, bash --noprofile --norc, temporary HOME and irrelevant legacy/Windows config variables. No SSH connection was made.
+Power loader integration: actual installed Python tool reads identical path/revision/hash/mask from shared C++ loader under lock, without ROS initialization.
+
+All ROS tests used isolated ROS_DOMAIN_ID=231 and ROS_LOCALHOST_ONLY=1 with mock input; no hardware bridge present in test domain. Production domain99 was not queried or controlled. Existing domain99 daemon PID4224 was left running.
+No robot power-on, real Calibration/Standing/Tripod run, motor/power hardware command, or hardware-process restart was performed. No production calibration/standing receipt exists.
+
+Still requires hardware confirmation: physical Main/Servo isolation, encoder zero feedback timing, supported/suspended mechanical behavior, and Windows five-button end-to-end operation. Main-drive mask does not individually disable servo power. No ground support/walking guarantee; RL policy contracts remain separate and unchanged.
+
+Logs: build-clean.log, fsm-tests-final.log, python-tests-final.log, bridge-regression.log, entry-checks.log, installed-status.log, power-loader-integration.log.
+Changed files: changed-files.txt. Source integrity: final-source-sha256.json.

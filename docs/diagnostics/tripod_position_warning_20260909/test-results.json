@@ -1,0 +1,52 @@
+{
+  "tests": 127,
+  "failures": 0,
+  "errors": 0,
+  "suites": [
+    {
+      "suite": "tripod-warning-control.xml",
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 7.863
+    },
+    {
+      "suite": "tripod-warning-config.xml",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 0.256
+    },
+    {
+      "suite": "test_cali_multileg.gtest.xml",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 3.425
+    },
+    {
+      "suite": "test_standing_multileg.gtest.xml",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 3.12
+    },
+    {
+      "suite": "test_motor_arbiter_handshake.gtest.xml",
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 0.217
+    },
+    {
+      "suite": "test_latest_state_safety.gtest.xml",
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 4.29
+    }
+  ],
+  "ros_domain_id": 231,
+  "live_ros_domain_id": 99,
+  "hardware_exercised": false
+}

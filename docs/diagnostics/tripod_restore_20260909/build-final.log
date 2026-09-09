@@ -1,0 +1,46 @@
+Consolidate compiler generated dependencies of target robot_config
+[  5%] Built target rinbo_sin_sweep
+[ 10%] Built target gtest_main
+[ 13%] Building CXX object CMakeFiles/robot_config.dir/src/robot_config.cpp.o
+[ 18%] Built target gtest
+[ 23%] Built target test_latest_state_safety
+[ 28%] Built target test_motor_arbiter_handshake
+[ 31%] Linking CXX static library librobot_config.a
+[ 31%] Built target robot_config
+Consolidate compiler generated dependencies of target rinbo_cali
+Consolidate compiler generated dependencies of target rinbo_manual
+[ 34%] Linking CXX executable rinbo_legs
+[ 36%] Linking CXX executable rinbo_cali
+[ 39%] Linking CXX executable rinbo_manual
+[ 42%] Built target rinbo_legs
+Consolidate compiler generated dependencies of target rinbo_standing
+[ 44%] Linking CXX executable rinbo_standing
+[ 47%] Built target rinbo_manual
+[ 50%] Built target rinbo_cali
+Consolidate compiler generated dependencies of target rinbo_tripod
+Consolidate compiler generated dependencies of target test_robot_config
+[ 52%] Linking CXX executable rinbo_tripod
+[ 55%] Linking CXX executable test_robot_config
+[ 57%] Built target rinbo_standing
+Consolidate compiler generated dependencies of target test_cali_multileg
+[ 60%] Linking CXX executable test_cali_multileg
+[ 63%] Built target test_robot_config
+Consolidate compiler generated dependencies of target test_standing_multileg
+[ 65%] Linking CXX executable test_standing_multileg
+[ 68%] Built target rinbo_tripod
+Consolidate compiler generated dependencies of target test_tripod_multileg
+[ 71%] Linking CXX executable test_tripod_multileg
+[ 73%] Built target test_cali_multileg
+[ 76%] Linking CXX executable test_manual_motion
+[ 78%] Built target test_standing_multileg
+Consolidate compiler generated dependencies of target test_manual_controller
+[ 81%] Built target test_manual_motion
+Consolidate compiler generated dependencies of target test_control_velocity
+[ 84%] Linking CXX executable test_manual_controller
+[ 86%] Linking CXX executable test_control_velocity
+[ 89%] Built target test_control_velocity
+Consolidate compiler generated dependencies of target test_motion_effort
+[ 92%] Linking CXX executable test_motion_effort
+[ 94%] Built target test_motion_effort
+[ 97%] Built target test_tripod_multileg
+[100%] Built target test_manual_controller

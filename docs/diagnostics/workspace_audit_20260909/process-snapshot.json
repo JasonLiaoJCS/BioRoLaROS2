@@ -1,0 +1,25 @@
+{
+  "boot_id": "857ceece-04cd-4513-a1fd-e2dcc32e59ab",
+  "processes": [
+    {
+      "pid": 117000,
+      "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge",
+      "argv": [
+        "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge",
+        "--ros-args",
+        "--params-file",
+        "/home/jetson/rinbo_ros_ws/install/rinbo_ros_bridge/share/rinbo_ros_bridge/config/redrhex_safe.yaml",
+        "-p",
+        "core_ip:=192.168.30.254"
+      ],
+      "environment_whitelist": {
+        "ROS_DOMAIN_ID": "99",
+        "ROS_LOCALHOST_ONLY": "0",
+        "CORE_IP": "192.168.30.254",
+        "CORE_MASTER_ADDR": "192.168.30.254:50051",
+        "CORE_LOCAL_IP": "192.168.30.8"
+      },
+      "exe_sha256": "f075c4166c01d2fa3c768877825295b9289840a947bc274c4b46f0bc0f2d3038"
+    }
+  ]
+}

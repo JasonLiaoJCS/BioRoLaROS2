@@ -1,0 +1,44 @@
+{
+  "prior_deployment_unchanged": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge": true,
+    "site": true,
+    "bridge_config": true
+  },
+  "hardware_actions": [],
+  "source_sha256": {
+    "src/rinbo_control/rinbo_control/connection_recovery.py": "b6b5c7e0c30e550ace219ecf9bcaf4c79ff4ea4b5f8a481c70827e4b307d126b",
+    "src/rinbo_control/rinbo_control/plans.py": "4668d010ff4845a4a3f9269e8b52071cd357bff9807fc6e9ac5690fdc474bf24",
+    "src/rinbo_control/rinbo_control/feedback.py": "5d6dca607dd70b883f08819eb7caa0225574ff6e4749328a3efd922ca437b565",
+    "src/rinbo_control/rinbo_control/terminal.py": "eb65a29175ba154a9c7627634c7f3f9fb05e07fa936a533007473e585ba16543",
+    "src/rinbo_control/rinbo_control/guardian.py": "6cf880ab8b94c4e2de00d4ad6f12181b9ebdae1be552bc907a10a6213c2a3522",
+    "src/rinbo_control/rinbo_control/sbrio.py": "eb87b72ba193cf0d23ffe1a889f7202f6d45a488845a9551c98ca537eb1fed68",
+    "src/rinbo_control/rinbo_control/presentation.py": "1bef692cc04631cfcd2adfc7b6a581442b3aab121a0dc0a5069a49bd9ee187b5",
+    "src/rinbo_control/rinbo_control/__init__.py": "a191c309eb89e9a5f904d838d01a259dab32bcd11c6c3958d911493ea32183c9",
+    "src/rinbo_control/rinbo_control/runtime.py": "57eafd56d7e493c09cda2a9b41c38163b0e22f815210615e37afc9bff45f64b6",
+    "src/rinbo_control/rinbo_control/library.py": "95ba185c53a299ace54153634bddd792022f4f022ccf598d265a977878abaa74",
+    "src/rinbo_control/rinbo_control/console.py": "0230c5b9f8b42512b372d54883ab485d760fd1b1956ba5d35f7f53ddd1795a0d",
+    "src/rinbo_control/rinbo_control/calibration_progress.py": "29d00bf2f65fc19127949b9f3c0af8e55968bd189466f0dce1cda7d43958204e",
+    "src/rinbo_control/rinbo_control/demo.py": "5a1f42cd3424857ab007b5c87f8e56ced02c898000654e653455deba7ebf7c51",
+    "src/rinbo_control/rinbo_control/motion_limits.py": "7358111607f39e91a2e6b2f7d2e434f6faec4ef317342ceee9d3a743c9e4134d",
+    "src/rinbo_control/rinbo_control/ssh_auth.py": "65a697b748092fc436138ae23e1c3f09eea6d5ddce5d3257fd659d31be213fa1",
+    "src/rinbo_control/rinbo_control/sim_motion_limits.py": "2360a6afeb7c2dc46f399190455ea2750211f901704dcb1f7e3456dbc90425d8"
+  },
+  "tests": {
+    "control_suite": {
+      "passed": 253,
+      "skipped": 1,
+      "ros_domain": 231
+    },
+    "skipped_test_rerun": {
+      "passed": 1,
+      "ros_domain": 232
+    },
+    "unique_tests_passed": 254,
+    "installation_check": "passed; L3 disabled; no ROS or hardware connection"
+  }
+}

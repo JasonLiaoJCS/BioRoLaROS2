@@ -1,0 +1,23 @@
+[
+  {
+    "pid": 32424,
+    "stat": "32424 (rinbo_ros_bridg) S 32422 32130 32130 0 -1 1077936128 3227 0 30 0 4924 2788 0 0 20 0 31 0 599694 2269196288 12468 18446744073709551615 187650978938880 187651013859452 281473914285792 0 0 0 0 4101 16386 0 0 0 17 1 0 0 0 0 0 187651013928928 187651014360608 187651590152192 281473914287170 281473914287387 281473914287387 281473914290102 0\n",
+    "cmdline": "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge --ros-args --params-file /home/jetson/rinbo_ros_ws/install/rinbo_ros_bridge/share/rinbo_ros_bridge/config/redrhex_safe.yaml -p core_ip:=192.168.30.254 ",
+    "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge",
+    "cwd": "/home/jetson/rinbo_ros_ws",
+    "fd/0": "/dev/null",
+    "fd/1": "/tmp/rslip-launcher/20260909-121824-216/rinbo_ros_bridge.log",
+    "fd/2": "/tmp/rslip-launcher/20260909-121824-216/rinbo_ros_bridge.log",
+    "sha256": "c9956d9e88b517e5e9ba699d102444411f1ed9563e5bc14abc4e34c1905f7114"
+  },
+  {
+    "pid": 32422,
+    "stat": "32422 (bash) S 1 32130 32130 0 -1 4194304 318 105 2 0 0 0 0 0 20 0 1 0 599691 12853248 776 18446744073709551615 187650630680576 187650632025224 281474468198976 0 0 0 65536 7 65536 1 0 0 17 3 0 0 0 0 0 187650632091656 187650632143488 187651643019264 281474468201043 281474468201858 281474468201858 281474468204522 0\n",
+    "cmdline": "bash -c \nset +e\nbridge_exe=\"$1\"; bridge_config=\"$2\"; bridge_core_ip=\"$3\"; bridge_pid_file=\"$4\"; bridge_status_file=\"$5\"\n\"$bridge_exe\" --ros-args --params-file \"$bridge_config\" -p core_ip:=\"$bridge_core_ip\" &\nbridge_pid=\"$!\"\nprintf \"%s\\n\" \"$bridge_pid\" >\"$bridge_pid_file.tmp\"\nmv \"$bridge_pid_file.tmp\" \"$bridge_pid_file\"\nwait \"$bridge_pid\"\nbridge_rc=\"$?\"\nprintf \"%s\\n\" \"$bridge_rc\" >\"$bridge_status_file.tmp\"\nmv \"$bridge_status_file.tmp\" \"$bridge_status_file\"\nexit \"$bridge_rc\"\n rslip-bridge-wrapper /home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge /home/jetson/rinbo_ros_ws/install/rinbo_ros_bridge/share/rinbo_ros_bridge/config/redrhex_safe.yaml 192.168.30.254 /tmp/rslip-launcher/20260909-121824-216/rinbo_ros_bridge.log.pid /tmp/rslip-launcher/20260909-121824-216/rinbo_ros_bridge.log.exitcode ",
+    "exe": "/usr/bin/bash",
+    "cwd": "/home/jetson/rinbo_ros_ws",
+    "fd/0": "/dev/null",
+    "fd/1": "/tmp/rslip-launcher/20260909-121824-216/rinbo_ros_bridge.log",
+    "fd/2": "/tmp/rslip-launcher/20260909-121824-216/rinbo_ros_bridge.log"
+  }
+]

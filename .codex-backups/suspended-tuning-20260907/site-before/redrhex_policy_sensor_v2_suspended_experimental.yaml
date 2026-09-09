@@ -1,0 +1,130 @@
+redrhex_rl_controller:
+  ros__parameters:
+    hardware:
+      # Current robot: L1 is physically isolated and must never receive output.
+      disabled_legs: ["L1"]
+      max_disabled_legs: 1
+
+    policy:
+      # EXPERIMENTAL suspended-rig profile. Keep locked until a sensor-v2 artifact has
+      # been re-exported/packaged for the currently supported runtime contract.
+      onnx_path: "/home/jetson/redrhex_models/policy_verified_sensor_v2.onnx"
+      use_cuda: false
+      use_tensorrt: false
+      expected_obs_dim: 56
+      expected_action_dim: 12
+      policy_hz: 0.0  # 0 resolves to the 125 Hz training contract.
+      allow_history_dim: true
+      observation_contract: "redrhex_obs56_v2_action_lag2"
+      action_contract: "redrhex_stage5_residual_v1"
+      require_contract_metadata: true
+      # Intentional startup gate: fill with the packaged ONNX SHA256.
+      expected_sha256: ""
+      startup_action_abs_limit: 1.5
+      expected_bridge_config_sha256: "a5c0154685630a20024ae410a68c778007c33ec78c4dd9edd2c6f595fa1d7fb5"
+      max_inference_p99_ms: 6.0
+      inference_benchmark_warmup_runs: 20
+      inference_benchmark_runs: 200
+
+    observation:
+      sensor_profile: "full_feedback_rig"
+      encoder_only_rig_acknowledged: false
+      # Acknowledges that base linear velocity is deliberately zero only while suspended.
+      full_feedback_rig_acknowledged: true
+      rig_projected_gravity: [0.0, -1.0, 0.0]
+      # Intentional startup gate.  Measure the real IMU frame/mounting first,
+      # fill the next four fields, then set this to true.
+      imu_alignment_calibrated: false
+      expected_imu_frame_id: ""
+      expected_imu_publisher_node: ""
+      # q_sensor<-policy; identity means the IMU publisher already outputs the
+      # policy body frame.  Quaternion order is [x,y,z,w].
+      imu_policy_to_sensor_quaternion_xyzw: [0.0, 0.0, 0.0, 1.0]
+      # Expected q_world<-policy at the verified suspended upright pose.
+      imu_upright_quaternion_xyzw: [0.7071067811865476, 0.0, 0.0, 0.7071067811865476]
+      # The 12 encoders + IMU still do not measure body linear velocity.
+      base_lin_vel_source: "zero"
+      odom_twist_in_body_frame: true
+      abad_feedback_source: "joint_states"
+      estimate_missing_joint_velocity: true
+      policy_history_length: 5
+      observation_clip: 100.0
+      require_imu_source_stamp: true
+      max_imu_source_age_s: 0.10
+      max_imu_future_skew_s: 0.02
+      # L1 readback may be absent/stale because it is physically isolated.
+      disabled_leg_observation_mode: "nominal"
+
+    state_machine:
+      enable_policy_on_start: false
+      enable_motor_output_on_start: false
+      init_stand_duration_s: 2.0
+      init_stand_timeout_s: 12.0
+      init_stand_position_tolerance_rad: 0.12
+      init_stand_velocity_tolerance_rad_s: 0.25
+      init_stand_stable_time_s: 0.50
+      output_enable_ack_timeout_s: 0.15
+      # Every arm is a short suspended-rig run, then policy and motors hard-disable.
+      policy_run_max_duration_s: 3.0
+      warmup_duration_s: 1.0
+
+    safety:
+      # Relative-to-upright IMU tilt limits; raw training-frame roll is not used.
+      max_abs_roll_rad: 0.45
+      max_abs_pitch_rad: 0.45
+      cmd_timeout_s: 0.25
+      sensor_timeout_s: 0.10
+      motor_feedback_timeout_s: 0.25
+      heartbeat_timeout_s: 0.15
+      require_motor_feedback: true
+      require_lowlevel_heartbeat: true
+      action_clip: 0.35
+      max_raw_action_abs: 1.5
+      main_drive_vel_limit_rad_s: 1.0
+      max_measured_main_drive_velocity_rad_s: 2.0
+      abad_pos_limit_rad: 0.18
+      max_motor_temperature_c: 55.0
+      max_motor_current_a: 3.0
+      max_control_loop_dt_s: 0.012
+      max_inference_duration_s: 0.008
+      motor_current_trip_samples: 5
+      control_loop_trip_samples: 3
+      inference_trip_samples: 3
+      main_drive_slew_rate_rad_s2: 12.0
+      abad_slew_rate_rad_s: 1.0
+
+    action:
+      # Intentional startup gate: set true only after main/ABAD sign and zero
+      # mappings are measured. Placeholder arrays below must never arm motors.
+      hardware_mapping_calibrated: false
+      play_forward_compat_enable: true
+      play_forward_compat_bias_scale: 1.0
+      play_forward_compat_residual_scale: 0.04
+      play_forward_compat_residual_clip: 0.30
+      include_damper_command: false
+      main_drive_init_control_mode: "velocity_to_pose"
+      init_stand_main_drive_position_gain: 1.2
+      init_stand_max_main_drive_vel_rad_s: 0.35
+      main_drive_sign: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      abad_sign: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      damper_sign: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      main_drive_zero_offset_rad: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      abad_zero_offset_rad: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      damper_zero_offset_rad: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      main_drive_kp: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      main_drive_kd: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
+      abad_kp: [8.0, 8.0, 8.0, 8.0, 8.0, 8.0]
+      abad_kd: [0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
+      stand_main_drive_kp: [3.0, 3.0, 3.0, 3.0, 3.0, 3.0]
+      stand_main_drive_kd: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+
+    commands:
+      # No keyboard command is needed.  This is active only in POLICY_RUN.
+      profile: "fixed_forward"
+      fixed_forward_vx: 0.22
+      vx_min: 0.0
+      vx_max: 0.22
+      vy_min: -0.14
+      vy_max: 0.14
+      wz_min: -0.17
+      wz_max: 0.17

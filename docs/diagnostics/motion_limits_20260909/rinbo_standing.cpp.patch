@@ -1,0 +1,89 @@
+--- before/rinbo_standing.cpp
++++ after/rinbo_standing.cpp
+@@ -55,7 +55,15 @@
+         rotate_180_counts_ = M_PI * rad_to_counts_;
+         
+         max_pwm_ = static_cast<float>(this->declare_parameter<double>("max_pwm", 80.0));
+-        position_tolerance_ = 200.0f;
++        position_tolerance_ = this->declare_parameter<double>("safety.position_tolerance_counts", 200.0);
++        settle_velocity_ = this->declare_parameter<double>("safety.settle_velocity_counts_s", 500.0);
++        settle_time_s_ = this->declare_parameter<double>("safety.settle_time_s", 0.3);
++        hold_error_counts_ = this->declare_parameter<double>("safety.hold_error_counts", 12000.0);
++        rinbo_fsm::validate_bounded_timeout(position_tolerance_, 12000.0, "safety.position_tolerance_counts");
++        rinbo_fsm::validate_bounded_timeout(settle_velocity_, 5000.0, "safety.settle_velocity_counts_s");
++        rinbo_fsm::validate_bounded_timeout(settle_time_s_, 10.0, "safety.settle_time_s");
++        rinbo_fsm::validate_bounded_timeout(hold_error_counts_, 55296.0, "safety.hold_error_counts");
++        if (hold_error_counts_ < position_tolerance_) throw std::invalid_argument("Standing hold error must be >= arrival tolerance");
+         
+         servo_targets_[0] = 740; 
+         servo_targets_[1] = 2565; 
+@@ -87,9 +95,11 @@
+         motor_state_required_after_s_ = this->declare_parameter<double>("safety.motor_state_required_after_s", 2.0);
+         rinbo_fsm::validate_pwm(max_pwm_, "Standing");
+         rinbo_fsm::validate_bounded_timeout(
+-            hall_search_timeout_s_, 60.0, "safety.hall_search_timeout_s");
++            hall_search_timeout_s_, 600.0, "safety.hall_search_timeout_s");
+         rinbo_fsm::validate_bounded_timeout(
+-            rotate_timeout_s_, 60.0, "safety.rotate_timeout_s");
++            rotate_timeout_s_, 600.0, "safety.rotate_timeout_s");
++        RCLCPP_INFO(get_logger(), "STANDING_LIMITS arrival=%.1f counts (%.3f deg using 55296 counts/rev), velocity=%.1f counts/s, stable=%.3fs, wait=%.1fs, hold=%.1f counts",
++            position_tolerance_, position_tolerance_ * 360.0 / 55296.0, settle_velocity_, settle_time_s_, rotate_timeout_s_, hold_error_counts_);
+         rinbo_fsm::validate_motor_state_watchdog(
+             motor_state_timeout_s_, motor_state_required_after_s_, "Standing");
+         power_guard_ = std::make_unique<rinbo_fsm::RinboPowerGuard>(
+@@ -407,20 +417,25 @@
+                     
+                     float final_error = std::fabs(target_positions_[i] - positions[i]);
+                     const bool settled = rotate_elapsed >= rotate_duration &&
+-                        final_error < position_tolerance_ && std::fabs(velocities[i]) < 500.0f;
++                        final_error < position_tolerance_ && std::fabs(velocities[i]) < settle_velocity_;
+                     if (!settled) stable_since_s_[i] = -1.0;
+                     else if (stable_since_s_[i] < 0.0) stable_since_s_[i] = now_time.seconds();
+-                    if (settled && now_time.seconds() - stable_since_s_[i] >= 0.3) {
++                    if (settled && now_time.seconds() - stable_since_s_[i] >= settle_time_s_) {
+                         leg_states_[i] = LegState::DONE;
+                         ++done_count;
+-                        RCLCPP_INFO(this->get_logger(), "%s: DONE! stationary for 0.3s, pos: %.0f, err: %.0f",
+-                                    leg_name(i), positions[i], final_error);
++                        RCLCPP_INFO(this->get_logger(), "%s: DONE! stationary for %.3fs, pos: %.0f, err: %.0f, tolerance: %.0f",
++                                    leg_name(i), settle_time_s_, positions[i], final_error, position_tolerance_);
+                     } else if (rotate_elapsed > rotate_timeout_s_) {
+                         trigger_safety_stop(std::string("standing position timeout: ") + leg_name(i) +
+                             " pos=" + std::to_string(positions[i]) +
+                             " target=" + std::to_string(target_positions_[i]) +
+                             " error=" + std::to_string(final_error) +
+-                            " elapsed=" + std::to_string(rotate_elapsed));
++                            " elapsed=" + std::to_string(rotate_elapsed) +
++                            " tolerance_counts=" + std::to_string(position_tolerance_) +
++                            " velocity_counts_s=" + std::to_string(velocities[i]) +
++                            " velocity_limit=" + std::to_string(settle_velocity_) +
++                            " stable_required_s=" + std::to_string(settle_time_s_) +
++                            " timeout_s=" + std::to_string(rotate_timeout_s_));
+                     }
+                     break;
+                 }
+@@ -429,10 +444,12 @@
+                     float pos_error = is_left_leg(i) ? 
+                         -(target_positions_[i] - positions[i]) : (target_positions_[i] - positions[i]);
+                     trace_targets[i] = target_positions_[i];
+-                    if (std::fabs(pos_error) > rinbo_fsm::kHardMaxPositionErrorCounts) {
++                    if (std::fabs(pos_error) > hold_error_counts_) {
+                         trigger_safety_stop(std::string("standing hold position lost: ") + leg_name(i) +
+                             " actual=" + std::to_string(positions[i]) +
+-                            " target=" + std::to_string(target_positions_[i]));
++                            " target=" + std::to_string(target_positions_[i]) +
++                            " error=" + std::to_string(pos_error) +
++                            " limit=" + std::to_string(hold_error_counts_));
+                         break;
+                     }
+                     // Keep the standing pose, with damping rather than an
+@@ -653,7 +670,8 @@
+     std::array<float, 6> control_velocity_{};
+     rinbo_fsm::MotionEffort effort_;
+     float max_pwm_;
+-    float position_tolerance_;
++    double position_tolerance_;
++    double settle_velocity_, settle_time_s_, hold_error_counts_;
+     double hall_search_timeout_s_;
+     double rotate_timeout_s_;
+     double motor_state_timeout_s_;

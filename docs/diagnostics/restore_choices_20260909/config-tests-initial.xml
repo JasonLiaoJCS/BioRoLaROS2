@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="27" failures="7" disabled="0" errors="0" time="0.651" timestamp="2026-09-09T22:30:27" name="AllTests">
+  <testsuite name="ConfigTest" tests="27" failures="7" disabled="0" errors="0" time="0.651" timestamp="2026-09-09T22:30:27">
+    <testcase name="EveryMaskRoundTripsAndPreservesSafetyParameters" status="run" result="completed" time="0.052" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="ManagementOperationsNormalizeAreAtomicAndIdempotent" status="run" result="completed" time="0.017" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts" status="run" result="completed" time="0.016" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="CorruptMissingUnsupportedAndConflictingConfigFailClosed" status="run" result="completed" time="0.053" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="UnreadableConfigurationFailsWithoutReinitialization" status="run" result="completed" time="0.017" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="LocksRejectChangesAndConcurrentMotionUntilStopped" status="run" result="completed" time="0.019" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="IndependentWriterLockAndReaderSnapshot" status="run" result="completed" time="0.004" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ConfigurationChangesAndNewAttemptsInvalidateStageReceipts" status="run" result="completed" time="0.033" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="ManualEditsCannotReuseCalibrationAtSameRevision" status="run" result="completed" time="0.009" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="AllDisabledCanBeSavedButNoMotionStageCanStart" status="run" result="completed" time="0.017" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt" status="run" result="completed" time="0.02" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot" status="run" result="completed" time="0.017" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest">
+      <failure message="unknown file&#x0A;C++ exception with description &quot;Motor action/power/mask process detected (PID 152439): stop it before changing configuration&quot; thrown in the test body." type=""><![CDATA[unknown file
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.]]></failure>
+    </testcase>
+    <testcase name="ReadinessCheckDoesNotChangeOrCreateStageReceipts" status="run" result="completed" time="0.02" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="ProcessInspectionDistinguishesMotionFromCommunication" status="run" result="completed" time="0.002" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningPreservesOnlyValidUnchangedPrerequisites" status="run" result="completed" time="0.033" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningPreviewIsReadOnlyEvenDuringMotion" status="run" result="completed" time="0.019" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningNeverCreatesMissingOrInvalidReceipts" status="run" result="completed" time="0.04" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters" status="run" result="completed" time="0.004" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodFilterAndRestoredGainsKeepOtherStagesAndRejectInvalidFilter" status="run" result="completed" time="0.014" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers" status="run" result="completed" time="0.046" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts" status="run" result="completed" time="0.009" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings" status="run" result="completed" time="0.029" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy" status="run" result="completed" time="0.06" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodRawPwm3300IsTypedAtomicAndDoesNotRaiseOtherControllerCaps" status="run" result="completed" time="0.048" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="TripodSlewIsOptionalAndOnlyTripodSettingsChange" status="run" result="completed" time="0.029" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="AcceptedChoicesKeepManualControlIndependentAndSharedGuardsIntact" status="run" result="completed" time="0.015" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+    <testcase name="LegacyManualInheritanceAndNewBlockValidation" status="run" result="completed" time="0.007" timestamp="2026-09-09T22:30:27" classname="rinbo_fsm.ConfigTest" />
+  </testsuite>
+</testsuites>

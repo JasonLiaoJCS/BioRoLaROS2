@@ -1,0 +1,13 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-slew-build
+Test project /tmp/rinbo-tripod-slew-build
+    Start 4: test_robot_config
+1/2 Test #4: test_robot_config ................   Passed    2.17 sec
+    Start 5: test_cali_multileg
+2/2 Test #5: test_cali_multileg ...............   Passed    3.18 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+gtest    =   5.35 sec*proc (2 tests)
+
+Total Test time (real) =   5.37 sec

@@ -1,0 +1,29 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-slew-build
+Test project /tmp/rinbo-tripod-slew-build
+      Start  1: test_motor_arbiter_handshake
+ 1/10 Test  #1: test_motor_arbiter_handshake .....   Passed    0.55 sec
+      Start  2: test_latest_state_safety
+ 2/10 Test  #2: test_latest_state_safety .........   Passed    4.68 sec
+      Start  3: test_rinbo_sin_sweep_retired
+ 3/10 Test  #3: test_rinbo_sin_sweep_retired .....   Passed    0.03 sec
+      Start  4: test_robot_config
+ 4/10 Test  #4: test_robot_config ................   Passed    2.06 sec
+      Start  5: test_cali_multileg
+ 5/10 Test  #5: test_cali_multileg ...............   Passed    3.08 sec
+      Start  6: test_standing_multileg
+ 6/10 Test  #6: test_standing_multileg ...........   Passed    2.41 sec
+      Start  7: test_tripod_multileg
+ 7/10 Test  #7: test_tripod_multileg .............   Passed    5.93 sec
+      Start  8: test_manual_motion
+ 8/10 Test  #8: test_manual_motion ...............   Passed    0.19 sec
+      Start  9: test_control_velocity
+ 9/10 Test  #9: test_control_velocity ............   Passed    0.19 sec
+      Start 10: test_motion_effort
+10/10 Test #10: test_motion_effort ...............   Passed    0.20 sec
+
+100% tests passed, 0 tests failed out of 10
+
+Label Time Summary:
+gtest    =  19.29 sec*proc (9 tests)
+
+Total Test time (real) =  19.36 sec

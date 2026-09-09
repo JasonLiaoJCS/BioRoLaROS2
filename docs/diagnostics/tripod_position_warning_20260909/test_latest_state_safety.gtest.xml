@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="29" failures="0" disabled="0" errors="0" time="4.29" timestamp="2026-09-09T13:11:52" name="AllTests">
+  <testsuite name="LatestStateQosTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:52">
+    <testcase name="RmwProfileIsReliableVolatileKeepLastOne" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:52" classname="rinbo_fsm.LatestStateQosTest" />
+  </testsuite>
+  <testsuite name="BridgeInputPreparationTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:52">
+    <testcase name="UnknownAttributionWaitsButWrongOrDuplicateSourcesFail" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:52" classname="rinbo_fsm.BridgeInputPreparationTest" />
+  </testsuite>
+  <testsuite name="RosSafetyTest" tests="20" failures="0" disabled="0" errors="0" time="4.23" timestamp="2026-09-09T13:11:52">
+    <testcase name="PreparationWaitsBeyondTwoSecondsWithoutStartingCommandPublisherOrInputClock" status="run" result="completed" time="2.451" timestamp="2026-09-09T13:11:52" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="PreparationTimeoutAndCancellationNeverCreateCommandPublisher" status="run" result="completed" time="0.074" timestamp="2026-09-09T13:11:54" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="PendingInitialCallbackDoesNotConsumeHeaderOrPinPublisher" status="run" result="completed" time="0.018" timestamp="2026-09-09T13:11:55" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="PastStaleStartupSamplesWaitButFreshInputCommitsRuntimeChecks" status="run" result="completed" time="0.021" timestamp="2026-09-09T13:11:55" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="StartupBudgetDoesNotResetOnStaleSamples" status="run" result="completed" time="0.022" timestamp="2026-09-09T13:11:55" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="FortyHertzMotorBacklogResumesAtNewestSampleOnly" status="run" result="completed" time="0.477" timestamp="2026-09-09T13:11:55" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="PowerLatestSafeDropsBacklogThenPersistentFaultTripsAndStales" status="run" result="completed" time="0.553" timestamp="2026-09-09T13:11:55" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="ActualBridgeMessageInfoMatchesSoleGraphEndpoint" status="run" result="completed" time="0.02" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="SolePublisherWithWrongNodeNameIsRejected" status="run" result="completed" time="0.017" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="SoleBridgeNameOutsideRootNamespaceIsRejected" status="run" result="completed" time="0.016" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="CallbackGidMustMatchSoleBridgeGraphEndpoint" status="run" result="completed" time="0.015" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="SecondPublisherIsRejectedBeforeHeaderAcceptance" status="run" result="completed" time="0.022" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="PublisherGidRemainsPinnedForCallbacksAndWatchdog" status="run" result="completed" time="0.021" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="GraphDelayDoesNotTurnFreshAtEntryHeaderStale" status="run" result="completed" time="0.145" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="GraphDelayCannotRescueHeaderAlreadyStaleAtEntry" status="run" result="completed" time="0.271" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="BackwardRosTimeJumpDuringGraphQueryFailsClosed" status="run" result="completed" time="0.018" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="InvalidFutureReplaySequenceAndStampRemainRejected" status="run" result="completed" time="0.018" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="DisabledLegsAcceptMultipleCanonicalLegsAndRejectInvalidSets" status="run" result="completed" time="0.036" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="PublishBoundaryMaskDisablesEachConfiguredMainDrive" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+    <testcase name="DisabledLegParametersAreStartupOnlyAndRejectRuntimeUpdates" status="run" result="completed" time="0.011" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosSafetyTest" />
+  </testsuite>
+  <testsuite name="FsmSourceContractTest" tests="2" failures="0" disabled="0" errors="0" time="0.046" timestamp="2026-09-09T13:11:56">
+    <testcase name="ProductionDiscoveryPrecedesCommandPublishersAndGuardClocks" status="run" result="completed" time="0.014" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.FsmSourceContractTest" />
+    <testcase name="AllFsmsShareLatestQosAndDisabledLegSafetyContract" status="run" result="completed" time="0.032" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.FsmSourceContractTest" />
+  </testsuite>
+  <testsuite name="InputPublisherStartupTest" tests="2" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:56">
+    <testcase name="OnlyZeroOrFullyUnknownCorrelatedEndpointsWait" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.InputPublisherStartupTest" />
+    <testcase name="WaitIsBoundedAndNeverReopensAfterTrust" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.InputPublisherStartupTest" />
+  </testsuite>
+  <testsuite name="TripodPowerPolicyTest" tests="2" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:56">
+    <testcase name="MissingAndStaleTelemetryFailClosed" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.TripodPowerPolicyTest" />
+    <testcase name="ArmedOutputUsesDebounceAndHardCurrentStillStopsImmediately" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.TripodPowerPolicyTest" />
+  </testsuite>
+  <testsuite name="RosInputGuardValidationTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:56">
+    <testcase name="GraphDelayCannotExtendArrivalWatchdogFreshness" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:56" classname="rinbo_fsm.RosInputGuardValidationTest" />
+  </testsuite>
+</testsuites>

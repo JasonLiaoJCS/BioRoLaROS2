@@ -1,0 +1,11 @@
+{
+  "cpp_ctest_groups": 9,
+  "cpp_gtest_cases": 118,
+  "python_tests": 573,
+  "site_revision": 4,
+  "disabled_legs": [
+    "L1",
+    "L3"
+  ],
+  "hardware_motion_tested": false
+}

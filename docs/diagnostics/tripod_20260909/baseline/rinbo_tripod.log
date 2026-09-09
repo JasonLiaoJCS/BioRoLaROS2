@@ -1,0 +1,132 @@
+[INFO] [1788927710.194396732] [rinbo_tripod_rslip]: DISCOVERY WAIT: waiting for /motor/state /power/state  identity; no motor command publisher yet
+[INFO] [1788927710.335842873] [rinbo_tripod_rslip]: DISCOVERY READY: Bridge input identities resolved; fresh-input and arbiter checks follow
+[INFO] [1788927710.336465694] [rinbo_tripod_rslip]: Motion effort: kp=0.0800 kd=0.0060 k_ff=0.0050 friction_pwm=40.0 fade_counts_s=153.6
+[INFO] [1788927710.404006061] [rinbo_tripod_rslip]: === RSLIP Tripod Controller (5 healthy legs) ===
+[INFO] [1788927710.404141148] [rinbo_tripod_rslip]: L3: SKIPPED (main drive disabled)
+[INFO] [1788927710.404166622] [rinbo_tripod_rslip]: Startup: Move to 360.0 deg in 8.0 s
+[INFO] [1788927710.404216260] [rinbo_tripod_rslip]: t_center (Standing): 0.055128 s
+[INFO] [1788927710.404234598] [rinbo_tripod_rslip]: theta_dot at Standing: 12.86 rad/s
+[INFO] [1788927710.404249192] [rinbo_tripod_rslip]: Group A (phase 0): R1, L2, R3
+[INFO] [1788927710.404261353] [rinbo_tripod_rslip]: Group B (phase 0.2018): L1, R2, L3
+[INFO] [1788927710.404275435] [rinbo_tripod_rslip]: t_stance: 0.1759 s, t_flight: 0.2276 s, period: 0.4035 s
+[INFO] [1788927710.404291884] [rinbo_tripod_rslip]: w_top: 25.13 rad/s
+[INFO] [1788927710.404307086] [rinbo_tripod_rslip]: Safety limits | max_pwm=80 start_ratio=8.00 target_ratio=4.00 | bus=ch7 range=[18.0,42.0]V samples=5 | leg_current=ON 5.0A samples=25 | position=ON 9000 counts samples=10 | pwm_slew=ON 250/s
+[WARN] [1788927710.404531015] [rinbo_tripod_rslip]: supported_leg_test: hardware.disabled_legs=[L3]. Remaining legs follow their existing independent phase references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.
+[INFO] [1788927710.405209938] [rinbo_tripod_rslip]: Motor arbiter reports ready=false
+[INFO] [1788927710.405421673] [rinbo_tripod_rslip]: Motor arbiter epoch confirmed: rinbo_ros2_bridge/boot-18d38c18a9c6fa29-5744b0e25e0-b15ac31c-d1e1b4c9-61296cc0-3fa6bae3:7
+[WARN] [1788927710.405781681] [rinbo_tripod_rslip]: Motor output remains disabled: waiting to send disabled rearm commands
+[INFO] [1788927710.506657287] [rinbo_tripod_rslip]: Motor arbiter reports ready=true
+[INFO] [1788927710.507016910] [rinbo_tripod_rslip]: Bridge acknowledged disabled-command rearm sequence 5
+[INFO] [1788927710.545126694] [rinbo_tripod_rslip]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[WARN] [1788927710.546562340] [rinbo_tripod_rslip]: Motion remains paused: waiting for correlated /rinbo/motor_active_ack
+[INFO] [1788927710.548497723] [rinbo_tripod_rslip]: Bridge acknowledged active command sequence 8
+[INFO] [1788927710.548824447] [rinbo_tripod_rslip]: Initialized!
+[INFO] [1788927710.548878181] [rinbo_tripod_rslip]:   L1-L3: [-27664, -27662, 1]
+[INFO] [1788927710.548916649] [rinbo_tripod_rslip]:   R1-R3: [-27670, -27838, -27755]
+[INFO] [1788927710.549906998] [rinbo_tripod_rslip]: [STARTUP] 0.00/8.00 s | PWM: [0, 0, 0, 0, 0, 0]
+[INFO] [1788927710.650597272] [rinbo_tripod_rslip]: [STARTUP] 0.10/8.00 s | PWM: [34, 34, 0, 34, 32, 34]
+[INFO] [1788927710.751669667] [rinbo_tripod_rslip]: [STARTUP] 0.20/8.00 s | PWM: [43, 44, 0, 42, 36, 41]
+[INFO] [1788927710.853703417] [rinbo_tripod_rslip]: [STARTUP] 0.30/8.00 s | PWM: [45, 48, 0, 47, 32, 46]
+[INFO] [1788927710.954831594] [rinbo_tripod_rslip]: [STARTUP] 0.41/8.00 s | PWM: [52, 49, 0, 50, 38, 40]
+[INFO] [1788927711.055590859] [rinbo_tripod_rslip]: [STARTUP] 0.51/8.00 s | PWM: [54, 48, 0, 47, 32, 40]
+[INFO] [1788927711.156184466] [rinbo_tripod_rslip]: [STARTUP] 0.61/8.00 s | PWM: [52, 52, 0, 50, 32, 45]
+[INFO] [1788927711.256456757] [rinbo_tripod_rslip]: [STARTUP] 0.71/8.00 s | PWM: [59, 49, 0, 46, 33, 45]
+[INFO] [1788927711.357219342] [rinbo_tripod_rslip]: [STARTUP] 0.81/8.00 s | PWM: [55, 54, 0, 53, 41, 42]
+[INFO] [1788927711.457353602] [rinbo_tripod_rslip]: [STARTUP] 0.91/8.00 s | PWM: [49, 52, 0, 48, 36, 49]
+[INFO] [1788927711.559152942] [rinbo_tripod_rslip]: [STARTUP] 1.01/8.00 s | PWM: [57, 47, 0, 55, 36, 50]
+[INFO] [1788927711.659805020] [rinbo_tripod_rslip]: [STARTUP] 1.11/8.00 s | PWM: [62, 48, 0, 55, 42, 51]
+[INFO] [1788927711.760145606] [rinbo_tripod_rslip]: [STARTUP] 1.21/8.00 s | PWM: [64, 53, 0, 50, 47, 49]
+[INFO] [1788927711.860787250] [rinbo_tripod_rslip]: [STARTUP] 1.31/8.00 s | PWM: [64, 48, 0, 50, 51, 49]
+[INFO] [1788927711.960805530] [rinbo_tripod_rslip]: [STARTUP] 1.41/8.00 s | PWM: [65, 50, 0, 48, 53, 53]
+[INFO] [1788927712.061886349] [rinbo_tripod_rslip]: [STARTUP] 1.51/8.00 s | PWM: [61, 56, 0, 44, 52, 59]
+[INFO] [1788927712.162141599] [rinbo_tripod_rslip]: [STARTUP] 1.61/8.00 s | PWM: [44, 66, 0, 45, 41, 60]
+[INFO] [1788927712.264940009] [rinbo_tripod_rslip]: [STARTUP] 1.72/8.00 s | PWM: [58, 59, 0, 59, 45, 50]
+[INFO] [1788927712.364977251] [rinbo_tripod_rslip]: [STARTUP] 1.82/8.00 s | PWM: [63, 62, 0, 63, 41, 51]
+[INFO] [1788927712.469947869] [rinbo_tripod_rslip]: [STARTUP] 1.92/8.00 s | PWM: [62, 56, 0, 64, 48, 48]
+[INFO] [1788927712.570764845] [rinbo_tripod_rslip]: [STARTUP] 2.02/8.00 s | PWM: [60, 62, 0, 52, 47, 52]
+[INFO] [1788927712.671420363] [rinbo_tripod_rslip]: [STARTUP] 2.12/8.00 s | PWM: [59, 51, 0, 51, 50, 54]
+[INFO] [1788927712.772059207] [rinbo_tripod_rslip]: [STARTUP] 2.22/8.00 s | PWM: [66, 48, 0, 51, 50, 61]
+[INFO] [1788927712.872259155] [rinbo_tripod_rslip]: [STARTUP] 2.32/8.00 s | PWM: [72, 52, 0, 59, 50, 57]
+[INFO] [1788927712.975082592] [rinbo_tripod_rslip]: [STARTUP] 2.43/8.00 s | PWM: [67, 69, 0, 74, 53, 49]
+[INFO] [1788927713.075192279] [rinbo_tripod_rslip]: [STARTUP] 2.53/8.00 s | PWM: [52, 77, 0, 77, 55, 49]
+[INFO] [1788927713.176029625] [rinbo_tripod_rslip]: [STARTUP] 2.63/8.00 s | PWM: [44, 77, 0, 79, 59, 64]
+[INFO] [1788927713.277159804] [rinbo_tripod_rslip]: [STARTUP] 2.73/8.00 s | PWM: [48, 71, 0, 77, 60, 66]
+[INFO] [1788927713.377235274] [rinbo_tripod_rslip]: [STARTUP] 2.83/8.00 s | PWM: [51, 71, 0, 73, 58, 70]
+[INFO] [1788927713.478292645] [rinbo_tripod_rslip]: [STARTUP] 2.93/8.00 s | PWM: [59, 68, 0, 73, 57, 71]
+[INFO] [1788927713.578850920] [rinbo_tripod_rslip]: [STARTUP] 3.03/8.00 s | PWM: [64, 63, 0, 67, 67, 76]
+[INFO] [1788927713.680518054] [rinbo_tripod_rslip]: [STARTUP] 3.13/8.00 s | PWM: [74, 59, 0, 65, 63, 76]
+[INFO] [1788927713.781647048] [rinbo_tripod_rslip]: [STARTUP] 3.23/8.00 s | PWM: [80, 67, 0, 57, 66, 77]
+[INFO] [1788927713.882709315] [rinbo_tripod_rslip]: [STARTUP] 3.33/8.00 s | PWM: [80, 69, 0, 63, 70, 66]
+[INFO] [1788927713.982978631] [rinbo_tripod_rslip]: [STARTUP] 3.43/8.00 s | PWM: [80, 71, 0, 77, 66, 57]
+[INFO] [1788927714.083641034] [rinbo_tripod_rslip]: [STARTUP] 3.53/8.00 s | PWM: [77, 76, 0, 80, 69, 57]
+[INFO] [1788927714.183907838] [rinbo_tripod_rslip]: [STARTUP] 3.64/8.00 s | PWM: [67, 73, 0, 80, 69, 67]
+[INFO] [1788927714.284633253] [rinbo_tripod_rslip]: [STARTUP] 3.74/8.00 s | PWM: [60, 71, 0, 77, 71, 79]
+[INFO] [1788927714.384808271] [rinbo_tripod_rslip]: [STARTUP] 3.84/8.00 s | PWM: [65, 71, 0, 72, 72, 78]
+[INFO] [1788927714.485020349] [rinbo_tripod_rslip]: [STARTUP] 3.94/8.00 s | PWM: [71, 75, 0, 72, 75, 80]
+[INFO] [1788927714.585231178] [rinbo_tripod_rslip]: [STARTUP] 4.04/8.00 s | PWM: [74, 73, 0, 62, 75, 80]
+[INFO] [1788927714.686042106] [rinbo_tripod_rslip]: [STARTUP] 4.14/8.00 s | PWM: [80, 75, 0, 66, 74, 79]
+[INFO] [1788927714.787239349] [rinbo_tripod_rslip]: [STARTUP] 4.24/8.00 s | PWM: [80, 79, 0, 80, 76, 78]
+[INFO] [1788927714.888156784] [rinbo_tripod_rslip]: [STARTUP] 4.34/8.00 s | PWM: [80, 77, 0, 80, 76, 67]
+[INFO] [1788927714.988206124] [rinbo_tripod_rslip]: [STARTUP] 4.44/8.00 s | PWM: [80, 76, 0, 80, 75, 61]
+[INFO] [1788927715.089043762] [rinbo_tripod_rslip]: [STARTUP] 4.54/8.00 s | PWM: [80, 78, 0, 79, 75, 63]
+[INFO] [1788927715.189064540] [rinbo_tripod_rslip]: [STARTUP] 4.64/8.00 s | PWM: [80, 75, 0, 72, 75, 74]
+[INFO] [1788927715.289123561] [rinbo_tripod_rslip]: [STARTUP] 4.74/8.00 s | PWM: [77, 77, 0, 68, 74, 80]
+[INFO] [1788927715.389596996] [rinbo_tripod_rslip]: [STARTUP] 4.84/8.00 s | PWM: [75, 80, 0, 73, 77, 77]
+[INFO] [1788927715.489610573] [rinbo_tripod_rslip]: [STARTUP] 4.94/8.00 s | PWM: [73, 78, 0, 72, 69, 80]
+[INFO] [1788927715.590184595] [rinbo_tripod_rslip]: [STARTUP] 5.04/8.00 s | PWM: [80, 80, 0, 80, 74, 80]
+[INFO] [1788927715.690607081] [rinbo_tripod_rslip]: [STARTUP] 5.14/8.00 s | PWM: [80, 75, 0, 76, 70, 74]
+[INFO] [1788927715.790637876] [rinbo_tripod_rslip]: [STARTUP] 5.24/8.00 s | PWM: [80, 78, 0, 78, 68, 71]
+[INFO] [1788927715.892656024] [rinbo_tripod_rslip]: [STARTUP] 5.34/8.00 s | PWM: [80, 80, 0, 79, 72, 74]
+[INFO] [1788927715.992819185] [rinbo_tripod_rslip]: [STARTUP] 5.44/8.00 s | PWM: [80, 80, 0, 76, 69, 71]
+[INFO] [1788927716.092821484] [rinbo_tripod_rslip]: [STARTUP] 5.54/8.00 s | PWM: [80, 78, 0, 80, 70, 76]
+[INFO] [1788927716.193873047] [rinbo_tripod_rslip]: [STARTUP] 5.65/8.00 s | PWM: [80, 79, 0, 75, 63, 80]
+[INFO] [1788927716.294804501] [rinbo_tripod_rslip]: [STARTUP] 5.75/8.00 s | PWM: [80, 76, 0, 78, 66, 72]
+[INFO] [1788927716.397238999] [rinbo_tripod_rslip]: [STARTUP] 5.85/8.00 s | PWM: [80, 80, 0, 80, 69, 74]
+[INFO] [1788927716.497939548] [rinbo_tripod_rslip]: [STARTUP] 5.95/8.00 s | PWM: [80, 79, 0, 80, 67, 80]
+[INFO] [1788927716.599666737] [rinbo_tripod_rslip]: [STARTUP] 6.05/8.00 s | PWM: [80, 80, 0, 80, 67, 80]
+[INFO] [1788927716.701474255] [rinbo_tripod_rslip]: [STARTUP] 6.15/8.00 s | PWM: [80, 80, 0, 79, 67, 80]
+[INFO] [1788927716.801525101] [rinbo_tripod_rslip]: [STARTUP] 6.25/8.00 s | PWM: [80, 80, 0, 80, 68, 71]
+[INFO] [1788927716.901611086] [rinbo_tripod_rslip]: [STARTUP] 6.35/8.00 s | PWM: [80, 80, 0, 78, 65, 65]
+[INFO] [1788927717.003388008] [rinbo_tripod_rslip]: [STARTUP] 6.45/8.00 s | PWM: [80, 80, 0, 80, 68, 73]
+[INFO] [1788927717.103519648] [rinbo_tripod_rslip]: [STARTUP] 6.55/8.00 s | PWM: [80, 80, 0, 80, 68, 80]
+[INFO] [1788927717.203783877] [rinbo_tripod_rslip]: [STARTUP] 6.65/8.00 s | PWM: [80, 80, 0, 80, 67, 80]
+[INFO] [1788927717.304931755] [rinbo_tripod_rslip]: [STARTUP] 6.76/8.00 s | PWM: [80, 80, 0, 80, 71, 80]
+[INFO] [1788927717.405148747] [rinbo_tripod_rslip]: [STARTUP] 6.86/8.00 s | PWM: [80, 80, 0, 80, 73, 78]
+[INFO] [1788927717.506694717] [rinbo_tripod_rslip]: [STARTUP] 6.96/8.00 s | PWM: [80, 80, 0, 80, 74, 77]
+[INFO] [1788927717.606903996] [rinbo_tripod_rslip]: [STARTUP] 7.06/8.00 s | PWM: [80, 80, 0, 80, 75, 77]
+[INFO] [1788927717.706973452] [rinbo_tripod_rslip]: [STARTUP] 7.16/8.00 s | PWM: [80, 80, 0, 80, 74, 78]
+[INFO] [1788927717.807057598] [rinbo_tripod_rslip]: [STARTUP] 7.26/8.00 s | PWM: [80, 80, 0, 80, 78, 80]
+[INFO] [1788927717.908883758] [rinbo_tripod_rslip]: [STARTUP] 7.36/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.009984815] [rinbo_tripod_rslip]: [STARTUP] 7.46/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.110841157] [rinbo_tripod_rslip]: [STARTUP] 7.56/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.210942217] [rinbo_tripod_rslip]: [STARTUP] 7.66/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.312834865] [rinbo_tripod_rslip]: [STARTUP] 7.76/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.413034592] [rinbo_tripod_rslip]: [STARTUP] 7.86/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.513074750] [rinbo_tripod_rslip]: [STARTUP] 7.96/8.00 s | PWM: [80, 80, 0, 80, 80, 80]
+[INFO] [1788927718.548966483] [rinbo_tripod_rslip]: === Startup done, entering RUNNING ===
+[INFO] [1788927718.549082432] [rinbo_tripod_rslip]: Starting from tau = 0.055128 (Standing)
+[INFO] [1788927718.549981826] [rinbo_tripod_rslip]: tau: 0.055 | ratio: 8.00 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927718.650939780] [rinbo_tripod_rslip]: tau: 0.068 | ratio: 8.00 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927718.751914152] [rinbo_tripod_rslip]: tau: 0.081 | ratio: 7.99 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927718.851935235] [rinbo_tripod_rslip]: tau: 0.093 | ratio: 7.99 | A: [80, 80, 77] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927718.952102222] [rinbo_tripod_rslip]: tau: 0.106 | ratio: 7.98 | A: [75, 80, 63] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.052115842] [rinbo_tripod_rslip]: tau: 0.118 | ratio: 7.98 | A: [63, 66, 58] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.152149743] [rinbo_tripod_rslip]: tau: 0.131 | ratio: 7.98 | A: [66, 56, 65] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.252182140] [rinbo_tripod_rslip]: tau: 0.143 | ratio: 7.97 | A: [56, 54, 56] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.352936376] [rinbo_tripod_rslip]: tau: 0.156 | ratio: 7.97 | A: [57, 53, 52] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.452964069] [rinbo_tripod_rslip]: tau: 0.168 | ratio: 7.96 | A: [64, 53, 51] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.553127361] [rinbo_tripod_rslip]: tau: 0.181 | ratio: 7.96 | A: [74, 78, 79] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.653186897] [rinbo_tripod_rslip]: tau: 0.194 | ratio: 7.96 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.753373615] [rinbo_tripod_rslip]: tau: 0.206 | ratio: 7.95 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.854132652] [rinbo_tripod_rslip]: tau: 0.219 | ratio: 7.95 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927719.954262883] [rinbo_tripod_rslip]: tau: 0.231 | ratio: 7.94 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927720.055238672] [rinbo_tripod_rslip]: tau: 0.244 | ratio: 7.94 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927720.155329685] [rinbo_tripod_rslip]: tau: 0.257 | ratio: 7.93 | A: [80, 80, 80] | B: [0, 0, 0] [B:wait]
+[INFO] [1788927720.158083649] [rinbo_tripod_rslip]: === Group B started! ===
+[INFO] [1788927720.257056555] [rinbo_tripod_rslip]: tau: 0.270 | ratio: 7.93 | A: [80, 80, 80] | B: [80, 80, 0]
+[INFO] [1788927720.357161457] [rinbo_tripod_rslip]: tau: 0.282 | ratio: 7.93 | A: [80, 80, 80] | B: [80, 80, 0]
+[INFO] [1788927720.457167692] [rinbo_tripod_rslip]: tau: 0.295 | ratio: 7.92 | A: [80, 80, 80] | B: [80, 80, 0]
+[INFO] [1788927720.559014832] [rinbo_tripod_rslip]: tau: 0.308 | ratio: 7.92 | A: [80, 80, 80] | B: [80, 80, 0]
+[INFO] [1788927720.659099604] [rinbo_tripod_rslip]: tau: 0.320 | ratio: 7.91 | A: [80, 80, 80] | B: [80, 80, 0]
+[INFO] [1788927720.759108271] [rinbo_tripod_rslip]: tau: 0.333 | ratio: 7.91 | A: [80, 80, 80] | B: [67, 58, 0]
+TRIPOD SAFETY STOP: hard position error: L2 counts=18008.929688 hard_limit=18000

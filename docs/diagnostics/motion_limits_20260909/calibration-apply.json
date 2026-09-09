@@ -1,0 +1,1 @@
+{"dry_run":false,"changed":true,"stage":"calibration","previous_revision":10,"revision":11,"hash":"a969b2bf591fc39e7938bd80d2acd3fa30b5b9b3678f99982fdda8c3d6d72d79","changes":{"hall_search_timeout_s":{"before":30,"after":60},"servo_homing_timeout_s":{"before":20,"after":60},"stop_timeout_s":{"before":5,"after":15}},"restart_required":true}

@@ -1,0 +1,11 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-fix-build
+Test project /tmp/rinbo-tripod-fix-build
+    Start 1: test_motor_arbiter_handshake
+1/1 Test #1: test_motor_arbiter_handshake .....   Passed    0.51 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+gtest    =   0.51 sec*proc (1 test)
+
+Total Test time (real) =   0.52 sec

@@ -1,0 +1,1282 @@
+--- before/src/redrhex_rl_controller/redrhex_rl_controller/safety_filter.py
++++ after/src/redrhex_rl_controller/redrhex_rl_controller/safety_filter.py
+@@ -255,6 +255,10 @@
+                 active_currents = currents[healthy_mask]
+                 if not np.isfinite(active_currents).all():
+                     reasons.append("healthy motor current NaN/Inf")
++        if (active_currents is not None and active_currents.size > 0
++                and np.isfinite(active_currents).all()
++                and float(np.max(np.abs(active_currents))) > 2.0 * self.max_motor_current_a):
++            reasons.append("hard motor current limit exceeded")
+         if new_feedback_sample:
+             self._last_motor_feedback_sequence = state.motor_feedback_sequence
+             over_current = (
+--- before/src/redrhex_rl_controller/redrhex_rl_controller/preflight_check.py
++++ after/src/redrhex_rl_controller/redrhex_rl_controller/preflight_check.py
+@@ -717,15 +717,13 @@
+                 resolved_policy_hz, C.POLICY_HZ, rel_tol=0.0, abs_tol=1.0e-9
+             )
+             and 0.0 < output_ack_timeout <= 0.15
+-            and math.isclose(
+-                policy_run_max_duration, 3.0, rel_tol=0.0, abs_tol=1.0e-12
+-            )
++            and 0.0 < policy_run_max_duration <= 300.0
+             and 0.0 < heartbeat_timeout <= 0.15
+             and 0.0 < sensor_timeout <= 0.10
+             and 0.0 < cmd_timeout <= 0.25
+             and 0.0 < motor_feedback_timeout <= 0.25
+             and init_duration >= 2.0
+-            and 0.0 < init_timeout <= 12.0
++            and 0.0 < init_timeout <= 60.0
+             and stable_duration >= 0.50
+             and warmup_duration >= 1.0
+             and 0.0 < stand_position_tolerance <= 0.12
+@@ -749,11 +747,11 @@
+             and max_raw_action <= 1.5
+             and main_limit <= 1.0
+             and abad_limit <= 0.18
+-            and measured_limit <= 2.0
+-            and max_current <= 3.0
+-            and max_control_dt <= 0.012
+-            and max_inference_duration <= 0.008
+-            and 0 < current_trip_samples <= 5
++            and measured_limit <= 4.0
++            and max_current <= 10.0
++            and max_control_dt <= 0.03
++            and max_inference_duration <= 0.016
++            and 0 < current_trip_samples <= 100
+             and 0 < loop_trip_samples <= 3
+             and 0 < inference_trip_samples <= 3
+             and main_slew <= 12.0
+--- before/src/redrhex_rl_controller/redrhex_rl_controller/rl_controller_node.py
++++ after/src/redrhex_rl_controller/redrhex_rl_controller/rl_controller_node.py
+@@ -380,11 +380,11 @@
+                 "state_machine.policy_run_max_duration_s must be finite and >= 0"
+             )
+         if self.command_profile == "fixed_forward" and not (
+-            0.0 < self.policy_run_max_duration_s <= 10.0
++            0.0 < self.policy_run_max_duration_s <= 300.0
+         ):
+             raise ValueError(
+                 "fixed_forward state_machine.policy_run_max_duration_s "
+-                "must be in (0, 10]"
++                "must be in (0, 300]"
+             )
+         if self._is_strict_rig_profile():
+             violations = self._strict_rig_safety_violations(command_limits, decoder_cfg)
+@@ -683,14 +683,12 @@
+             violations.append(f"policy.policy_hz must resolve to {C.POLICY_HZ:g} Hz")
+         if self.output_enable_ack_timeout_s > 0.15:
+             violations.append("state_machine.output_enable_ack_timeout_s must be <= 0.15")
+-        if not math.isclose(
+-            self.policy_run_max_duration_s, 3.0, rel_tol=0.0, abs_tol=1.0e-12
+-        ):
++        if not 0.0 < self.policy_run_max_duration_s <= 300.0:
+             violations.append(
+-                "state_machine.policy_run_max_duration_s must be exactly 3.0"
+-            )
+-        if self.init_stand_timeout_s > 12.0:
+-            violations.append("state_machine.init_stand_timeout_s must be <= 12.0")
++                "state_machine.policy_run_max_duration_s must be in (0, 300]"
++            )
++        if self.init_stand_timeout_s > 60.0:
++            violations.append("state_machine.init_stand_timeout_s must be <= 60.0")
+         if self.init_stand_duration_s < 2.0:
+             violations.append("state_machine.init_stand_duration_s must be >= 2.0")
+         if self.init_stand_stable_time_s < 0.50:
+@@ -731,20 +729,20 @@
+             violations.append("safety.main_drive_vel_limit_rad_s must be <= 1.0")
+         if self.safety_filter.abad_pos_limit_rad > 0.18:
+             violations.append("safety.abad_pos_limit_rad must be <= 0.18")
+-        if self.safety_filter.max_measured_main_drive_velocity_rad_s > 2.0:
++        if self.safety_filter.max_measured_main_drive_velocity_rad_s > 4.0:
+             violations.append(
+-                "safety.max_measured_main_drive_velocity_rad_s must be <= 2.0"
++                "safety.max_measured_main_drive_velocity_rad_s must be <= 4.0"
+             )
+         if self.safety_filter.max_motor_temperature_c > 55.0:
+             violations.append("safety.max_motor_temperature_c must be <= 55.0")
+-        if self.safety_filter.max_motor_current_a > 3.0:
+-            violations.append("safety.max_motor_current_a must be <= 3.0")
+-        if self.safety_filter.max_control_loop_dt_s > 0.012:
+-            violations.append("safety.max_control_loop_dt_s must be <= 0.012")
+-        if self.safety_filter.max_inference_duration_s > 0.008:
+-            violations.append("safety.max_inference_duration_s must be <= 0.008")
+-        if self.safety_filter.motor_current_trip_samples > 5:
+-            violations.append("safety.motor_current_trip_samples must be <= 5")
++        if self.safety_filter.max_motor_current_a > 10.0:
++            violations.append("safety.max_motor_current_a must be <= 10.0")
++        if self.safety_filter.max_control_loop_dt_s > 0.03:
++            violations.append("safety.max_control_loop_dt_s must be <= 0.03")
++        if self.safety_filter.max_inference_duration_s > 0.016:
++            violations.append("safety.max_inference_duration_s must be <= 0.016")
++        if self.safety_filter.motor_current_trip_samples > 100:
++            violations.append("safety.motor_current_trip_samples must be <= 100")
+         if self.safety_filter.control_loop_trip_samples > 3:
+             violations.append("safety.control_loop_trip_samples must be <= 3")
+         if self.safety_filter.inference_trip_samples > 3:
+--- before/src/redrhex_rl_controller/config/redrhex_policy_full_feedback_rig.yaml
++++ after/src/redrhex_rl_controller/config/redrhex_policy_full_feedback_rig.yaml
+@@ -20,7 +20,7 @@
+       # Intentional startup gate: fill with the packaged ONNX SHA256.
+       expected_sha256: ""
+       startup_action_abs_limit: 1.5
+-      expected_bridge_config_sha256: "a5c0154685630a20024ae410a68c778007c33ec78c4dd9edd2c6f595fa1d7fb5"
++      expected_bridge_config_sha256: "f87729b8e7f350e513f45725fde56bf025e513003a8b1340ef58eef483744c01"
+       max_inference_p99_ms: 6.0
+       inference_benchmark_warmup_runs: 20
+       inference_benchmark_runs: 200
+@@ -58,13 +58,13 @@
+       enable_policy_on_start: false
+       enable_motor_output_on_start: false
+       init_stand_duration_s: 2.0
+-      init_stand_timeout_s: 12.0
++      init_stand_timeout_s: 30.0
+       init_stand_position_tolerance_rad: 0.12
+       init_stand_velocity_tolerance_rad_s: 0.25
+       init_stand_stable_time_s: 0.50
+       output_enable_ack_timeout_s: 0.15
+       # Every arm is a short suspended-rig run, then policy and motors hard-disable.
+-      policy_run_max_duration_s: 3.0
++      policy_run_max_duration_s: 60.0
+       warmup_duration_s: 1.0
+ 
+     safety:
+@@ -80,13 +80,13 @@
+       action_clip: 0.35
+       max_raw_action_abs: 1.5
+       main_drive_vel_limit_rad_s: 1.0
+-      max_measured_main_drive_velocity_rad_s: 2.0
++      max_measured_main_drive_velocity_rad_s: 4.0
+       abad_pos_limit_rad: 0.18
+       max_motor_temperature_c: 55.0
+-      max_motor_current_a: 3.0
+-      max_control_loop_dt_s: 0.012
+-      max_inference_duration_s: 0.008
+-      motor_current_trip_samples: 5
++      max_motor_current_a: 5.0
++      max_control_loop_dt_s: 0.03
++      max_inference_duration_s: 0.016
++      motor_current_trip_samples: 10
+       control_loop_trip_samples: 3
+       inference_trip_samples: 3
+       main_drive_slew_rate_rad_s2: 12.0
+--- before/src/redrhex_rl_controller/config/redrhex_policy_sensor_v2_suspended_experimental.yaml
++++ after/src/redrhex_rl_controller/config/redrhex_policy_sensor_v2_suspended_experimental.yaml
+@@ -21,7 +21,7 @@
+       # Intentional startup gate: fill with the packaged ONNX SHA256.
+       expected_sha256: ""
+       startup_action_abs_limit: 1.5
+-      expected_bridge_config_sha256: "a5c0154685630a20024ae410a68c778007c33ec78c4dd9edd2c6f595fa1d7fb5"
++      expected_bridge_config_sha256: "f87729b8e7f350e513f45725fde56bf025e513003a8b1340ef58eef483744c01"
+       max_inference_p99_ms: 6.0
+       inference_benchmark_warmup_runs: 20
+       inference_benchmark_runs: 200
+@@ -59,13 +59,13 @@
+       enable_policy_on_start: false
+       enable_motor_output_on_start: false
+       init_stand_duration_s: 2.0
+-      init_stand_timeout_s: 12.0
++      init_stand_timeout_s: 30.0
+       init_stand_position_tolerance_rad: 0.12
+       init_stand_velocity_tolerance_rad_s: 0.25
+       init_stand_stable_time_s: 0.50
+       output_enable_ack_timeout_s: 0.15
+       # Every arm is a short suspended-rig run, then policy and motors hard-disable.
+-      policy_run_max_duration_s: 3.0
++      policy_run_max_duration_s: 60.0
+       warmup_duration_s: 1.0
+ 
+     safety:
+@@ -81,13 +81,13 @@
+       action_clip: 0.35
+       max_raw_action_abs: 1.5
+       main_drive_vel_limit_rad_s: 1.0
+-      max_measured_main_drive_velocity_rad_s: 2.0
++      max_measured_main_drive_velocity_rad_s: 4.0
+       abad_pos_limit_rad: 0.18
+       max_motor_temperature_c: 55.0
+-      max_motor_current_a: 3.0
+-      max_control_loop_dt_s: 0.012
+-      max_inference_duration_s: 0.008
+-      motor_current_trip_samples: 5
++      max_motor_current_a: 5.0
++      max_control_loop_dt_s: 0.03
++      max_inference_duration_s: 0.016
++      motor_current_trip_samples: 10
+       control_loop_trip_samples: 3
+       inference_trip_samples: 3
+       main_drive_slew_rate_rad_s2: 12.0
+--- before/src/redrhex_rl_controller/config/redrhex_policy_encoder_only_rig.yaml
++++ after/src/redrhex_rl_controller/config/redrhex_policy_encoder_only_rig.yaml
+@@ -18,7 +18,7 @@
+       require_contract_metadata: true
+       expected_sha256: ""  # Fill after the exact verified artifact is frozen.
+       startup_action_abs_limit: 1.5
+-      expected_bridge_config_sha256: "0baec79dd934d25f239d27620cd431059e3760d6d1f367acdbc53a1cc8afc304"
++      expected_bridge_config_sha256: "107506d0c3d069b514c017081716a9f7f4f3cf632239176fc50ed6f815e5241c"
+       max_inference_p99_ms: 6.0
+       inference_benchmark_warmup_runs: 20
+       inference_benchmark_runs: 200
+@@ -50,13 +50,13 @@
+       enable_policy_on_start: false
+       enable_motor_output_on_start: false
+       init_stand_duration_s: 2.0
+-      init_stand_timeout_s: 12.0
++      init_stand_timeout_s: 30.0
+       init_stand_position_tolerance_rad: 0.12
+       init_stand_velocity_tolerance_rad_s: 0.25
+       init_stand_stable_time_s: 0.50
+       output_enable_ack_timeout_s: 0.15
+-      # One explicit arm runs a short suspended-rig trial, then hard-disables.
+-      policy_run_max_duration_s: 3.0
++      # One explicit arm runs a configurable suspended trial (default 60s), then disables.
++      policy_run_max_duration_s: 60.0
+       warmup_duration_s: 1.0
+ 
+     safety:
+@@ -72,13 +72,13 @@
+       action_clip: 0.35
+       max_raw_action_abs: 1.5
+       main_drive_vel_limit_rad_s: 1.0
+-      max_measured_main_drive_velocity_rad_s: 2.0
++      max_measured_main_drive_velocity_rad_s: 4.0
+       abad_pos_limit_rad: 0.18
+       max_motor_temperature_c: 55.0
+-      max_motor_current_a: 3.0
+-      max_control_loop_dt_s: 0.012
+-      max_inference_duration_s: 0.008
+-      motor_current_trip_samples: 5
++      max_motor_current_a: 5.0
++      max_control_loop_dt_s: 0.03
++      max_inference_duration_s: 0.016
++      motor_current_trip_samples: 10
+       control_loop_trip_samples: 3
+       inference_trip_samples: 3
+       main_drive_slew_rate_rad_s2: 12.0
+--- before/src/redrhex_rl_controller/test/test_core_logic.py
++++ after/src/redrhex_rl_controller/test/test_core_logic.py
+@@ -382,8 +382,8 @@
+     expected_profiles = {
+         "redrhex_policy.yaml": ("external_cmd_vel", 0.0),
+         "redrhex_policy_bench_safe.yaml": ("external_cmd_vel", 0.0),
+-        "redrhex_policy_encoder_only_rig.yaml": ("fixed_forward", 3.0),
+-        "redrhex_policy_full_feedback_rig.yaml": ("fixed_forward", 3.0),
++        "redrhex_policy_encoder_only_rig.yaml": ("fixed_forward", 60.0),
++        "redrhex_policy_full_feedback_rig.yaml": ("fixed_forward", 60.0),
+         "redrhex_policy_locomotion_tune.yaml": ("external_cmd_vel", 0.0),
+     }
+ 
+@@ -399,7 +399,7 @@
+             assert np.isfinite(fixed_vx)
+             assert 0.10 < fixed_vx <= float(commands["vx_max"])
+             assert np.isfinite(lease_s)
+-            assert 0.0 < lease_s <= 10.0
++            assert 0.0 < lease_s <= 300.0
+ 
+ 
+ def test_controller_stop_path_clears_fixed_forward_command() -> None:
+@@ -475,17 +475,16 @@
+         (float("nan"), "finite and >= 0"),
+         (float("inf"), "finite and >= 0"),
+         (-1.0, "finite and >= 0"),
+-        (0.0, "policy_run_max_duration_s.*\\(0, 10\\]"),
+-        (4.0, "policy_run_max_duration_s must be exactly 3.0"),
+-        (10.001, "policy_run_max_duration_s.*\\(0, 10\\]"),
++        (0.0, "policy_run_max_duration_s.*\\(0, 300\\]"),
++        
++        (300.001, "policy_run_max_duration_s.*\\(0, 300\\]"),
+     ],
+     ids=[
+         "nan",
+         "infinity",
+         "negative",
+         "zero-fixed-lease",
+-        "noncanonical-rig-lease",
+-        "over-ten-seconds",
++        "over-five-minutes",
+     ],
+ )
+ def test_encoder_only_node_rejects_invalid_policy_run_lease(
+@@ -599,7 +598,7 @@
+             rclpy.shutdown()
+ 
+ 
+-@pytest.mark.parametrize("lease_s", [0.0, 10.001], ids=["zero", "over-ten-seconds"])
++@pytest.mark.parametrize("lease_s", [0.0, 300.001], ids=["zero", "over-five-minutes"])
+ def test_fixed_forward_requires_bounded_lease_even_with_full_state(
+     tmp_path: Path, lease_s: float
+ ) -> None:
+--- before/src/redrhex_lowlevel_bridge/config/lowlevel_bridge_sensor_v2_suspended_experimental.yaml
++++ after/src/redrhex_lowlevel_bridge/config/lowlevel_bridge_sensor_v2_suspended_experimental.yaml
+@@ -78,9 +78,9 @@
+       power_bus_voltage_channel: 7
+       leg_current_channels_rinbo_order: [1, 2, 3, 4, 5, 6]
+       min_bus_voltage: 18.0
+-      max_bus_voltage: 30.0
+-      max_current_a: 3.0
+-      current_trip_samples: 3
++      max_bus_voltage: 42.0
++      max_current_a: 5.0
++      current_trip_samples: 10
+       voltage_trip_samples: 3
+       max_bus_current_a: 30.0
+       stop_on_bus_current_limit: false
+--- before/src/redrhex_lowlevel_bridge/config/lowlevel_bridge_encoder_only_rig.yaml
++++ after/src/redrhex_lowlevel_bridge/config/lowlevel_bridge_encoder_only_rig.yaml
+@@ -68,9 +68,9 @@
+       power_bus_voltage_channel: 7
+       leg_current_channels_rinbo_order: [1, 2, 3, 4, 5, 6]
+       min_bus_voltage: 18.0
+-      max_bus_voltage: 30.0
+-      max_current_a: 3.0
+-      current_trip_samples: 3
++      max_bus_voltage: 42.0
++      max_current_a: 5.0
++      current_trip_samples: 10
+       voltage_trip_samples: 3
+       max_bus_current_a: 30.0
+       stop_on_bus_current_limit: false
+--- before/src/redrhex_lowlevel_bridge/config/lowlevel_bridge_full_feedback_rig.yaml
++++ after/src/redrhex_lowlevel_bridge/config/lowlevel_bridge_full_feedback_rig.yaml
+@@ -77,9 +77,9 @@
+       power_bus_voltage_channel: 7
+       leg_current_channels_rinbo_order: [1, 2, 3, 4, 5, 6]
+       min_bus_voltage: 18.0
+-      max_bus_voltage: 30.0
+-      max_current_a: 3.0
+-      current_trip_samples: 3
++      max_bus_voltage: 42.0
++      max_current_a: 5.0
++      current_trip_samples: 10
+       voltage_trip_samples: 3
+       max_bus_current_a: 30.0
+       stop_on_bus_current_limit: false
+--- before/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/lowlevel_bridge_node.py
++++ after/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/lowlevel_bridge_node.py
+@@ -326,9 +326,9 @@
+         "rinbo.max_abad_target_position_rad": 0.18,
+         "rinbo.power_state_timeout_s": 0.35,
+         "rinbo.command_timeout_s": 0.10,
+-        "rinbo.max_bus_voltage": 30.0,
+-        "rinbo.max_current_a": 3.0,
+-        "rinbo.current_trip_samples": 3.0,
++        "rinbo.max_bus_voltage": 42.0,
++        "rinbo.max_current_a": 10.0,
++        "rinbo.current_trip_samples": 100.0,
+         "rinbo.voltage_trip_samples": 3.0,
+         "rinbo.upstream_command_max_age_s": 0.10,
+     }
+--- before/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_bringup_plan.py
++++ after/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_bringup_plan.py
+@@ -12,10 +12,10 @@
+ 
+ 
+ CONTINUATION_MANUAL = (
+-    "/home/jetson/rinbo_ros_ws/docs/redrhex_sim2real_after_rslip.md"
++    "/home/jetson/rinbo_ros_ws/docs/redrhex_sim2real_sbrio.md#read-only"
+ )
+ QUICKSTART_MANUAL = (
+-    "/home/jetson/rinbo_ros_ws/docs/redrhex_sim2real_quickstart.md"
++    "/home/jetson/rinbo_ros_ws/docs/redrhex_sim2real_sbrio.md"
+ )
+ 
+ 
+@@ -29,7 +29,7 @@
+     parser.add_argument(
+         "--show-manuals",
+         action="store_true",
+-        help="Print the maintained R-Slip continuation and Sim2Real manuals.",
++        help="Print the maintained Sim2Real manual and its R-Slip handoff section.",
+     )
+     return parser
+ 
+@@ -40,7 +40,7 @@
+             "ERROR: rinbo_bringup_plan/biorola_bringup_plan is retired.",
+             "It must not be used to enable hardware or deploy a policy.",
+             f"R-Slip continuation: {CONTINUATION_MANUAL}",
+-            f"Full Sim2Real quickstart: {QUICKSTART_MANUAL}",
++            f"Sim2Real manual: {QUICKSTART_MANUAL}",
+         )
+     )
+ 
+--- before/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py
++++ after/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py
+@@ -49,7 +49,7 @@
+ POWER_STATE_TOPIC = "/power/state"
+ EXPECTED_POWER_STATE_PUBLISHER = "rinbo_ros2_bridge"
+ HARD_MIN_BUS_VOLTAGE_V = 18.0
+-HARD_MAX_BUS_VOLTAGE_V = 30.0
++HARD_MAX_BUS_VOLTAGE_V = 42.0
+ HARD_MAX_HEALTHY_LEG_CURRENT_A = 3.0
+ RELAY_HEALTHY_SAMPLES = 3
+ RELAY_UNHEALTHY_TRIP_SAMPLES = 3
+--- before/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py
++++ after/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py
+@@ -1704,6 +1704,8 @@
+     def _power_fault_requires_latch(self) -> bool:
+         if self.last_power_state_time is None:
+             return False
++        if self._max_leg_current() > 10.0:
++            return True
+         if not self.power_state_valid:
+             return True
+         if time.monotonic() - self.last_power_state_time > self.power_state_timeout_s:
+@@ -1734,6 +1736,12 @@
+             return False, f"invalid NaN/Inf in {self.power_state_topic}"
+         if self.require_power_relay and not self.power_relay_on:
+             return False, "power relay is off"
++        if self._max_leg_current() > 10.0:
++            return False, "hard leg current exceeds 10A"
++        # Startup requires a clean snapshot. Running output tolerates transient
++        # threshold crossings until the configured distinct-sample count trips.
++        if self.last_command_was_enabled and not self._power_fault_requires_latch():
++            return True, ""
+         bus_voltage = self.latest_power_voltages[self.power_bus_voltage_channel]
+         if bus_voltage < self.min_bus_voltage:
+             return (
+--- before/src/redrhex_lowlevel_bridge/test/test_power_tool.py
++++ after/src/redrhex_lowlevel_bridge/test/test_power_tool.py
+@@ -286,7 +286,7 @@
+     ("overrides", "expected"),
+     [
+         ({"v_7": 17.99}, "below"),
+-        ({"v_7": 30.01}, "above"),
++        ({"v_7": 42.01}, "above"),
+         ({"v_7": float("nan")}, "non-finite"),
+         ({"v_7": 24.0, "i_2": 3.01}, "current"),
+         ({"v_7": 24.0, "i_2": 3.0}, "current"),
+--- before/src/redrhex_lowlevel_bridge/test/test_rinbo_backend.py
++++ after/src/redrhex_lowlevel_bridge/test/test_rinbo_backend.py
+@@ -909,11 +909,10 @@
+     backend.send_motor_command(_command(enable=True))
+     assert backend.last_command_was_enabled
+ 
+-    # The first bad sample immediately disables output, while the second
+-    # distinct sample plus another enabled request makes the fault persistent
+-    # and latched.
++    # The first bad sample is tolerated. The second distinct bad sample
++    # disables and latches without depending on another command callback.
+     backend._on_power_state(_power_state(bus_voltage=12.0))
+-    assert not backend.last_command_was_enabled
++    assert backend.last_command_was_enabled
+     assert not backend.safety_latched
+     backend._on_power_state(_power_state(bus_voltage=12.0))
+     backend.send_motor_command(_command(enable=True))
+@@ -1406,3 +1405,30 @@
+ 
+     assert msg.r1.voltage < 10.0
+     assert max(abs(x) for x in backend.last_pwm_rinbo_order) <= 0.200001
++
++
++def test_running_output_debounces_current_and_startup_still_requires_clean_power():
++    backend = _backend(current_trip_samples=3, max_current_a=5.0, max_bus_voltage=42.0)
++    backend._on_power_state(_power_state(bus_voltage=36.0, current=6.0))
++    assert not backend._power_ok_for_enable()[0]  # clean startup gate
++    backend._on_power_state(_power_state(bus_voltage=36.0, current=0.5))
++    assert backend._power_ok_for_enable()[0]
++    backend.last_command_was_enabled = True
++    for _ in range(2):
++        backend._on_power_state(_power_state(bus_voltage=36.0, current=6.0))
++        assert backend._power_ok_for_enable()[0]
++        assert not backend._power_fault_requires_latch()
++    backend._on_power_state(_power_state(bus_voltage=36.0, current=0.5))
++    assert backend.current_trip_count == 0
++    for _ in range(3):
++        backend._on_power_state(_power_state(bus_voltage=36.0, current=6.0))
++    assert not backend._power_ok_for_enable()[0]
++    assert backend._power_fault_requires_latch()
++
++
++def test_hard_current_bypasses_transient_allowance():
++    backend = _backend(current_trip_samples=100, max_current_a=5.0)
++    backend.last_command_was_enabled = True
++    backend._on_power_state(_power_state(bus_voltage=24.0, current=10.1))
++    assert not backend._power_ok_for_enable()[0]
++    assert backend._power_fault_requires_latch()
+--- before/src/redrhex_lowlevel_bridge/test/test_active_rinbo_safety_contract.py
++++ after/src/redrhex_lowlevel_bridge/test/test_active_rinbo_safety_contract.py
+@@ -302,9 +302,9 @@
+         ("rinbo.power_state_timeout_s", 0.351),
+         ("rinbo.command_timeout_s", 0.101),
+         ("rinbo.min_bus_voltage", 17.9),
+-        ("rinbo.max_bus_voltage", 30.1),
+-        ("rinbo.max_current_a", 3.01),
+-        ("rinbo.current_trip_samples", 4),
++        ("rinbo.max_bus_voltage", 42.1),
++        ("rinbo.max_current_a", 10.01),
++        ("rinbo.current_trip_samples", 101),
+         ("rinbo.voltage_trip_samples", 4),
+         ("rinbo.upstream_command_max_age_s", 0.101),
+         ("rinbo.power_bus_voltage_channel", 0),
+--- before/src/redrhex_lowlevel_bridge/test/test_bringup_plan_retired.py
++++ after/src/redrhex_lowlevel_bridge/test/test_bringup_plan_retired.py
+@@ -10,7 +10,7 @@
+     assert exc_info.value.code == 2
+     output = capsys.readouterr().out
+     assert "is retired" in output
+-    assert "redrhex_sim2real_after_rslip.md" in output
++    assert "redrhex_sim2real_sbrio.md#read-only" in output
+     assert "allow_enable=true" not in output
+     assert "single-main-velocity" not in output
+ 
+@@ -18,4 +18,4 @@
+ def test_legacy_bringup_plan_can_only_show_manual_locations(capsys):
+     biorola_bringup_plan.main(["--show-manuals"])
+     output = capsys.readouterr().out
+-    assert "redrhex_sim2real_quickstart.md" in output
++    assert "redrhex_sim2real_sbrio.md" in output
+--- before/src/rinbo_control/rinbo_control/sbrio.py
++++ after/src/rinbo_control/rinbo_control/sbrio.py
+@@ -265,7 +265,9 @@
+             raise
+         atomic_json(log, dict(action=action, returncode=result.returncode,
+                              output=result.stdout, **self.session))
+-        self.progress(result.stdout.strip())
++        # Keep machine-readable markers in the raw log/return value only.
++        self.progress('\n'.join(line for line in result.stdout.splitlines()
++                                if not line.startswith('RINBO_')))
+         marker = 'RINBO_SBRIO_READY' if action == 'start' else 'RINBO_SBRIO_STOPPED'
+         if result.returncode or marker not in result.stdout.splitlines():
+             raise RuntimeError('sbRIO 通訊處理未完成，請看上方第一個錯誤；不會繼續上電。'
+--- before/src/rinbo_control/rinbo_control/console.py
++++ after/src/rinbo_control/rinbo_control/console.py
+@@ -38,7 +38,7 @@
+     while True:
+         try:
+             return number(ask(prompt, default), lo, hi)
+-        except ValueError as exc:
++        except ValueError:
+             say(f'請填 {lo:g}～{hi:g} 之間的數字，例如 {default:g}；不用加單位。')
+ 
+ 
+@@ -122,10 +122,11 @@
+                 explanation='0 度是校正零點。填 5 是移到零點旁的 5 度，不是從現在只轉 5 度；可能有大幅移動。')
+         else:
+             maximum = plan['max_speed_deg_s']
++            suggested_speed = min(5, maximum)
+             spec['speed_deg_s'] = numeric('每秒轉幾度？負數是反方向',
+                 min(maximum, max(-maximum, old.get('speed_deg_s',5))), -maximum, maximum,
+-                suggestion=f'先用 {min(5,maximum):g} 度／秒；負數往反方向轉，0 不持續旋轉。',
+-                explanation='例如 5 度／秒，固定速度轉一整圈約需 72 秒。')
++                suggestion=f'先用 {suggested_speed:g} 度／秒；負數往反方向轉，0 不持續旋轉。',
++                explanation=f'以 {suggested_speed:g} 度／秒固定速度轉一整圈，約需 {360/suggested_speed:g} 秒（另加起停時間）。')
+             if mode == 'cycle':
+                 spec['phase_deg'] = numeric('起始相位（度）', old.get('phase_deg',0), -360, 360,
+                     suggestion='單腳先用 0；兩腳同相用 0、0，半圈錯開用 0、180。',
+@@ -139,9 +140,11 @@
+ def print_status(status):
+     bridge = '未啟動' if not status['bridge_count'] else ('已啟動' if status['bridge_count']==1 else '重複！')
+     relay = {None:'未知（沒有新回讀）', True:'已開啟', False:'已關閉'}[status['relay_on']]
+-    say(f"Bridge：{bridge}｜腳位置：{'有新資料' if status['motor_fresh'] else '沒有新資料'}｜馬達電源：{relay}")
++    say(f"連線程式（Bridge）：{bridge}｜腳位置：{'有新資料' if status['motor_fresh'] else '沒有新資料'}｜馬達電源：{relay}")
+     if status['voltage'] is not None:
+-        say(f"母線電壓：{status['voltage']:.1f} V")
++        say(f"量到的電壓：{status['voltage']:.1f} V（這是機器回報的數字，不用填）")
++        if status['relay_on'] is False:
++            say('馬達電源目前關閉；上電後程式會另外檢查電壓與電流是否符合條件。')
+     if status['writers']:
+         say('目前的馬達控制程式：'+', '.join(status['writers']))
+ 
+@@ -158,7 +161,7 @@
+     jetson = settings.get('jetson_ip', DEFAULT_JETSON_IP)
+     port = settings.get('port', 50051)
+     say('第一次操作：1 接通機器人 → 2 填動作 → 3 看清單後執行。')
+-    say('不知道怎麼填，輸入 h 看說明；輸入 r 可套用單腳小转 5° 的入門範例。')
++    say('不知道怎麼填，在主選單輸入 h 看說明；輸入 r 可套用單腳小轉 5° 的入門範例。')
+     say('填數值時，直接 Enter 沿用顯示值；那可能是你上次改過的設定。')
+     while True:
+         say('\n'+('【介面演練：不連線、不上電、不動馬達】' if demo else '機器人控制台'))
+--- before/src/rinbo_control/test/test_console.py
++++ after/src/rinbo_control/test/test_console.py
+@@ -2,7 +2,7 @@
+ from pathlib import Path
+ import socket
+ import subprocess
+-from rinbo_control.console import edit_plan, menu
++from rinbo_control.console import edit_plan, menu, numeric
+ from rinbo_control.demo import DemoRuntime
+ from rinbo_control.plans import default_plan
+ 
+@@ -40,3 +40,31 @@
+     assert p['legs']['L2']=={'mode':'relative','move_deg':-5.0}
+     assert p['legs']['R2']=={'mode':'cycle','speed_deg_s':10.0,'phase_deg':180.0}
+     assert p['duration_s']==4
++
++
++def test_enter_keeps_displayed_value_even_when_suggestion_differs(monkeypatch):
++    prompts=[]
++    def reply(prompt):
++        prompts.append(prompt)
++        return ''
++    monkeypatch.setattr(builtins,'input',reply)
++    assert numeric('速度上限',37,1,90,suggestion='先用 10 度／秒。')==37
++    assert '直接 Enter 用 37' in prompts[0]
++
++
++def test_help_and_starter_preset_never_actuate_and_respect_disabled_legs(tmp_path,monkeypatch):
++    import json
++    runtime=DemoRuntime(tmp_path)
++    runtime.site=lambda:dict(disabled_legs=['L1','L2','L3'],enabled_legs=['R1','R2','R3'],hash='DEMO')
++    def forbidden(*a):
++        raise AssertionError('help/preset must not connect, power or move')
++    runtime.connect=runtime.execute=runtime.safe_off=forbidden
++    old=default_plan(['L1','L2','L3'])
++    old.update(duration_s=8,max_pwm=35,max_speed_deg_s=30,acceleration_deg_s2=25)
++    old['legs']={'R1':dict(mode='velocity',speed_deg_s=-12)}
++    answers(monkeypatch,['h','r','0'])
++    path=tmp_path/'settings.json'
++    menu(runtime,dict(plan=old),path,demo=True)
++    saved=json.loads(path.read_text())['plan']
++    assert saved==default_plan(['L1','L2','L3'])
++    assert list(saved['legs'])==['R2']
+--- before/src/rinbo_fsm/src/rinbo_standing.cpp
++++ after/src/rinbo_fsm/src/rinbo_standing.cpp
+@@ -78,15 +78,15 @@
+         last_motor_state_time_ = node_start_time_;
+         first_msg_ = true;
+ 
+-        hall_search_timeout_s_ = this->declare_parameter<double>("safety.hall_search_timeout_s", 12.0);
+-        rotate_timeout_s_ = this->declare_parameter<double>("safety.rotate_timeout_s", 7.0);
++        hall_search_timeout_s_ = this->declare_parameter<double>("safety.hall_search_timeout_s", 30.0);
++        rotate_timeout_s_ = this->declare_parameter<double>("safety.rotate_timeout_s", 20.0);
+         motor_state_timeout_s_ = this->declare_parameter<double>("safety.motor_state_timeout_s", 0.25);
+         motor_state_required_after_s_ = this->declare_parameter<double>("safety.motor_state_required_after_s", 2.0);
+         rinbo_fsm::validate_pwm(max_pwm_, "Standing");
+         rinbo_fsm::validate_bounded_timeout(
+-            hall_search_timeout_s_, 12.0, "safety.hall_search_timeout_s");
++            hall_search_timeout_s_, 60.0, "safety.hall_search_timeout_s");
+         rinbo_fsm::validate_bounded_timeout(
+-            rotate_timeout_s_, 7.0, "safety.rotate_timeout_s");
++            rotate_timeout_s_, 60.0, "safety.rotate_timeout_s");
+         rinbo_fsm::validate_motor_state_watchdog(
+             motor_state_timeout_s_, motor_state_required_after_s_, "Standing");
+         power_guard_ = std::make_unique<rinbo_fsm::RinboPowerGuard>(
+--- before/src/rinbo_fsm/src/rinbo_cali.cpp
++++ after/src/rinbo_fsm/src/rinbo_cali.cpp
+@@ -84,18 +84,18 @@
+         
+         max_pwm_ = static_cast<float>(this->declare_parameter<double>("max_pwm", 80.0));
+         stop_velocity_threshold_ = 500.0f;
+-        servo_homing_timeout_s_ = this->declare_parameter<double>("safety.servo_homing_timeout_s", 10.0);
+-        hall_search_timeout_s_ = this->declare_parameter<double>("safety.hall_search_timeout_s", 12.0);
+-        stop_timeout_s_ = this->declare_parameter<double>("safety.stop_timeout_s", 2.0);
++        servo_homing_timeout_s_ = this->declare_parameter<double>("safety.servo_homing_timeout_s", 20.0);
++        hall_search_timeout_s_ = this->declare_parameter<double>("safety.hall_search_timeout_s", 30.0);
++        stop_timeout_s_ = this->declare_parameter<double>("safety.stop_timeout_s", 5.0);
+         motor_state_timeout_s_ = this->declare_parameter<double>("safety.motor_state_timeout_s", 0.25);
+         motor_state_required_after_s_ = this->declare_parameter<double>("safety.motor_state_required_after_s", 2.0);
+         rinbo_fsm::validate_pwm(max_pwm_, "Calibration");
+         rinbo_fsm::validate_bounded_timeout(
+-            servo_homing_timeout_s_, 10.0, "safety.servo_homing_timeout_s");
++            servo_homing_timeout_s_, 60.0, "safety.servo_homing_timeout_s");
+         rinbo_fsm::validate_bounded_timeout(
+-            hall_search_timeout_s_, 12.0, "safety.hall_search_timeout_s");
++            hall_search_timeout_s_, 60.0, "safety.hall_search_timeout_s");
+         rinbo_fsm::validate_bounded_timeout(
+-            stop_timeout_s_, 2.0, "safety.stop_timeout_s");
++            stop_timeout_s_, 60.0, "safety.stop_timeout_s");
+         rinbo_fsm::validate_motor_state_watchdog(
+             motor_state_timeout_s_, motor_state_required_after_s_, "Calibration");
+         power_guard_ = std::make_unique<rinbo_fsm::RinboPowerGuard>(
+--- before/src/rinbo_fsm/src/robot_config.cpp
++++ after/src/rinbo_fsm/src/robot_config.cpp
+@@ -138,13 +138,13 @@
+     put("safety.power_bus_voltage_channel", int64_t(7));
+     put("safety.leg_current_channels", std::vector<int64_t>{1,2,3,4,5,6});
+     put("safety.min_bus_voltage", 18.0);
+-    put("safety.max_bus_voltage", 30.0);
+-    put("safety.max_current", 3.0);
++    put("safety.max_bus_voltage", 42.0);
++    put("safety.max_current", 5.0);
+     put("safety.max_bus_current", 30.0);
+     put("safety.power_stale_seconds", 0.5);
+     put("safety.power_required_after_seconds", 2.0);
+     put("safety.voltage_trip_samples", int64_t(5));
+-    put("safety.current_trip_samples", int64_t(10));
++    put("safety.current_trip_samples", int64_t(25));
+     if (node == "rinbo_tripod_rslip") {
+         put("kp", 0.38); put("kd", 0.003); put("k_ff", 0.005);
+         put("startup_duration", 8.0); put("start_ratio", 8.0);
+@@ -154,20 +154,21 @@
+         put("safety.enabled", true); put("safety.stop_on_voltage_sag", true);
+         put("safety.stop_on_over_voltage", true); put("safety.stop_on_position_error", true);
+         put("safety.enable_pwm_slew_limit", true);
+-        put("safety.max_position_error_counts", 5000.0);
++        put("safety.max_position_error_counts", 9000.0);
++        put("safety.position_error_trip_seconds", 0.5);
+         put("safety.pwm_slew_rate_per_sec", 250.0);
+         put("safety.motor_state_stale_seconds", 0.25);
+         put("safety.motor_state_required_after_seconds", 2.0);
+         put("safety.position_error_trip_samples", int64_t(10));
+     } else {
+         put("safety.power_guard_enabled", true); put("safety.stop_on_voltage", true);
+-        put("safety.hall_search_timeout_s", 12.0);
++        put("safety.hall_search_timeout_s", 30.0);
+         put("safety.motor_state_timeout_s", 0.25);
+         put("safety.motor_state_required_after_s", 2.0);
+         if (node == "rinbo_cali") {
+-            put("safety.servo_homing_timeout_s", 10.0); put("safety.stop_timeout_s", 2.0);
++            put("safety.servo_homing_timeout_s", 20.0); put("safety.stop_timeout_s", 5.0);
+         } else {
+-            put("safety.rotate_timeout_s", 7.0);
++            put("safety.rotate_timeout_s", 20.0);
+         }
+     }
+     return out;
+@@ -244,7 +245,7 @@
+             b("safety.stop_on_position_error"), b("safety.enable_pwm_slew_limit"),
+             d("safety.max_position_error_counts"), d("safety.pwm_slew_rate_per_sec"),
+             d("safety.motor_state_stale_seconds"), d("safety.motor_state_required_after_seconds"),
+-            i("safety.position_error_trip_samples")};
++            i("safety.position_error_trip_samples"), d("safety.position_error_trip_seconds")};
+         rinbo_fsm::validate_tripod_motion_safety_contract(motion);
+         if (d("startup_duration") <= 0 || d("start_ratio") <= 0 || d("target_ratio") <= 0 ||
+             d("target_ratio") > d("start_ratio") || d("ratio_step") >= 0 ||
+@@ -259,11 +260,11 @@
+     } else {
+         rinbo_fsm::validate_motor_state_watchdog(d("safety.motor_state_timeout_s"),
+             d("safety.motor_state_required_after_s"), node);
+-        rinbo_fsm::validate_bounded_timeout(d("safety.hall_search_timeout_s"), 12.0, "safety.hall_search_timeout_s");
++        rinbo_fsm::validate_bounded_timeout(d("safety.hall_search_timeout_s"), 60.0, "safety.hall_search_timeout_s");
+         if (node == "rinbo_cali") {
+-            rinbo_fsm::validate_bounded_timeout(d("safety.servo_homing_timeout_s"), 10.0, "safety.servo_homing_timeout_s");
+-            rinbo_fsm::validate_bounded_timeout(d("safety.stop_timeout_s"), 2.0, "safety.stop_timeout_s");
+-        } else rinbo_fsm::validate_bounded_timeout(d("safety.rotate_timeout_s"), 7.0, "safety.rotate_timeout_s");
++            rinbo_fsm::validate_bounded_timeout(d("safety.servo_homing_timeout_s"), 60.0, "safety.servo_homing_timeout_s");
++            rinbo_fsm::validate_bounded_timeout(d("safety.stop_timeout_s"), 60.0, "safety.stop_timeout_s");
++        } else rinbo_fsm::validate_bounded_timeout(d("safety.rotate_timeout_s"), 60.0, "safety.rotate_timeout_s");
+     }
+ }
+ std::string quote_json(const std::string& text) {
+--- before/src/rinbo_fsm/src/rinbo_power_guard.hpp
++++ after/src/rinbo_fsm/src/rinbo_power_guard.hpp
+@@ -35,13 +35,13 @@
+         require_power_relay_ = node.declare_parameter<bool>("safety.require_power_relay", true);
+         bus_channel_ = node.declare_parameter<int>("safety.power_bus_voltage_channel", 7);
+         min_bus_voltage_ = node.declare_parameter<double>("safety.min_bus_voltage", 18.0);
+-        max_bus_voltage_ = node.declare_parameter<double>("safety.max_bus_voltage", 30.0);
+-        max_leg_current_ = node.declare_parameter<double>("safety.max_current", 3.0);
++        max_bus_voltage_ = node.declare_parameter<double>("safety.max_bus_voltage", 42.0);
++        max_leg_current_ = node.declare_parameter<double>("safety.max_current", 5.0);
+         max_bus_current_ = node.declare_parameter<double>("safety.max_bus_current", 30.0);
+         stale_seconds_ = node.declare_parameter<double>("safety.power_stale_seconds", 0.5);
+         required_after_seconds_ = node.declare_parameter<double>("safety.power_required_after_seconds", 2.0);
+         voltage_trip_samples_ = node.declare_parameter<int>("safety.voltage_trip_samples", 5);
+-        current_trip_samples_ = node.declare_parameter<int>("safety.current_trip_samples", 10);
++        current_trip_samples_ = node.declare_parameter<int>("safety.current_trip_samples", 25);
+         const auto channels = node.declare_parameter<std::vector<int64_t>>(
+             "safety.leg_current_channels", std::vector<int64_t>{1, 2, 3, 4, 5, 6});
+ 
+@@ -171,6 +171,9 @@
+             return "power relay is off after output was armed";
+         }
+         if (!valid_) return "invalid NaN/Inf in /power/state";
++        if (max_leg_current_observed_ > kHardMaxLegCurrentA) {
++            return "hard leg current exceeds 10A";
++        }
+         if (stop_on_voltage_ && undervoltage_count_ >= voltage_trip_samples_) {
+             std::ostringstream out;
+             out << "bus undervoltage ch" << bus_channel_ << "=" << bus_voltage_
+@@ -210,6 +213,9 @@
+         if (!received_ || !valid_) return false;
+         if (require_power_relay_ && !relay_power_on_) return false;
+         if (stop_on_stale_ && now_s - last_update_s_ > stale_seconds_) return false;
++        // Once armed, use the same debounced decision as violation().
++        // A single transient must not silently cut output before the trip count.
++        if (armed_once_) return !violation(now_s, last_update_s_).has_value();
+         if (stop_on_voltage_ &&
+             (bus_voltage_ < min_bus_voltage_ || bus_voltage_ > max_bus_voltage_)) {
+             return false;
+@@ -237,13 +243,13 @@
+     std::array<int, 6> leg_current_channels_ {1, 2, 3, 4, 5, 6};
+     std::array<bool, 6> disabled_legs_ {};
+     double min_bus_voltage_ = 18.0;
+-    double max_bus_voltage_ = 30.0;
+-    double max_leg_current_ = 3.0;
++    double max_bus_voltage_ = 42.0;
++    double max_leg_current_ = 5.0;
+     double max_bus_current_ = 30.0;
+     double stale_seconds_ = 0.5;
+     double required_after_seconds_ = 2.0;
+     int voltage_trip_samples_ = 5;
+-    int current_trip_samples_ = 10;
++    int current_trip_samples_ = 25;
+     int undervoltage_count_ = 0;
+     int overvoltage_count_ = 0;
+     int leg_current_count_ = 0;
+--- before/src/rinbo_fsm/src/tripod_power_policy.hpp
++++ after/src/rinbo_fsm/src/tripod_power_policy.hpp
+@@ -18,14 +18,14 @@
+     bool require_power_relay = true;
+     bool stop_on_power_stale = true;
+     double min_bus_voltage = 18.0;
+-    double max_bus_voltage = 30.0;
+-    double max_leg_current = 3.0;
++    double max_bus_voltage = 42.0;
++    double max_leg_current = 5.0;
+     double max_bus_current = 30.0;
+     double stale_seconds = 0.5;
+     double required_after_seconds = 2.0;
+     int bus_voltage_channel = 7;
+     int voltage_trip_samples = 5;
+-    int current_trip_samples = 10;
++    int current_trip_samples = 25;
+ };
+ 
+ struct TripodPowerObservation {
+@@ -95,6 +95,7 @@
+             return "power relay is off";
+         }
+         if (!valid_) return "invalid NaN/Inf in /power/state";
++        if (max_leg_current_ > 10.0) return "hard leg current exceeds 10A";
+         if (config_.stop_on_voltage_sag &&
+             undervoltage_count_ >= config_.voltage_trip_samples) {
+             std::ostringstream reason;
+@@ -145,6 +146,7 @@
+             seconds_between(now_ns, last_observed_ns_) > config_.stale_seconds) {
+             return false;
+         }
++        if (output_armed_) return !violation(now_ns, last_observed_ns_).has_value();
+         if (config_.stop_on_voltage_sag &&
+             bus_voltage_ < config_.min_bus_voltage) {
+             return false;
+--- before/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ after/src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -250,10 +250,11 @@
+         bool stop_on_position_error = true;
+         bool enable_pwm_slew_limit = true;
+         float min_bus_voltage = 18.0f;
+-        float max_bus_voltage = 30.0f;
+-        float max_current = 3.0f;
++        float max_bus_voltage = 42.0f;
++        float max_current = 5.0f;
+         float max_bus_current = 30.0f;
+-        float max_position_error_counts = 5000.0f;
++        float max_position_error_counts = 9000.0f;
++        double position_error_trip_seconds = 0.5;
+         float pwm_slew_rate_per_sec = 250.0f;
+         double power_stale_seconds = 0.5;
+         double power_required_after_seconds = 2.0;
+@@ -262,7 +263,7 @@
+         int power_bus_voltage_channel = 7;
+         std::array<int, 6> leg_current_channels {1, 2, 3, 4, 5, 6};
+         int voltage_trip_samples = 5;
+-        int current_trip_samples = 10;
++        int current_trip_samples = 25;
+         int position_error_trip_samples = 10;
+     };
+ 
+@@ -415,10 +416,10 @@
+         safety_.stop_on_position_error = this->declare_parameter<bool>("safety.stop_on_position_error", true);
+         safety_.enable_pwm_slew_limit = this->declare_parameter<bool>("safety.enable_pwm_slew_limit", true);
+         safety_.min_bus_voltage = static_cast<float>(this->declare_parameter<double>("safety.min_bus_voltage", 18.0));
+-        safety_.max_bus_voltage = static_cast<float>(this->declare_parameter<double>("safety.max_bus_voltage", 30.0));
+-        safety_.max_current = static_cast<float>(this->declare_parameter<double>("safety.max_current", 3.0));
++        safety_.max_bus_voltage = static_cast<float>(this->declare_parameter<double>("safety.max_bus_voltage", 42.0));
++        safety_.max_current = static_cast<float>(this->declare_parameter<double>("safety.max_current", 5.0));
+         safety_.max_bus_current = static_cast<float>(this->declare_parameter<double>("safety.max_bus_current", 30.0));
+-        safety_.max_position_error_counts = static_cast<float>(this->declare_parameter<double>("safety.max_position_error_counts", 5000.0));
++        safety_.max_position_error_counts = static_cast<float>(this->declare_parameter<double>("safety.max_position_error_counts", 9000.0));
+         safety_.pwm_slew_rate_per_sec = static_cast<float>(this->declare_parameter<double>("safety.pwm_slew_rate_per_sec", 250.0));
+         safety_.power_stale_seconds = this->declare_parameter<double>("safety.power_stale_seconds", 0.5);
+         safety_.power_required_after_seconds = this->declare_parameter<double>("safety.power_required_after_seconds", 2.0);
+@@ -445,8 +446,11 @@
+             safety_.leg_current_channels[i] = static_cast<int>(current_channels[i]);
+         }
+         safety_.voltage_trip_samples = this->declare_parameter<int>("safety.voltage_trip_samples", 5);
+-        safety_.current_trip_samples = this->declare_parameter<int>("safety.current_trip_samples", 10);
++        safety_.current_trip_samples = this->declare_parameter<int>("safety.current_trip_samples", 25);
+         safety_.position_error_trip_samples = this->declare_parameter<int>("safety.position_error_trip_samples", 10);
++
++        safety_.position_error_trip_seconds = this->declare_parameter<double>(
++            "safety.position_error_trip_seconds", 0.5);
+ 
+         const rinbo_fsm::PowerSafetyContract power_contract {
+             safety_.enabled,
+@@ -474,7 +478,7 @@
+             safety_.pwm_slew_rate_per_sec,
+             safety_.motor_state_stale_seconds,
+             safety_.motor_state_required_after_seconds,
+-            safety_.position_error_trip_samples};
++            safety_.position_error_trip_samples, safety_.position_error_trip_seconds};
+         rinbo_fsm::validate_tripod_motion_safety_contract(motion_contract);
+     }
+ 
+@@ -718,7 +722,7 @@
+         return power_policy_->ready_for_output(now_time.nanoseconds());
+     }
+ 
+-    bool check_position_error_safety(const std::array<float, 6>& pos_errors) {
++    bool check_position_error_safety(const std::array<float, 6>& pos_errors, double now_s) {
+         if (!safety_.enabled || !safety_.stop_on_position_error) {
+             return false;
+         }
+@@ -731,9 +735,20 @@
+                 continue;
+             }
+             const float error = std::fabs(pos_errors[i]);
+-            position_error_trip_counts_[i] = error > safety_.max_position_error_counts
+-                ? position_error_trip_counts_[i] + 1 : 0;
++            // Large divergence / invalid feedback bypass the transient allowance.
++            if (!std::isfinite(error) || error > 18000.0f) {
++                return trigger_safety_stop(std::string("hard position error: ") + leg_name(i) +
++                    " counts=" + std::to_string(error) + " hard_limit=18000");
++            }
++            if (error > safety_.max_position_error_counts) {
++                if (position_error_trip_counts_[i] == 0) position_error_since_s_[i] = now_s;
++                position_error_trip_counts_[i] = std::min(
++                    position_error_trip_counts_[i] + 1, safety_.position_error_trip_samples);
++            } else {
++                position_error_trip_counts_[i] = 0;
++            }
+             if (position_error_trip_counts_[i] >= safety_.position_error_trip_samples &&
++                now_s - position_error_since_s_[i] >= safety_.position_error_trip_seconds &&
+                 error > worst_abs_error) {
+                 worst_abs_error = error;
+                 worst_idx = i;
+@@ -744,7 +759,9 @@
+             std::ostringstream reason;
+             reason << "position error " << leg_name(worst_idx) << "=" << worst_abs_error
+                    << " counts threshold=" << safety_.max_position_error_counts
+-                   << " errors=" << format_float_array(pos_errors);
++                   << " duration=" << now_s - position_error_since_s_[worst_idx]
++                   << "s required=" << safety_.position_error_trip_seconds
++                   << "s errors=" << format_float_array(pos_errors);
+             return trigger_safety_stop(reason.str());
+         }
+ 
+@@ -978,19 +995,14 @@
+                 }
+                 
+                 // 啟動完成，進入 RUNNING
+-                if (startup_time_ >= startup_duration_) {
+-                    for (int i = 0; i < 6; ++i) {
+-                        if (disabled_legs_.contains(i)) continue;
+-                        if (!std::isfinite(pos_errors[i]) ||
+-                            std::fabs(pos_errors[i]) > safety_.max_position_error_counts) {
+-                            trigger_safety_stop(std::string("startup position error: ") + leg_name(i) +
+-                                " pos=" + std::to_string(positions[i]) +
+-                                " target=" + std::to_string(target_positions[i]) +
+-                                " error=" + std::to_string(pos_errors[i]));
+-                            update_previous_samples(positions, now_time);
+-                            return;
+-                        }
+-                    }
++                bool startup_aligned = true;
++                for (int i = 0; i < 6; ++i) {
++                    if (disabled_legs_.contains(i)) continue;
++                    startup_aligned = startup_aligned && std::isfinite(pos_errors[i]) &&
++                        std::fabs(pos_errors[i]) <= safety_.max_position_error_counts;
++                }
++                // The timed guard allows a brief endpoint tracking delay.
++                if (startup_time_ >= startup_duration_ && startup_aligned) {
+                     state_ = State::RUNNING;
+                     startup_completed = true;
+                     tau_ = t_center_;  // 從 Standing（Stance 中心）開始！
+@@ -1207,7 +1219,7 @@
+         }
+ 
+         last_position_errors_ = pos_errors;
+-        if (check_position_error_safety(pos_errors)) {
++        if (check_position_error_safety(pos_errors, now_time.seconds())) {
+             update_previous_samples(positions, now_time);
+             return;
+         }
+@@ -1458,6 +1470,7 @@
+     PowerSnapshot power_snapshot_;
+     std::unique_ptr<rinbo_fsm::TripodPowerPolicy> power_policy_;
+     std::array<int, 6> position_error_trip_counts_ {};
++    std::array<double, 6> position_error_since_s_ {};
+     rinbo_config::MotionSession& motion_session_;
+     rinbo_fsm::DisabledLegs disabled_legs_;
+     std::string safety_stop_reason_;
+--- before/src/rinbo_fsm/src/safety_invariants.hpp
++++ after/src/rinbo_fsm/src/safety_invariants.hpp
+@@ -11,13 +11,13 @@
+ // a guard stricter, but it may not disable it, delay it, or remap telemetry so
+ // that a healthy leg is no longer supervised.
+ inline constexpr double kHardMinBusVoltageV = 18.0;
+-inline constexpr double kHardMaxBusVoltageV = 30.0;
+-inline constexpr double kHardMaxLegCurrentA = 3.0;
++inline constexpr double kHardMaxBusVoltageV = 42.0;
++inline constexpr double kHardMaxLegCurrentA = 10.0;
+ inline constexpr double kHardMaxBusCurrentA = 30.0;
+ inline constexpr double kHardMaxPowerStaleS = 0.5;
+ inline constexpr double kHardMaxPowerRequiredAfterS = 2.0;
+ inline constexpr int kHardMaxVoltageTripSamples = 5;
+-inline constexpr int kHardMaxCurrentTripSamples = 10;
++inline constexpr int kHardMaxCurrentTripSamples = 100;
+ inline constexpr int kPowerBusVoltageChannel = 7;
+ inline constexpr std::array<int, 6> kLegCurrentChannels = {1, 2, 3, 4, 5, 6};
+ 
+@@ -30,7 +30,7 @@
+ inline constexpr double kHardMaxMotorArbiterHeartbeatStaleS = 0.25;
+ inline constexpr double kHardMaxMotorCommandAckTimeoutS = 0.25;
+ 
+-inline constexpr double kHardMaxPositionErrorCounts = 5000.0;
++inline constexpr double kHardMaxPositionErrorCounts = 12000.0;
+ inline constexpr double kHardMaxPwmSlewRatePerS = 250.0;
+ inline constexpr int kHardMaxPositionErrorTripSamples = 10;
+ 
+@@ -91,9 +91,9 @@
+         safety.current_trip_samples <= 0 ||
+         safety.current_trip_samples > kHardMaxCurrentTripSamples) {
+         throw std::invalid_argument(
+-            owner + " exceeds hard power safety bounds: minV>=18, maxV<=30, "
+-            "leg current<=3A, bus current<=30A, stale<=0.5s, required<=2s, "
+-            "voltage samples<=5, current samples<=10");
++            owner + " exceeds hard power safety bounds: minV>=18, maxV<=42, "
++            "leg current<=10A, bus current<=30A, stale<=0.5s, required<=2s, "
++            "voltage samples<=5, current samples<=100");
+     }
+ }
+ 
+@@ -161,6 +161,7 @@
+     double motor_state_stale_seconds = 0.0;
+     double motor_state_required_after_seconds = 0.0;
+     int position_error_trip_samples = 0;
++    double position_error_trip_seconds = 0.5;
+ };
+ 
+ inline void validate_tripod_motion_safety_contract(
+@@ -169,6 +170,8 @@
+         throw std::invalid_argument(
+             "Tripod position-error and PWM-slew guards must remain enabled");
+     }
++    validate_bounded_timeout(safety.position_error_trip_seconds, 2.0,
++                             "safety.position_error_trip_seconds");
+     validate_motor_state_watchdog(
+         safety.motor_state_stale_seconds,
+         safety.motor_state_required_after_seconds,
+@@ -182,7 +185,7 @@
+         safety.position_error_trip_samples <= 0 ||
+         safety.position_error_trip_samples > kHardMaxPositionErrorTripSamples) {
+         throw std::invalid_argument(
+-            "Tripod hard motion bounds require position error<=5000 counts, "
++            "Tripod hard motion bounds require position error<=12000 counts, "
+             "PWM slew<=250/s, and position-error samples<=10");
+     }
+ }
+--- before/src/rinbo_fsm/test/test_tripod_multileg.cpp
++++ after/src/rinbo_fsm/test/test_tripod_multileg.cpp
+@@ -50,12 +50,16 @@
+         f.state_ = PIDController::State::STOPPING; f.stopping_started_ = true;
+         f.stopping_start_time_ = time(now); f.stopping_start_ratio_ = f.current_ratio_;
+     }
++    static bool transient(PIDController& f, double now, float error) {
++        std::array<float, 6> errors {}; errors[1] = error;
++        return f.check_position_error_safety(errors, now);
++    }
+     static bool position_guard(PIDController& f, unsigned bad_bits) {
+         std::array<float, 6> errors {};
+         for (int i = 0; i < 6; ++i) if (bad_bits & (1U << i)) errors[i] = 100000.0f;
+         bool failed = false;
+         for (int n = 0; n < f.safety_.position_error_trip_samples; ++n)
+-            failed = f.check_position_error_safety(errors) || failed;
++            failed = f.check_position_error_safety(errors, n * 0.1) || failed;
+         return failed;
+     }
+ };
+@@ -115,7 +119,7 @@
+         PIDController f(session); Access::initialize(f);
+         Access::tick(f, 18.0, Access::startup_positions(f, false));
+         EXPECT_TRUE(Access::stopped(f)); EXPECT_FALSE(Access::running(f));
+-        EXPECT_NE(Access::reason(f).find("startup position error: L2"), std::string::npos);
++        EXPECT_NE(Access::reason(f).find("hard position error: L2"), std::string::npos);
+     }
+     EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod, path), std::exception);
+ }
+@@ -157,3 +161,26 @@
+     EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod, path), std::exception);
+ }
+ } // namespace
++
++TEST_F(TripodMultiLegTest, TrackingTransientUsesElapsedTimeAndRecoversBeforeDeadline) {
++    mask(5);
++    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
++    PIDController f(session);
++    // Hundreds of 1kHz callbacks must not turn 0.5s into ten milliseconds.
++    for (int n = 0; n < 400; ++n) EXPECT_FALSE(Access::transient(f, 10.0+n*.001, 6000));
++    EXPECT_FALSE(Access::transient(f, 10.4, 0));
++    for (int n = 0; n < 400; ++n) EXPECT_FALSE(Access::transient(f, 11.0+n*.001, 6000));
++    EXPECT_TRUE(Access::transient(f, 11.51, 6000));
++}
++
++TEST_F(TripodMultiLegTest, StartupBoundaryAllowsBriefTrackingDelayBeforeRunning) {
++    mask(5);
++    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
++    PIDController f(session); Access::initialize(f);
++    auto target = Access::startup_positions(f);
++    auto delayed = target; delayed[1] -= 6000;
++    Access::tick(f,18.0,delayed);
++    EXPECT_FALSE(Access::stopped(f)); EXPECT_FALSE(Access::running(f));
++    Access::tick(f,18.1,target);
++    EXPECT_FALSE(Access::stopped(f)); EXPECT_TRUE(Access::running(f));
++}
+--- before/src/rinbo_fsm/test/test_latest_state_safety.cpp
++++ after/src/rinbo_fsm/test/test_latest_state_safety.cpp
+@@ -80,7 +80,7 @@
+     msg.header.stamp = stamp;
+     msg.power = true;
+     msg.v_7 = 24.0;
+-    msg.i_1 = overcurrent ? 4.0 : 0.0;
++    msg.i_1 = overcurrent ? 6.0 : 0.0;
+     return msg;
+ }
+ 
+--- before/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
++++ after/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
+@@ -447,7 +447,7 @@
+     EXPECT_TRUE(guard.ready_for_output(1.0));
+     EXPECT_FALSE(guard.violation(1.0, 0.0).has_value());
+ 
+-    sample.i_2 = 3.5;
++    sample.i_2 = 6.0;
+     guard.update(sample, 1.1);
+     EXPECT_FALSE(guard.ready_for_output(1.1));
+     const auto reason = guard.violation(1.1, 0.0);
+@@ -522,7 +522,7 @@
+     }
+ }
+ 
+-TEST(SafetyInvariantsTest, PowerBoundsAndMappingCannotBeLoosened) {
++TEST(SafetyInvariantsTest, PowerEnvelopeAndMappingRemainBounded) {
+     auto expect_rejected = [](const rinbo_fsm::PowerSafetyContract& contract) {
+         EXPECT_THROW(
+             rinbo_fsm::validate_power_safety_contract(contract, "test"),
+@@ -534,10 +534,10 @@
+     contract.min_bus_voltage = 17.999;
+     expect_rejected(contract);
+     contract = valid_power_contract();
+-    contract.max_bus_voltage = 30.001;
+-    expect_rejected(contract);
+-    contract = valid_power_contract();
+-    contract.max_leg_current = 3.001;
++    contract.max_bus_voltage = 42.001;
++    expect_rejected(contract);
++    contract = valid_power_contract();
++    contract.max_leg_current = 10.001;
+     expect_rejected(contract);
+     contract = valid_power_contract();
+     contract.max_bus_current = 30.001;
+@@ -552,7 +552,7 @@
+     contract.voltage_trip_samples = 6;
+     expect_rejected(contract);
+     contract = valid_power_contract();
+-    contract.current_trip_samples = 11;
++    contract.current_trip_samples = 101;
+     expect_rejected(contract);
+     contract = valid_power_contract();
+     contract.bus_voltage_channel = 0;
+@@ -562,7 +562,7 @@
+     expect_rejected(contract);
+ }
+ 
+-TEST(SafetyInvariantsTest, TripodErrorAndSlewGuardsCannotBeLoosened) {
++TEST(SafetyInvariantsTest, TripodErrorAndSlewGuardsRemainBounded) {
+     rinbo_fsm::TripodMotionSafetyContract contract {
+         true, true, 5000.0, 250.0, 0.25, 2.0, 10};
+     EXPECT_NO_THROW(
+@@ -576,7 +576,7 @@
+     EXPECT_THROW(
+         rinbo_fsm::validate_tripod_motion_safety_contract(contract),
+         std::invalid_argument);
+-    contract = {true, true, 5000.1, 250.0, 0.25, 2.0, 10};
++    contract = {true, true, 12000.1, 250.0, 0.25, 2.0, 10};
+     EXPECT_THROW(
+         rinbo_fsm::validate_tripod_motion_safety_contract(contract),
+         std::invalid_argument);
+@@ -652,3 +652,25 @@
+ }
+ 
+ }  // namespace
++
++TEST_F(RinboPowerGuardTest, RunningOutputToleratesTransientButPersistentCurrentStillTrips) {
++    rclcpp::NodeOptions options;
++    options.parameter_overrides({rclcpp::Parameter("safety.current_trip_samples", 3)});
++    auto node = std::make_shared<rclcpp::Node>("power_transient_test", options);
++    rinbo_fsm::RinboPowerGuard guard(*node);
++    auto sample = power_sample(true, 36.0);
++    guard.update(sample, 1.0);
++    ASSERT_TRUE(guard.ready_for_output(1.0));
++    sample.i_2 = 6.0;
++    guard.update(sample, 1.01);
++    EXPECT_TRUE(guard.ready_for_output(1.01));
++    guard.update(sample, 1.02);
++    EXPECT_TRUE(guard.ready_for_output(1.02));
++    sample.i_2 = 0;
++    guard.update(sample, 1.03);
++    EXPECT_TRUE(guard.ready_for_output(1.03));
++    sample.i_2 = 6.0;
++    for (int n = 0; n < 3; ++n) guard.update(sample, 1.04 + n * .01);
++    EXPECT_FALSE(guard.ready_for_output(1.06));
++    EXPECT_TRUE(guard.violation(1.06, 0).has_value());
++}
+--- before/src/rinbo_fsm/test/test_cali_multileg.cpp
++++ after/src/rinbo_fsm/test/test_cali_multileg.cpp
+@@ -155,3 +155,17 @@
+     EXPECT_NE(Access::reason(f).find("velocity=0"),std::string::npos);
+ }
+ } // namespace
++
++TEST_F(CaliMultiLegTest, RelaxedResetWaitStillRequiresActualZeroFeedback) {
++    auto doc = YAML::LoadFile(path);
++    doc["parameters"]["rinbo_cali"]["safety"]["stop_timeout_s"] = 5.0;
++    { std::ofstream out(path); out << doc; }
++    mask(5);
++    rinbo_config::MotionSession session(rinbo_config::Stage::Calibration, path);
++    CalibrationFSM f(session); Access::home(f,5);
++    Access::tick(f,11,5,false); Access::tick(f,11.4,5,false);
++    Access::tick(f,14,5,false); // old 2s deadline expired
++    EXPECT_FALSE(Access::stopped(f)); EXPECT_FALSE(Access::done(f));
++    Access::tick(f,15,5,true); Access::tick(f,15.1,5,true);
++    EXPECT_TRUE(Access::done(f));
++}
+--- before/src/rinbo_fsm/test/test_robot_config.cpp
++++ after/src/rinbo_fsm/test/test_robot_config.cpp
+@@ -75,7 +75,7 @@
+         [](auto& d){d["parameters"].remove("rinbo_standing");},
+         [](auto& d){d["parameters"]["rinbo_cali"].remove("max_pwm");},
+         [](auto& d){d["parameters"]["rinbo_cali"]["max_pwm"]=81.0;},
+-        [](auto& d){d["parameters"]["rinbo_cali"]["safety"]["max_current"]=4.0;},
++        [](auto& d){d["parameters"]["rinbo_cali"]["safety"]["max_current"]=10.1;},
+         [](auto& d){d["parameters"]["rinbo_standing"]["safety"]["stop_on_current_limit"]=false;},
+         [](auto& d){d["parameters"]["rinbo_tripod_rslip"]["startup_duration"]=0.0;},
+         [](auto& d){d["parameters"]["rinbo_cali"]["hardware"]["disabled_legs"]=std::vector<std::string>{"L1"};},
+--- before/src/rinbo_fsm/test/test_standing_multileg.cpp
++++ after/src/rinbo_fsm/test/test_standing_multileg.cpp
+@@ -2,6 +2,7 @@
+ #include "rinbo_standing.cpp"
+ #include <gtest/gtest.h>
+ #include <filesystem>
++#include <fstream>
+ #include <limits>
+ #include <unistd.h>
+ 
+@@ -139,3 +140,18 @@
+     EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod, path), std::exception);
+ }
+ } // namespace
++
++TEST_F(StandingMultiLegTest, RelaxedRotateDeadlineAllowsLateArrivalButStillRequiresTarget) {
++    auto doc = YAML::LoadFile(path);
++    doc["parameters"]["rinbo_standing"]["safety"]["rotate_timeout_s"] = 20.0;
++    { std::ofstream out(path); out << doc; }
++    mask(5);
++    rinbo_config::MotionSession session(rinbo_config::Stage::Standing, path);
++    StandingController f(session); Access::initialize(f);
++    Access::tick(f, 10.0, 5, false);
++    Access::tick(f, 18.0, 5, false); // original 7s deadline would stop here
++    EXPECT_FALSE(Access::complete(f)); EXPECT_FALSE(Access::stopped(f));
++    Access::tick(f, 20.0, 5, true);
++    Access::tick(f, 20.1, 5, true);
++    EXPECT_TRUE(Access::complete(f)); EXPECT_FALSE(Access::stopped(f));
++}
+--- before/src/rinbo_fsm/test/fixtures/robot_test.yaml
++++ after/src/rinbo_fsm/test/fixtures/robot_test.yaml
+@@ -114,3 +114,4 @@
+       voltage_trip_samples: 5
+       current_trip_samples: 10
+       position_error_trip_samples: 10
++      position_error_trip_seconds: 0.5

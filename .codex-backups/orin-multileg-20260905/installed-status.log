@@ -1,0 +1,5 @@
+Effective configuration: /home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml
+Schema version: 1; revision: 1; SHA256: f2c5e2d0d10b6eb149b2f7f3b27316203bf4248267e55957a0fc06c4d63b867e
+Disabled legs: []
+Enabled legs: ["L1","L2","L3","R1","R2","R3"]
+Next test: supported_leg_test; 6 enabled legs.

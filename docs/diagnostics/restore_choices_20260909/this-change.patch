@@ -1,0 +1,737 @@
+--- before/src/rinbo_fsm/src/rinbo_cali.cpp
++++ after/src/rinbo_fsm/src/rinbo_cali.cpp
+@@ -72,6 +72,9 @@
+         if (disabled_legs_.healthy_count() == 0)
+             throw std::runtime_error("没有可測試腿: all six main drives are disabled");
+         effort_ = rinbo_fsm::load_motion_effort(*this);
++        velocity_filter_s_ = declare_parameter<double>("velocity_filter_time_constant_s", 0.02);
++        if (!std::isfinite(velocity_filter_s_) || velocity_filter_s_ < 0.0)
++            throw std::invalid_argument("velocity_filter_time_constant_s must be finite and >= 0");
+         
+         RCLCPP_INFO(get_logger(), "Motion effort: kp=%.4f kd=%.4f k_ff=%.4f friction_pwm=%.1f fade_counts_s=%.1f",
+                     effort_.kp, effort_.kd, effort_.k_ff, effort_.friction_pwm, effort_.friction_velocity_counts_s);
+@@ -280,7 +283,7 @@
+         for (int i = 0; i < 6; i++) {
+             float raw_vel = (positions[i] - prev_positions_[i]) / dt;
+             velocities[i] = is_left_leg(i) ? -raw_vel : raw_vel;
+-            control_velocity_[i] = velocity_filter_[i].update(velocities[i], dt);
++            control_velocity_[i] = velocity_filter_[i].update(velocities[i], dt, velocity_filter_s_);
+         }
+         
+         auto cmd = rinbo_msgs::msg::MotorCmdStamped();
+@@ -775,6 +778,7 @@
+     std::array<float, 6> control_velocity_{};
+     rinbo_fsm::MotionEffort effort_;
+     float max_pwm_;
++    double velocity_filter_s_ = 0.02;
+     std::array<float, 6> trace_targets_{};
+     float stop_velocity_threshold_;
+     double servo_homing_timeout_s_;
+--- before/src/rinbo_fsm/src/rinbo_standing.cpp
++++ after/src/rinbo_fsm/src/rinbo_standing.cpp
+@@ -44,6 +44,9 @@
+         if (disabled_legs_.healthy_count() == 0)
+             throw std::runtime_error("没有可測試腿: all six main drives are disabled");
+         effort_ = rinbo_fsm::load_motion_effort(*this);
++        velocity_filter_s_ = declare_parameter<double>("velocity_filter_time_constant_s", 0.02);
++        if (!std::isfinite(velocity_filter_s_) || velocity_filter_s_ < 0.0)
++            throw std::invalid_argument("velocity_filter_time_constant_s must be finite and >= 0");
+         
+         RCLCPP_INFO(get_logger(), "Motion effort: kp=%.4f kd=%.4f k_ff=%.4f friction_pwm=%.1f fade_counts_s=%.1f",
+                     effort_.kp, effort_.kd, effort_.k_ff, effort_.friction_pwm, effort_.friction_velocity_counts_s);
+@@ -61,7 +64,8 @@
+         hold_error_counts_ = this->declare_parameter<double>("safety.hold_error_counts", 12000.0);
+         rinbo_fsm::validate_bounded_timeout(position_tolerance_, 12000.0, "safety.position_tolerance_counts");
+         rinbo_fsm::validate_bounded_timeout(settle_velocity_, 5000.0, "safety.settle_velocity_counts_s");
+-        rinbo_fsm::validate_bounded_timeout(settle_time_s_, 10.0, "safety.settle_time_s");
++        if (!std::isfinite(settle_time_s_) || settle_time_s_ < 0.0 || settle_time_s_ > 10.0)
++            throw std::invalid_argument("safety.settle_time_s must be in [0,10]; 0 = position-only arrival");
+         rinbo_fsm::validate_bounded_timeout(hold_error_counts_, 55296.0, "safety.hold_error_counts");
+         if (hold_error_counts_ < position_tolerance_) throw std::invalid_argument("Standing hold error must be >= arrival tolerance");
+         
+@@ -336,7 +340,7 @@
+         for (int i = 0; i < 6; i++) {
+             float raw_vel = (positions[i] - prev_positions_[i]) / dt;
+             velocities[i] = is_left_leg(i) ? -raw_vel : raw_vel;
+-            control_velocity_[i] = velocity_filter_[i].update(velocities[i], dt);
++            control_velocity_[i] = velocity_filter_[i].update(velocities[i], dt, velocity_filter_s_);
+         }
+         
+         auto cmd = rinbo_msgs::msg::MotorCmdStamped();
+@@ -417,14 +421,16 @@
+                     
+                     float final_error = std::fabs(target_positions_[i] - positions[i]);
+                     const bool settled = rotate_elapsed >= rotate_duration &&
+-                        final_error < position_tolerance_ && std::fabs(velocities[i]) < settle_velocity_;
++                        final_error < position_tolerance_ &&
++                        (settle_time_s_ == 0.0 || std::fabs(velocities[i]) < settle_velocity_);
+                     if (!settled) stable_since_s_[i] = -1.0;
+                     else if (stable_since_s_[i] < 0.0) stable_since_s_[i] = now_time.seconds();
+                     if (settled && now_time.seconds() - stable_since_s_[i] >= settle_time_s_) {
+                         leg_states_[i] = LegState::DONE;
+                         ++done_count;
+-                        RCLCPP_INFO(this->get_logger(), "%s: DONE! stationary for %.3fs, pos: %.0f, err: %.0f, tolerance: %.0f",
+-                                    leg_name(i), settle_time_s_, positions[i], final_error, position_tolerance_);
++                        RCLCPP_INFO(this->get_logger(), "%s: DONE! arrival=%s, required_stable_s=%.3f, pos: %.0f, err: %.0f, tolerance: %.0f",
++                                    leg_name(i), settle_time_s_ == 0.0 ? "position_only" : "position_and_settled",
++                                    settle_time_s_, positions[i], final_error, position_tolerance_);
+                     } else if (rotate_elapsed > rotate_timeout_s_) {
+                         trigger_safety_stop(std::string("standing position timeout: ") + leg_name(i) +
+                             " pos=" + std::to_string(positions[i]) +
+@@ -455,7 +461,8 @@
+                     // Keep the standing pose, with damping rather than an
+                     // undamped position-only correction after marking DONE.
+                     float pwm = std::min(effort_.kp, 0.1) * pos_error - effort_.kd * control_velocity_[i];
+-                    pwm = std::clamp(pwm, -max_pwm_, max_pwm_);
++                    const float hold_cap = std::min(max_pwm_, 300.0f);
++                    pwm = std::clamp(pwm, -hold_cap, hold_cap);
+                     set_leg_cmd(cmd, i, pwm);
+                     done_count++;
+                     break;
+@@ -670,6 +677,7 @@
+     std::array<float, 6> control_velocity_{};
+     rinbo_fsm::MotionEffort effort_;
+     float max_pwm_;
++    double velocity_filter_s_ = 0.02;
+     double position_tolerance_;
+     double settle_velocity_, settle_time_s_, hold_error_counts_;
+     double hall_search_timeout_s_;
+--- before/src/rinbo_fsm/test/test_standing_multileg.cpp
++++ after/src/rinbo_fsm/test/test_standing_multileg.cpp
+@@ -295,3 +295,23 @@
+     Access::sample_r2(f,70.001,28649);
+     EXPECT_TRUE(Access::stopped(f)); EXPECT_FALSE(Access::complete(f));
+ }
++
++TEST_F(StandingMultiLegTest, PositionOnlyChoiceCompletesOnFirstArrivalButKeepsHoldGuard) {
++    auto doc=YAML::LoadFile(path);
++    auto s=doc["parameters"]["rinbo_standing"];
++    s["max_pwm"]=500.;s["kp"]=.35;s["kd"]=.002;s["k_ff"]=.02;
++    s["friction_pwm"]=0.;s["velocity_filter_time_constant_s"]=.005;
++    s["safety"]["settle_time_s"]=0.;s["safety"]["position_tolerance_counts"]=1000.;
++    {std::ofstream out(path);out<<doc;}
++    mask(47); // only R2, including L3 mask
++    rinbo_config::MotionSession session(rinbo_config::Stage::Standing,path);
++    StandingController f(session);Access::initialize(f);
++    Access::sample_r2(f,10,0);
++    Access::sample_r2(f,15.4,27866); // before reference ends
++    EXPECT_FALSE(Access::complete(f));
++    Access::sample_r2(f,15.6,27648); // speed exceeds old settling limit; position-only may complete
++    EXPECT_TRUE(Access::complete(f));EXPECT_FALSE(Access::stopped(f));
++    Access::sample_r2(f,16,42000);
++    EXPECT_TRUE(Access::stopped(f));
++    EXPECT_NE(Access::reason(f).find("standing hold position lost: R2"),std::string::npos);
++}
+--- before/src/rinbo_fsm/test/test_manual_motion.cpp
++++ after/src/rinbo_fsm/test/test_manual_motion.cpp
+@@ -15,7 +15,7 @@
+         "duration_s: 0\nlegs: {L2: {mode: position, angle_deg: 5}}",
+         "duration_s: 61\nlegs: {L2: {mode: position, angle_deg: 5}}",
+         "duration_s: 3\nmax_pwm: .nan\nlegs: {L2: {mode: position, angle_deg: 5}}",
+-        "duration_s: 3\nmax_pwm: 81\nlegs: {L2: {mode: position, angle_deg: 5}}",
++        "duration_s: 3\nmax_pwm: 501\nlegs: {L2: {mode: position, angle_deg: 5}}",
+         "duration_s: 3\nlegs: {L2: {mode: velocity, speed_deg_s: 31}}",
+         "duration_s: 3\nlegs: {L2: {mode: velocity, speed_deg_s: -31}}",
+         "duration_s: 3\nlegs: {L2: {mode: cycle, speed_deg_s: 10}}",
+@@ -117,3 +117,22 @@
+     set_outputs(cmd,p,{}, {10,0,0,0,0,0},20,true);
+     EXPECT_FALSE(cmd.l1.enable);
+ }
++
++TEST(ManualMotion, RestoredCapAllows500ButDoesNotRaiseDefaultPlan) {
++    EXPECT_DOUBLE_EQ(parse("duration_s: 3\nlegs: {L2: {mode: velocity, speed_deg_s: 5}}\n").max_pwm,80);
++    EXPECT_DOUBLE_EQ(parse("duration_s: 3\nmax_pwm: 500\nlegs: {L2: {mode: velocity, speed_deg_s: 5}}\n").max_pwm,500);
++    EXPECT_THROW(parse("duration_s: 3\nmax_pwm: 500.01\nlegs: {L2: {mode: velocity, speed_deg_s: 5}}\n"),std::exception);
++}
++
++TEST(ManualOutput, ExpandedCapIsEnforcedAtFinalBoundaryWithMaskAndStop) {
++    auto p=parse("duration_s: 3\nmax_pwm: 500\nlegs: {L2: {mode: velocity, speed_deg_s: 5}, L3: {mode: velocity, speed_deg_s: 5}}\n");
++    rinbo_msgs::msg::MotorCmdStamped cmd;
++    std::array<bool,6> mask{};mask[2]=true;
++    set_outputs(cmd,p,mask,{0,-900,900,0,0,0},500,true);
++    EXPECT_TRUE(cmd.l2.enable);EXPECT_TRUE(cmd.l2.direction);EXPECT_EQ(cmd.l2.voltage,500);
++    EXPECT_FALSE(cmd.l3.enable);EXPECT_EQ(cmd.l3.voltage,0);
++    set_outputs(cmd,p,mask,{0,900,900,0,0,0},500,false);
++    EXPECT_FALSE(cmd.l2.enable);EXPECT_EQ(cmd.l2.voltage,0);
++    EXPECT_THROW(set_outputs(cmd,p,mask,{0,1,0,0,0,0},501,true),std::exception);
++    EXPECT_THROW(set_outputs(cmd,p,mask,{0,std::numeric_limits<double>::quiet_NaN(),0,0,0,0},500,true),std::exception);
++}
+--- before/src/rinbo_fsm/test/test_manual_controller.cpp
++++ after/src/rinbo_fsm/test/test_manual_controller.cpp
+@@ -5,6 +5,7 @@
+ #include <unistd.h>
+ 
+ struct ManualOfflineTestAccess {
++    static double cap(const ManualController& node) { return node.cap_; }
+     static rinbo_fsm::MotionEffort effort(const ManualController& node) { return node.effort_; }
+     static void tick(ManualController& node) { node.tick(); }
+     static void expire_feedback(ManualController& node) {
+@@ -176,3 +177,19 @@
+ INSTANTIATE_TEST_SUITE_P(IsolatedDomain,ManualWireTest,::testing::Values(
+     Fault::None,Fault::MotorStale,Fault::PowerStale,Fault::Estop,
+     Fault::Epoch,Fault::Heartbeat,Fault::Nan,Fault::Overspeed,Fault::Stuck,Fault::StuckVelocity));
++
++TEST_F(ManualControllerTest, ExplicitManualProfileOverridesStandingAndKeepsPlanCap) {
++    std::filesystem::copy_file(std::filesystem::path(RINBO_FSM_SOURCE_DIR)/"test/fixtures/robot_restore_choices.yaml",path,std::filesystem::copy_options::overwrite_existing);
++    auto doc=YAML::LoadFile(path);
++    doc["parameters"]["rinbo_standing"]["kp"]=.12;
++    {std::ofstream out(path);out<<doc;}
++    {rinbo_config::MotionSession calibration(rinbo_config::Stage::Calibration,path);calibration.complete();}
++    rinbo_config::MotionSession session(rinbo_config::Stage::Manual,path);
++    ManualController node(session,plan());
++    EXPECT_DOUBLE_EQ(ManualOfflineTestAccess::effort(node).kp,.35);
++    EXPECT_DOUBLE_EQ(node.get_parameter("max_pwm").as_double(),500.);
++    EXPECT_DOUBLE_EQ(ManualOfflineTestAccess::cap(node),20.);
++    EXPECT_DOUBLE_EQ(node.get_parameter("velocity_filter_time_constant_s").as_double(),.005);
++    EXPECT_DOUBLE_EQ(node.get_parameter("safety.max_current").as_double(),5.);
++    EXPECT_FALSE(ManualOfflineTestAccess::running(node));
++}
+--- before/src/rinbo_fsm/test/test_robot_config.cpp
++++ after/src/rinbo_fsm/test/test_robot_config.cpp
+@@ -111,7 +111,7 @@
+         [](auto& d){d["test_mode"]="ground_walk";},
+         [](auto& d){d["parameters"].remove("rinbo_standing");},
+         [](auto& d){d["parameters"]["rinbo_cali"].remove("max_pwm");},
+-        [](auto& d){d["parameters"]["rinbo_cali"]["max_pwm"]=81.0;},
++        [](auto& d){d["parameters"]["rinbo_cali"]["max_pwm"]=501.0;},
+         [](auto& d){d["parameters"]["rinbo_cali"]["safety"]["max_current"]=10.1;},
+         [](auto& d){d["parameters"]["rinbo_standing"]["safety"]["stop_on_current_limit"]=false;},
+         [](auto& d){d["parameters"]["rinbo_tripod_rslip"]["startup_duration"]=0.0;},
+@@ -452,3 +452,35 @@
+     EXPECT_THROW(tune_limits(path,"standing",{{"enable_pwm_slew_limit",0}},true,-1,proc),std::exception);
+     EXPECT_THROW(tune_limits(path,"tripod",{{"stop_on_power_stale",0}},true,-1,proc),std::exception);
+ }
++
++TEST_F(ConfigTest, AcceptedChoicesKeepManualControlIndependentAndSharedGuardsIntact) {
++    fs::copy_file(fs::path(RINBO_FSM_SOURCE_DIR)/"test/fixtures/robot_restore_choices.yaml",path,fs::copy_options::overwrite_existing);
++    const auto before=RobotConfig::load(path);
++    auto number=[](const RobotConfig& cfg,const std::string& node,const std::string& key) {
++        for (const auto& p:cfg.parameters(node)) if(p.get_name()==key) return p.as_double();
++        throw std::runtime_error("missing parameter");
++    };
++    for (const auto& node:{"rinbo_cali","rinbo_standing","rinbo_manual"}) {
++        EXPECT_DOUBLE_EQ(number(before,node,"max_pwm"),500);
++        EXPECT_DOUBLE_EQ(number(before,node,"kp"),.35);
++        EXPECT_DOUBLE_EQ(number(before,node,"kd"),.002);
++        EXPECT_DOUBLE_EQ(number(before,node,"k_ff"),.02);
++        EXPECT_DOUBLE_EQ(number(before,node,"friction_pwm"),0);
++        EXPECT_DOUBLE_EQ(number(before,node,"velocity_filter_time_constant_s"),.005);
++    }
++    EXPECT_EQ(before.disabled_legs(),(std::vector<std::string>{"L3"}));
++    EXPECT_DOUBLE_EQ(number(before,"rinbo_standing","safety.settle_time_s"),0);
++    change([](auto& d){d["parameters"]["rinbo_standing"]["kp"]=.12;d["parameters"]["rinbo_standing"]["max_pwm"]=100.;});
++    const auto after=RobotConfig::load(path);
++    EXPECT_EQ(before.parameters("rinbo_manual"),after.parameters("rinbo_manual"));
++    EXPECT_EQ(before.parameters("rinbo_tripod_rslip"),after.parameters("rinbo_tripod_rslip"));
++    EXPECT_DOUBLE_EQ(number(after,"rinbo_standing","kp"),.12);
++    change([](auto& d){d["parameters"]["rinbo_manual"]["max_pwm"]=501.;});
++    EXPECT_THROW(RobotConfig::load(path),std::exception);
++}
++TEST_F(ConfigTest, LegacyManualInheritanceAndNewBlockValidation) {
++    const auto legacy=RobotConfig::load(path);
++    EXPECT_EQ(legacy.parameters("rinbo_manual"),legacy.parameters("rinbo_standing"));
++    change([](auto& d){d["parameters"]["rinbo_manual"]["kp"]=.35;});
++    EXPECT_THROW(RobotConfig::load(path),std::exception); // partial blocks cannot silently inherit control fields
++}
+--- before/src/rinbo_fsm/test/test_cali_multileg.cpp
++++ after/src/rinbo_fsm/test/test_cali_multileg.cpp
+@@ -44,6 +44,13 @@
+         positions.fill(pos); velocities.fill(vel);
+         rinbo_msgs::msg::MotorCmdStamped cmd;
+         f.handle_dc_spinning(cmd,positions,velocities,halls,time(now));
++        rinbo_fsm::enforce_disabled_leg_commands(cmd,f.disabled_legs_);
++        return cmd;
++    }
++    static rinbo_msgs::msg::MotorCmdStamped search(CalibrationFSM& f, double t) {
++        std::array<float,6> p{},v{};std::array<bool,6> halls{};halls.fill(true);
++        rinbo_msgs::msg::MotorCmdStamped cmd;
++        f.handle_dc_spinning(cmd,p,v,halls,time(t));
+         rinbo_fsm::enforce_disabled_leg_commands(cmd,f.disabled_legs_);
+         return cmd;
+     }
+@@ -359,3 +366,24 @@
+     }
+     EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Standing,path),std::exception);
+ }
++
++TEST_F(CaliMultiLegTest, Restored500ProfileStillRequiresHallStopAndZeroFeedback) {
++    std::filesystem::copy_file(std::filesystem::path(RINBO_FSM_SOURCE_DIR)/"test/fixtures/robot_restore_choices.yaml",path,std::filesystem::copy_options::overwrite_existing);
++    rinbo_config::MotionSession session(rinbo_config::Stage::Calibration,path);
++    CalibrationFSM f(session);
++    EXPECT_DOUBLE_EQ(f.get_parameter("max_pwm").as_double(),500.);
++    EXPECT_DOUBLE_EQ(f.get_parameter("kp").as_double(),.35);
++    EXPECT_DOUBLE_EQ(f.get_parameter("kd").as_double(),.002);
++    EXPECT_DOUBLE_EQ(f.get_parameter("k_ff").as_double(),.02);
++    EXPECT_DOUBLE_EQ(f.get_parameter("friction_pwm").as_double(),0.);
++    EXPECT_DOUBLE_EQ(f.get_parameter("velocity_filter_time_constant_s").as_double(),.005);
++    Access::home(f,4);
++    Access::search(f,10);
++    const auto commanded=Access::search(f,11);
++    EXPECT_FLOAT_EQ(commanded.l2.voltage,500.);
++    EXPECT_FALSE(commanded.l3.enable);EXPECT_FLOAT_EQ(commanded.l3.voltage,0.);
++    Access::reset_sample(f,11.0,120,0);Access::reset_sample(f,11.4,120,0);
++    EXPECT_FALSE(Access::done(f));
++    Access::reset_sample(f,11.5,0,0);Access::reset_sample(f,11.6,0,0);
++    EXPECT_TRUE(Access::done(f));EXPECT_FALSE(Access::stopped(f));
++}
+--- before/src/rinbo_fsm/src/safety_invariants.hpp
++++ after/src/rinbo_fsm/src/safety_invariants.hpp
+@@ -26,8 +26,8 @@
+ inline constexpr double kHardMaxMotorStateRequiredAfterS = 2.0;
+ inline constexpr double kHardMaxMotorSourceAgeS = 0.10;
+ inline constexpr double kHardMaxPowerSourceAgeS = 0.35;
+-inline constexpr double kHardMaxPwm = 80.0;
+-// Tripod operator-selected raw FPGA command ceiling; other controllers keep 80.
++inline constexpr double kHardMaxPwm = 500.0;
++// Tripod operator-selected raw FPGA command ceiling; Calibration/Standing/Manual have a separate 500 ceiling.
+ inline constexpr double kHardMaxTripodPwm = 3300.0;
+ inline constexpr double kHardMaxMotorArbiterReadyTimeoutS = 5.0;
+ inline constexpr double kHardMaxMotorArbiterHeartbeatStaleS = 0.25;
+@@ -118,7 +118,7 @@
+ 
+ inline void validate_pwm(double max_pwm, const std::string& owner) {
+     if (!std::isfinite(max_pwm) || max_pwm <= 0.0 || max_pwm > kHardMaxPwm) {
+-        throw std::invalid_argument(owner + " max_pwm must be finite and in (0,80]");
++        throw std::invalid_argument(owner + " max_pwm must be finite and in (0,500] raw FPGA command units");
+     }
+ }
+ 
+--- before/src/rinbo_fsm/src/rinbo_manual.cpp
++++ after/src/rinbo_fsm/src/rinbo_manual.cpp
+@@ -31,9 +31,9 @@
+     friend struct ManualOfflineTestAccess;
+ public:
+     ManualController(rinbo_config::MotionSession& session, const rinbo_manual::Plan& plan)
+-        // Reuse the authoritative site's Standing safety settings and mask.
+-        // Motion parameters live in the separately validated manual plan.
+-        : Node("rinbo_manual", session.config().node_options("rinbo_standing")),
++        // Independent site control settings; shared Standing power/communication
++        // contract and mask. The validated plan can further reduce the PWM cap.
++        : Node("rinbo_manual", session.config().node_options("rinbo_manual")),
+           session_(session), plan_(plan), disabled_(rinbo_fsm::DisabledLegs::load(*this)) {
+ #ifndef RINBO_FSM_OFFLINE_TEST
+         rinbo_fsm::wait_for_bridge_inputs(*this, [] { return interrupted != 0; });
+@@ -41,6 +41,9 @@
+         rinbo_manual::validate_mask(plan_, disabled_.mask());
+         cap_ = std::min(plan_.max_pwm, declare_parameter<double>("max_pwm", 80.0));
+         effort_ = rinbo_fsm::load_motion_effort(*this);
++        velocity_filter_s_ = declare_parameter<double>("velocity_filter_time_constant_s", 0.02);
++        if (!std::isfinite(velocity_filter_s_) || velocity_filter_s_ < 0.0)
++            throw std::invalid_argument("velocity_filter_time_constant_s must be finite and >= 0");
+         state_timeout_ = declare_parameter<double>("safety.motor_state_timeout_s", 0.25);
+         required_after_ = declare_parameter<double>("safety.motor_state_required_after_s", 2.0);
+         rinbo_fsm::validate_pwm(cap_, "Manual");
+@@ -72,7 +75,7 @@
+             [this](std_msgs::msg::Bool::SharedPtr m) { if (m->data) stop("/estop asserted", true); });
+         timer_ = create_wall_timer(std::chrono::milliseconds(10), [this]() { tick(); });
+         RCLCPP_INFO(get_logger(), "WAIT: manual plan loaded; PWM cap %.1f; servo mode 0. Waiting for Bridge and fresh feedback.", cap_);
+-        RCLCPP_INFO(get_logger(), "Control damping: velocity filter 20ms; PWM slew %.0f/s; raw feedback retained for stop checks.", rinbo_fsm::kHardMaxPwmSlewRatePerS);
++        RCLCPP_INFO(get_logger(), "Control damping: velocity filter %.1fms; PWM slew %.0f/s; raw feedback retained for stop checks.", velocity_filter_s_ * 1000.0, rinbo_fsm::kHardMaxPwmSlewRatePerS);
+         RCLCPP_INFO(get_logger(), "Motion effort: kp=%.4f kd=%.4f k_ff=%.4f friction_pwm=%.1f fade_counts_s=%.1f",
+                     effort_.kp, effort_.kd, effort_.k_ff, effort_.friction_pwm, effort_.friction_velocity_counts_s);
+         last_tick_ = Clock::now();
+@@ -145,7 +148,7 @@
+                     stop(std::string("encoder jump/overspeed: ") + rinbo_manual::names[i], true); return;
+                 }
+                 velocity_[i] = v;
+-                control_velocity_[i] = velocity_filter_[i].update(v, dt);
++                control_velocity_[i] = velocity_filter_[i].update(v, dt, velocity_filter_s_);
+             }
+             position_[i] = q;
+             if (trajectory_) {
+@@ -256,7 +259,11 @@
+             if (plan_.legs[i].mode == rinbo_manual::Mode::Off || disabled_.contains(i)) continue;
+             const double error = (target.position[i] - position_[i]) * rinbo_manual::counts_per_degree;
+             if (!std::isfinite(error) || std::abs(error) > rinbo_fsm::kHardMaxPositionErrorCounts) {
+-                stop(std::string("tracking error >5000 counts: ") + rinbo_manual::names[i], true); return;
++                stop(std::string("tracking error: ") + rinbo_manual::names[i] +
++                    " target_counts=" + std::to_string(target.position[i] * rinbo_manual::counts_per_degree) +
++                    " actual_counts=" + std::to_string(position_[i] * rinbo_manual::counts_per_degree) +
++                    " error_counts=" + std::to_string(error) +
++                    " limit_counts=" + std::to_string(rinbo_fsm::kHardMaxPositionErrorCounts), true); return;
+             }
+             // The shared site profile uses counts and counts/s, NOT degrees.
+             const double raw = effort_.command(error,
+@@ -289,6 +296,7 @@
+     }
+     rinbo_config::MotionSession& session_;
+     rinbo_manual::Plan plan_;
++    double velocity_filter_s_ = 0.02;
+     rinbo_fsm::MotionEffort effort_;
+     rinbo_fsm::DisabledLegs disabled_;
+     double cap_, state_timeout_, required_after_, start_ros_, previous_ros_;
+@@ -344,7 +352,7 @@
+         rinbo_manual::validate_mask(plan, rinbo_fsm::DisabledLegs::from_names(config.disabled_legs()).mask());
+         config.print_status(std::cout);
+         std::cout << "Valid plan: " << path << "; cruise/hold duration " << plan.duration << "s.\n"
+-                  << "Safety parameters inherited from site rinbo_standing; PWM cap=min(plan,site).\n";
++                  << "Control parameters: site rinbo_manual (legacy files inherit Standing); power/communication guards shared with Standing; PWM cap=min(plan,site).\n";
+         if (!execute) {
+             if (check_ready) {
+                 rinbo_config::check_manual_readiness(config, rinbo_manual::selected_legs(plan));
+--- before/src/rinbo_fsm/src/manual_motion.hpp
++++ after/src/rinbo_fsm/src/manual_motion.hpp
+@@ -66,7 +66,7 @@
+          {"duration_s", "legs"}, "plan");
+     Plan p;
+     p.duration = number(root["duration_s"], 1.0, 60.0, "duration_s");
+-    if (root["max_pwm"]) p.max_pwm = number(root["max_pwm"], 1.0, 80.0, "max_pwm");
++    if (root["max_pwm"]) p.max_pwm = number(root["max_pwm"], 1.0, 500.0, "max_pwm");
+     if (root["max_speed_deg_s"]) p.max_speed = number(root["max_speed_deg_s"], 1.0, 90.0, "max_speed_deg_s");
+     if (root["acceleration_deg_s2"]) p.acceleration = number(root["acceleration_deg_s2"], 1.0, 90.0, "acceleration_deg_s2");
+     keys(root["legs"], {names.begin(), names.end()}, {}, "legs");
+@@ -195,7 +195,7 @@
+     const std::array<decltype(&cmd.l1), 6> legs{&cmd.l1, &cmd.l2, &cmd.l3, &cmd.r1, &cmd.r2, &cmd.r3};
+     for (size_t i = 0; i < 6; ++i) {
+         if (!active || disabled[i] || p.legs[i].mode == Mode::Off) continue;
+-        if (!std::isfinite(pwm[i]) || !std::isfinite(cap) || cap <= 0 || cap > 80)
++        if (!std::isfinite(pwm[i]) || !std::isfinite(cap) || cap <= 0 || cap > 500)
+             throw std::runtime_error("Invalid PWM output");
+         auto& leg = *legs[i];
+         const double value = std::clamp(pwm[i], -cap, cap);
+--- before/src/rinbo_fsm/src/robot_config.cpp
++++ after/src/rinbo_fsm/src/robot_config.cpp
+@@ -133,6 +133,7 @@
+     put("kd", node == "rinbo_tripod_rslip" ? 0.003 : 0.002);
+     put("k_ff", node == "rinbo_tripod_rslip" ? 0.005 : 0.02);
+     put("friction_pwm", 0.0);
++    if (node != "rinbo_tripod_rslip") put("velocity_filter_time_constant_s", 0.02);
+     put("friction_velocity_counts_s", 153.6);
+     put("safety.motor_state_source_max_age_s", 0.10);
+     put("safety.power_state_source_max_age_s", 0.35);
+@@ -256,6 +257,8 @@
+     rinbo_fsm::validate_motor_arbiter_contract(p.at("safety.motor_arbiter_node_name").as_string(),
+         d("safety.motor_arbiter_ready_timeout_s"), d("safety.motor_arbiter_heartbeat_stale_s"),
+         d("safety.motor_command_ack_timeout_s"));
++    if (d("velocity_filter_time_constant_s") < 0.0)
++        fail("velocity_filter_time_constant_s must be finite and >= 0");
+     if (tripod) {
+         const rinbo_fsm::TripodMotionSafetyContract motion{
+             b("safety.stop_on_position_error"), b("safety.enable_pwm_slew_limit"),
+@@ -286,7 +289,8 @@
+             rinbo_fsm::validate_bounded_timeout(d("safety.rotate_timeout_s"), 600.0, "safety.rotate_timeout_s");
+             rinbo_fsm::validate_bounded_timeout(d("safety.position_tolerance_counts"), 12000.0, "safety.position_tolerance_counts");
+             rinbo_fsm::validate_bounded_timeout(d("safety.settle_velocity_counts_s"), 5000.0, "safety.settle_velocity_counts_s");
+-            rinbo_fsm::validate_bounded_timeout(d("safety.settle_time_s"), 10.0, "safety.settle_time_s");
++            if (d("safety.settle_time_s") < 0.0 || d("safety.settle_time_s") > 10.0)
++                fail("safety.settle_time_s must be in [0,10]; 0 = position-only arrival");
+             rinbo_fsm::validate_bounded_timeout(d("safety.hold_error_counts"), 55296.0, "safety.hold_error_counts");
+             if (d("safety.hold_error_counts") < d("safety.position_tolerance_counts"))
+                 fail("Standing hold error must be >= arrival tolerance");
+@@ -497,7 +501,9 @@
+             raw.push_back(item.Scalar());
+         }
+         result.disabled_ = normalize_legs(raw);
+-        require_keys(root["parameters"], std::set<std::string>(kNodes.begin(), kNodes.end()), "parameters");
++        auto required_nodes = std::set<std::string>(kNodes.begin(), kNodes.end());
++        if (root["parameters"]["rinbo_manual"]) required_nodes.insert("rinbo_manual");
++        require_keys(root["parameters"], required_nodes, "parameters");
+         for (const auto& node : kNodes) {
+             auto effective = defaults(node);
+             std::map<std::string, YAML::Node> supplied;
+@@ -508,7 +514,7 @@
+                 "stop_servo_control_mode", "safety.position_error_trip_seconds",
+                 "friction_pwm", "friction_velocity_counts_s"};
+             if (node != "rinbo_tripod_rslip") {
+-                optional_defaults.insert({"kp", "kd", "k_ff"});
++                optional_defaults.insert({"kp", "kd", "k_ff", "velocity_filter_time_constant_s"});
+             } else {
+                 optional_defaults.insert("velocity_filter_time_constant_s");
+                 // A pre-existing site file had a fixed 20 ms filter. Keep it
+@@ -538,6 +544,21 @@
+             effective.emplace("hardware.max_disabled_legs", rclcpp::Parameter("hardware.max_disabled_legs", int64_t(6)));
+             for (const auto& entry : effective) result.parameters_[node].push_back(entry.second);
+         }
++        // Manual shares the Standing power/communication contract. Its explicit
++        // control block isolates gains and PWM from subsequent Standing tuning.
++        // Old v1 files without the block retain their previous inheritance.
++        ParamMap manual;
++        for (const auto& p : result.parameters_.at("rinbo_standing"))
++            manual.emplace(p.get_name(), p);
++        if (root["parameters"]["rinbo_manual"]) {
++            const std::set<std::string> fields{"max_pwm", "kp", "kd", "k_ff",
++                "friction_pwm", "friction_velocity_counts_s", "velocity_filter_time_constant_s"};
++            require_keys(root["parameters"]["rinbo_manual"], fields, "parameters.rinbo_manual");
++            for (const auto& field : fields)
++                manual.at(field) = convert(field, root["parameters"]["rinbo_manual"][field], manual.at(field).get_type());
++        }
++        validate_parameters("rinbo_manual", manual);
++        for (const auto& entry : manual) result.parameters_["rinbo_manual"].push_back(entry.second);
+     } catch (const YAML::Exception& e) { fail("Invalid configuration " + path + ": " + e.what()); }
+     result.hash_ = sha256(bytes);
+     return result;
+--- before/src/rinbo_control/rinbo_control/motion_limits.py
++++ after/src/rinbo_control/rinbo_control/motion_limits.py
+@@ -24,7 +24,7 @@
+         'rotate_timeout_s': Field('轉到站姿最多等待', '秒', 20, .1, 600, '只限制這次到位等待，並非持續站立的總時間。'),
+         'hall_search_timeout_s': Field('尋找零點最多等待', '秒', 30, .1, 600, '沒找到零點仍會停止，避免把未知位置當完成。'),
+         'settle_velocity_counts_s': Field('判定停穩的速度上限', 'counts/s', 500, 1, 5000, '位置到位還需要低於這個速度；500 counts/s 約 3.26°/s。'),
+-        'settle_time_s': Field('到位且停穩需維持', '秒', .3, .01, 10, '必須連續符合位置與速度條件；不要把高速經過目標當成完成。'),
++        'settle_time_s': Field('到位且停穩需維持', '秒', .3, 0, 10, '填 0 使用舊版位置到位判定，不要求低速停穩；大於 0 時才要求位置與速度連續符合。'),
+         'hold_error_counts': Field('站穩後偏離停止門檻', 'counts', 12000, 1, 55296, '適用已到位後；必須不小於到位容許誤差。'),
+     },
+     'tripod': {
+--- before/src/rinbo_control/rinbo_control/console.py
++++ after/src/rinbo_control/rinbo_control/console.py
+@@ -79,8 +79,8 @@
+ def edit_limits(plan):
+     updated = copy.deepcopy(plan)
+     say('這裡只調整校正後的逐腳動作。q 取消整次修改；Enter 保留目前值。')
+-    updated['max_pwm'] = numeric('逐腳動作出力上限', plan['max_pwm'], 1, 80,
+-        suggestion='初次從 20 試起，但不保證能起轉。若校正能轉、動作在 20 不動，可試 30 比較。',
++    updated['max_pwm'] = numeric('逐腳動作出力上限', plan['max_pwm'], 1, 500,
++        suggestion='可填 1～500；實際出力也受現場 Manual 上限限制。選 13 可查看並採用現場上限。',
+         explanation='這是允許的驅動出力上限；慢轉也需要足夠出力。它不是轉速、伏特或百分比。')
+     updated['acceleration_deg_s2'] = numeric('加速度（度／秒²）', plan['acceleration_deg_s2'], 1, 90,
+         suggestion='初次試動可用 10。',
+--- before/src/rinbo_control/rinbo_control/presentation.py
++++ after/src/rinbo_control/rinbo_control/presentation.py
+@@ -2,9 +2,27 @@
+ from datetime import datetime
+ import math
+ 
+-from .plans import LEGS, describe
++from .plans import LEGS, describe, motion_pwm_cap
+ 
+ POSITIONS = ('左前', '左中', '左後', '右前', '右中', '右後')
++
++
++def effort_note(plan, site):
++    """Compare requested cruise feedforward with the actual cap, not torque."""
++    if not site:
++        return ''
++    nodes = site.get('parameters', {})
++    control = nodes.get('rinbo_manual', nodes.get('rinbo_standing', {}))
++    ff = control.get('k_ff')
++    if not isinstance(ff, (int, float)) or not math.isfinite(ff) or ff < 0:
++        return ''
++    speed = max((abs(s.get('speed_deg_s', 0)) for s in plan['legs'].values()), default=0)
++    demand = ff * speed * (55296 / 360)
++    cap = min(plan['max_pwm'], motion_pwm_cap(site))
++    if demand > cap:
++        return (f'出力提示：目前旋轉速度的前饋項約需 {demand:.0f} PWM，已高於有效上限 {cap:g}。'
++                '可選 13 調整出力或選 2 降低速度；此估算不含位置修正與實際負載。')
++    return ''
+ 
+ 
+ def leg_map(site, selected=()):
+@@ -81,6 +99,9 @@
+         if blocked:
+             lines.append('目前動作中的 '+' '.join(blocked)+' 已屏蔽，不能執行。')
+     lines.extend(['\n【本次動作】', describe(plan)])
++    note = effort_note(plan, site)
++    if note:
++        lines.append(note)
+     if last_result:
+         lines.append('最近結果：'+last_result.splitlines()[0][:140])
+     if site is None:
+--- before/src/rinbo_control/rinbo_control/plans.py
++++ after/src/rinbo_control/rinbo_control/plans.py
+@@ -77,9 +77,10 @@
+ 
+ 
+ def motion_pwm_cap(site):
+-    """Same site node used by rinbo_manual, never the calibration PWM cap."""
+-    value = site.get('parameters', {}).get('rinbo_standing', {}).get('max_pwm', 80.0)
+-    return number(value, 1, 80)
++    """Explicit Manual cap; old site files retain Standing inheritance."""
++    nodes = site.get('parameters', {})
++    value = nodes.get('rinbo_manual', nodes.get('rinbo_standing', {})).get('max_pwm', 80.0)
++    return number(value, 1, 500)
+ 
+ 
+ def default_plan(disabled=()):
+@@ -123,7 +124,7 @@
+     """Edit settings only. Explicit leg commands select exactly that leg."""
+     words = text.lower().split()
+     plan = copy.deepcopy(current)
+-    settings = {'time': ('duration_s', 1, 60), 'pwm': ('max_pwm', 1, 80),
++    settings = {'time': ('duration_s', 1, 60), 'pwm': ('max_pwm', 1, 500),
+                 'speed': ('max_speed_deg_s', 1, 90), 'acc': ('acceleration_deg_s2', 1, 90)}
+     if len(words) == 2 and words[0] in settings:
+         key, lo, hi = settings[words[0]]
+@@ -161,7 +162,7 @@
+         if key != 'legs' and (isinstance(value, bool) or not isinstance(value, (int,float))):
+             raise ValueError('動作設定的數值欄位必須是數字')
+     number(plan['duration_s'], 1, 60)
+-    number(plan['max_pwm'], 1, 80)
++    number(plan['max_pwm'], 1, 500)
+     speed = number(plan['max_speed_deg_s'], 1, 90)
+     number(plan['acceleration_deg_s2'], 1, 90)
+     if not isinstance(plan['legs'], dict):
+--- before/src/rinbo_control/test/test_plans.py
++++ after/src/rinbo_control/test/test_plans.py
+@@ -18,7 +18,7 @@
+     assert quick_plan('L2 -5', p)['legs']['L2']['move_deg'] == -5
+     assert quick_plan('R2 a 90', p)['legs']['R2']['angle_deg'] == 90
+     assert quick_plan('R2 p 180 30', p)['legs']['R2']['phase_deg'] == 180
+-    for command in ('L1 +5', 'L2 +31', 'L2 v nan', 'L2 v 91', 'pwm 81', 'time 0', 'speed 5'):
++    for command in ('L1 +5', 'L2 +31', 'L2 v nan', 'L2 v 91', 'pwm 501', 'time 0', 'speed 5'):
+         with pytest.raises(ValueError):
+             quick_plan(command, p, ['L1'])
+ 
+--- before/src/rinbo_control/test/test_presentation.py
++++ after/src/rinbo_control/test/test_presentation.py
+@@ -80,3 +80,17 @@
+     text = dashboard(site, default_plan(), snapshot, '', target='sbRIO 192.168.30.254')
+     assert '下一步：已有控制程式' in text
+     assert '設定目標：sbRIO 192.168.30.254' in text
++
++
++def test_feedforward_note_uses_independent_manual_profile_without_changing_plan():
++    from rinbo_control.presentation import effort_note
++    from rinbo_control.plans import default_plan, quick_plan, motion_pwm_cap
++    plan = quick_plan('L2 v 90', default_plan())
++    site = {'parameters': {'rinbo_manual': {'k_ff': .02, 'max_pwm': 500},
++                           'rinbo_standing': {'k_ff': .005, 'max_pwm': 30}}}
++    text = effort_note(plan, site)
++    assert '276 PWM' in text and '上限 80' in text
++    assert motion_pwm_cap(site) == 500
++    assert plan['max_pwm'] == 80
++    plan = quick_plan('pwm 500', plan)
++    assert effort_note(plan, site) == ''
+--- /dev/null
++++ after/src/rinbo_fsm/test/fixtures/robot_restore_choices.yaml
+@@ -0,0 +1,142 @@
++# Offline fixture for accepted restoration choices; never auto-deployed.
++schema_version: 1
++revision: 15
++disabled_legs:
++- L3
++test_mode: supported_leg_test
++parameters:
++  rinbo_cali:
++    max_pwm: 500.0
++    safety:
++      servo_homing_timeout_s: 60
++      hall_search_timeout_s: 60
++      stop_timeout_s: 15
++      motor_state_timeout_s: 0.25
++      motor_state_source_max_age_s: 0.1
++      power_state_source_max_age_s: 0.35
++      motor_state_required_after_s: 2.0
++      power_guard_enabled: true
++      stop_on_power_stale: true
++      stop_on_voltage: true
++      stop_on_current_limit: true
++      stop_on_bus_current_limit: false
++      require_power_relay: true
++      power_bus_voltage_channel: 7
++      leg_current_channels:
++      - 1
++      - 2
++      - 3
++      - 4
++      - 5
++      - 6
++      min_bus_voltage: 18.0
++      max_bus_voltage: 42.0
++      max_current: 5.0
++      max_bus_current: 30.0
++      power_stale_seconds: 0.5
++      power_required_after_seconds: 2.0
++      voltage_trip_samples: 5
++      current_trip_samples: 25
++    friction_pwm: 0.0
++    friction_velocity_counts_s: 153.6
++    k_ff: 0.02
++    kd: 0.002
++    kp: 0.35
++    velocity_filter_time_constant_s: 0.005
++  rinbo_standing:
++    max_pwm: 500.0
++    safety:
++      hall_search_timeout_s: 60
++      rotate_timeout_s: 60
++      motor_state_timeout_s: 0.25
++      motor_state_source_max_age_s: 0.1
++      power_state_source_max_age_s: 0.35
++      motor_state_required_after_s: 2.0
++      power_guard_enabled: true
++      stop_on_power_stale: true
++      stop_on_voltage: true
++      stop_on_current_limit: true
++      stop_on_bus_current_limit: false
++      require_power_relay: true
++      power_bus_voltage_channel: 7
++      leg_current_channels:
++      - 1
++      - 2
++      - 3
++      - 4
++      - 5
++      - 6
++      min_bus_voltage: 18.0
++      max_bus_voltage: 42.0
++      max_current: 5.0
++      max_bus_current: 30.0
++      power_stale_seconds: 0.5
++      power_required_after_seconds: 2.0
++      voltage_trip_samples: 5
++      current_trip_samples: 25
++      position_tolerance_counts: 1000
++      settle_time_s: 0.0
++    friction_pwm: 0.0
++    friction_velocity_counts_s: 153.6
++    k_ff: 0.02
++    kd: 0.002
++    kp: 0.35
++    velocity_filter_time_constant_s: 0.005
++  rinbo_tripod_rslip:
++    kp: 0.38
++    kd: 0.003
++    k_ff: 0.005
++    startup_duration: 8
++    max_pwm: 3300
++    start_ratio: 8
++    target_ratio: 1
++    ratio_step: -0.0002
++    slowdown_step: 0.002
++    shutdown:
++      slowdown_duration_s: 2.0
++      timeout_s: 5.0
++    safety:
++      enabled: true
++      stop_on_voltage_sag: true
++      stop_on_over_voltage: true
++      stop_on_current_limit: true
++      stop_on_bus_current_limit: false
++      require_power_relay: true
++      stop_on_power_stale: true
++      stop_on_position_error: false
++      enable_pwm_slew_limit: false
++      power_bus_voltage_channel: 7
++      leg_current_channels:
++      - 1
++      - 2
++      - 3
++      - 4
++      - 5
++      - 6
++      min_bus_voltage: 18.0
++      max_bus_voltage: 42.0
++      max_current: 5.0
++      max_bus_current: 30.0
++      max_position_error_counts: 9000.0
++      pwm_slew_rate_per_sec: 250.0
++      power_stale_seconds: 0.5
++      power_required_after_seconds: 2.0
++      motor_state_stale_seconds: 0.25
++      motor_state_source_max_age_s: 0.1
++      power_state_source_max_age_s: 0.35
++      motor_state_required_after_seconds: 2.0
++      voltage_trip_samples: 5
++      current_trip_samples: 25
++      position_error_trip_samples: 10
++      position_error_trip_seconds: 0.5
++    friction_pwm: 0
++    friction_velocity_counts_s: 153.6
++    velocity_filter_time_constant_s: 0.005
++  rinbo_manual:
++    kp: 0.35
++    kd: 0.002
++    k_ff: 0.02
++    max_pwm: 500.0
++    friction_pwm: 0.0
++    friction_velocity_counts_s: 153.6
++    velocity_filter_time_constant_s: 0.005

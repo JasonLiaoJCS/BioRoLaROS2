@@ -1,0 +1,86 @@
+redrhex_lowlevel_bridge:
+  ros__parameters:
+    backend: "biorola_ros"
+    feedback_rate_hz: 50.0
+    hardware:
+      # EXPERIMENTAL suspended-rig profile; L1 remains physically isolated.
+      # Copy to the site directory and calibrate there; do not alter active YAML.
+      disabled_legs: ["L1"]
+      max_disabled_legs: 1
+    rinbo:
+      command_topic: "/motor/command"
+      state_topic: "/motor/state"
+      power_state_topic: "/power/state"
+      joint_state_topic: "/joint_states"
+      preview_topic: "/redrhex/rinbo_motor_command_preview"
+      publish_preview: true
+      # Read-only is the checked-in default.  Enable only after preflight passes.
+      allow_enable: false
+      publish_when_disabled: false
+      disabled_servo_control_mode: 0
+      publish_shutdown_disable: true
+      shutdown_disable_repeats: 8
+      shutdown_disable_period_s: 0.02
+      disabled_handshake_repeats: 8
+      require_downstream_output_ack: true
+      downstream_output_ack_topic: "/rinbo/motor_output_enabled"
+      downstream_output_ack_timeout_s: 0.10
+      require_state: true
+      block_if_duplicate_command_publishers: true
+      state_timeout_s: 0.25
+
+      main_position_counts_per_rev: 54984.83
+      main_encoder_zero_counts_rinbo_order: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      main_encoder_sign_rinbo_order: [-1.0, -1.0, -1.0, 1.0, 1.0, 1.0]
+      main_velocity_sign_policy_order: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      main_direction_positive_rinbo_order: [true, true, true, false, false, false]
+      main_pwm_per_rad_s: 40.0
+      main_max_pwm: 80.0
+      main_pwm_slew_rate_per_s: 250.0
+      main_velocity_filter_alpha: 0.35
+      main_velocity_max_dt_s: 0.20
+      main_velocity_clip_rad_s: 20.0
+      max_main_target_velocity_rad_s: 1.0
+      require_main_drive_calibration: true
+      main_drive_calibrated: false
+
+      # PLACEHOLDERS: replace zero/sign/scale with measurements before changing
+      # either calibration acknowledgement below to true.  Rinbo order is
+      # [L1,L2,L3,R1,R2,R3].
+      abad_encoder_zero_rinbo_order: [740, 2565, 3283, 1944, 2071, 989]
+      abad_encoder_counts_per_rad: 1000.0
+      abad_encoder_counts_per_rad_rinbo_order: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+      abad_encoder_min: 0
+      abad_encoder_max: 65535
+      abad_sign_rinbo_order: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      servo_control_mode: 2
+      max_abad_target_position_rad: 0.18
+      require_exact_command_contract: true
+      require_single_telemetry_publisher: true
+      expected_telemetry_publisher_node: "rinbo_ros2_bridge"
+      require_monotonic_telemetry_stamp: true
+      publish_abad_joint_feedback: true
+      # Intentional startup gates: set true only after the five healthy legs
+      # have repeatable zero/sign/counts-per-radian measurements. The selected leg
+      # stays isolated.
+      abad_feedback_calibrated: false
+      require_abad_command_calibration: true
+      abad_command_calibrated: false
+
+      require_power_state: true
+      require_power_relay: true
+      power_state_timeout_s: 0.35
+      command_timeout_s: 0.10
+      block_if_duplicate_upstream_publishers: true
+      expected_upstream_command_publisher_node: "/redrhex_rl_controller"
+      upstream_command_max_age_s: 0.10
+      recovery_healthy_samples: 5
+      power_bus_voltage_channel: 7
+      leg_current_channels_rinbo_order: [1, 2, 3, 4, 5, 6]
+      min_bus_voltage: 18.0
+      max_bus_voltage: 30.0
+      max_current_a: 3.0
+      current_trip_samples: 3
+      voltage_trip_samples: 3
+      max_bus_current_a: 30.0
+      stop_on_bus_current_limit: false

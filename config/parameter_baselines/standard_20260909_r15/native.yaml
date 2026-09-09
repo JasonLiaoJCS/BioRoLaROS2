@@ -1,0 +1,157 @@
+# IMPORTANT: fixed standard, not the live site file. All effective defaults pinned.
+schema_version: 1
+revision: 15
+disabled_legs:
+- L3
+test_mode: supported_leg_test
+parameters:
+  rinbo_cali:
+    friction_pwm: 0
+    friction_velocity_counts_s: 153.6
+    k_ff: 0.02
+    kd: 0.002
+    kp: 0.35
+    max_pwm: 500
+    safety:
+      current_trip_samples: 25
+      hall_search_timeout_s: 60
+      leg_current_channels:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      max_bus_current: 30
+      max_bus_voltage: 42
+      max_current: 5
+      min_bus_voltage: 18
+      motor_arbiter_heartbeat_stale_s: 0.25
+      motor_arbiter_node_name: rinbo_ros2_bridge
+      motor_arbiter_ready_timeout_s: 5
+      motor_command_ack_timeout_s: 0.25
+      motor_state_required_after_s: 2
+      motor_state_source_max_age_s: 0.1
+      motor_state_timeout_s: 0.25
+      power_bus_voltage_channel: 7
+      power_guard_enabled: true
+      power_required_after_seconds: 2
+      power_stale_seconds: 0.5
+      power_state_source_max_age_s: 0.35
+      require_power_relay: true
+      servo_homing_timeout_s: 60
+      stop_on_bus_current_limit: false
+      stop_on_current_limit: true
+      stop_on_power_stale: true
+      stop_on_voltage: true
+      stop_timeout_s: 15
+      voltage_trip_samples: 5
+    velocity_filter_time_constant_s: 0.005
+  rinbo_manual:
+    friction_pwm: 0
+    friction_velocity_counts_s: 153.6
+    k_ff: 0.02
+    kd: 0.002
+    kp: 0.35
+    max_pwm: 500
+    velocity_filter_time_constant_s: 0.005
+  rinbo_standing:
+    friction_pwm: 0
+    friction_velocity_counts_s: 153.6
+    k_ff: 0.02
+    kd: 0.002
+    kp: 0.35
+    max_pwm: 500
+    safety:
+      current_trip_samples: 25
+      hall_search_timeout_s: 60
+      hold_error_counts: 12000
+      leg_current_channels:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      max_bus_current: 30
+      max_bus_voltage: 42
+      max_current: 5
+      min_bus_voltage: 18
+      motor_arbiter_heartbeat_stale_s: 0.25
+      motor_arbiter_node_name: rinbo_ros2_bridge
+      motor_arbiter_ready_timeout_s: 5
+      motor_command_ack_timeout_s: 0.25
+      motor_state_required_after_s: 2
+      motor_state_source_max_age_s: 0.1
+      motor_state_timeout_s: 0.25
+      position_tolerance_counts: 1000
+      power_bus_voltage_channel: 7
+      power_guard_enabled: true
+      power_required_after_seconds: 2
+      power_stale_seconds: 0.5
+      power_state_source_max_age_s: 0.35
+      require_power_relay: true
+      rotate_timeout_s: 60
+      settle_time_s: 0
+      settle_velocity_counts_s: 500
+      stop_on_bus_current_limit: false
+      stop_on_current_limit: true
+      stop_on_power_stale: true
+      stop_on_voltage: true
+      voltage_trip_samples: 5
+    velocity_filter_time_constant_s: 0.005
+  rinbo_tripod_rslip:
+    friction_pwm: 0
+    friction_velocity_counts_s: 153.6
+    k_ff: 0.005
+    kd: 0.003
+    kp: 0.38
+    max_pwm: 3300
+    ratio_step: -0.0002
+    safety:
+      current_trip_samples: 25
+      enable_pwm_slew_limit: false
+      enabled: true
+      leg_current_channels:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      max_bus_current: 30
+      max_bus_voltage: 42
+      max_current: 5
+      max_position_error_counts: 9000
+      min_bus_voltage: 18
+      motor_arbiter_heartbeat_stale_s: 0.25
+      motor_arbiter_node_name: rinbo_ros2_bridge
+      motor_arbiter_ready_timeout_s: 5
+      motor_command_ack_timeout_s: 0.25
+      motor_state_required_after_seconds: 2
+      motor_state_source_max_age_s: 0.1
+      motor_state_stale_seconds: 0.25
+      position_error_trip_samples: 10
+      position_error_trip_seconds: 0.5
+      power_bus_voltage_channel: 7
+      power_required_after_seconds: 2
+      power_stale_seconds: 0.5
+      power_state_source_max_age_s: 0.35
+      pwm_slew_rate_per_sec: 250
+      require_power_relay: true
+      stop_on_bus_current_limit: false
+      stop_on_current_limit: true
+      stop_on_over_voltage: true
+      stop_on_position_error: false
+      stop_on_power_stale: true
+      stop_on_voltage_sag: true
+      voltage_trip_samples: 5
+    shutdown:
+      slowdown_duration_s: 2
+      timeout_s: 5
+    slowdown_step: 0.002
+    start_ratio: 8
+    startup_duration: 8
+    stop_servo_control_mode: 0
+    target_ratio: 1
+    velocity_filter_time_constant_s: 0.005

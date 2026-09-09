@@ -1,0 +1,11 @@
+{
+  "only_live_config_changes": [
+    "revision:8->9",
+    "parameters.rinbo_tripod_rslip.safety.stop_on_position_error:true->false"
+  ],
+  "control_sources_unchanged": {
+    "rinbo_cali.cpp": true,
+    "rinbo_standing.cpp": true,
+    "rinbo_manual.cpp": true
+  }
+}

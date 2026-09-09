@@ -1,0 +1,54 @@
+Tue Sep  8 19:39:09 UTC 2026
+64ed8560-4fd6-411a-af52-15dbf953c1ad
+1385.66 5306.29
+PID=4190
+4190 (fpga_driver) S 4187 4190 4190 34816 4190 4210944 4291 538 0 1 611 285 0 2 20 0 20 0 130639 604917760 4006 18446744073709551615 4194304 12898220 140721034955248 0 0 0 0 4096 134758402 0 0 0 17 3 0 0 0 0 0 14996800 15187936 41467904 140721034956238 140721034956252 140721034956252 140721034956729 0
+./fpga_driver 
+PID=4187
+4187 (sshd) S 1695 4187 4187 0 -1 4210944 542 261 0 0 10 13 1 0 20 0 1 0 130619 74031104 2044 18446744073709551615 93926142078976 93926142811504 140736964283088 0 0 0 0 4096 81926 0 0 0 17 1 0 0 0 0 0 93926144911984 93926144923696 93926172622848 140736964288148 140736964288166 140736964288166 140736964288489 0
+sshd: admin@pts/0 
+c847394fa8ff915fc48013783c8b05b7abc4cb48b4b390fce5957550c830c2c8  /proc/4190/exe
+exe
+/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/fpga_driver
+cwd
+/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build
+fd/0
+/dev/pts/0
+fd/1
+/var/volatile/tmp/fpga_driver_console.log
+fd/2
+/var/volatile/tmp/fpga_driver_console.log
+LD_LIBRARY_PATH=/home/admin/rinbo_sbRIO_ws/install/lib:/home/admin/kilin_sbRIO_ws/install/lib:
+SSH_CONNECTION=192.168.30.213 53093 192.168.30.254 22
+CORE_MASTER_ADDR=192.168.30.254:50051
+CORE_LOCAL_IP=192.168.30.254
+PWD=/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build
+SSH_CLIENT=192.168.30.213 53093 22
+SSH_TTY=/dev/pts/0
+TERM=xterm
+-rw-r--r--    1 admin    administ      2814 Sep  8 19:39 /tmp/fpga_driver_console.log
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0

@@ -1,0 +1,8 @@
+# Independent signed speeds in degrees/second. No initial phase alignment.
+duration_s: 5.0
+max_pwm: 20.0
+max_speed_deg_s: 30.0
+acceleration_deg_s2: 30.0
+legs:
+  L2: {mode: velocity, speed_deg_s: 10.0}
+  R2: {mode: velocity, speed_deg_s: -5.0}

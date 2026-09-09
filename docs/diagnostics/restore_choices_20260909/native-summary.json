@@ -1,0 +1,17 @@
+{
+  "gtest_counts": {
+    "test_control_velocity.gtest": 5,
+    "test_tripod_multileg.gtest": 33,
+    "test_latest_state_safety.gtest": 29,
+    "test_motor_arbiter_handshake.gtest": 42,
+    "test_manual_controller.gtest": 14,
+    "test_robot_config.gtest": 27,
+    "test_cali_multileg.gtest": 16,
+    "test_manual_motion.gtest": 9,
+    "test_standing_multileg.gtest": 11,
+    "test_motion_effort.gtest": 4
+  },
+  "gtest_total": 190,
+  "retired_entry_check": "passed in initial run",
+  "verification": "Nine unaffected suites passed in initial run; config and final calibration passed after build; all other tested binaries byte-identical."
+}

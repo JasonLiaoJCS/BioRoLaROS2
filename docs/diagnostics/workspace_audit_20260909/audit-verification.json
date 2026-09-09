@@ -1,0 +1,27 @@
+{
+  "verified_at": "2026-09-09T21:58:32.252460+08:00",
+  "result": "pass",
+  "decision_items": 92,
+  "initial_choices": "all blank",
+  "inventory_counts": {
+    "modified": 13,
+    "gitlink_absent": 1,
+    "identical": 6,
+    "line_endings_only": 9,
+    "absent_locally": 8,
+    "local_only": 230
+  },
+  "integrity_checks": {
+    "current_source_hashes_unchanged": 258,
+    "upstream_snapshot_hashes": 36,
+    "site_files_unchanged": 5,
+    "binaries_unchanged": 7
+  },
+  "all_source_and_document_links_exist": true,
+  "csv_and_embedded_html_match_json": true,
+  "form_smoke_test": "PASS: actual inline script, valid/invalid choices, draft restore, count, selected-only JSON and text export",
+  "form_validation_limit": "Minimal DOM execution; no visual browser layout test.",
+  "hardware_actions": "none",
+  "control_changes": "none",
+  "tests_scope": "Audit artifacts only; no new motor/control runtime test."
+}

@@ -1,0 +1,12 @@
+{
+  "duration_s": 10.0,
+  "max_pwm": 80.0,
+  "max_speed_deg_s": 90.0,
+  "acceleration_deg_s2": 10.0,
+  "legs": {
+    "L2": {
+      "mode": "velocity",
+      "speed_deg_s": 90.0
+    }
+  }
+}

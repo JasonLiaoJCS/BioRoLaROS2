@@ -1,0 +1,65 @@
+Consolidate compiler generated dependencies of target robot_config
+[ 10%] Built target gtest_main
+[ 10%] Built target rinbo_sin_sweep
+[ 13%] Building CXX object CMakeFiles/robot_config.dir/src/robot_config.cpp.o
+[ 18%] Built target gtest
+Consolidate compiler generated dependencies of target test_motor_arbiter_handshake
+[ 28%] Built target test_latest_state_safety
+[ 28%] Built target test_motor_arbiter_handshake
+[ 31%] Linking CXX static library librobot_config.a
+[ 31%] Built target robot_config
+Consolidate compiler generated dependencies of target rinbo_manual
+[ 34%] Linking CXX executable rinbo_legs
+[ 36%] Building CXX object CMakeFiles/rinbo_cali.dir/src/rinbo_cali.cpp.o
+[ 39%] Building CXX object CMakeFiles/rinbo_manual.dir/src/rinbo_manual.cpp.o
+[ 42%] Built target rinbo_legs
+Consolidate compiler generated dependencies of target rinbo_standing
+[ 44%] Building CXX object CMakeFiles/rinbo_standing.dir/src/rinbo_standing.cpp.o
+[ 47%] Linking CXX executable rinbo_standing
+[ 47%] Built target rinbo_standing
+Consolidate compiler generated dependencies of target rinbo_tripod
+[ 50%] Linking CXX executable rinbo_manual
+[ 52%] Building CXX object CMakeFiles/rinbo_tripod.dir/src/rinbo_tripod.cpp.o
+[ 55%] Linking CXX executable rinbo_cali
+[ 55%] Built target rinbo_manual
+Consolidate compiler generated dependencies of target test_robot_config
+[ 57%] Building CXX object CMakeFiles/test_robot_config.dir/test/test_robot_config.cpp.o
+[ 57%] Built target rinbo_cali
+Consolidate compiler generated dependencies of target test_cali_multileg
+[ 60%] Building CXX object CMakeFiles/test_cali_multileg.dir/test/test_cali_multileg.cpp.o
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp: In member function ‘virtual void {anonymous}::ConfigTest_IndependentWriterLockAndReaderSnapshot_Test::TestBody()’:
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp:158:74: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  158 |         try {PathLock lock(path.string()+".lock");char signal='x';::write(ready[1],&signal,1);read(release[0],&signal,1);_exit(0);}
+      |                                                                   ~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp:158:99: warning: ignoring return value of ‘ssize_t read(int, void*, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  158 |         try {PathLock lock(path.string()+".lock");char signal='x';::write(ready[1],&signal,1);read(release[0],&signal,1);_exit(0);}
+      |                                                                                               ~~~~^~~~~~~~~~~~~~~~~~~~~~
+[ 63%] Linking CXX executable test_robot_config
+[ 63%] Built target test_robot_config
+Consolidate compiler generated dependencies of target test_standing_multileg
+[ 65%] Building CXX object CMakeFiles/test_standing_multileg.dir/test/test_standing_multileg.cpp.o
+[ 68%] Linking CXX executable rinbo_tripod
+[ 68%] Built target rinbo_tripod
+Consolidate compiler generated dependencies of target test_tripod_multileg
+[ 71%] Building CXX object CMakeFiles/test_tripod_multileg.dir/test/test_tripod_multileg.cpp.o
+[ 73%] Linking CXX executable test_cali_multileg
+[ 73%] Built target test_cali_multileg
+Consolidate compiler generated dependencies of target test_manual_motion
+[ 76%] Linking CXX executable test_manual_motion
+[ 78%] Built target test_manual_motion
+Consolidate compiler generated dependencies of target test_manual_controller
+[ 81%] Building CXX object CMakeFiles/test_manual_controller.dir/test/test_manual_controller.cpp.o
+[ 84%] Linking CXX executable test_standing_multileg
+[ 84%] Built target test_standing_multileg
+Consolidate compiler generated dependencies of target test_control_velocity
+[ 86%] Building CXX object CMakeFiles/test_control_velocity.dir/test/test_control_velocity.cpp.o
+[ 89%] Linking CXX executable test_control_velocity
+[ 89%] Built target test_control_velocity
+Consolidate compiler generated dependencies of target test_motion_effort
+[ 92%] Building CXX object CMakeFiles/test_motion_effort.dir/test/test_motion_effort.cpp.o
+[ 94%] Linking CXX executable test_motion_effort
+[ 94%] Built target test_motion_effort
+[ 97%] Linking CXX executable test_tripod_multileg
+[ 97%] Built target test_tripod_multileg
+[100%] Linking CXX executable test_manual_controller
+[100%] Built target test_manual_controller

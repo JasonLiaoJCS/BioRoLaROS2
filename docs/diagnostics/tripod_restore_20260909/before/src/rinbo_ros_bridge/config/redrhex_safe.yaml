@@ -1,0 +1,15 @@
+rinbo_ros2_bridge:
+  ros__parameters:
+    core_ip: "192.168.30.2"
+    motor_command_timeout_ms: 100
+    motor_command_max_age_ms: 100
+    motor_command_rearm_disabled_samples: 5
+    motor_disable_resend_period_ms: 20
+    motor_arbiter_heartbeat_period_ms: 50
+    motor_output_status_period_ms: 20
+    motor_shutdown_disabled_packets: 8
+    power_shutdown_off_packets: 3
+    motor_command_max_pwm: 3300.0
+    motor_command_min_servo_encoder: 0
+    motor_command_max_servo_encoder: 65535
+    power_command_max_age_ms: 200

@@ -1,0 +1,117 @@
+#!/bin/sh
+# Explicit lifecycle operations only. No restart loop; watch never starts hardware.
+set -eu
+umask 077
+root=/home/admin/.local/state/rslip-fpga-service
+driver=/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/fpga_driver
+self=$(readlink -f "$0")
+fail() { echo "FPGA_SERVICE_ERROR: $*" >&2; exit 30; }
+ticks() { sed 's/^.*) //' "/proc/$1/stat" | awk '{print $20}'; }
+alive() { [ -r "/proc/$1/stat" ] && [ "$(sed 's/^.*) //' "/proc/$1/stat" | awk '{print $1}')" != Z ]; }
+identity() {
+    [ -r "$run/identity" ] || return 1
+    read boot pid start exe < "$run/identity"
+    case "$pid:$start" in *[!0-9:]*|:*|*:) fail 'Invalid identity' ;; esac
+    [ "$pid" -gt 1 ] || fail 'Invalid PID'
+    [ "$boot" = "$(cat /proc/sys/kernel/random/boot_id)" ] || return 1
+    alive "$pid" || return 1
+    [ "$start" = "$(ticks "$pid")" ] || fail 'PID reused; refusing signal'
+    [ "$exe" = "$(readlink -f "$driver")" ] || fail 'Unexpected recorded executable'
+    [ "$exe" = "$(readlink "/proc/$pid/exe")" ] || fail 'Executable changed; refusing signal'
+}
+current() {
+    [ -r "$root/current" ] || fail 'No managed run; inspect legacy owner; do not start from watch/stop'
+    token=$(cat "$root/current")
+    case "$token" in run.*) ;; *) fail 'Invalid run token' ;; esac
+    case "$token" in */*) fail 'Invalid run token' ;; esac
+    run="$root/$token"
+}
+case "${1:-}" in
+_run)
+    # Detached wait wrapper. Internal operation; start supplies a fresh mktemp dir.
+    run=$2
+    export CORE_LOCAL_IP=192.168.30.254
+    export CORE_MASTER_ADDR=192.168.30.254:50051
+    export LD_LIBRARY_PATH=/home/admin/rinbo_sbRIO_ws/install/lib:/home/admin/kilin_sbRIO_ws/install/lib
+    cd "$(dirname "$driver")"
+    echo "WRAPPER pid=$$ boot=$(cat /proc/sys/kernel/random/boot_id) uptime=$(cat /proc/uptime)"
+    sha256sum "$driver"
+    # Ignore inherited shell SIGINT only in wrapper; driver explicitly installs it.
+    "$driver" --headless </dev/null &
+    pid=$!
+    if alive "$pid"; then
+        printf '%s %s %s %s\n' "$(cat /proc/sys/kernel/random/boot_id)" "$pid" "$(ticks "$pid")" "$(readlink -f "$driver")" > "$run/identity.tmp"
+        mv "$run/identity.tmp" "$run/identity"
+    fi
+    rc=0
+    wait "$pid" || rc=$?
+    echo "FPGA_DRIVER_WAIT_EXIT=$rc pid=$pid uptime=$(cat /proc/uptime)"
+    printf '%s\n' "$rc" > "$run/exitcode.tmp"
+    mv "$run/exitcode.tmp" "$run/exitcode"
+    exit "$rc"
+    ;;
+start)
+    # Windows must have completed Core/bitfile/safety preflight before this action.
+    [ -x "$driver" ] || fail 'Driver not installed'
+    # Read-only feature gate: never run --help on a legacy binary that ignores argv.
+    LC_ALL=C grep -a -q 'shutdown_controls_verified physical_power_unverified' "$driver" ||
+        fail 'Lifecycle-capable driver not installed; no initialization'
+    command -v setsid >/dev/null || fail 'setsid unavailable'
+    command -v flock >/dev/null || fail 'flock unavailable'
+    mkdir -p "$root"
+    exec 9>"$root/control.lock"
+    flock -n 9 || fail 'Another lifecycle operation is active'
+    if [ -r "$root/current" ]; then
+        current
+        if identity; then echo "FPGA_DRIVER_RUNNING pid=$pid log=$run/driver.log"; exit 0; fi
+        [ -f "$run/exitcode" ] || fail 'Previous run has no exit receipt; inspect before starting'
+    fi
+    # C++ lock is authoritative for all new entrypoints; refuse legacy duplicates too.
+    for comm in /proc/[0-9]*/comm; do
+        if [ "$(cat "$comm" 2>/dev/null || :)" = fpga_driver ]; then
+            fail 'Existing driver is unmanaged; use original owner; no adoption or restart'
+        fi
+    done
+    run=$(mktemp -d "$root/run.XXXXXX")
+    basename "$run" > "$root/current.tmp"
+    mv "$root/current.tmp" "$root/current"
+    nohup setsid "$self" _run "$run" 9>&- </dev/null >>"$run/driver.log" 2>&1 &
+    n=0
+    while [ ! -f "$run/identity" ]; do
+        [ ! -f "$run/exitcode" ] || fail "Driver exited: $(cat "$run/exitcode"); log=$run/driver.log"
+        n=$((n+1)); [ "$n" -le 8 ] || fail "Startup identity unavailable; inspect $run; no automatic retry"
+        sleep 1
+    done
+    identity || fail "Driver exited during startup; log=$run/driver.log"
+    echo "FPGA_DRIVER_STARTED pid=$pid log=$run/driver.log (not communication-ready)"
+    ;;
+status)
+    current
+    if identity; then echo "FPGA_DRIVER_RUNNING pid=$pid log=$run/driver.log"; exit 0; fi
+    if [ -f "$run/exitcode" ]; then echo "FPGA_DRIVER_EXIT=$(cat "$run/exitcode") log=$run/driver.log"; exit 1; fi
+    fail "Driver absent; exit receipt missing; PowerUnknown; log=$run/driver.log"
+    ;;
+watch)
+    current
+    [ -r "$run/driver.log" ] || fail 'Log unavailable'
+    exec tail -n 80 -f "$run/driver.log"
+    ;;
+stop)
+    current
+    exec 9>"$root/control.lock"
+    flock -n 9 || fail 'Another lifecycle operation is active'
+    identity || fail "Driver absent; cannot verify a new stop; PowerUnknown; log=$run/driver.log"
+    echo "FPGA_DRIVER_STOP signal=SIGINT boot=$boot pid=$pid start_ticks=$start exe=$exe"
+    kill -INT "$pid" || fail 'Cannot signal driver'
+    n=0
+    while [ ! -f "$run/exitcode" ]; do
+        n=$((n+1)); [ "$n" -le 10 ] || fail "Stop timeout; no kill/restart escalation; PowerUnknown; log=$run/driver.log"
+        sleep 1
+    done
+    rc=$(cat "$run/exitcode")
+    [ "$rc" = 0 ] || fail "Stop exit=$rc; inspect log; PowerUnknown"
+    grep -q 'shutdown_controls_verified' "$run/driver.log" || fail 'No off-control verification; PowerUnknown'
+    echo "FPGA_DRIVER_STOPPED controls_verified physical_power_unverified log=$run/driver.log"
+    ;;
+*) echo 'Usage: fpga-service start|status|watch|stop' >&2; exit 64 ;;
+esac

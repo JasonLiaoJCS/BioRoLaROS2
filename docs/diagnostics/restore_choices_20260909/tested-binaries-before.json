@@ -1,0 +1,11 @@
+{
+  "/tmp/rinbo-tripod-slew-build/test_motion_effort": "56dedc6f6e0463ae0cc7c3f9ecf057fcf9d265fac65c450945f341643e88ce4b",
+  "/tmp/rinbo-tripod-slew-build/test_latest_state_safety": "a831b79cb2c187f4ce910dcc843bc742a04495cc96f948c125c263913b886514",
+  "/tmp/rinbo-tripod-slew-build/test_motor_arbiter_handshake": "ff689e5cc01b874a4e0b37afcd612a90be1df3011e7ac1e58811e501a6a5b879",
+  "/tmp/rinbo-tripod-slew-build/test_manual_controller": "519e6d1b49430da8b5da38c4a06fe5c05f925081c64274fae91efcb0f9950ccc",
+  "/tmp/rinbo-tripod-slew-build/test_tripod_multileg": "43cd5264091fdc6adc1873e4fe95a14b30c12ea77a807d1d0d3ab8eaf953efee",
+  "/tmp/rinbo-tripod-slew-build/test_standing_multileg": "ba1ceced2a915480e931a6ef289c505bd24d37f2746157d8b97f7d47e4aaeba3",
+  "/tmp/rinbo-tripod-slew-build/test_control_velocity": "15b77e8ee46898b69f47e6327d963ed747365c0c2d651eaa3a616eae9e598250",
+  "/tmp/rinbo-tripod-slew-build/test_manual_motion": "3d2fcd89de4d8ffabbd7072043f642b3e1e2a3e7a69f3e503150abce06c1314e",
+  "/tmp/rinbo-tripod-slew-build/test_robot_config": "089afef51556818ca14b6dd5a1d5cb4ee39332950083200cf73e114968b76303"
+}

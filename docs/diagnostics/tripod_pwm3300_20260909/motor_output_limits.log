@@ -1,0 +1,15 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from MotorOutputLimits
+[ RUN      ] MotorOutputLimits.Raw3300PassesWithoutScalingAndHigherValuesFail
+[       OK ] MotorOutputLimits.Raw3300PassesWithoutScalingAndHigherValuesFail (0 ms)
+[ RUN      ] MotorOutputLimits.ExplicitOlderTransportCapStillEnforcesItsOwnValue
+[       OK ] MotorOutputLimits.ExplicitOlderTransportCapStillEnforcesItsOwnValue (0 ms)
+[ RUN      ] MotorOutputLimits.InvalidTransportConfigurationNeverApprovesOutput
+[       OK ] MotorOutputLimits.InvalidTransportConfigurationNeverApprovesOutput (0 ms)
+[----------] 3 tests from MotorOutputLimits (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 3 tests.

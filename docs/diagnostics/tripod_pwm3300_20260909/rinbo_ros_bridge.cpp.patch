@@ -1,0 +1,64 @@
+--- before/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
++++ after/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+@@ -26,6 +26,7 @@
+ #include "Motor.pb.h"
+ #include "Power.pb.h"
+ #include "power_command_epoch_guard.hpp"
++#include "motor_output_limits.hpp"
+ 
+ #include "rinbo_msgs/msg/motor_cmd_stamped.hpp"
+ #include "rinbo_msgs/msg/motor_state_stamped.hpp"
+@@ -90,7 +91,7 @@
+ int motor_shutdown_disabled_packets = 8;
+ int power_shutdown_off_packets = 3;
+ int power_command_max_age_ms = 200;
+-double motor_command_max_pwm = 80.0;
++double motor_command_max_pwm = rinbo_bridge::kMaxRawMotorCommand;
+ uint32_t motor_command_min_servo_encoder = 0;
+ uint32_t motor_command_max_servo_encoder = 65535;
+ int motor_disabled_rearm_count = 0;
+@@ -128,7 +129,7 @@
+ constexpr const char * kMotorActiveAckTopic = "/rinbo/motor_active_ack";
+ constexpr const char * kPowerCommandTopic = "/power/command";
+ constexpr const char * kEstopTopic = "/estop";
+-constexpr double kHardMotorCommandMaxPwm = 80.0;
++constexpr double kHardMotorCommandMaxPwm = rinbo_bridge::kMaxRawMotorCommand;
+ constexpr int kHardMotorCommandTimeoutMaxMs = 100;
+ constexpr int kHardMotorCommandMaxAgeMaxMs = 100;
+ constexpr int kHardMotorCommandRearmMinSamples = 5;
+@@ -294,15 +295,8 @@
+         "L1", "L2", "L3", "R1", "R2", "R3"};
+     for (std::size_t index = 0; index < legs.size(); ++index) {
+         const double voltage = static_cast<double>(legs[index]->voltage);
+-        if (!std::isfinite(voltage)) {
+-            return std::string("non-finite main voltage for ") + leg_names[index];
+-        }
+-        if (voltage < 0.0 || voltage > motor_command_max_pwm) {
+-            std::ostringstream out;
+-            out << "main voltage for " << leg_names[index] << " is " << voltage
+-                << ", outside [0," << motor_command_max_pwm << "]";
+-            return out.str();
+-        }
++        if (const auto reason = rinbo_bridge::validate_motor_output(
++                voltage, motor_command_max_pwm, leg_names[index])) return reason;
+     }
+ 
+     // Disabled packets intentionally carry no actionable servo target.  Do
+@@ -1023,7 +1017,7 @@
+     power_command_max_age_ms =
+         node->declare_parameter<int>("power_command_max_age_ms", 200);
+     motor_command_max_pwm =
+-        node->declare_parameter<double>("motor_command_max_pwm", 80.0);
++        node->declare_parameter<double>("motor_command_max_pwm", rinbo_bridge::kMaxRawMotorCommand);
+     const int64_t min_servo_encoder =
+         node->declare_parameter<int64_t>("motor_command_min_servo_encoder", 0);
+     const int64_t max_servo_encoder =
+@@ -1054,7 +1048,7 @@
+             "Invalid/unsafe bridge parameters: CORE_IP must be nonempty; motor timeout/max-age "
+             "must be <=100ms; rearm must be >=5 samples; disable resend/status must be <=20ms; "
+             "heartbeat must be <=50ms; shutdown must send >=8 motor and >=3 power packets; "
+-            "power max-age must be <=200ms; max-PWM must be finite and in (0,80]; servo encoder "
++            "power max-age must be <=200ms; max-PWM must be finite and in (0,3300] raw units; servo encoder "
+             "bounds must be ordered within [0,65535]");
+         bridge_node.reset();
+         node.reset();

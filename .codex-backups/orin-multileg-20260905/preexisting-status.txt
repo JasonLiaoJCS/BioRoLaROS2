@@ -1,0 +1,36 @@
+ M .gitignore
+ M src/rinbo_data_recorder/CMakeLists.txt
+ M src/rinbo_data_recorder/package.xml
+ M src/rinbo_data_recorder/src/rinbo_data_recorder.cpp
+ M src/rinbo_fsm/CMakeLists.txt
+ M src/rinbo_fsm/package.xml
+ M src/rinbo_fsm/src/rinbo_cali.cpp
+ M src/rinbo_fsm/src/rinbo_standing.cpp
+ M src/rinbo_fsm/src/rinbo_tripod.cpp
+ M src/rinbo_msgs/CMakeLists.txt
+ M src/rinbo_ros_bridge/CMakeLists.txt
+ M src/rinbo_ros_bridge/package.xml
+ M src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+?? .codex-backups/
+?? docs/
+?? src/redrhex_lowlevel_bridge/
+?? src/redrhex_msgs/
+?? src/redrhex_rl_controller/
+?? src/rinbo_data_recorder/config/
+?? src/rinbo_data_recorder/launch/
+?? src/rinbo_data_recorder/scripts/
+?? src/rinbo_fsm/config/
+?? src/rinbo_fsm/src/disabled_legs.hpp
+?? src/rinbo_fsm/src/latest_state_qos.hpp
+?? src/rinbo_fsm/src/motor_arbiter_handshake.hpp
+?? src/rinbo_fsm/src/rinbo_power_guard.hpp
+?? src/rinbo_fsm/src/rinbo_sin_sweep.cpp
+?? src/rinbo_fsm/src/ros_input_guard.hpp
+?? src/rinbo_fsm/src/safety_invariants.hpp
+?? src/rinbo_fsm/src/tripod_power_policy.hpp
+?? src/rinbo_fsm/test/
+?? src/rinbo_msgs/msg/ControllerDebugStamped.msg
+?? src/rinbo_msgs/msg/SafetyEventStamped.msg
+?? src/rinbo_ros_bridge/config/
+?? src/rinbo_ros_bridge/src/power_command_epoch_guard.hpp
+?? src/rinbo_ros_bridge/test/

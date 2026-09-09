@@ -1,0 +1,13 @@
+{
+  "source_manifest_unchanged": true,
+  "tripod_effective_parameters_unchanged": true,
+  "power_and_communication_parameters_unchanged": true,
+  "rl_site_profiles_unchanged": true,
+  "L3_mask": [
+    "L3"
+  ],
+  "receipts_invalidated": true,
+  "bridge_pid_117000_present": true,
+  "revision": 15,
+  "sha256": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129"
+}

@@ -1,0 +1,37 @@
+{
+  "standing": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "cali_multileg": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "tripod_multileg": {
+    "tests": 28,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "motor_arbiter_handshake": {
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "robot_config": {
+    "tests": 22,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "control_panel": {
+    "passed": 232,
+    "skipped": 1,
+    "failed": 0
+  }
+}

@@ -1,0 +1,362 @@
+--- before/src/rinbo_fsm/config/disabled_leg_template.yaml
++++ src/rinbo_fsm/config/disabled_leg_template.yaml
+@@ -68,14 +68,16 @@
+     hardware:
+       disabled_legs: []
+       max_disabled_legs: 1
+-    kp: 0.08
+-    kd: 0.006
++    kp: 0.38
++    kd: 0.003
+     k_ff: 0.005
++    friction_pwm: 0.0
++    velocity_filter_time_constant_s: 0.005 # 0 restores raw derivative
+     startup_duration: 8.0
+-    max_pwm: 80.0
++    max_pwm: 3300.0
+     start_ratio: 8.0
+-    target_ratio: 4.0
+-    ratio_step: -0.00005
++    target_ratio: 1.0
++    ratio_step: -0.0002
+     slowdown_step: 0.002
+     shutdown:
+       slowdown_duration_s: 2.0
+--- before/src/rinbo_fsm/src/robot_config.cpp
++++ src/rinbo_fsm/src/robot_config.cpp
+@@ -156,7 +156,8 @@
+     put("safety.current_trip_samples", int64_t(25));
+     if (node == "rinbo_tripod_rslip") {
+         put("startup_duration", 8.0); put("start_ratio", 8.0);
+-        put("target_ratio", 4.0); put("ratio_step", -0.00005);
++        put("target_ratio", 1.0); put("ratio_step", -0.0002);
++        put("velocity_filter_time_constant_s", 0.005);
+         put("slowdown_step", 0.002); put("stop_servo_control_mode", int64_t(0));
+         put("shutdown.slowdown_duration_s", 2.0); put("shutdown.timeout_s", 5.0);
+         put("safety.enabled", true); put("safety.stop_on_voltage_sag", true);
+@@ -262,6 +263,8 @@
+             d("safety.motor_state_stale_seconds"), d("safety.motor_state_required_after_seconds"),
+             i("safety.position_error_trip_samples"), d("safety.position_error_trip_seconds")};
+         rinbo_fsm::validate_tripod_motion_safety_contract(motion);
++        if (d("velocity_filter_time_constant_s") < 0.0)
++            fail("velocity_filter_time_constant_s must be finite and >= 0 (0 = raw velocity)");
+         if (d("startup_duration") <= 0 || d("start_ratio") <= 0 || d("target_ratio") <= 0 ||
+             d("target_ratio") > d("start_ratio") || d("ratio_step") >= 0 ||
+             d("slowdown_step") <= 0 || d("kp") < 0 || d("kd") < 0 || d("k_ff") < 0)
+@@ -506,6 +509,13 @@
+                 "friction_pwm", "friction_velocity_counts_s"};
+             if (node != "rinbo_tripod_rslip") {
+                 optional_defaults.insert({"kp", "kd", "k_ff"});
++            } else {
++                optional_defaults.insert("velocity_filter_time_constant_s");
++                // A pre-existing site file had a fixed 20 ms filter. Keep it
++                // until explicit tuning writes the new Tripod-only setting.
++                if (!supplied.count("velocity_filter_time_constant_s"))
++                    effective.at("velocity_filter_time_constant_s") =
++                        rclcpp::Parameter("velocity_filter_time_constant_s", 0.02);
+             }
+             // These used to be source constants, so an existing v1 file has
+             // no keys for them. Missing keys preserve exactly the old behavior.
+@@ -788,7 +798,8 @@
+                        std::optional<bool> stop_on_position_error) {
+     const std::set<std::string> allowed{
+         "startup_duration", "start_ratio", "target_ratio", "ratio_step",
+-        "kp", "kd", "k_ff", "friction_pwm", "friction_velocity_counts_s"};
++        "kp", "kd", "k_ff", "friction_pwm", "friction_velocity_counts_s",
++        "velocity_filter_time_constant_s"};
+     if (updates.empty() && !stop_on_position_error.has_value())
+         fail("tune-tripod requires KEY=VALUE; use status --json to inspect");
+     for (const auto& [key, value] : updates)
+--- before/src/rinbo_fsm/src/control_velocity.hpp
++++ src/rinbo_fsm/src/control_velocity.hpp
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include <cmath>
++#include <stdexcept>
+ 
+ namespace rinbo_fsm {
+ // Smooth only the measured-velocity term used for damping. Raw encoder values
+@@ -8,16 +9,19 @@
+ // A time-based coefficient avoids changing the filter bandwidth with DDS rate.
+ class ControlVelocity {
+ public:
+-    double update(double raw, double dt) {
++    // Existing controllers retain 20 ms. Tripod explicitly selects its own
++    // constant; zero gives the historical raw derivative for comparison.
++    double update(double raw, double dt, double time_constant_s = 0.02) {
++        if (!std::isfinite(time_constant_s) || time_constant_s < 0.0)
++            throw std::invalid_argument("velocity_filter_time_constant_s must be finite and >= 0");
+         if (!std::isfinite(raw) || !std::isfinite(dt) || dt <= 0.0) {
+             reset();
+             return raw;  // Do not conceal invalid input from the caller.
+         }
+-        if (!initialized_ || dt > 0.25) {
++        if (!initialized_ || dt > 0.25 || time_constant_s == 0.0) {
+             value_ = raw;
+             initialized_ = true;
+         } else {
+-            constexpr double time_constant_s = 0.02;
+             value_ += dt / (time_constant_s + dt) * (raw - value_);
+         }
+         return value_;
+--- before/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -51,6 +51,12 @@
+         if (disabled_legs_.healthy_count() == 0)
+             throw std::runtime_error("没有可測試腿: all six main drives are disabled");
+         effort_ = rinbo_fsm::load_motion_effort(*this, {0.38, 0.003, 0.005});
++        velocity_filter_time_constant_s_ = declare_parameter<double>(
++            "velocity_filter_time_constant_s", 0.005);
++        if (!std::isfinite(velocity_filter_time_constant_s_) || velocity_filter_time_constant_s_ < 0)
++            throw std::invalid_argument("velocity_filter_time_constant_s must be finite and >= 0");
++        RCLCPP_INFO(get_logger(), "Tripod velocity feedback: time_constant=%.6fs (0=raw); home_reference=actual_at_startup_and_group_b",
++                    velocity_filter_time_constant_s_);
+         
+         RCLCPP_INFO(get_logger(), "Motion effort: kp=%.4f kd=%.4f k_ff=%.4f friction_pwm=%.1f fade_counts_s=%.1f",
+                     effort_.kp, effort_.kd, effort_.k_ff, effort_.friction_pwm, effort_.friction_velocity_counts_s);
+@@ -108,8 +114,8 @@
+         
+         start_ratio_ = this->declare_parameter<double>("start_ratio", 8.0);
+         current_ratio_ = start_ratio_;
+-        target_ratio_ = this->declare_parameter<double>("target_ratio", 4.0);
+-        ratio_step_ = this->declare_parameter<double>("ratio_step", -0.00005);
++        target_ratio_ = this->declare_parameter<double>("target_ratio", 1.0);
++        ratio_step_ = this->declare_parameter<double>("ratio_step", -0.0002);
+         slowdown_step_ = this->declare_parameter<double>("slowdown_step", 0.002);
+         shutdown_slowdown_duration_s_ =
+             this->declare_parameter<double>("shutdown.slowdown_duration_s", 2.0);
+@@ -1136,7 +1142,8 @@
+         for (int i = 0; i < 6; i++) {
+             actual_velocities[i] = (positions[i] - prev_positions_[i]) / dt;
+             if (disabled_legs_.contains(i)) actual_velocities[i] = 0.0f;
+-            control_velocity_[i] = velocity_filter_[i].update(actual_velocities[i], dt);
++            control_velocity_[i] = velocity_filter_[i].update(
++                actual_velocities[i], dt, velocity_filter_time_constant_s_);
+         }
+         
+         std::array<float, 6> pwms {};
+@@ -1186,7 +1193,10 @@
+                 }
+                 // Warning-only position errors must not become a hidden
+                 // STARTUP interlock. Invalid references still fail below.
+-                // The endpoint is at rest and its planned zero is retained.
++                // The endpoint is at rest. As in GitHub ddcbce9, the gait
++                // origin is the measured position, without resetting encoders
++                // or wrapping away whole revolutions. The boundary trace still
++                // contains the startup target/error for diagnosis and guards.
+                 if (startup_time_ >= startup_duration_ && startup_aligned) {
+                     state_ = State::RUNNING;
+                     startup_completed = true;
+@@ -1195,7 +1205,7 @@
+                     
+                     for (int i = 0; i < 6; i++) {
+                         if (disabled_legs_.contains(i)) continue;
+-                        home_offsets_[i] = initial_positions_[i] + theta_home_*rad_to_counts_;
++                        rebase_gait_home(i, positions[i], target_positions[i], "STARTUP_TO_RUNNING");
+                     }
+                     
+                 }
+@@ -1222,6 +1232,11 @@
+                 group_b_active = (tau_ >= t_center_ + phase_offset_B_);
+                 
+                 if (group_b_active && !group_b_started_) {
++                    // Waiting Group B is disabled and may have moved. Restore
++                    // the original one-time measured-position origin at launch.
++                    for (int i = 0; i < 6; ++i)
++                        if (is_group_b[i] && !disabled_legs_.contains(i))
++                            rebase_gait_home(i, positions[i], home_offsets_[i], "GROUP_B_START");
+                     group_b_started_ = true;
+                     RCLCPP_INFO(this->get_logger(), "=== Group B started! ===");
+                 }
+@@ -1453,6 +1468,15 @@
+         update_previous_samples(positions, now_time);
+     }
+ 
++    void rebase_gait_home(int leg, float actual, float previous_target, const char* transition) {
++        home_offsets_[leg] = actual - theta_start_rslip_ * rad_to_counts_;
++        RCLCPP_INFO(get_logger(),
++            "TRIPOD_REBASE transition=%s leg=%s actual_counts=%.9g previous_target_counts=%.9g residual_counts=%.9g new_home_counts=%.9g tau=%.12g ratio=%.12g",
++            transition, leg_name(leg), static_cast<double>(actual),
++            static_cast<double>(previous_target), static_cast<double>(previous_target-actual),
++            static_cast<double>(home_offsets_[leg]), tau_, current_ratio_);
++    }
++
+     void set_servos(rinbo_msgs::msg::MotorCmdStamped& cmd,
+                     const rinbo_msgs::msg::MotorStateStamped& state) {
+         (void)state;
+@@ -1603,6 +1627,7 @@
+     std::deque<std::string> trace_history_;
+ 
+     std::array<rinbo_fsm::ControlVelocity, 6> velocity_filter_{};
++    double velocity_filter_time_constant_s_ = 0.005;
+     std::array<float, 6> control_velocity_{};
+     rinbo_fsm::MotionEffort effort_;
+     float max_pwm_;
+--- before/src/rinbo_fsm/test/test_tripod_multileg.cpp
++++ src/rinbo_fsm/test/test_tripod_multileg.cpp
+@@ -8,7 +8,7 @@
+ // Calls production control/guards with simulated feedback, no executor/Bridge.
+ struct TripodOfflineTestAccess {
+     static rclcpp::Time time(double s) {
+-        return rclcpp::Time(static_cast<int64_t>(s*1e9), RCL_ROS_TIME);
++        return rclcpp::Time(std::llround(s*1e9), RCL_ROS_TIME);
+     }
+     static void initialize(PIDController& f) {
+         f.initialized_ = true; f.prev_time_ = time(10); f.start_time_ = time(10);
+@@ -63,6 +63,47 @@
+     static bool fully_stopped(const PIDController& f) { return f.fully_stopped_; }
+     static bool group_b(const PIDController& f) { return f.group_b_started_; }
+     static auto debug(const PIDController& f) { return f.trace_debug_; }
++    static auto homes(const PIDController& f) { return f.home_offsets_; }
++    static void group_b_rebase(PIDController& f) {
++        boundary(f,100);const auto before=homes(f);
++        f.tau_=f.t_center_+f.phase_offset_B_-.0001;
++        auto p=endpoint(f);p[0]+=2000;p[4]-=1500;f.prev_positions_=p;
++        tick(f,f.prev_time_.seconds()+.01,p);
++        ASSERT_TRUE(group_b(f));ASSERT_FALSE(stopped(f));
++        EXPECT_EQ(f.home_offsets_[0],p[0]);EXPECT_EQ(f.home_offsets_[4],p[4]);
++        for(int i:{1,3,5})EXPECT_EQ(f.home_offsets_[i],before[i]);
++        for(int i:{0,4})EXPECT_NEAR(f.trace_debug_.target_position[i],p[i],.1);
++        const auto launched=homes(f);p[0]+=100;
++        tick(f,f.prev_time_.seconds()+.01,p);
++        EXPECT_EQ(homes(f),launched); // Exactly once, not a moving zero.
++    }
++    static void restored_profile(PIDController& f) {
++        EXPECT_DOUBLE_EQ(f.effort_.kp,.38);EXPECT_DOUBLE_EQ(f.effort_.kd,.003);
++        EXPECT_DOUBLE_EQ(f.effort_.k_ff,.005);EXPECT_DOUBLE_EQ(f.effort_.friction_pwm,0);
++        EXPECT_DOUBLE_EQ(f.startup_duration_,8);EXPECT_DOUBLE_EQ(f.target_ratio_,1);
++        EXPECT_DOUBLE_EQ(f.velocity_filter_time_constant_s_,.005);
++        EXPECT_FALSE(f.safety_.enable_pwm_slew_limit);EXPECT_EQ(f.max_pwm_,3300);
++        initialize(f);
++        for(int n=1;n<=801;++n) {
++            auto p=endpoint(f);
++            const auto ref=rinbo_fsm::tripod::startup(n*.01,8,0,rinbo_fsm::tripod::kCountsPerRevolution);
++            for(int i:{0,1,3,4,5})p[i]=ref.position;
++            tick(f,10+n*.01,p);ASSERT_FALSE(stopped(f));
++            if(n<800)ASSERT_FALSE(running(f));
++        }
++        ASSERT_TRUE(running(f));
++        f.current_ratio_=8;
++        const auto ramp_start=f.prev_time_;
++        for(int n=1;n<=4000;++n) {
++            advance(f,.01);ASSERT_TRUE(running(f));ASSERT_FALSE(fully_stopped(f));
++            // Compare against actual simulated timestamps, not callback count.
++            EXPECT_NEAR(f.current_ratio_,std::max(1.,8.-.2*(f.prev_time_-ramp_start).seconds()),1e-8);
++            for(int i:{0,1,3,4,5})EXPECT_LE(std::fabs(debug(f).limited_pwm[i]),3300);
++        }
++        EXPECT_DOUBLE_EQ(f.current_ratio_,1);EXPECT_TRUE(group_b(f));
++        auto last=debug(f);begin_stop(f);tick(f,f.prev_time_.seconds()+2.1,last.actual_position);
++        EXPECT_TRUE(fully_stopped(f));EXPECT_FALSE(stopped(f));
++    }
+     static std::array<double,2> budget(const PIDController& f) { return {f.reference_peak_pwm_, f.reference_peak_slew_}; }
+     static std::string reason(const PIDController& f) { return f.safety_stop_reason_; }
+     static void begin_stop(PIDController& f) {
+@@ -221,6 +262,8 @@
+         auto t=d["parameters"]["rinbo_tripod_rslip"];
+         t["kp"]=.08;t["kd"]=.006;t["k_ff"]=.005;t["friction_pwm"]=40.;
+         t["startup_duration"]=original?8.:30.;t["start_ratio"]=original?8.:80.;t["target_ratio"]=original?4.:80.;
++        // Explicit historical fixture, independent of the current site defaults.
++        t["ratio_step"]=-.00005;t["velocity_filter_time_constant_s"]=.02;
+         t["safety"]["max_position_error_counts"]=9000.;
+         {std::ofstream out(path);out<<d;ASSERT_TRUE(out.good());}
+         if(bits!=63){
+@@ -331,15 +374,32 @@
+     }
+     EXPECT_TRUE(Access::group_b(f));
+ }
+-TEST_F(TripodMultiLegTest, StartupErrorIsNotErasedByRebasingAndWaitingBRemainsProtected) {
++TEST_F(TripodMultiLegTest, StartupRebasesToActualButKeepsBoundaryErrorAndWaitingBProtection) {
+     fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
+     Access::boundary(f,100);ASSERT_TRUE(Access::running(f));auto before=Access::debug(f);
+     Access::tick(f,10.11,before.actual_position);auto after=Access::debug(f);
+-    EXPECT_NEAR(after.target_position[1],before.target_position[1],1);
+-    EXPECT_NEAR(after.position_error[1],100,1);
++    EXPECT_NEAR(before.position_error[1],100,.01);
++    EXPECT_FLOAT_EQ(Access::homes(f)[1],before.actual_position[1]);
++    EXPECT_NEAR(after.target_position[1],before.actual_position[1],1);
++    EXPECT_NEAR(after.position_error[1],0,1);
+     EXPECT_FALSE(after.group_b_leg[1]);EXPECT_TRUE(after.group_b_leg[0]);
+     Access::stall_waiting_b(f);EXPECT_TRUE(Access::stopped(f));
+     EXPECT_NE(Access::reason(f).find("hard position error: L1"),std::string::npos);
++}
++TEST_F(TripodMultiLegTest, GroupBRebasesOnlyWaitingHealthyLegsOnceAtLaunch) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);
++    PIDController f(s);Access::group_b_rebase(f);
++}
++
++TEST_F(TripodMultiLegTest, RestoredControllerRunsEightSecondStartupRatioEightToOneAndManualStop) {
++    warning_fixture();
++    const auto proc=dir/"empty_proc";std::filesystem::create_directories(proc);
++    rinbo_config::tune_tripod(path,{{"kp",.38},{"kd",.003},{"k_ff",.005},
++        {"friction_pwm",0},{"startup_duration",8},{"start_ratio",8},{"target_ratio",1},
++        {"ratio_step",-.0002},{"velocity_filter_time_constant_s",.005}},false,proc);
++    rinbo_config::tune_limits(path,"tripod",{{"max_pwm",3300},{"enable_pwm_slew_limit",0}},false,-1,proc);
++    rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    Access::restored_profile(f);
+ }
+ TEST_F(TripodMultiLegTest, HealthyBlockedStartupCannotEnterRunningOrRetainReceipts) {
+     fixture(4);
+--- before/src/rinbo_fsm/test/test_robot_config.cpp
++++ src/rinbo_fsm/test/test_robot_config.cpp
+@@ -308,6 +308,27 @@
+     EXPECT_THROW(tune_tripod(path,{{"start_ratio",2},{"target_ratio",8}},true,proc),std::exception);
+     EXPECT_THROW(tune_tripod(path,{{"kp",std::numeric_limits<double>::quiet_NaN()}},true,proc),std::exception);
+     EXPECT_EQ(bytes(),before);
++}
++TEST_F(ConfigTest, TripodFilterAndRestoredGainsKeepOtherStagesAndRejectInvalidFilter) {
++    const auto proc=dir/"empty_proc";fs::create_directories(proc);
++    const auto before=YAML::Load(bytes());
++    const auto legacy=RobotConfig::load(path);
++    bool legacy_filter_found=false;
++    for(const auto& p:legacy.parameters("rinbo_tripod_rslip"))
++        if(p.get_name()=="velocity_filter_time_constant_s") {
++            legacy_filter_found=true;EXPECT_DOUBLE_EQ(p.as_double(),.02);
++        }
++    EXPECT_TRUE(legacy_filter_found);
++    tune_tripod(path,{{"kp",.38},{"kd",.003},{"friction_pwm",0},
++        {"target_ratio",1},{"ratio_step",-.0002},{"velocity_filter_time_constant_s",.005}},false,proc);
++    const auto after=YAML::Load(bytes());
++    for(const auto* node:{"rinbo_cali","rinbo_standing"})
++        EXPECT_EQ(YAML::Dump(before["parameters"][node]),YAML::Dump(after["parameters"][node]));
++    EXPECT_EQ(YAML::Dump(before["disabled_legs"]),YAML::Dump(after["disabled_legs"]));
++    EXPECT_DOUBLE_EQ(after["parameters"]["rinbo_tripod_rslip"]["kd"].as<double>(),.003);
++    EXPECT_NO_THROW(tune_tripod(path,{{"velocity_filter_time_constant_s",0}},true,proc));
++    for(double value:{-1.,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN()})
++        EXPECT_THROW(tune_tripod(path,{{"velocity_filter_time_constant_s",value}},true,proc),std::exception);
+ }
+ } // namespace
+ 
+--- before/src/rinbo_fsm/test/test_control_velocity.cpp
++++ src/rinbo_fsm/test/test_control_velocity.cpp
+@@ -40,3 +40,30 @@
+     filter.update(100, .01);
+     EXPECT_DOUBLE_EQ(filter.update(-10, .3), -10);
+ }
++
++TEST(ControlVelocity, TripodFiveMsReducesPacketNoiseWithLessReversalDelay) {
++    rinbo_fsm::ControlVelocity fast, old;
++    fast.update(100, .001, .005); old.update(100, .001);
++    double fv=100, ov=100;
++    for(int i=0;i<10;++i) {
++        fv=fast.update(-100,.001,.005);ov=old.update(-100,.001);
++    }
++    EXPECT_LT(fv,0);EXPECT_GT(ov,0);
++    double squares=0, raw_squares=0;
++    for(int i=0;i<2000;++i) {
++        const double raw=i%5==0?25:0;
++        const double v=fast.update(raw,.001,.005);
++        if(i>1000){squares+=(v-5)*(v-5);raw_squares+=(raw-5)*(raw-5);}
++    }
++    EXPECT_LT(squares,raw_squares*.03);
++}
++
++TEST(ControlVelocity, RawComparisonBypassesFilterAndInvalidSettingsAreRejected) {
++    rinbo_fsm::ControlVelocity filter;
++    filter.update(100,.001);
++    for(double v:{-100.,50.,0.}) EXPECT_DOUBLE_EQ(filter.update(v,.001,0),v);
++    for(double t:{-1.,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN()})
++        EXPECT_THROW(filter.update(1,.001,t),std::invalid_argument);
++    EXPECT_TRUE(std::isnan(filter.update(std::numeric_limits<double>::quiet_NaN(),.001,.005)));
++    EXPECT_EQ(filter.update(-10,.3,.005),-10);
++}

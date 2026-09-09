@@ -1,0 +1,8 @@
+{
+  "site_changes_exactly_match_six_requested_fields_and_revision": true,
+  "tripod_parameters_unchanged": true,
+  "disabled_legs": [
+    "L3"
+  ],
+  "test_mode": "supported_leg_test"
+}

@@ -1,0 +1,56 @@
+[  5%] Built target rinbo_sin_sweep
+[  7%] Building CXX object CMakeFiles/robot_config.dir/src/robot_config.cpp.o
+[ 13%] Built target gtest_main
+[ 18%] Built target gtest
+[ 21%] Building CXX object CMakeFiles/test_motor_arbiter_handshake.dir/test/test_motor_arbiter_handshake.cpp.o
+[ 23%] Linking CXX static library librobot_config.a
+[ 23%] Built target robot_config
+[ 26%] Building CXX object CMakeFiles/test_latest_state_safety.dir/test/test_latest_state_safety.cpp.o
+[ 28%] Linking CXX executable test_motor_arbiter_handshake
+[ 28%] Built target test_motor_arbiter_handshake
+[ 31%] Building CXX object CMakeFiles/test_robot_config.dir/test/test_robot_config.cpp.o
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp: In member function ‘virtual void {anonymous}::ConfigTest_IndependentWriterLockAndReaderSnapshot_Test::TestBody()’:
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp:158:74: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  158 |         try {PathLock lock(path.string()+".lock");char signal='x';::write(ready[1],&signal,1);read(release[0],&signal,1);_exit(0);}
+      |                                                                   ~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp:158:99: warning: ignoring return value of ‘ssize_t read(int, void*, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  158 |         try {PathLock lock(path.string()+".lock");char signal='x';::write(ready[1],&signal,1);read(release[0],&signal,1);_exit(0);}
+      |                                                                                               ~~~~^~~~~~~~~~~~~~~~~~~~~~
+[ 34%] Linking CXX executable test_robot_config
+[ 34%] Built target test_robot_config
+[ 36%] Building CXX object CMakeFiles/test_cali_multileg.dir/test/test_cali_multileg.cpp.o
+[ 39%] Linking CXX executable test_latest_state_safety
+[ 39%] Built target test_latest_state_safety
+[ 42%] Building CXX object CMakeFiles/test_standing_multileg.dir/test/test_standing_multileg.cpp.o
+[ 44%] Linking CXX executable test_cali_multileg
+[ 44%] Built target test_cali_multileg
+Consolidate compiler generated dependencies of target test_tripod_multileg
+[ 47%] Building CXX object CMakeFiles/test_tripod_multileg.dir/test/test_tripod_multileg.cpp.o
+[ 50%] Linking CXX executable test_standing_multileg
+[ 50%] Built target test_standing_multileg
+[ 52%] Building CXX object CMakeFiles/test_manual_motion.dir/test/test_manual_motion.cpp.o
+[ 55%] Linking CXX executable test_manual_motion
+[ 55%] Built target test_manual_motion
+[ 57%] Building CXX object CMakeFiles/test_manual_controller.dir/test/test_manual_controller.cpp.o
+[ 60%] Linking CXX executable test_tripod_multileg
+[ 60%] Built target test_tripod_multileg
+[ 63%] Linking CXX executable test_control_velocity
+[ 65%] Built target test_control_velocity
+[ 68%] Linking CXX executable test_motion_effort
+[ 71%] Built target test_motion_effort
+[ 73%] Linking CXX executable rinbo_legs
+[ 76%] Built target rinbo_legs
+[ 78%] Building CXX object CMakeFiles/rinbo_manual.dir/src/rinbo_manual.cpp.o
+[ 81%] Linking CXX executable test_manual_controller
+[ 81%] Built target test_manual_controller
+[ 84%] Building CXX object CMakeFiles/rinbo_cali.dir/src/rinbo_cali.cpp.o
+[ 86%] Linking CXX executable rinbo_manual
+[ 86%] Built target rinbo_manual
+[ 89%] Building CXX object CMakeFiles/rinbo_standing.dir/src/rinbo_standing.cpp.o
+[ 92%] Linking CXX executable rinbo_cali
+[ 92%] Built target rinbo_cali
+[ 94%] Building CXX object CMakeFiles/rinbo_tripod.dir/src/rinbo_tripod.cpp.o
+[ 97%] Linking CXX executable rinbo_standing
+[ 97%] Built target rinbo_standing
+[100%] Linking CXX executable rinbo_tripod
+[100%] Built target rinbo_tripod

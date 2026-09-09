@@ -1,0 +1,50 @@
+{
+  "motor_output_limits": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "standing_multileg": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "power_command_epoch_guard": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "cali_multileg": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "tripod_multileg": {
+    "tests": 29,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "motor_arbiter_handshake": {
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "robot_config": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  },
+  "panel": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0
+  }
+}

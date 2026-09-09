@@ -1,0 +1,61 @@
+{
+  "positive_phase_comparisons": 250005,
+  "max_reference_difference_counts": 3.164980250993123e-08,
+  "max_reference_velocity_difference_counts_s": 0.0,
+  "actual_trace_leg_reference_comparisons": 2228,
+  "max_trace_target_reconstruction_error_counts": 0.03123070183210075,
+  "max_trace_velocity_reconstruction_error_counts_s": 0.0019407815270824358,
+  "max_same_group_relative_target_spread_counts": 0.03125,
+  "join_continuity": [
+    {
+      "phase": 0.175887413151118,
+      "position_delta_counts": 5.2531100736262365e-05,
+      "velocity_delta_counts_s": 0.0006512302722667286
+    },
+    {
+      "phase": 0.403516855584082,
+      "position_delta_counts": 0.0003096744769110317,
+      "velocity_delta_counts_s": -0.0002744629873487307
+    },
+    {
+      "phase": 4.03516855584082,
+      "position_delta_counts": 0.0003096744769110317,
+      "velocity_delta_counts_s": -0.0002744629990075479
+    }
+  ],
+  "negative_phase_original_minus_current_counts": -64034.24252492168,
+  "nominal_feedforward_ramp": [
+    {
+      "ratio": 8,
+      "cycle_seconds": 3.228134844672656,
+      "feedforward_flight_ramp_pwm_per_s": 221.5734964467909
+    },
+    {
+      "ratio": 6,
+      "cycle_seconds": 2.421101133504492,
+      "feedforward_flight_ramp_pwm_per_s": 393.90843812762824
+    },
+    {
+      "ratio": 5.9,
+      "cycle_seconds": 2.380749447946084,
+      "feedforward_flight_ramp_pwm_per_s": 407.3744261015403
+    },
+    {
+      "ratio": 5,
+      "cycle_seconds": 2.01758427792041,
+      "feedforward_flight_ramp_pwm_per_s": 567.2281509037847
+    },
+    {
+      "ratio": 4,
+      "cycle_seconds": 1.614067422336328,
+      "feedforward_flight_ramp_pwm_per_s": 886.2939857871636
+    }
+  ],
+  "files_sha256": {
+    "current-rinbo_tripod.cpp": "a7ed2ce7a4a3b6026fc19aa9732790d2f30b5897875c3754d25f50c381102d0c",
+    "current-control_velocity.hpp": "7f6d13001c2e7eda4012eab60ff4cb0519105e9df85840d22afa525748c1479c",
+    "current-motion_effort.hpp": "60f6ff4ca13c38069f17e08f5aa053a2a3ab69538711df53131057bcfa858612",
+    "current-rinbo_fsm_disabled_leg.yaml": "bd6ada5ff5f9be724f68fb09545f4ba912f6abcbd302b012d291d0353e4788dd",
+    "current-tripod_reference.hpp": "b9f73e2e2058f40ef6ab713c837c48871ad7e56a704c989faa7dd61772e2da66"
+  }
+}

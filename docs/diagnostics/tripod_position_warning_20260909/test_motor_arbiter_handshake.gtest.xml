@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="42" failures="0" disabled="0" errors="0" time="0.217" timestamp="2026-09-09T13:11:01" name="AllTests">
+  <testsuite name="MotorArbiterPublisherIdentityTest" tests="6" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:01">
+    <testcase name="SoleExpectedPublisherAndCallbackGidIsTrusted" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterPublisherIdentityTest" />
+    <testcase name="NoPublisherIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterPublisherIdentityTest" />
+    <testcase name="MultiplePublishersAreRejected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterPublisherIdentityTest" />
+    <testcase name="WrongNodeIsRejectedEvenWhenGidMatches" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterPublisherIdentityTest" />
+    <testcase name="SameNameInWrongNamespaceIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterPublisherIdentityTest" />
+    <testcase name="WrongCallbackGidIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterPublisherIdentityTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterSubscriptionIdentityTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:01">
+    <testcase name="RequiresExpectedNodeInRootNamespace" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterSubscriptionIdentityTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterEndpointPinStateTest" tests="4" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:01">
+    <testcase name="FirstAndSameEndpointAreAccepted" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEndpointPinStateTest" />
+    <testcase name="UncommittedEndpointChangeRebasesPin" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEndpointPinStateTest" />
+    <testcase name="CommittedStatusEndpointChangeIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEndpointPinStateTest" />
+    <testcase name="CommandSubscriptionGidChangeIsRejected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEndpointPinStateTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterHeartbeatStateTest" tests="1" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:01">
+    <testcase name="GraphQueryDelayCannotExtendCallbackEntryFreshness" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHeartbeatStateTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterEpochStateTest" tests="4" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:01">
+    <testcase name="SameEpochIsStable" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEpochStateTest" />
+    <testcase name="LatchGenerationChangeIsSticky" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEpochStateTest" />
+    <testcase name="BridgeRestartIsDetected" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEpochStateTest" />
+    <testcase name="UncommittedRearmCanAdoptNewEpochBaseline" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterEpochStateTest" />
+  </testsuite>
+  <testsuite name="MotorArbiterHandshakeStateTest" tests="11" failures="0" disabled="0" errors="0" time="0.001" timestamp="2026-09-09T13:11:01">
+    <testcase name="HistoricalReadyCannotReplaceRearmAck" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="RearmRequiresExactlyOneCommandSubscriber" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="AckForUnpublishedSequenceIsIgnored" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="LateRearmAckMatchesBeyondOldFivePacketBudget" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="DelayedReadyAfterAckCompletesRearm" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="EndpointFaultAfterRearmAckIsStickyBeforeArming" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="RelatchAfterArmingIsTerminal" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="DuplicateSubscriberAfterArmingIsViolation" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="ActiveAckMustMatchPublishedSequence" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="AnyRecordedProbeCanBeAcknowledged" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+    <testcase name="LateActiveAckMatchesBeyondOldFivePacketBudget" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.MotorArbiterHandshakeStateTest" />
+  </testsuite>
+  <testsuite name="RinboPowerGuardTest" tests="11" failures="0" disabled="0" errors="0" time="0.201" timestamp="2026-09-09T13:11:01">
+    <testcase name="FreshInitialRelayOffRemainsSafeWait" status="run" result="completed" time="0.036" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="RelayDropAfterSafePowerIsViolation" status="run" result="completed" time="0.015" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="MissingTelemetryStillFaultsAfterDeadline" status="run" result="completed" time="0.014" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="InvalidTelemetryFaultsWhileRelayOff" status="run" result="completed" time="0.016" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="NonFiniteStaleTimeoutIsRejected" status="run" result="completed" time="0.015" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="BackwardSafetyClockIsFailSafe" status="run" result="completed" time="0.016" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="DisabledLegCurrentChannelIsTheOnlyPerLegExemption" status="run" result="completed" time="0.014" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="RosInputGuardRejectsZeroAndReplayedHeaders" status="run" result="completed" time="0.017" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="ConstructorRejectsDisabledCorePowerFlag" status="run" result="completed" time="0.015" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="SourceAgeOverridesCanOnlyTighten" status="run" result="completed" time="0.028" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+    <testcase name="RunningOutputToleratesTransientButPersistentCurrentStillTrips" status="run" result="completed" time="0.015" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.RinboPowerGuardTest" />
+  </testsuite>
+  <testsuite name="SafetyInvariantsTest" tests="4" failures="0" disabled="0" errors="0" time="0" timestamp="2026-09-09T13:11:01">
+    <testcase name="CorePowerGuardsCannotBeDisabled" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.SafetyInvariantsTest" />
+    <testcase name="PowerEnvelopeAndMappingRemainBounded" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.SafetyInvariantsTest" />
+    <testcase name="TripodErrorAndSlewGuardsRemainBounded" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.SafetyInvariantsTest" />
+    <testcase name="MotorArbiterIdentityAndTimeoutsAreHardBounded" status="run" result="completed" time="0" timestamp="2026-09-09T13:11:01" classname="rinbo_fsm.SafetyInvariantsTest" />
+  </testsuite>
+</testsuites>

@@ -1,0 +1,34 @@
+Consolidate compiler generated dependencies of target robot_config
+[ 10%] Built target rinbo_sin_sweep
+[ 10%] Built target robot_config
+[ 15%] Built target gtest_main
+[ 21%] Built target gtest
+Consolidate compiler generated dependencies of target rinbo_manual
+[ 26%] Built target rinbo_legs
+[ 31%] Built target rinbo_manual
+Consolidate compiler generated dependencies of target rinbo_cali
+Consolidate compiler generated dependencies of target rinbo_standing
+[ 36%] Built target rinbo_cali
+[ 42%] Built target rinbo_standing
+Consolidate compiler generated dependencies of target rinbo_tripod
+Consolidate compiler generated dependencies of target test_motor_arbiter_handshake
+[ 52%] Built target test_motor_arbiter_handshake
+[ 52%] Built target rinbo_tripod
+Consolidate compiler generated dependencies of target test_robot_config
+Consolidate compiler generated dependencies of target test_latest_state_safety
+[ 57%] Built target test_robot_config
+[ 63%] Built target test_latest_state_safety
+Consolidate compiler generated dependencies of target test_standing_multileg
+Consolidate compiler generated dependencies of target test_cali_multileg
+[ 68%] Built target test_standing_multileg
+[ 71%] Building CXX object CMakeFiles/test_cali_multileg.dir/test/test_cali_multileg.cpp.o
+Consolidate compiler generated dependencies of target test_tripod_multileg
+[ 76%] Built target test_tripod_multileg
+Consolidate compiler generated dependencies of target test_manual_motion
+[ 81%] Built target test_manual_motion
+Consolidate compiler generated dependencies of target test_manual_controller
+[ 86%] Built target test_manual_controller
+[ 92%] Built target test_control_velocity
+[ 97%] Built target test_motion_effort
+[100%] Linking CXX executable test_cali_multileg
+[100%] Built target test_cali_multileg

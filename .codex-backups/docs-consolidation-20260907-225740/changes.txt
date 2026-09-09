@@ -1,0 +1,27 @@
+Documentation consolidation inventory
+Backup: /home/jetson/rinbo_ros_ws/.codex-backups/docs-consolidation-20260907-225740
+
+Current documentation:
+docs/README.md
+docs/manual_leg_control_zh_TW.md
+docs/orin_multileg_operation.md
+docs/redrhex_sim2real_sbrio.md
+docs/reference/manual_control.md
+docs/reference/rslip_v6_6.md
+docs/rinbo_monitor.md
+
+Removed/moved original paths:
+docs/manual_leg_control_reference_zh_TW.md
+docs/manual_leg_control_terminal_zh_TW.md
+docs/redrhex_disabled_leg_operation.md
+docs/redrhex_sim2real_after_rslip.md
+docs/redrhex_sim2real_quickstart.md
+docs/rslip_v6_6_reference_zh_TW.md
+
+Other edited files:
+README.md (new root entrypoint)
+src/redrhex_rl_controller/README.md
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_bringup_plan.py (manual locations only)
+src/redrhex_lowlevel_bridge/test/test_bringup_plan_retired.py (expected manual locations)
+
+Validation: 96 local links; 70 bash syntax checks; 2 existing retired-command tests passed. Hardware was not operated.

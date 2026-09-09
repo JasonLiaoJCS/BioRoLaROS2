@@ -1,0 +1,9 @@
+Starting >>> rinbo_fsm
+--- stderr: rinbo_fsm
+Errors while running CTest
+---
+Finished <<< rinbo_fsm [17.6s]	[ with test failures ]
+
+Summary: 1 package finished [18.4s]
+  1 package had stderr output: rinbo_fsm
+  1 package had test failures: rinbo_fsm

@@ -1,0 +1,47 @@
+--- before/src/rinbo_fsm/src/robot_config.cpp
++++ after/src/rinbo_fsm/src/robot_config.cpp
+@@ -127,7 +127,7 @@
+ ParamMap defaults(const std::string& node) {
+     ParamMap out;
+     auto put = [&](const std::string& name, auto value) { out.emplace(name, rclcpp::Parameter(name, value)); };
+-    put("max_pwm", 80.0);
++    put("max_pwm", node == "rinbo_tripod_rslip" ? 3300.0 : 80.0);
+     // Legacy configurations retain their old gains until explicitly tuned.
+     put("kp", node == "rinbo_tripod_rslip" ? 0.38 : 0.35);
+     put("kd", node == "rinbo_tripod_rslip" ? 0.003 : 0.002);
+@@ -244,7 +244,8 @@
+         d("safety.power_stale_seconds"), d("safety.power_required_after_seconds"),
+         i("safety.voltage_trip_samples"), i("safety.current_trip_samples")};
+     rinbo_fsm::validate_power_safety_contract(power, node);
+-    rinbo_fsm::validate_pwm(d("max_pwm"), node);
++    if (tripod) rinbo_fsm::validate_tripod_pwm(d("max_pwm"));
++    else rinbo_fsm::validate_pwm(d("max_pwm"), node);
+     rinbo_fsm::MotionEffort{d("kp"), d("kd"), d("k_ff"), d("friction_pwm"),
+         d("friction_velocity_counts_s")}.validate();
+     rinbo_fsm::validate_bounded_timeout(d("safety.motor_state_source_max_age_s"),
+@@ -692,7 +693,7 @@
+         {"calibration", {"servo_homing_timeout_s", "hall_search_timeout_s", "stop_timeout_s"}},
+         {"standing", {"hall_search_timeout_s", "rotate_timeout_s", "position_tolerance_counts",
+                       "settle_velocity_counts_s", "settle_time_s", "hold_error_counts"}},
+-        {"tripod", {"max_position_error_counts", "position_error_trip_samples",
++        {"tripod", {"max_pwm", "max_position_error_counts", "position_error_trip_samples",
+                     "position_error_trip_seconds", "stop_on_position_error"}}};
+     const std::map<std::string, std::string> nodes{
+         {"calibration", "rinbo_cali"}, {"standing", "rinbo_standing"}, {"tripod", "rinbo_tripod_rslip"}};
+@@ -712,7 +713,7 @@
+     std::ostringstream changes; bool comma = false;
+     for (const auto& [key, value] : updates) {
+         if (!allowed.at(stage).count(key) || !std::isfinite(value)) fail("Unsupported/nonfinite motion limit: " + key);
+-        const auto name = "safety." + key;
++        const auto name = key == "max_pwm" ? key : "safety." + key;
+         const auto before = parameters.at(name);
+         rclcpp::Parameter after(name, value);
+         if (before.get_type() == rclcpp::ParameterType::PARAMETER_BOOL) {
+@@ -748,6 +749,7 @@
+         if (sha256(current) != config.hash()) fail("Configuration changed during limit editing; retry");
+         auto document = YAML::Load(current);
+         for (const auto& [key, value] : updates) {
++            if (key == "max_pwm") { document["parameters"][node][key] = value; continue; }
+             if (parameters.at("safety." + key).get_type() == rclcpp::ParameterType::PARAMETER_BOOL)
+                 document["parameters"][node]["safety"][key] = value == 1;
+             else if (parameters.at("safety." + key).get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)

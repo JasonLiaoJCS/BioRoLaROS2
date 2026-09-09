@@ -1,0 +1,53 @@
+[  2%] Building CXX object CMakeFiles/robot_config.dir/src/robot_config.cpp.o
+[  5%] Building CXX object CMakeFiles/rinbo_sin_sweep.dir/src/rinbo_sin_sweep.cpp.o
+[  7%] Building CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[ 10%] Linking CXX executable rinbo_sin_sweep
+[ 10%] Built target rinbo_sin_sweep
+[ 13%] Building CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+[ 15%] Linking CXX static library libgtest_main.a
+[ 15%] Built target gtest_main
+[ 18%] Linking CXX static library libgtest.a
+[ 18%] Built target gtest
+[ 23%] Building CXX object CMakeFiles/test_latest_state_safety.dir/test/test_latest_state_safety.cpp.o
+[ 23%] Building CXX object CMakeFiles/test_motor_arbiter_handshake.dir/test/test_motor_arbiter_handshake.cpp.o
+[ 26%] Linking CXX static library librobot_config.a
+[ 26%] Built target robot_config
+[ 28%] Building CXX object CMakeFiles/rinbo_legs.dir/src/rinbo_legs.cpp.o
+[ 31%] Linking CXX executable rinbo_legs
+[ 31%] Built target rinbo_legs
+[ 34%] Building CXX object CMakeFiles/rinbo_manual.dir/src/rinbo_manual.cpp.o
+In file included from /opt/ros/humble/include/rclcpp/rclcpp/logging.hpp:24,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/client.hpp:40,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21,
+                 from /opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/robot_config.hpp:3,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/rinbo_manual.cpp:4:
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/rinbo_manual.cpp: In constructor ‘ManualController::ManualController(rinbo_config::MotionSession&, const rinbo_manual::Plan&)’:
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/rinbo_manual.cpp:75:144: error: ‘kHardMaxPwmSlewRatePerS’ is not a member of ‘rinbo_fsm’
+   75 |         RCLCPP_INFO(get_logger(), "Control damping: velocity filter 20ms; PWM slew %.0f/s; raw feedback retained for stop checks.", rinbo_fsm::kHardMaxPwmSlewRatePerS);
+      |                                                                                                                                                ^~~~~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/rinbo_manual.cpp: In member function ‘void ManualController::tick()’:
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/rinbo_manual.cpp:267:66: error: ‘kHardMaxPwmSlewRatePerS’ is not a member of ‘rinbo_fsm’
+  267 |             pwm[i] = std::clamp(limited, last_pwm_[i]-rinbo_fsm::kHardMaxPwmSlewRatePerS*dt,
+      |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/src/rinbo_manual.cpp:268:57: error: ‘kHardMaxPwmSlewRatePerS’ is not a member of ‘rinbo_fsm’
+  268 |                                 last_pwm_[i]+rinbo_fsm::kHardMaxPwmSlewRatePerS*dt);
+      |                                                         ^~~~~~~~~~~~~~~~~~~~~~~
+[ 36%] Linking CXX executable test_motor_arbiter_handshake
+[ 36%] Built target test_motor_arbiter_handshake
+[ 39%] Building CXX object CMakeFiles/rinbo_cali.dir/src/rinbo_cali.cpp.o
+gmake[2]: *** [CMakeFiles/rinbo_manual.dir/build.make:76: CMakeFiles/rinbo_manual.dir/src/rinbo_manual.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:239: CMakeFiles/rinbo_manual.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 42%] Linking CXX executable test_latest_state_safety
+[ 42%] Built target test_latest_state_safety
+[ 44%] Linking CXX executable rinbo_cali
+[ 44%] Built target rinbo_cali
+gmake: *** [Makefile:146: all] Error 2

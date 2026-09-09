@@ -1,0 +1,114 @@
+{
+  "CLK_TCK": 100,
+  "passed": 25,
+  "results": [
+    {
+      "case": "devnull_unknown_TERM",
+      "exit": 0,
+      "cpu_ticks_0_6s": 10
+    },
+    {
+      "case": "pipe_EOF_headless",
+      "exit": 0,
+      "cpu_ticks_0_6s": 8
+    },
+    {
+      "case": "explicit_headless",
+      "exit": 0,
+      "cpu_ticks_0_6s": 10
+    },
+    {
+      "case": "signal_SIGHUP",
+      "exit": 2
+    },
+    {
+      "case": "signal_SIGTERM",
+      "exit": 0
+    },
+    {
+      "case": "signal_SIGINT",
+      "exit": 0
+    },
+    {
+      "case": "PTY_loss_without_SIGHUP",
+      "exit": 2,
+      "exit_latency_s": 0.003,
+      "cpu_ticks_after_loss": 0.65
+    },
+    {
+      "case": "controlling_PTY_disconnect",
+      "exit": 2,
+      "exit_latency_s": 0.003,
+      "cpu_ticks_after_loss": 0.59
+    },
+    {
+      "case": "interactive_CtrlD",
+      "exit": 2
+    },
+    {
+      "case": "interactive_unknown_TERM",
+      "exit": 2
+    },
+    {
+      "case": "interactive_SIGINT",
+      "exit": 0
+    },
+    {
+      "case": "immediate_ERR_bounded_CPU",
+      "exit": 0,
+      "cpu_ticks_0_6s": 9
+    },
+    {
+      "case": "readable_but_ERR",
+      "exit": 2
+    },
+    {
+      "case": "poll_ERR",
+      "exit": 2
+    },
+    {
+      "case": "parent_TTY_flags_restored",
+      "exit": 0
+    },
+    {
+      "case": "explicit_interactive_no_TTY",
+      "exit": 64
+    },
+    {
+      "case": "duplicate_refusal",
+      "exit": 3
+    },
+    {
+      "case": "duplicate_owner",
+      "exit": 0
+    },
+    {
+      "case": "FAKE_WRITE_FAIL",
+      "exit": 3
+    },
+    {
+      "case": "FAKE_READ_FAIL",
+      "exit": 3
+    },
+    {
+      "case": "FAKE_MISMATCH",
+      "exit": 3
+    },
+    {
+      "case": "module_IO_fault",
+      "exit": 2
+    },
+    {
+      "case": "open_failure",
+      "exit": 3
+    },
+    {
+      "case": "monitor_closure",
+      "exit": 0
+    },
+    {
+      "case": "unread_TTY_output",
+      "exit": 0
+    }
+  ]
+}

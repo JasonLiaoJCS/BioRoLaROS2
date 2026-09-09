@@ -1,0 +1,11 @@
+{
+  "verified_at": "2026-09-09T22:53:10.135283+08:00",
+  "unit_tests": 10,
+  "unit_passed": true,
+  "production_parser_recovery_test": true,
+  "real_site_sha256_unchanged": true,
+  "native_binaries_and_protected_sources_unchanged": true,
+  "baseline_check": "基準：standard_20260909_r15\n符合標準基準；未改動任何設定。",
+  "real_restore_executed": false,
+  "hardware_actions": []
+}

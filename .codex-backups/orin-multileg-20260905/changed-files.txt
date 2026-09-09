@@ -1,0 +1,25 @@
+MODIFIED src/rinbo_fsm/CMakeLists.txt
+MODIFIED src/rinbo_fsm/package.xml
+MODIFIED src/rinbo_fsm/src/disabled_legs.hpp
+MODIFIED src/rinbo_fsm/src/rinbo_cali.cpp
+NEW src/rinbo_fsm/src/rinbo_legs.cpp
+MODIFIED src/rinbo_fsm/src/rinbo_standing.cpp
+MODIFIED src/rinbo_fsm/src/rinbo_tripod.cpp
+NEW src/rinbo_fsm/src/robot_config.cpp
+NEW src/rinbo_fsm/src/robot_config.hpp
+NEW src/rinbo_fsm/test/fixtures/robot_test.yaml
+NEW src/rinbo_fsm/test/test_cali_multileg.cpp
+MODIFIED src/rinbo_fsm/test/test_latest_state_safety.cpp
+NEW src/rinbo_fsm/test/test_robot_config.cpp
+NEW src/rinbo_fsm/test/test_standing_multileg.cpp
+NEW src/rinbo_fsm/test/test_tripod_multileg.cpp
+MODIFIED src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py
+MODIFIED src/redrhex_lowlevel_bridge/test/test_power_tool.py
+NEW docs/orin_multileg_operation.md
+MODIFIED docs/redrhex_disabled_leg_operation.md
+MODIFIED docs/redrhex_sim2real_after_rslip.md
+MODIFIED docs/redrhex_sim2real_quickstart.md
+MODIFIED docs/redrhex_sim2real_sbrio.md
+MODIFIED /home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml (user selected [])
+MODIFIED src/redrhex_lowlevel_bridge/package.xml
+CREATED /home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml.lock (runtime lock only)

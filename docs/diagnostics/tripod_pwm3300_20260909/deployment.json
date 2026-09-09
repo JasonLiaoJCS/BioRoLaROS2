@@ -1,0 +1,17 @@
+{
+  "deployed_at": "2026-09-09 20:16:32 +0800",
+  "binaries": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": "ccb632ff68350084bea53b6cd261bc6d7690caea492ded4314df85ae61ceca80",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": "f0585bc9b3da2494e3f093d7676b4af1b3249dbc932b99b75fc5c10c6b26ed48",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": "e74267257a3aeb054100f616acd57787dc4394e09ba33e208b73bf8132bcb6ac",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": "ed11370dedf751be9c0e3f2b78ac74a6787deb8261e9983cc70c4848c1013f2e",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": "0ee39e9df4078d6814878de305ed80e93363616e45ccc7080241c1e74516fb94",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge": "f075c4166c01d2fa3c768877825295b9289840a947bc274c4b46f0bc0f2d3038"
+  },
+  "revision": 12,
+  "site_sha256": "bd6ada5ff5f9be724f68fb09545f4ba912f6abcbd302b012d291d0353e4788dd",
+  "bridge_config_sha256": "3b3843b56f4589a7433c7df03d06e3f83253068e867e63859cdb873b8e040538",
+  "bridge_pids_observed_before_deployment": [],
+  "hardware_actions": [],
+  "only_site_change": "rinbo_tripod_rslip.max_pwm=3300 plus revision"
+}

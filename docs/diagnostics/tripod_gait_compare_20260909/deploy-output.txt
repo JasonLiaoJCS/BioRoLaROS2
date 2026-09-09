@@ -1,0 +1,27 @@
+{
+  "deployed_at": "2026-09-09 21:09:52 +0800",
+  "backup": "/home/jetson/.local/state/rinbo-control-backups/tripod-slew-kqh7pj3l",
+  "revision": 13,
+  "site_sha256": "8067d00b56aa65f04a25582a102b536960c6bdc2106992f4b3016c0896dd5627",
+  "binaries": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": "6615b695f404e73f3fe3b65ad5ca551e18c2766d09e09cd7674fd6e12001c849",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": "9b2c57e4c8521d173ca910bbdb621352d30c0090ab376c813eb8ee024cfec914",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": "d8537ab6e0e0c139264a993e9c35c9d1596139643c0908c363716a9e0eafdc25",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": "ba7f23c3e6ef7df4d50c8ee591b741b2ab47224ff418e4e9cfe65db7c43afd2f",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": "d2959581c144726058c5504ac587d07a5027285aaac888529d19f63453afd3a1"
+  },
+  "only_site_change": "Tripod safety.enable_pwm_slew_limit: true -> false; revision increment",
+  "native_test_cases": {
+    "test_cali_multileg.gtest": 15,
+    "test_control_velocity.gtest": 3,
+    "test_latest_state_safety.gtest": 29,
+    "test_manual_controller.gtest": 13,
+    "test_manual_motion.gtest": 7,
+    "test_motion_effort.gtest": 4,
+    "test_motor_arbiter_handshake.gtest": 42,
+    "test_robot_config.gtest": 24,
+    "test_standing_multileg.gtest": 10,
+    "test_tripod_multileg.gtest": 31
+  },
+  "hardware_actions": []
+}

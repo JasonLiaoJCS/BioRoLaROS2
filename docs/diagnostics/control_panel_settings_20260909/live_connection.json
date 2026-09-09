@@ -1,0 +1,51 @@
+{
+  "time": "2026-09-09T23:01:02.877284+08:00",
+  "ros_domain": "99",
+  "ip": "192.168.30.254",
+  "port": 50051,
+  "expected_local_ip": "192.168.30.8",
+  "read_only": true,
+  "route_source": "192.168.30.8",
+  "tcp": {
+    "status": "open",
+    "error": ""
+  },
+  "feedback": {
+    "bridge_count": 1,
+    "writers": [],
+    "motor_fresh": true,
+    "power_fresh": true,
+    "sensors_on": true,
+    "relay_on": true,
+    "voltage": 23.718300000000003,
+    "legs": {
+      "L1": {
+        "angle_deg": -9989.290364583334,
+        "hall": true
+      },
+      "L2": {
+        "angle_deg": -10638.326822916666,
+        "hall": true
+      },
+      "L3": {
+        "angle_deg": -0.006510416666666667,
+        "hall": true
+      },
+      "R1": {
+        "angle_deg": -10546.829427083334,
+        "hall": true
+      },
+      "R2": {
+        "angle_deg": -9962.5390625,
+        "hall": true
+      },
+      "R3": {
+        "angle_deg": -10659.654947916666,
+        "hall": true
+      }
+    },
+    "problem": ""
+  },
+  "bridge_ip": "192.168.30.254",
+  "communication_ok": true
+}

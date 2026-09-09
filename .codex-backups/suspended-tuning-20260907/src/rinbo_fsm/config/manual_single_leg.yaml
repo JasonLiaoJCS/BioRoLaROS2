@@ -1,0 +1,9 @@
+# Start with L2: the site currently masks L1. Omitted main motors are OFF.
+duration_s: 3.0
+max_pwm: 20.0
+max_speed_deg_s: 10.0
+acceleration_deg_s2: 10.0
+legs:
+  L2:
+    mode: position
+    angle_deg: 5.0

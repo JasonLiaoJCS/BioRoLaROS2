@@ -1,0 +1,129 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-slew-build
+Test project /tmp/rinbo-tripod-slew-build
+      Start  1: test_motor_arbiter_handshake
+ 1/10 Test  #1: test_motor_arbiter_handshake .....   Passed    0.60 sec
+      Start  2: test_latest_state_safety
+ 2/10 Test  #2: test_latest_state_safety .........   Passed    4.62 sec
+      Start  3: test_rinbo_sin_sweep_retired
+ 3/10 Test  #3: test_rinbo_sin_sweep_retired .....   Passed    0.05 sec
+      Start  4: test_robot_config
+ 4/10 Test  #4: test_robot_config ................***Failed    0.86 sec
+-- run_test.py: extra environment variables:
+ - ROS_DOMAIN_ID=231
+ - ROS_LOCALHOST_ONLY=1
+-- run_test.py: invoking following command in '/tmp/rinbo-tripod-slew-build':
+ - /tmp/rinbo-tripod-slew-build/test_robot_config --gtest_output=xml:/tmp/rinbo-tripod-slew-build/test_results/rinbo_fsm/test_robot_config.gtest.xml
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 27 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 27 tests from ConfigTest
+[ RUN      ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters (52 ms)
+[ RUN      ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent (17 ms)
+[ RUN      ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts (16 ms)
+[ RUN      ] ConfigTest.CorruptMissingUnsupportedAndConflictingConfigFailClosed
+[       OK ] ConfigTest.CorruptMissingUnsupportedAndConflictingConfigFailClosed (53 ms)
+[ RUN      ] ConfigTest.UnreadableConfigurationFailsWithoutReinitialization
+[       OK ] ConfigTest.UnreadableConfigurationFailsWithoutReinitialization (17 ms)
+[ RUN      ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped (19 ms)
+[ RUN      ] ConfigTest.IndependentWriterLockAndReaderSnapshot
+[       OK ] ConfigTest.IndependentWriterLockAndReaderSnapshot (4 ms)
+[ RUN      ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts (33 ms)
+[ RUN      ] ConfigTest.ManualEditsCannotReuseCalibrationAtSameRevision
+[       OK ] ConfigTest.ManualEditsCannotReuseCalibrationAtSameRevision (9 ms)
+[ RUN      ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart (17 ms)
+[ RUN      ] ConfigTest.ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt
+[       OK ] ConfigTest.ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt (20 ms)
+[ RUN      ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot
+unknown file: Failure
+C++ exception with description "Motor action/power/mask process detected (PID 152439): stop it before changing configuration" thrown in the test body.
+[  FAILED  ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot (17 ms)
+[ RUN      ] ConfigTest.ReadinessCheckDoesNotChangeOrCreateStageReceipts
+[       OK ] ConfigTest.ReadinessCheckDoesNotChangeOrCreateStageReceipts (20 ms)
+[ RUN      ] ConfigTest.ProcessInspectionDistinguishesMotionFromCommunication
+[       OK ] ConfigTest.ProcessInspectionDistinguishesMotionFromCommunication (2 ms)
+[ RUN      ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites
+[       OK ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites (33 ms)
+[ RUN      ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion
+[       OK ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion (19 ms)
+[ RUN      ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts
+[       OK ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts (40 ms)
+[ RUN      ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters
+[       OK ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters (4 ms)
+[ RUN      ] ConfigTest.TripodFilterAndRestoredGainsKeepOtherStagesAndRejectInvalidFilter
+[       OK ] ConfigTest.TripodFilterAndRestoredGainsKeepOtherStagesAndRejectInvalidFilter (14 ms)
+[ RUN      ] ConfigTest.TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers
+[       OK ] ConfigTest.TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers (46 ms)
+[ RUN      ] ConfigTest.TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts
+[       OK ] ConfigTest.TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts (9 ms)
+[ RUN      ] ConfigTest.MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings
+[       OK ] ConfigTest.MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings (29 ms)
+[ RUN      ] ConfigTest.MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy
+[       OK ] ConfigTest.MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy (60 ms)
+[ RUN      ] ConfigTest.TripodRawPwm3300IsTypedAtomicAndDoesNotRaiseOtherControllerCaps
+[       OK ] ConfigTest.TripodRawPwm3300IsTypedAtomicAndDoesNotRaiseOtherControllerCaps (48 ms)
+[ RUN      ] ConfigTest.TripodSlewIsOptionalAndOnlyTripodSettingsChange
+[       OK ] ConfigTest.TripodSlewIsOptionalAndOnlyTripodSettingsChange (29 ms)
+[ RUN      ] ConfigTest.AcceptedChoicesKeepManualControlIndependentAndSharedGuardsIntact
+[       OK ] ConfigTest.AcceptedChoicesKeepManualControlIndependentAndSharedGuardsIntact (15 ms)
+[ RUN      ] ConfigTest.LegacyManualInheritanceAndNewBlockValidation
+[       OK ] ConfigTest.LegacyManualInheritanceAndNewBlockValidation (7 ms)
+[----------] 27 tests from ConfigTest (651 ms total)
+
+[----------] Global test environment tear-down
+[==========] 27 tests from 1 test suite ran. (651 ms total)
+[  PASSED  ] 20 tests.
+[  FAILED  ] 7 tests, listed below:
+[  FAILED  ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters
+[  FAILED  ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent
+[  FAILED  ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts
+[  FAILED  ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped
+[  FAILED  ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts
+[  FAILED  ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart
+[  FAILED  ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot
+
+ 7 FAILED TESTS
+-- run_test.py: return code 1
+-- run_test.py: inject classname prefix into gtest result file '/tmp/rinbo-tripod-slew-build/test_results/rinbo_fsm/test_robot_config.gtest.xml'
+-- run_test.py: verify result file '/tmp/rinbo-tripod-slew-build/test_results/rinbo_fsm/test_robot_config.gtest.xml'
+
+      Start  5: test_standing_multileg
+ 5/10 Test  #5: test_standing_multileg ...........   Passed    2.88 sec
+      Start  6: test_tripod_multileg
+ 6/10 Test  #6: test_tripod_multileg .............   Passed    6.73 sec
+      Start  7: test_manual_motion
+ 7/10 Test  #7: test_manual_motion ...............   Passed    0.21 sec
+      Start  8: test_manual_controller
+ 8/10 Test  #8: test_manual_controller ...........   Passed   16.70 sec
+      Start  9: test_control_velocity
+ 9/10 Test  #9: test_control_velocity ............   Passed    0.25 sec
+      Start 10: test_motion_effort
+10/10 Test #10: test_motion_effort ...............   Passed    0.25 sec
+
+90% tests passed, 1 tests failed out of 10
+
+Label Time Summary:
+gtest    =  33.10 sec*proc (9 tests)
+
+Total Test time (real) =  33.17 sec
+
+The following tests FAILED:
+	  4 - test_robot_config (Failed)
+Errors while running CTest

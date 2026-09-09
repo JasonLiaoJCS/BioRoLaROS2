@@ -1,0 +1,74 @@
+NATIVE_PRODUCTION_OBJECT_COMPILE_OK stage=/tmp/rslip-lifecycle-native.spks31
+fb9b21e8edea1befbfcf4fdd3ce5c689a9f3d0190527c7d0f47ccded0de61bd4  /tmp/rslip-lifecycle-native.spks31/console.o
+8d24d4bd5f87943b72d6742d0fc32fb9d65373848afd31794e428af8f661f10c  /tmp/rslip-lifecycle-native.spks31/fpga_handler.o
+7e6b627fe44879cd40872d28bf50d77b77a4ac56c65e2d35b42a813ba23289a5  /tmp/rslip-lifecycle-native.spks31/fpga_server.o
+c847394fa8ff915fc48013783c8b05b7abc4cb48b4b390fce5957550c830c2c8  /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/fpga_driver
+e2438c64480bb10d0a751ac5625aeb29b0bb7fa6af44054a2c7c7e689a503a66  /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/src/console.cpp
+ad008f2a61cf0f0bc4a364c5febf7e17b8c1355d84aec797d0dcace907d9c373  /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/src/fpga_server.cpp
+
+NI Linux Real-Time (run mode)
+
+Log in with your NI-Auth credentials.
+
+In file included from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:7:0,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/NodeHandler.h: In instantiation of 'void core::Publisher<T>::publish(T) [with T = power_msg::PowerStateStamped]':
+/tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:307:39:   required from here
+/home/admin/rinbo_sbRIO_ws/install/include/NodeHandler.h:76:38: warning: 'int google::protobuf::MessageLite::ByteSize() const' is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+             int siz = msg.ByteSize() + 4;
+In file included from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_enum_util.h:36:0,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/map.h:55,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_message_table_driven.h:34,
+                 from /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/src/Power.pb.h:26,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_handler.hpp:6,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:4,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/message_lite.h:433:7: note: declared here
+   int ByteSize() const { return internal::ToIntSize(ByteSizeLong()); }
+       ^~~~~~~~
+In file included from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:7:0,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/NodeHandler.h:80:13: warning: 'int google::protobuf::MessageLite::ByteSize() const' is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+             coded_output->WriteLittleEndian32(msg.ByteSize());
+             ^~~~~~~~~~~~
+In file included from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_enum_util.h:36:0,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/map.h:55,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_message_table_driven.h:34,
+                 from /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/src/Power.pb.h:26,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_handler.hpp:6,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:4,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/message_lite.h:433:7: note: declared here
+   int ByteSize() const { return internal::ToIntSize(ByteSizeLong()); }
+       ^~~~~~~~
+In file included from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:7:0,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/NodeHandler.h: In instantiation of 'void core::Publisher<T>::publish(T) [with T = motor_msg::MotorStateStamped]':
+/tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:308:36:   required from here
+/home/admin/rinbo_sbRIO_ws/install/include/NodeHandler.h:76:38: warning: 'int google::protobuf::MessageLite::ByteSize() const' is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+             int siz = msg.ByteSize() + 4;
+In file included from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_enum_util.h:36:0,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/map.h:55,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_message_table_driven.h:34,
+                 from /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/src/Power.pb.h:26,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_handler.hpp:6,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:4,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/message_lite.h:433:7: note: declared here
+   int ByteSize() const { return internal::ToIntSize(ByteSizeLong()); }
+       ^~~~~~~~
+In file included from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:7:0,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/NodeHandler.h:80:13: warning: 'int google::protobuf::MessageLite::ByteSize() const' is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+             coded_output->WriteLittleEndian32(msg.ByteSize());
+             ^~~~~~~~~~~~
+In file included from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_enum_util.h:36:0,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/map.h:55,
+                 from /home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/generated_message_table_driven.h:34,
+                 from /home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/src/Power.pb.h:26,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_handler.hpp:6,
+                 from /tmp/rslip-lifecycle-native.spks31/include/fpga_server.hpp:4,
+                 from /tmp/rslip-lifecycle-native.spks31/src/fpga_server.cpp:1:
+/home/admin/rinbo_sbRIO_ws/install/include/google/protobuf/message_lite.h:433:7: note: declared here
+   int ByteSize() const { return internal::ToIntSize(ByteSizeLong()); }
+       ^~~~~~~~

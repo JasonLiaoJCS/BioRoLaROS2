@@ -1,0 +1,20 @@
+--- before/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ after/src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -98,7 +98,7 @@
+         servo_targets_[4] = 2071; 
+         servo_targets_[5] = 989;
+         
+-        max_pwm_ = static_cast<float>(this->declare_parameter<double>("max_pwm", 80.0));
++        max_pwm_ = static_cast<float>(this->declare_parameter<double>("max_pwm", 3300.0));
+         
+         initialized_ = false;
+         cycle_count_ = 0;
+@@ -119,7 +119,7 @@
+         if (stop_servo_control_mode_ != 0 && stop_servo_control_mode_ != 2) {
+             throw std::invalid_argument("stop_servo_control_mode must be 0 or 2");
+         }
+-        rinbo_fsm::validate_pwm(max_pwm_, "Tripod");
++        rinbo_fsm::validate_tripod_pwm(max_pwm_);
+         if (!std::isfinite(shutdown_slowdown_duration_s_) ||
+             !std::isfinite(shutdown_timeout_s_) ||
+             shutdown_slowdown_duration_s_ <= 0.0 ||

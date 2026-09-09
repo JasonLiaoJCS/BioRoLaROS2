@@ -1,0 +1,1490 @@
+--- a/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ b/src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -1,4 +1,7 @@
+ #include "motion_effort.hpp"
++#include "tripod_reference.hpp"
++#include <deque>
++#include <iomanip>
+ #include "control_velocity.hpp"
+ #include "rclcpp/rclcpp.hpp"
+ #include "disabled_legs.hpp"
+@@ -44,9 +47,6 @@
+     explicit PIDController(rinbo_config::MotionSession& session)
+         : Node("rinbo_tripod_rslip", session.config().node_options("rinbo_tripod_rslip")),
+           motion_session_(session) {
+-#ifndef RINBO_FSM_OFFLINE_TEST
+-        rinbo_fsm::wait_for_bridge_inputs(*this, [] { return g_shutdown_requested != 0; });
+-#endif
+         disabled_legs_ = rinbo_fsm::DisabledLegs::load(*this);
+         if (disabled_legs_.healthy_count() == 0)
+             throw std::runtime_error("没有可測試腿: all six main drives are disabled");
+@@ -84,7 +84,7 @@
+         
+         compute_trapezoid_params();
+         
+-        rad_to_counts_ = 54984.83 / (2.0 * M_PI);
++        rad_to_counts_ = rinbo_fsm::tripod::kCountsPerRevolution / (2.0 * M_PI);
+         
+         theta_home_ = 2 * M_PI;
+         
+@@ -129,6 +129,11 @@
+                 "Tripod shutdown must satisfy 0 < slowdown_duration <= timeout <= 5s");
+         }
+         load_safety_parameters();
++        report_reference_budget();
++#ifndef RINBO_FSM_OFFLINE_TEST
++        rinbo_fsm::wait_for_bridge_inputs(*this, [] { return g_shutdown_requested != 0; });
++#endif
++
+         power_policy_ = std::make_unique<rinbo_fsm::TripodPowerPolicy>(
+             rinbo_fsm::TripodPowerPolicyConfig {
+                 safety_.enabled,
+@@ -232,6 +237,7 @@
+     }
+ 
+     void fail_closed(const std::string& reason) { trigger_safety_stop(reason); }
++    bool failed() const { return state_ == State::SAFETY_STOP; }
+ 
+ private:
+     enum class State {
+@@ -361,39 +367,61 @@
+         }
+     }
+     
+-    // Cubic polynomial: 從 (p0, v0) 到 (p1, v1)，時間 T
+-    void eval_cubic(double t, double T, double p0, double v0, double p1, double v1,
+-                    double& pos, double& vel) {
+-        if (t <= 0) {
+-            pos = p0;
+-            vel = v0;
+-            return;
+-        }
+-        if (t >= T) {
+-            pos = p1;
+-            vel = v1;
+-            return;
+-        }
+-        // With a high terminal speed, a cubic can initially run backwards
+-        // even though p1 > p0. Use a monotone power curve in that case while
+-        // preserving the requested endpoints, duration and terminal speed.
+-        if (v0 == 0.0 && p1 > p0 && v1 * T > 3.0 * (p1 - p0)) {
+-            const double exponent = v1 * T / (p1 - p0);
+-            const double phase = t / T;
+-            pos = p0 + (p1 - p0) * std::pow(phase, exponent);
+-            vel = v1 * std::pow(phase, exponent - 1.0);
+-            return;
+-        }
+-        
+-        double a0 = p0;
+-        double a1 = v0;
+-        double a2 = (3.0 * (p1 - p0) / (T * T)) - (2.0 * v0 / T) - (v1 / T);
+-        double a3 = (-2.0 * (p1 - p0) / (T * T * T)) + ((v1 + v0) / (T * T));
+-        
+-        pos = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
+-        vel = a1 + 2.0 * a2 * t + 3.0 * a3 * t * t;
+-    }
+-    
++    void compute_group_reference(double phase, double& position, double& velocity) {
++        const auto launch = rinbo_fsm::tripod::launch_phase(
++            phase - t_center_, period_ / 4.0);
++        bool stance;
++        compute_trajectory(t_center_ + launch.position, position, velocity, stance);
++        // Anchor to the numerical polynomial root, not a measured/rebased zero.
++        position -= eval_poly_rad(t_center_);
++        velocity *= launch.velocity;
++    }
++
++    // Advisory only: these feedforward gains have not been identified as a
++    // hardware model. Show clipping/slew conflicts without adding an interlock
++    // or changing the operator's gains, PWM limits, duration or ratios.
++    void report_reference_budget() {
++        double peak_pwm = 0, peak_slew = 0;
++        auto sample = [&](auto velocity, double duration) {
++            constexpr int samples = 20000;
++            double previous = effort_.feedforward(velocity(0));
++            for (int k = 0; k <= samples; ++k) {
++                const double ff = effort_.feedforward(velocity(duration*k/samples));
++                peak_pwm = std::max(peak_pwm, std::fabs(ff));
++                if (k) peak_slew = std::max(peak_slew,
++                    std::fabs(ff-previous)*samples/duration);
++                previous = ff;
++            }
++        };
++        sample([&](double t) {
++            return rinbo_fsm::tripod::startup(t, startup_duration_, 0,
++                theta_home_*rad_to_counts_).velocity;
++        }, startup_duration_);
++        const double saved_ratio = current_ratio_;
++        current_ratio_ = target_ratio_; // fastest configured phase rate
++        sample([&](double t) {
++            double p, v;
++            compute_group_reference(t_center_ + t/current_ratio_, p, v);
++            return v*rad_to_counts_;
++        }, (period_ + period_/4)*current_ratio_);
++        current_ratio_ = saved_ratio;
++        reference_peak_pwm_ = peak_pwm;
++        reference_peak_slew_ = peak_slew;
++        if (!std::isfinite(peak_pwm) || !std::isfinite(peak_slew) ||
++            peak_pwm >= max_pwm_ || peak_slew >= safety_.pwm_slew_rate_per_sec) {
++            std::ostringstream reason;
++            reason << "TRIPOD_REFERENCE_WARNING nominal_feedforward_peak=" << peak_pwm
++                   << " pwm_limit=" << max_pwm_ << " nominal_feedforward_slew=" << peak_slew
++                   << " slew_limit=" << safety_.pwm_slew_rate_per_sec
++                   << "; nominal effort will clip/lag; review a slower trajectory (advisory only)";
++            RCLCPP_WARN(get_logger(), "%s", reason.str().c_str());
++        }
++        RCLCPP_INFO(get_logger(),
++            "TRIPOD_REFERENCE_BUDGET startup=%.3fs ratios=%.3f->%.3f ff_peak=%.3f/%.3f ff_slew=%.3f/%.3f (model only)",
++            startup_duration_, start_ratio_, target_ratio_, peak_pwm, max_pwm_,
++            peak_slew, safety_.pwm_slew_rate_per_sec);
++    }
++
+     void compute_trajectory(double tau_local, double& target_rad, double& target_vel_rad, bool& stance_phase) {
+         int n = static_cast<int>(std::floor(tau_local / period_));
+         double t_local = std::fmod(tau_local, period_);
+@@ -689,6 +717,106 @@
+         controller_debug_pub_->publish(debug);
+     }
+ 
++    void capture_stopping_reference() {
++        stopping_positions_ = trace_ready_ ? trace_debug_.target_position : prev_positions_;
++        stopping_velocities_ = trace_ready_ ? trace_debug_.target_velocity : std::array<float, 6>{};
++        stopping_group_b_active_ = trace_ready_ && trace_debug_.group_b_active;
++    }
++
++    void prepare_trace(const rinbo_msgs::msg::MotorStateStamped& msg,
++        rclcpp::Time now_time, State phase,
++        const std::array<float, 6>& actual, const std::array<float, 6>& target,
++        const std::array<float, 6>& target_velocity, const std::array<float, 6>& actual_velocity,
++        const std::array<float, 6>& error, const std::array<float, 6>& raw_pwm,
++        const std::array<float, 6>& capped_pwm, const std::array<float, 6>& slew_pwm,
++        bool group_b_active, const std::array<bool, 6>& group_b_leg) {
++        trace_ready_ = true;
++        trace_state_ = phase;
++        trace_source_ = msg.header;
++        trace_raw_counts_ = {msg.l1.position, msg.l2.position, msg.l3.position,
++                            msg.r1.position, msg.r2.position, msg.r3.position};
++        trace_capped_pwm_ = capped_pwm;
++        trace_candidate_pwm_ = slew_pwm;
++        auto& d = trace_debug_;
++        fill_header(d.header, now_time, controller_debug_seq_);
++        d.controller_state = state_name(phase);
++        d.tau = tau_; d.ratio = current_ratio_; d.cycle_count = cycle_count_;
++        d.group_b_active = group_b_active; d.group_b_leg = group_b_leg;
++        d.actual_position = actual; d.target_position = target;
++        d.target_velocity = target_velocity; d.actual_velocity = actual_velocity;
++        d.position_error = error; d.raw_pwm = raw_pwm; d.limited_pwm = slew_pwm;
++        d.min_bus_voltage = power_snapshot_.received ? power_snapshot_.bus_voltage : 0;
++        d.max_current = power_snapshot_.received ? power_snapshot_.max_current : 0;
++    }
++
++    std::string format_trace() const {
++        const auto& d = trace_debug_;
++        std::ostringstream out;
++        out << std::setprecision(12);
++        const double frame_s = d.header.stamp.sec + d.header.stamp.nanosec*1e-9;
++        const double source_s = trace_source_.stamp.sec + trace_source_.stamp.nanosec*1e-9;
++        out << "frame_s=" << frame_s << " phase=" << state_name(trace_state_)
++            << " startup_s=" << startup_time_ << " tau=" << d.tau << " ratio=" << d.ratio
++            << " group_b_active=" << d.group_b_active
++            << " phase_A=" << d.tau-t_center_ << " phase_B=" << d.tau-t_center_-phase_offset_B_
++            << " source_seq=" << trace_source_.seq << " source_s=" << source_s
++            << " arrival_s=" << last_motor_state_time_.seconds()
++            << " source_age_s=" << frame_s-source_s
++            << " soft=" << safety_.max_position_error_counts
++            << " samples_required=" << safety_.position_error_trip_samples
++            << " seconds_required=" << safety_.position_error_trip_seconds
++            << " hard=" << rinbo_fsm::tripod::kHardPositionError;
++        for (int i = 0; i < 6; ++i) {
++            out << " | " << leg_name(i) << " group=" << (d.group_b_leg[i] ? 'B' : 'A')
++                << " masked=" << disabled_legs_.contains(i)
++                << " raw_counts=" << trace_raw_counts_[i]
++                << " origin_counts=" << initial_positions_[i]
++                << " home_counts=" << home_offsets_[i]
++                << " target_raw_counts=" << rinbo_fsm::tripod::position(i, d.target_position[i])
++                << " target_counts=" << d.target_position[i]
++                << " actual_counts=" << d.actual_position[i]
++                << " signed_error=" << d.position_error[i]
++                << " target_v=" << d.target_velocity[i] << " actual_v=" << d.actual_velocity[i]
++                << " filtered_v=" << control_velocity_[i]
++                << " ff_pwm=" << effort_.feedforward(d.target_velocity[i])
++                << " pwm_raw=" << d.raw_pwm[i] << " pwm_capped=" << trace_capped_pwm_[i]
++                << " pwm_slew_candidate=" << trace_candidate_pwm_[i]
++                << " pwm_output=" << d.limited_pwm[i]
++                << " command_dir=" << rinbo_fsm::tripod::direction(i, d.limited_pwm[i])
++                << " saturation_s=" << saturation_seconds_[i]
++                << " slew_limited_s=" << slew_limited_seconds_[i]
++                << " guard_count=" << position_error_trip_counts_[i]
++                << " guard_s=" << (position_error_trip_counts_[i] ?
++                    frame_s-position_error_since_s_[i] : 0);
++        }
++        return out.str();
++    }
++
++    void record_trace(bool fault) {
++        if (!trace_ready_) {
++            if (fault) std::fprintf(stderr, "TRIPOD_FAULT_FRAME unavailable: no calculated motion sample\n");
++            return;
++        }
++        const double now_s = trace_debug_.header.stamp.sec + trace_debug_.header.stamp.nanosec*1e-9;
++        if (fault) {
++            for (const auto& entry : trace_history_)
++                std::fprintf(stderr, "TRIPOD_PREFAULT %s\n", entry.c_str());
++            const auto entry = format_trace();
++            std::fprintf(stderr, "TRIPOD_FAULT_FRAME reason=%s observation_s=%.9f %s\n",
++                safety_stop_reason_.c_str(), this->now().seconds(), entry.c_str());
++            std::fflush(stderr);
++        } else if (last_trace_sample_s_ < 0 || now_s-last_trace_sample_s_ >= .02) {
++            const auto entry = format_trace();
++            trace_history_.push_back(entry);
++            while (trace_history_.size() > 100) trace_history_.pop_front();
++            last_trace_sample_s_ = now_s;
++            if (last_trace_log_s_ < 0 || now_s-last_trace_log_s_ >= .1) {
++                RCLCPP_INFO(get_logger(), "TRIPOD_TRACE %s", entry.c_str());
++                last_trace_log_s_ = now_s;
++            }
++        }
++    }
++
+     bool trigger_safety_stop(const std::string& reason) {
+         const bool first_failure = state_ != State::SAFETY_STOP;
+         state_ = State::SAFETY_STOP;
+@@ -703,6 +831,14 @@
+             std::fprintf(stderr, "[FATAL] stop command publication failed\n");
+         }
+         if (first_failure) {
++            // The triggering sample is prepared BEFORE guards. Stop is already
++            // sent; the debug frame keeps requested effort but reports zero output.
++            if (trace_ready_) {
++                trace_debug_.safety_stopped = true;
++                trace_debug_.safety_reason = safety_stop_reason_;
++                trace_debug_.controller_state = "SAFETY_STOP";
++                trace_debug_.limited_pwm.fill(0);
++            }
+             std::fprintf(stderr, "TRIPOD SAFETY STOP: %s\n", safety_stop_reason_.c_str());
+             try {
+                 motion_session_.invalidate();
+@@ -712,6 +848,14 @@
+                 std::fprintf(stderr, "[FATAL] cannot invalidate stage receipts\n");
+             }
+             try {
++                record_trace(true);
++                if (trace_ready_) controller_debug_pub_->publish(trace_debug_);
++            } catch (const std::exception& error) {
++                std::fprintf(stderr, "[FATAL] fault diagnostic publication failed: %s\n", error.what());
++            } catch (...) {
++                std::fprintf(stderr, "[FATAL] fault diagnostic publication failed\n");
++            }
++            try {
+                 publish_safety_event(this->now(), safety_stop_reason_);
+             } catch (const std::exception& error) {
+                 std::fprintf(stderr, "[FATAL] safety event publication failed: %s\n", error.what());
+@@ -748,7 +892,7 @@
+             }
+             const float error = std::fabs(pos_errors[i]);
+             // Large divergence / invalid feedback bypass the transient allowance.
+-            if (!std::isfinite(error) || error > 18000.0f) {
++            if (!std::isfinite(error) || error > rinbo_fsm::tripod::kHardPositionError) {
+                 return trigger_safety_stop(std::string("hard position error: ") + leg_name(i) +
+                     " counts=" + std::to_string(error) + " hard_limit=18000");
+             }
+@@ -792,7 +936,7 @@
+             return;
+         }
+ 
+-        const float step = std::max(1.0f, safety_.pwm_slew_rate_per_sec * static_cast<float>(std::max(dt, 0.001)));
++        const float step = safety_.pwm_slew_rate_per_sec * static_cast<float>(dt);
+         for (int i = 0; i < 6; ++i) {
+             if (disabled_legs_.contains(i)) {
+                 pwms[i] = 0.0f;
+@@ -839,6 +983,7 @@
+         
+         // 檢查 shutdown 信號
+         if (g_shutdown_requested && state_ != State::STOPPING && state_ != State::SAFETY_STOP) {
++            capture_stopping_reference();
+             state_ = State::STOPPING;
+             stopping_start_time_ = now_time;
+             stopping_start_ratio_ = current_ratio_;
+@@ -853,21 +998,17 @@
+         
+         // 6 隻腳的 encoder
+         std::array<float, 6> positions = {
+-            msg->l1.position,
+-            msg->l2.position,
+-            msg->l3.position,
+-            -msg->r1.position,
+-            -msg->r2.position,
+-            -msg->r3.position
++            static_cast<float>(rinbo_fsm::tripod::position(0, msg->l1.position)),
++            static_cast<float>(rinbo_fsm::tripod::position(1, msg->l2.position)),
++            static_cast<float>(rinbo_fsm::tripod::position(2, msg->l3.position)),
++            static_cast<float>(rinbo_fsm::tripod::position(3, msg->r1.position)),
++            static_cast<float>(rinbo_fsm::tripod::position(4, msg->r2.position)),
++            static_cast<float>(rinbo_fsm::tripod::position(5, msg->r3.position))
+         };
+         
+-        std::array<bool, 6> is_group_b = {true, false, true, false, true, false};
+-
+         if (state_ == State::SAFETY_STOP) {
+             publish_stop_command();
+-            std::array<float, 6> zero_values {};
+-            publish_controller_debug(now_time, positions, positions, zero_values, zero_values,
+-                                     zero_values, zero_values, zero_values, false, is_group_b);
++            // Keep the first fault frame intact; do not replace it with zeros.
+             update_previous_samples(positions, now_time);
+             return;
+         }
+@@ -958,7 +1099,11 @@
+                               rclcpp::Time now_time) {
+         const std::array<bool, 6> is_group_b = {true, false, true, false, true, false};
+         double dt = (now_time - prev_time_).seconds();
+-        if (dt <= 0) dt = 0.001;
++        if (!std::isfinite(dt) || dt <= 0) {
++            trigger_safety_stop("non-positive motion sample interval");
++            return;
++        }
++        const State sample_state = state_;
+ 
+         std::array<float, 6> actual_velocities {};
+         for (int i = 0; i < 6; i++) {
+@@ -968,6 +1113,7 @@
+         }
+         
+         std::array<float, 6> pwms {};
++        std::array<float, 6> raw_pwms {};
+         std::array<float, 6> target_positions = positions;
+         std::array<float, 6> target_velocities {};
+         std::array<float, 6> pos_errors {};
+@@ -977,9 +1123,6 @@
+         switch (state_) {
+             case State::STARTUP: {
+                 startup_time_ += dt;
+-                
+-                // RSLIP 起始速度 = Standing 時的速度（用 start_ratio_ 縮放）
+-                double rslip_start_vel = theta_dot_center_ / start_ratio_;
+                 
+                 for (int i = 0; i < 6; i++) {
+                     if (disabled_legs_.contains(i)) {
+@@ -989,14 +1132,12 @@
+                         pwms[i] = 0.0f;
+                         continue;
+                     }
+-                    double p0 = initial_positions_[i];
+-                    double v0 = 0.0;
+-                    double p1 = initial_positions_[i] + theta_home_ * rad_to_counts_;
+-                    double v1 = rslip_start_vel * rad_to_counts_;
+-                    
+-                    double target_pos, target_vel;
+-                    eval_cubic(startup_time_, startup_duration_, p0, v0, p1, v1, target_pos, target_vel);
+-                    
++                    const auto reference = rinbo_fsm::tripod::startup(
++                        startup_time_, startup_duration_, initial_positions_[i],
++                        theta_home_*rad_to_counts_);
++                    const double target_pos = reference.position;
++                    const double target_vel = reference.velocity;
++
+                     float pos_error = target_pos - positions[i];
+ 
+                     target_positions[i] = static_cast<float>(target_pos);
+@@ -1004,6 +1145,7 @@
+                     pos_errors[i] = pos_error;
+                     
+                     float pwm = effort_.command(pos_error, target_vel, control_velocity_[i]);
++                    raw_pwms[i] = pwm;
+                     pwms[i] = std::clamp(pwm, -max_pwm_, max_pwm_);
+                 }
+                 
+@@ -1014,7 +1156,8 @@
+                     startup_aligned = startup_aligned && std::isfinite(pos_errors[i]) &&
+                         std::fabs(pos_errors[i]) <= safety_.max_position_error_counts;
+                 }
+-                // The timed guard allows a brief endpoint tracking delay.
++                // Retain the existing alignment/position guard thresholds.
++                // The endpoint is now at rest, and its planned zero is retained.
+                 if (startup_time_ >= startup_duration_ && startup_aligned) {
+                     state_ = State::RUNNING;
+                     startup_completed = true;
+@@ -1023,9 +1166,7 @@
+                     
+                     for (int i = 0; i < 6; i++) {
+                         if (disabled_legs_.contains(i)) continue;
+-                        // Standing 時 poly = 0，所以 home_offset 對應 theta = 0
+-                        home_offsets_[i] = positions[i] - theta_start_rslip_ * rad_to_counts_;
+-                        // theta_start_rslip_ = 0，所以 home_offsets_[i] = positions[i]
++                        home_offsets_[i] = initial_positions_[i] + theta_home_*rad_to_counts_;
+                     }
+                     
+                 }
+@@ -1038,16 +1179,11 @@
+             }
+             
+             case State::RUNNING: {
+-                // Ratio 緩降
+-                if (std::fabs(current_ratio_ - target_ratio_) > std::fabs(ratio_step_)) {
+-                    current_ratio_ += ratio_step_;
+-                } else {
+-                    current_ratio_ = target_ratio_;
+-                }
+-                if (current_ratio_ < target_ratio_) {
+-                    current_ratio_ = target_ratio_;
+-                }
+-                
++                // ratio_step retains its historic nominal 1 kHz units, but
++                // scheduling jitter must not change the acceleration rate.
++                current_ratio_ = std::max(target_ratio_,
++                    current_ratio_ + ratio_step_ * dt / 0.001);
++
+                 double d_tau = dt / current_ratio_;
+                 tau_ += d_tau;
+                 
+@@ -1057,9 +1193,6 @@
+                 group_b_active = (tau_ >= t_center_ + phase_offset_B_);
+                 
+                 if (group_b_active && !group_b_started_) {
+-                    for (int i : {0, 2, 4})
+-                        if (!disabled_legs_.contains(i))
+-                            home_offsets_[i] = positions[i] - theta_start_rslip_ * rad_to_counts_;
+                     group_b_started_ = true;
+                     RCLCPP_INFO(this->get_logger(), "=== Group B started! ===");
+                 }
+@@ -1081,17 +1214,17 @@
+                     }
+                     if (is_group_b[i] && !group_b_active) {
+                         pwms[i] = 0.0f;
+-                        target_positions[i] = positions[i];
++                        target_positions[i] = home_offsets_[i];
+                         target_velocities[i] = 0.0f;
+-                        pos_errors[i] = 0.0f;
++                        pos_errors[i] = home_offsets_[i] - positions[i];
++                        prev_command_pwms_[i] = 0.0f;
+                         continue;
+                     }
+                     
+                     double tau_for_calc = is_group_b[i] ? (tau_ - phase_offset_B_) : tau_;
+                     
+                     double target_rad, target_vel_rad;
+-                    bool stance_phase;
+-                    compute_trajectory(tau_for_calc, target_rad, target_vel_rad, stance_phase);
++                    compute_group_reference(tau_for_calc, target_rad, target_vel_rad);
+                     
+                     float target = home_offsets_[i] + target_rad * rad_to_counts_;
+                     float target_vel = target_vel_rad * rad_to_counts_;
+@@ -1102,6 +1235,7 @@
+                     pos_errors[i] = pos_error;
+                     
+                     float pwm = effort_.command(pos_error, target_vel, control_velocity_[i]);
++                    raw_pwms[i] = pwm;
+                     pwms[i] = std::clamp(pwm, -max_pwm_, max_pwm_);
+                 }
+                 auto pid_msg = std_msgs::msg::Float32MultiArray();
+@@ -1136,6 +1270,7 @@
+             
+             case State::STOPPING: {
+                 if (!stopping_started_) {
++                    capture_stopping_reference();
+                     stopping_start_time_ = now_time;
+                     stopping_start_ratio_ = current_ratio_;
+                     stopping_started_ = true;
+@@ -1171,51 +1306,21 @@
+                     return;
+                 }
+ 
+-                const double stop_progress = std::clamp(
+-                    stop_elapsed / shutdown_slowdown_duration_s_, 0.0, 1.0);
+-                current_ratio_ = stopping_start_ratio_ +
+-                    (10.0 - stopping_start_ratio_) * stop_progress;
+-                
+-                double d_tau = dt / current_ratio_;
+-                tau_ += d_tau;
+-                
+-                group_b_active = (tau_ >= t_center_ + phase_offset_B_);
+-                
+-                for (int i = 0; i < 6; i++) {
+-                    if (disabled_legs_.contains(i)) {
+-                        pwms[i] = 0.0f;
+-                        target_positions[i] = positions[i];
+-                        target_velocities[i] = 0.0f;
+-                        pos_errors[i] = 0.0f;
+-                        continue;
+-                    }
+-                    if (is_group_b[i] && !group_b_active) {
+-                        pwms[i] = 0.0f;
+-                        target_positions[i] = positions[i];
+-                        target_velocities[i] = 0.0f;
+-                        pos_errors[i] = 0.0f;
+-                        continue;
+-                    }
+-                    
+-                    double tau_for_calc = is_group_b[i] ? (tau_ - phase_offset_B_) : tau_;
+-                    
+-                    double target_rad, target_vel_rad;
+-                    bool stance_phase;
+-                    compute_trajectory(tau_for_calc, target_rad, target_vel_rad, stance_phase);
+-                    
+-                    float target = home_offsets_[i] + target_rad * rad_to_counts_;
+-                    float target_vel = target_vel_rad * rad_to_counts_;
+-                    
+-                    float pos_error = target - positions[i];
+-
+-                    target_positions[i] = target;
+-                    target_velocities[i] = target_vel;
+-                    pos_errors[i] = pos_error;
+-                    
+-                    float pwm = effort_.command(pos_error, target_vel, control_velocity_[i]);
+-                    pwms[i] = std::clamp(pwm, -max_pwm_, max_pwm_);
++                group_b_active = stopping_group_b_active_;
++                for (int i = 0; i < 6; ++i) {
++                    if (disabled_legs_.contains(i)) continue;
++                    const auto reference = rinbo_fsm::tripod::brake(stop_elapsed,
++                        shutdown_slowdown_duration_s_,
++                        {stopping_positions_[i], stopping_velocities_[i]});
++                    target_positions[i] = reference.position;
++                    target_velocities[i] = reference.velocity;
++                    pos_errors[i] = target_positions[i] - positions[i];
++                    if (is_group_b[i] && !group_b_active) continue;
++                    raw_pwms[i] = effort_.command(pos_errors[i], reference.velocity,
++                                                 control_velocity_[i]);
++                    pwms[i] = std::clamp(raw_pwms[i], -max_pwm_, max_pwm_);
+                 }
+-                
++
+                 RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 100,
+                     "[STOPPING] ratio: %.2f | A: [%.0f, %.0f, %.0f] | B: [%.0f, %.0f, %.0f]", 
+                     current_ratio_, 
+@@ -1232,63 +1337,77 @@
+         }
+ 
+         last_position_errors_ = pos_errors;
++        const auto capped_pwms = pwms;
++        apply_pwm_slew_limit(pwms, dt);
++        // Disabled waiting legs must not accumulate a hidden slew command.
++        for (int i = 0; i < 6; ++i) {
++            if (disabled_legs_.contains(i) ||
++                (sample_state != State::STARTUP && is_group_b[i] && !group_b_active)) {
++                pwms[i] = 0; prev_command_pwms_[i] = 0;
++            }
++            saturation_seconds_[i] = std::fabs(raw_pwms[i]) >= max_pwm_
++                ? saturation_seconds_[i] + dt : 0;
++            slew_limited_seconds_[i] = std::fabs(capped_pwms[i] - pwms[i]) > 1e-5f
++                ? slew_limited_seconds_[i] + dt : 0;
++        }
++        prepare_trace(*msg, now_time, sample_state, positions, target_positions,
++            target_velocities, actual_velocities, pos_errors, raw_pwms, capped_pwms,
++            pwms, group_b_active, is_group_b);
+         if (check_position_error_safety(pos_errors, now_time.seconds())) {
+             update_previous_samples(positions, now_time);
+             return;
+         }
+         for (int i = 0; i < 6; ++i) {
+             if (disabled_legs_.contains(i)) continue;
+-            if (!std::isfinite(pwms[i]) || !std::isfinite(actual_velocities[i]) ||
++            if (!std::isfinite(raw_pwms[i]) || !std::isfinite(actual_velocities[i]) ||
+                 !std::isfinite(target_positions[i]) || !std::isfinite(target_velocities[i])) {
+                 trigger_safety_stop(std::string("invalid trajectory or velocity: ") + leg_name(i));
+                 update_previous_samples(positions, now_time);
+                 return;
+             }
+         }
+-
+-        std::array<float, 6> raw_pwms = pwms;
+-        apply_pwm_slew_limit(pwms, dt);
+         publish_controller_debug(now_time, positions, target_positions, target_velocities,
+                                  actual_velocities, pos_errors, raw_pwms, pwms,
+                                  group_b_active, is_group_b);
+-        
++        record_trace(false);
++
+         // 發送命令
+         auto cmd = rinbo_msgs::msg::MotorCmdStamped();
+         
+         bool all_enabled = (state_ == State::STARTUP);
+         
+         cmd.l1.enable = all_enabled || group_b_active;
+-        cmd.l1.direction = (pwms[0] >= 0);
++        cmd.l1.direction = rinbo_fsm::tripod::direction(0, pwms[0]);
+         cmd.l1.voltage = std::fabs(pwms[0]);
+         cmd.l1.state = 1;
+         cmd.l1.reset_position = false;
+         
+         cmd.l2.enable = true;
+-        cmd.l2.direction = (pwms[1] >= 0);
++        cmd.l2.direction = rinbo_fsm::tripod::direction(1, pwms[1]);
+         cmd.l2.voltage = std::fabs(pwms[1]);
+         cmd.l2.state = 1;
+         cmd.l2.reset_position = false;
+         
+         cmd.l3.enable = all_enabled || group_b_active;
+-        cmd.l3.direction = (pwms[2] >= 0);
++        cmd.l3.direction = rinbo_fsm::tripod::direction(2, pwms[2]);
+         cmd.l3.voltage = std::fabs(pwms[2]);
+         cmd.l3.state = 1;
+         cmd.l3.reset_position = false;
+         
+         cmd.r1.enable = true;
+-        cmd.r1.direction = (pwms[3] < 0);
++        cmd.r1.direction = rinbo_fsm::tripod::direction(3, pwms[3]);
+         cmd.r1.voltage = std::fabs(pwms[3]);
+         cmd.r1.state = 1;
+         cmd.r1.reset_position = false;
+         
+         cmd.r2.enable = all_enabled || group_b_active;
+-        cmd.r2.direction = (pwms[4] < 0);
++        cmd.r2.direction = rinbo_fsm::tripod::direction(4, pwms[4]);
+         cmd.r2.voltage = std::fabs(pwms[4]);
+         cmd.r2.state = 1;
+         cmd.r2.reset_position = false;
+         
+         cmd.r3.enable = true;
+-        cmd.r3.direction = (pwms[5] < 0);
++        cmd.r3.direction = rinbo_fsm::tripod::direction(5, pwms[5]);
+         cmd.r3.voltage = std::fabs(pwms[5]);
+         cmd.r3.state = 1;
+         cmd.r3.reset_position = false;
+@@ -1402,6 +1521,7 @@
+             }
+         }
+         if (g_shutdown_requested && state_ != State::STOPPING) {
++            capture_stopping_reference();
+             state_ = State::STOPPING;
+             stopping_start_time_ = now_time;
+             stopping_start_ratio_ = current_ratio_;
+@@ -1438,6 +1558,18 @@
+             trigger_safety_stop("software /estop asserted");
+         }
+     }
++
++    double reference_peak_pwm_ = 0, reference_peak_slew_ = 0;
++    std::array<float, 6> stopping_positions_{}, stopping_velocities_{};
++    bool stopping_group_b_active_ = false;
++    std::array<double, 6> saturation_seconds_{}, slew_limited_seconds_{};
++    rinbo_msgs::msg::ControllerDebugStamped trace_debug_{};
++    std::array<float, 6> trace_raw_counts_{}, trace_capped_pwm_{}, trace_candidate_pwm_{};
++    rinbo_msgs::msg::Header trace_source_{};
++    State trace_state_ = State::STARTUP;
++    bool trace_ready_ = false;
++    double last_trace_sample_s_ = -1, last_trace_log_s_ = -1;
++    std::deque<std::string> trace_history_;
+ 
+     std::array<rinbo_fsm::ControlVelocity, 6> velocity_filter_{};
+     std::array<float, 6> control_velocity_{};
+@@ -1545,8 +1677,9 @@
+             node->fail_closed(std::string("unhandled controller error: ") + error.what());
+             throw;
+         }
++        const bool failed = node->failed();
+         rclcpp::shutdown();
+-        return 0;
++        return failed ? 2 : 0;
+     } catch (const std::exception& error) {
+         std::cerr << "[FATAL] Tripod: " << error.what() << std::endl;
+         if (rclcpp::ok()) rclcpp::shutdown();
+--- a/src/rinbo_fsm/src/robot_config.cpp
++++ b/src/rinbo_fsm/src/robot_config.cpp
+@@ -18,6 +18,7 @@
+ #include <iomanip>
+ #include <iostream>
+ #include <limits>
++#include <memory>
+ #include <regex>
+ #include <set>
+ #include <sstream>
+@@ -662,6 +663,79 @@
+     return true;
+ }
+ 
++std::string tune_tripod(const std::string& path,
++                       const std::map<std::string, double>& updates,
++                       bool dry_run, const std::string& proc_root) {
++    const std::set<std::string> allowed{
++        "startup_duration", "start_ratio", "target_ratio", "ratio_step",
++        "kp", "kd", "k_ff", "friction_pwm", "friction_velocity_counts_s"};
++    if (updates.empty()) fail("tune-tripod requires KEY=VALUE; use status --json to inspect");
++    for (const auto& [key, value] : updates)
++        if (!allowed.count(key) || !std::isfinite(value))
++            fail("Unsupported/nonfinite Tripod tuning value: " + key);
++    // Preview remains available while an action is running. Applying takes the
++    // same exclusive configuration lock as existing configuration operations.
++    std::unique_ptr<PathLock> lock;
++    if (!dry_run) {
++        lock = std::make_unique<PathLock>(path + ".lock", true);
++        assert_no_motion_processes(proc_root);
++    }
++    const auto config = RobotConfig::load(path);
++    std::map<std::string, rclcpp::Parameter> parameters;
++    for (const auto& p : config.parameters("rinbo_tripod_rslip")) parameters.emplace(p.get_name(), p);
++    bool changed = false;
++    for (const auto& [key, value] : updates) {
++        changed = changed || parameters.at(key).as_double() != value;
++        parameters[key] = rclcpp::Parameter(key, value);
++    }
++    validate_parameters("rinbo_tripod_rslip", parameters);
++    std::map<Stage, YAML::Node> receipts;
++    for (const Stage stage : {Stage::Calibration, Stage::Standing}) {
++        if (stage == Stage::Standing && !receipts.count(Stage::Calibration)) continue;
++        try {
++            require_receipt(config, stage);
++            receipts.emplace(stage, YAML::Load(read_file(receipt_path(config, stage))));
++        } catch (const std::exception&) { /* A missing/invalid result is never recreated. */ }
++    }
++    if (!dry_run && changed) {
++        if (config.revision() == std::numeric_limits<int64_t>::max()) fail("Configuration revision exhausted");
++        const auto current_bytes = read_file(path);
++        // Abort an uncooperative external edit instead of rebinding its receipts.
++        if (sha256(current_bytes) != config.hash()) fail("Configuration changed during tuning; retry");
++        auto document = YAML::Load(current_bytes);
++        for (const auto& [key, value] : updates) document["parameters"]["rinbo_tripod_rslip"][key] = value;
++        document["revision"] = config.revision() + 1;
++        YAML::Emitter emit; emit << document;
++        if (!emit.good()) fail("Cannot serialize Tripod tuning");
++        const std::string bytes = std::string(emit.c_str()) + "\n";
++        const std::string hash = sha256(bytes);
++        // Remove old bindings before publishing the new file. A crash at any
++        // intermediate step can lose readiness, never approve stale settings.
++        invalidate_all(config);
++        atomic_write(path, bytes);
++        for (auto& [stage, receipt] : receipts) {
++            receipt["revision"] = config.revision() + 1;
++            receipt["hash"] = hash;
++            YAML::Emitter result; result << receipt;
++            if (!result.good()) fail("Cannot preserve prerequisite result");
++            atomic_write(receipt_path(config, stage), std::string(result.c_str()) + "\n");
++        }
++    }
++    std::ostringstream result;
++    result << "{\"dry_run\":" << (dry_run ? "true" : "false")
++           << ",\"changed\":" << (changed ? "true" : "false")
++           << ",\"calibration_valid\":" << (receipts.count(Stage::Calibration) ? "true" : "false")
++           << ",\"standing_valid\":" << (receipts.count(Stage::Standing) ? "true" : "false")
++           << ",\"parameters\":{";
++    bool comma = false;
++    for (const auto& key : allowed) {
++        if (comma) result << ','; comma = true;
++        result << quote_json(key) << ':' << param_json(parameters.at(key));
++    }
++    result << "}}";
++    return result.str();
++}
++
+ bool update_disabled_legs(const std::string& path, const std::string& operation,
+                          const std::vector<std::string>& names) {
+     const auto requested = normalize_legs(names); // Validate the entire request before taking any action.
+--- a/src/rinbo_fsm/src/robot_config.hpp
++++ b/src/rinbo_fsm/src/robot_config.hpp
+@@ -56,6 +56,12 @@
+ bool update_disabled_legs(const std::string& path, const std::string& operation,
+                          const std::vector<std::string>& names);
+ bool update_motion_effort(const std::string& path, const rinbo_fsm::MotionEffort& effort);
++// Tripod-only operator tuning. Preview never writes or requires motion to stop.
++// Applying carries forward ONLY receipts valid for the unchanged Calibration /
++// Standing configuration and current boot. proc_root injection is for offline tests.
++std::string tune_tripod(const std::string& path,
++                       const std::map<std::string, double>& updates,
++                       bool dry_run = false, const std::string& proc_root = "/proc");
+ // Pure read-only check, called before rclcpp::init; also rejects competing ROS
+ // parameter inputs in normal startup. Throws on malformed/unsupported options.
+ bool check_config_cli(int argc, char** argv, const std::string& node_name);
+--- a/src/rinbo_fsm/src/rinbo_legs.cpp
++++ b/src/rinbo_fsm/src/rinbo_legs.cpp
+@@ -7,7 +7,7 @@
+ int main(int argc, char** argv) {
+     try {
+         if (argc < 2) throw std::runtime_error(
+-            "Usage: rinbo_legs status [--json] | set LEG... | disable LEG... | enable LEG... | enable-all | tune-motion KP KD K_FF FRICTION_PWM FADE_COUNTS_S");
++            "Usage: rinbo_legs status [--json] | set LEG... | disable LEG... | enable LEG... | enable-all | tune-tripod [--dry-run] KEY=VALUE... | tune-motion KP KD K_FF FRICTION_PWM FADE_COUNTS_S");
+         const std::string operation = argv[1];
+         if (operation == "status") {
+             if (argc > 3 || (argc == 3 && std::string(argv[2]) != "--json"))
+@@ -15,6 +15,23 @@
+             const auto config = rinbo_config::RobotConfig::load();
+             if (argc == 3) std::cout << config.json_status() << '\n';
+             else config.print_status(std::cout);
++            return 0;
++        }
++        if (operation == "tune-tripod") {
++            bool preview = false;
++            std::map<std::string, double> updates;
++            for (int i = 2; i < argc; ++i) {
++                const std::string token = argv[i];
++                if (token == "--dry-run") { preview = true; continue; }
++                const auto equal = token.find('=');
++                if (equal == std::string::npos) throw std::runtime_error("Expected KEY=VALUE: " + token);
++                const auto key = token.substr(0, equal), value_text = token.substr(equal+1);
++                size_t used = 0;
++                const double value = std::stod(value_text, &used);
++                if (used != value_text.size() || !updates.emplace(key, value).second)
++                    throw std::runtime_error("Invalid or duplicate Tripod setting: " + token);
++            }
++            std::cout << rinbo_config::tune_tripod(rinbo_config::kConfigPath, updates, preview) << '\n';
+             return 0;
+         }
+         if (operation == "tune-motion") {
+--- a/src/rinbo_fsm/test/test_tripod_multileg.cpp
++++ b/src/rinbo_fsm/test/test_tripod_multileg.cpp
+@@ -5,244 +5,346 @@
+ #include <fstream>
+ #include <unistd.h>
+ 
+-// Direct production trajectory/guard transitions with no executor or bridge.
++// Calls production control/guards with simulated feedback, no executor/Bridge.
+ struct TripodOfflineTestAccess {
+-    static rclcpp::Time time(double seconds) {
+-        return rclcpp::Time(static_cast<int64_t>(seconds * 1e9), RCL_ROS_TIME);
++    static rclcpp::Time time(double s) {
++        return rclcpp::Time(static_cast<int64_t>(s*1e9), RCL_ROS_TIME);
+     }
+     static void initialize(PIDController& f) {
+         f.initialized_ = true; f.prev_time_ = time(10); f.start_time_ = time(10);
+         f.initial_positions_.fill(0); f.prev_positions_.fill(0);
+     }
+-    static std::array<float, 6> startup_positions(PIDController& f, bool at_target = true) {
+-        std::array<float, 6> p;
+-        for (int i = 0; i < 6; ++i)
+-            p[i] = f.disabled_legs_.contains(i) ? std::numeric_limits<float>::quiet_NaN() :
+-                (at_target ? f.theta_home_ * f.rad_to_counts_ : 0.0f);
++    static std::array<float,6> endpoint(PIDController& f) {
++        std::array<float,6> p;
++        for (int i=0;i<6;++i) p[i] = f.disabled_legs_.contains(i) ?
++            std::numeric_limits<float>::quiet_NaN() : f.theta_home_*f.rad_to_counts_;
+         return p;
+     }
+-    static void tick(PIDController& f, double now, const std::array<float, 6>& p) {
+-        auto msg = std::make_shared<rinbo_msgs::msg::MotorStateStamped>();
+-        f.handle_motion_sample(msg, p, time(now));
+-        for (int i = 0; i < 6; ++i) {
+-            if (f.disabled_legs_.contains(i)) {
+-                EXPECT_EQ(f.prev_command_pwms_[i], 0.0f);
+-                EXPECT_EQ(f.last_position_errors_[i], 0.0f);
+-                EXPECT_EQ(f.home_offsets_[i], 0.0f);
+-            } else {
+-                EXPECT_TRUE(std::isfinite(f.prev_command_pwms_[i]));
+-            }
+-        }
+-    }
+-    static bool running(const PIDController& f) { return f.state_ == PIDController::State::RUNNING; }
+-    static void check_monotone_startup(PIDController& f, double ratio) {
+-        const double end = f.theta_home_ * f.rad_to_counts_;
+-        const double end_velocity = f.theta_dot_center_ / ratio * f.rad_to_counts_;
+-        double previous = 0;
+-        for (int i = 0; i <= 1000; ++i) {
+-            double position, velocity;
+-            f.eval_cubic(f.startup_duration_ * i / 1000, f.startup_duration_,
+-                         0, 0, end, end_velocity, position, velocity);
+-            EXPECT_GE(position + 1e-5, previous);
+-            EXPECT_GE(velocity, -1e-5);
+-            EXPECT_LE(position, end + 1e-5);
+-            previous = position;
+-            if (i == 1000) { EXPECT_NEAR(position,end,1e-5); EXPECT_NEAR(velocity,end_velocity,1e-5); }
+-        }
+-    }
+-    static void check_periodicity(PIDController& f) {
+-        for (double fraction : {-1.8,-1.0,-0.99,-0.5,-0.01,0.0,0.01,0.5,0.99}) {
+-            double p0, v0, p1, v1; bool stance0, stance1;
+-            f.compute_trajectory(fraction * f.period_,p0,v0,stance0);
+-            f.compute_trajectory((fraction+1) * f.period_,p1,v1,stance1);
+-            EXPECT_NEAR(p1-p0, 2*M_PI, 1e-7);
+-            EXPECT_NEAR(v1,v0,1e-7);
+-        }
+-    }
+-    static bool stopped(const PIDController& f) { return f.state_ == PIDController::State::SAFETY_STOP; }
++    static void tick(PIDController& f, double now, const std::array<float,6>& p) {
++        auto msg=std::make_shared<rinbo_msgs::msg::MotorStateStamped>();
++        msg->header.stamp=time(now); msg->header.seq=++sequence;
++        msg->l1.position=p[0]; msg->l2.position=p[1]; msg->l3.position=p[2];
++        msg->r1.position=-p[3]; msg->r2.position=-p[4]; msg->r3.position=-p[5];
++        f.last_motor_state_time_=time(now);
++        f.handle_motion_sample(msg,p,time(now));
++        for(int i=0;i<6;++i) {
++            if(f.disabled_legs_.contains(i)) {
++                EXPECT_EQ(f.prev_command_pwms_[i],0);
++                EXPECT_EQ(f.last_position_errors_[i],0);
++                EXPECT_EQ(f.home_offsets_[i],0);
++            } else EXPECT_TRUE(std::isfinite(f.prev_command_pwms_[i]));
++        }
++    }
++    static void boundary(PIDController& f, float error=0) {
++        initialize(f);
++        auto p=endpoint(f); p[1]-=error;
++        f.prev_positions_=p; f.startup_time_=f.startup_duration_;
++        tick(f,10.1,p);
++        // Preserve the boundary frame; tests advance from this exact instant.
++    }
++    static std::array<float,6> next_reference(PIDController& f, double dt) {
++        std::array<float,6> p=endpoint(f);
++        const double ratio=std::max(f.target_ratio_,f.current_ratio_+f.ratio_step_*dt/.001);
++        const double saved=f.current_ratio_; f.current_ratio_=ratio;
++        for(int i=0;i<6;++i) {
++            if(f.disabled_legs_.contains(i)) continue;
++            double rad,v;
++            f.compute_group_reference(f.tau_+dt/ratio-(i%2==0?f.phase_offset_B_:0),rad,v);
++            p[i]=f.home_offsets_[i]+rad*f.rad_to_counts_;
++        }
++        f.current_ratio_=saved;
++        return p;
++    }
++    static void advance(PIDController& f,double dt) {
++        tick(f,f.prev_time_.seconds()+dt,next_reference(f,dt));
++    }
++    static bool running(const PIDController& f) { return f.state_==PIDController::State::RUNNING; }
++    static bool stopped(const PIDController& f) { return f.state_==PIDController::State::SAFETY_STOP; }
+     static bool fully_stopped(const PIDController& f) { return f.fully_stopped_; }
++    static bool group_b(const PIDController& f) { return f.group_b_started_; }
++    static auto debug(const PIDController& f) { return f.trace_debug_; }
++    static std::array<double,2> budget(const PIDController& f) { return {f.reference_peak_pwm_, f.reference_peak_slew_}; }
+     static std::string reason(const PIDController& f) { return f.safety_stop_reason_; }
++    static void begin_stop(PIDController& f) {
++        f.capture_stopping_reference(); f.state_=PIDController::State::STOPPING;
++        f.stopping_started_=true; f.stopping_start_time_=f.prev_time_;
++    }
+     static void watchdog(PIDController& f) { f.watchdog_callback(); }
+     static void publish_stop(PIDController& f) { f.publish_stop_command(); }
+     static void fail_publication(PIDController& f) {
+-        f.simulate_stop_publication_failure_ = true;
+-        f.simulate_event_publication_failure_ = true;
+-    }
+-    static bool group_b_started(const PIDController& f) { return f.group_b_started_; }
+-    static void expect_waiting_group_b_excluded(const PIDController& f) {
+-        for (int i : {0, 2, 4}) EXPECT_EQ(f.last_position_errors_[i], 0.0f);
+-    }
+-    static void begin_stop(PIDController& f, double now) {
+-        f.state_ = PIDController::State::STOPPING; f.stopping_started_ = true;
+-        f.stopping_start_time_ = time(now); f.stopping_start_ratio_ = f.current_ratio_;
+-    }
+-    static bool transient(PIDController& f, double now, float error) {
+-        std::array<float, 6> errors {}; errors[1] = error;
+-        return f.check_position_error_safety(errors, now);
+-    }
+-    static bool position_guard(PIDController& f, unsigned bad_bits) {
+-        std::array<float, 6> errors {};
+-        for (int i = 0; i < 6; ++i) if (bad_bits & (1U << i)) errors[i] = 100000.0f;
+-        bool failed = false;
+-        for (int n = 0; n < f.safety_.position_error_trip_samples; ++n)
+-            failed = f.check_position_error_safety(errors, n * 0.1) || failed;
+-        return failed;
+-    }
++        f.simulate_stop_publication_failure_=true; f.simulate_event_publication_failure_=true;
++    }
++    static bool guard(PIDController& f,double t,int leg,float error) {
++        std::array<float,6> errors{};errors[leg]=error;
++        return f.check_position_error_safety(errors,t);
++    }
++    static void periodicity(PIDController& f) {
++        for(double x:{-3.01,-1.8,-1.0,-.99,-.5,-.01,0.,.01,.5,.99,3.01}) {
++            double p0,v0,p1,v1;bool a,b;
++            f.compute_trajectory(x*f.period_,p0,v0,a);
++            f.compute_trajectory((x+1)*f.period_,p1,v1,b);
++            EXPECT_NEAR(p1-p0,2*M_PI,1e-7);EXPECT_NEAR(v1,v0,1e-7);
++        }
++        // Position and velocity must meet on both sides of LO/TD and wrap.
++        for(double t:{f.t_stance_,f.period_}) {
++            double p0,v0,p1,v1;bool a,b;
++            f.compute_trajectory(t-1e-9,p0,v0,a);f.compute_trajectory(t+1e-9,p1,v1,b);
++            EXPECT_NEAR(p1,p0,1e-6);EXPECT_NEAR(v1,v0,1e-6);
++        }
++    }
++    static void startup_tracking(PIDController& f) {
++        initialize(f);
++        for(int n=1;n<=3000;++n) {
++            const double t=n*.01;
++            const auto reference=rinbo_fsm::tripod::startup(t,30,0,rinbo_fsm::tripod::kCountsPerRevolution);
++            auto p=endpoint(f);for(int i=0;i<6;++i) if(!f.disabled_legs_.contains(i)) p[i]=reference.position;
++            tick(f,10+t,p);ASSERT_FALSE(stopped(f));
++        }
++        auto p=endpoint(f);for(int n=1;n<=40;++n) tick(f,40+n*.01,p);
++        ASSERT_TRUE(running(f));
++    }
++    static void check_slew(PIDController& f) {
++        for(double dt:{.0005,.001,.005,.02}) {
++            f.prev_command_pwms_.fill(0);std::array<float,6> p;p.fill(80);
++            f.apply_pwm_slew_limit(p,dt);
++            for(int i=0;i<6;++i) EXPECT_NEAR(p[i],f.disabled_legs_.contains(i)?0:250*dt,1e-6);
++        }
++        f.publish_stop_command();for(float p:f.prev_command_pwms_) EXPECT_EQ(p,0);
++    }
++    static void check_ratio_rate(PIDController& f) {
++        f.current_ratio_=81; f.target_ratio_=80;
++        for(int n=0;n<100;++n) advance(f,.001);
++        EXPECT_NEAR(f.current_ratio_,80.995,1e-8);
++        f.current_ratio_=81;
++        for(int n=0;n<10;++n) advance(f,.01);
++        EXPECT_NEAR(f.current_ratio_,80.995,1e-8);
++    }
++    static void fault_sample(PIDController& f) {
++        initialize(f); f.startup_time_=f.startup_duration_;
++        auto p=endpoint(f);p[1]-=18008.929688f;f.prev_positions_=p;
++        tick(f,10.001,p);
++    }
++    static void stall_waiting_b(PIDController& f) {
++        auto p=next_reference(f,.01);p[0]-=18001;
++        tick(f,f.prev_time_.seconds()+.01,p);
++    }
++    static void endpoint_timeout(PIDController& f) {
++        initialize(f);f.startup_time_=f.startup_duration_+2;
++        auto p=endpoint(f);p[1]-=300;f.prev_positions_=p;
++        tick(f,10.01,p);
++    }
++    static void blocked_startup(PIDController& f) {
++        initialize(f);f.startup_time_=f.startup_duration_;
++        auto p=endpoint(f);p[1]=0;f.prev_positions_=p;tick(f,10.01,p);
++    }
++    static void invalid_dt(PIDController& f) { initialize(f);tick(f,10,endpoint(f)); }
++    static inline uint32_t sequence=0;
+ };
+ namespace {
+-using Access = TripodOfflineTestAccess;
+-class TripodMultiLegTest : public ::testing::Test {
++using Access=TripodOfflineTestAccess;
++class TripodMultiLegTest:public ::testing::Test {
+ protected:
+-    std::filesystem::path dir, path;
+-    static void TearDownTestSuite() { if (rclcpp::ok()) rclcpp::shutdown(); }
++    std::filesystem::path dir,path;
+     void SetUp() override {
+-        ASSERT_STREQ(std::getenv("ROS_LOCALHOST_ONLY"), "1");
+-        ASSERT_STREQ(std::getenv("ROS_DOMAIN_ID"), "231");
+-        if (!rclcpp::ok()) { int argc = 0; rclcpp::init(argc, nullptr); }
+-        g_shutdown_requested = false;
+-        char pattern[] = "/tmp/rinbo-tripod-test-XXXXXX";
+-        dir = mkdtemp(pattern); path = dir / "robot.yaml";
+-        std::filesystem::copy_file(std::filesystem::path(RINBO_FSM_SOURCE_DIR) /
+-                                  "test/fixtures/robot_test.yaml", path);
++        ASSERT_STREQ(std::getenv("ROS_LOCALHOST_ONLY"),"1");
++        ASSERT_STREQ(std::getenv("ROS_DOMAIN_ID"),"231");
++        if(!rclcpp::ok()){int argc=0;rclcpp::init(argc,nullptr);}
++        ASSERT_EQ(rcutils_logging_set_logger_level("rinbo_tripod_rslip",RCUTILS_LOG_SEVERITY_ERROR),RCUTILS_RET_OK);
++        g_shutdown_requested=false;
++        char pattern[]="/tmp/rinbo-tripod-test-XXXXXX";dir=mkdtemp(pattern);path=dir/"robot.yaml";
++        std::filesystem::copy_file(std::filesystem::path(RINBO_FSM_SOURCE_DIR)/"test/fixtures/robot_test.yaml",path);
+     }
+     void TearDown() override { std::filesystem::remove_all(dir); }
+-    void mask(unsigned bits) {
++    static void TearDownTestSuite(){if(rclcpp::ok())rclcpp::shutdown();}
++    void fixture(unsigned bits,bool original=false) {
++        auto d=YAML::LoadFile(path);
+         std::vector<std::string> names;
+-        for (int i = 0; i < 6; ++i)
+-            if (bits & (1U << i)) names.emplace_back(rinbo_fsm::DisabledLegs::kLegNames[i]);
+-        // Private fixture only; do not run the live process-management gate.
+-        auto document = YAML::LoadFile(path);
+-        document["disabled_legs"] = names;
+-        document["revision"] = document["revision"].as<int64_t>() + 1;
+-        { std::ofstream out(path); out << document; ASSERT_TRUE(out.good()); }
+-        if (bits != 63) {
+-            { rinbo_config::MotionSession calibration(rinbo_config::Stage::Calibration, path); calibration.complete(); }
+-            { rinbo_config::MotionSession standing(rinbo_config::Stage::Standing, path); standing.complete(); }
+-        } // prerequisite fixtures, never claims about mechanical actions
++        for(int i=0;i<6;++i)if(bits&(1U<<i))names.emplace_back(rinbo_fsm::DisabledLegs::kLegNames[i]);
++        d["disabled_legs"]=names;d["revision"]=d["revision"].as<int64_t>()+1;
++        auto t=d["parameters"]["rinbo_tripod_rslip"];
++        t["kp"]=.08;t["kd"]=.006;t["k_ff"]=.005;t["friction_pwm"]=40.;
++        t["startup_duration"]=original?8.:30.;t["start_ratio"]=original?8.:80.;t["target_ratio"]=original?4.:80.;
++        t["safety"]["max_position_error_counts"]=9000.;
++        {std::ofstream out(path);out<<d;ASSERT_TRUE(out.good());}
++        if(bits!=63){
++            {rinbo_config::MotionSession c(rinbo_config::Stage::Calibration,path);c.complete();}
++            {rinbo_config::MotionSession s(rinbo_config::Stage::Standing,path);s.complete();}
++        }
+     }
+ };
+-TEST_F(TripodMultiLegTest, FasterStartupRatioCannotGenerateAnInitialReverseReference) {
+-    mask(0);
+-    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod,path);
++
++TEST_F(TripodMultiLegTest, OriginalSiteModelWarningDoesNotAddAnOperationInterlock) {
++    fixture(4,true);rinbo_config::MotionSession session(rinbo_config::Stage::Tripod,path);
+     PIDController f(session);
+-    for (double ratio : {8.0,4.0,2.0,1.0}) Access::check_monotone_startup(f,ratio);
+-}
+-
+-TEST_F(TripodMultiLegTest, NegativePhaseDoesNotSubtractAnExtraRevolution) {
+-    mask(0);
+-    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod,path);
+-    PIDController f(session);
+-    Access::check_periodicity(f);
+-}
+-TEST_F(TripodMultiLegTest, All64MasksCoverStartupBothPhaseGroupsAndControlledStop) {
+-    for (unsigned bits = 0; bits < 64; ++bits) {
+-        SCOPED_TRACE(bits); mask(bits);
+-        if (bits == 63) {
+-            EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod, path), std::exception);
+-            continue;
+-        }
+-        rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-        PIDController f(session); Access::initialize(f);
+-        auto p = Access::startup_positions(f);
+-        Access::tick(f, 18.0, p);
+-        ASSERT_TRUE(Access::running(f)); EXPECT_FALSE(Access::stopped(f));
+-        Access::tick(f, 18.01, p);
+-        EXPECT_FALSE(Access::group_b_started(f)); Access::expect_waiting_group_b_excluded(f);
+-        // During this two-second interval group A advances about half a turn.
+-        // A frozen encoder is now correctly rejected by the hard divergence guard.
+-        for (int i : {1,3,5}) p[i] += 28000.0f;
+-        Access::tick(f, 20.0, p);
+-        EXPECT_TRUE(Access::group_b_started(f)); EXPECT_FALSE(Access::stopped(f));
+-        Access::begin_stop(f, 20.0);
+-        Access::tick(f, 20.01, p);
+-        EXPECT_FALSE(Access::fully_stopped(f));
+-    }
+-}
+-TEST_F(TripodMultiLegTest, HealthyStartupFailureCannotEnterRunningOrRetainReceipts) {
+-    mask(5);
+-    {
+-        rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-        PIDController f(session); Access::initialize(f);
+-        Access::tick(f, 18.0, Access::startup_positions(f, false));
+-        EXPECT_TRUE(Access::stopped(f)); EXPECT_FALSE(Access::running(f));
+-        EXPECT_NE(Access::reason(f).find("hard position error: L2"), std::string::npos);
+-    }
+-    EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod, path), std::exception);
+-}
+-TEST_F(TripodMultiLegTest, PositionProtectionIgnoresExactlyTheMaskedLegs) {
+-    mask(5);
+-    {
+-        rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-        PIDController f(session);
+-        EXPECT_FALSE(Access::position_guard(f, 5)); EXPECT_FALSE(Access::stopped(f));
+-    }
+-    mask(1);
+-    {
+-        rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-        PIDController f(session);
+-        EXPECT_TRUE(Access::position_guard(f, 5)); EXPECT_TRUE(Access::stopped(f));
+-        EXPECT_NE(Access::reason(f).find("position error: L3"), std::string::npos);
+-    }
++    EXPECT_GT(Access::budget(f)[0],300);EXPECT_GT(Access::budget(f)[1],250);
++}
++TEST_F(TripodMultiLegTest, Suggested20SecondRatio40ProfileFitsNominalBudget) {
++    fixture(4);
++    auto d=YAML::LoadFile(path);auto t=d["parameters"]["rinbo_tripod_rslip"];
++    t["startup_duration"]=20.;t["start_ratio"]=40.;t["target_ratio"]=40.;
++    {std::ofstream out(path);out<<d;}
++    {rinbo_config::MotionSession c(rinbo_config::Stage::Calibration,path);c.complete();}
++    {rinbo_config::MotionSession standing(rinbo_config::Stage::Standing,path);standing.complete();}
++    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod,path);PIDController f(session);
++    EXPECT_NEAR(Access::budget(f)[0],67.4928,.01);
++    EXPECT_NEAR(Access::budget(f)[1],190.234,.1);
++}
++TEST_F(TripodMultiLegTest, RestToRestStartupIsMonotoneWithContinuousEndpoints) {
++    double previous=0;
++    for(int n=0;n<=1000;++n){
++        auto r=rinbo_fsm::tripod::startup(n*.03,30,0,54984.83);
++        EXPECT_GE(r.position+1e-7,previous);EXPECT_GE(r.velocity,0);previous=r.position;
++        if(n==0||n==1000)EXPECT_NEAR(r.velocity,0,1e-8);
++    }
++    EXPECT_NEAR(previous,54984.83,1e-7);
++}
++TEST_F(TripodMultiLegTest, PhaseLaunchIsContinuousAndKeepsTheUnwrappedPhase) {
++    const double h=.1,e=1e-8;
++    for(double t:{0.,h}){
++        auto a=rinbo_fsm::tripod::launch_phase(t-e,h),b=rinbo_fsm::tripod::launch_phase(t+e,h);
++        EXPECT_NEAR(a.position,b.position,3*e);EXPECT_NEAR(a.velocity,b.velocity,1e-6);
++    }
++    EXPECT_EQ(rinbo_fsm::tripod::launch_phase(-.01,h).velocity,0);
++    EXPECT_DOUBLE_EQ(rinbo_fsm::tripod::launch_phase(123.4,h).position,123.4);
++}
++TEST_F(TripodMultiLegTest, NegativePhaseAndGaitJoinsPreserveMultipleRevolutions) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::periodicity(f);
++}
++TEST_F(TripodMultiLegTest, HistoricalPolarityAndRawCountsRemainExplicit) {
++    for(unsigned i=0;i<6;++i){
++        EXPECT_EQ(rinbo_fsm::tripod::position(i,60000),i<3?60000:-60000);
++        EXPECT_EQ(rinbo_fsm::tripod::position(i,-60000),i<3?-60000:60000);
++        EXPECT_EQ(rinbo_fsm::tripod::direction(i,10),i<3);
++        EXPECT_EQ(rinbo_fsm::tripod::direction(i,-10),i>=3);
++        const double delta=rinbo_fsm::tripod::position(i,-2147483648.)-rinbo_fsm::tripod::position(i,2147483647.);
++        EXPECT_GT(std::fabs(delta),4e9); // Do not silently wrap a feedback reset into a small angle.
++    }
++}
++TEST_F(TripodMultiLegTest, All64MasksCoverStartupBothGroupsAndControlledStop) {
++    for(unsigned bits=0;bits<64;++bits){
++        SCOPED_TRACE(bits);fixture(bits);
++        if(bits==63){EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod,path),std::exception);continue;}
++        rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++        Access::boundary(f);ASSERT_TRUE(Access::running(f));
++        Access::advance(f,.01);EXPECT_FALSE(Access::group_b(f));
++        for(int n=0;n<170;++n)Access::advance(f,.1);
++        EXPECT_TRUE(Access::group_b(f));ASSERT_FALSE(Access::stopped(f));
++        Access::begin_stop(f);auto d=Access::debug(f);
++        Access::tick(f,d.header.stamp.sec+d.header.stamp.nanosec*1e-9+.001,d.actual_position);
++        EXPECT_FALSE(Access::stopped(f));EXPECT_FALSE(Access::fully_stopped(f));
++    }
++}
++TEST_F(TripodMultiLegTest, NormalTrackingAcrossStartupAndGroupBLaunch) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    Access::startup_tracking(f);
++    auto previous=Access::debug(f);
++    for(int n=0;n<1700;++n){
++        Access::advance(f,.01);auto d=Access::debug(f);ASSERT_FALSE(Access::stopped(f));
++        for(int i:{0,1,3,4,5}){
++            EXPECT_LT(std::fabs(d.target_position[i]-previous.target_position[i]),50);
++            EXPECT_LT(std::fabs(d.target_velocity[i]-previous.target_velocity[i]),80);
++            EXPECT_LE(std::fabs(d.limited_pwm[i]-previous.limited_pwm[i]),2.501);
++        }
++        previous=d;
++    }
++    EXPECT_TRUE(Access::group_b(f));
++}
++TEST_F(TripodMultiLegTest, StartupErrorIsNotErasedByRebasingAndWaitingBRemainsProtected) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    Access::boundary(f,100);ASSERT_TRUE(Access::running(f));auto before=Access::debug(f);
++    Access::tick(f,10.11,before.actual_position);auto after=Access::debug(f);
++    EXPECT_NEAR(after.target_position[1],before.target_position[1],1);
++    EXPECT_NEAR(after.position_error[1],100,1);
++    EXPECT_FALSE(after.group_b_leg[1]);EXPECT_TRUE(after.group_b_leg[0]);
++    Access::stall_waiting_b(f);EXPECT_TRUE(Access::stopped(f));
++    EXPECT_NE(Access::reason(f).find("hard position error: L1"),std::string::npos);
++}
++TEST_F(TripodMultiLegTest, HealthyBlockedStartupCannotEnterRunningOrRetainReceipts) {
++    fixture(4);
++    {rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::blocked_startup(f);
++     EXPECT_TRUE(Access::stopped(f));EXPECT_FALSE(Access::running(f));}
++    EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod,path),std::exception);
++}
++TEST_F(TripodMultiLegTest, StartupKeepsExistingAlignmentToleranceWithoutAnExtraInterlock) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::endpoint_timeout(f);
++    EXPECT_FALSE(Access::stopped(f));EXPECT_TRUE(Access::running(f));
++}
++TEST_F(TripodMultiLegTest, TransientLagRecoversButContinuousLagTripsAfterSamplesAndTime) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    for(int n=0;n<400;++n)EXPECT_FALSE(Access::guard(f,10+n*.001,1,10000));
++    EXPECT_FALSE(Access::guard(f,10.4,1,0));
++    for(int n=0;n<400;++n)EXPECT_FALSE(Access::guard(f,11+n*.001,1,-10000));
++    EXPECT_TRUE(Access::guard(f,11.51,1,-10000));
++}
++TEST_F(TripodMultiLegTest, SoftGuardRequiresBothTenSamplesAndHalfASecond) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    for(int n=0;n<9;++n)EXPECT_FALSE(Access::guard(f,10+n*.1,1,9001));
++    EXPECT_TRUE(Access::guard(f,10.9,1,9001));
++}
++TEST_F(TripodMultiLegTest, HardBoundaryAndInvalidFeedbackBypassTransientAllowance) {
++    for(float value:{18000.01f,-18000.01f,std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::infinity()}){
++        fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++        EXPECT_FALSE(Access::guard(f,10,1,18000));EXPECT_TRUE(Access::guard(f,10.001,1,value));
++    }
++}
++TEST_F(TripodMultiLegTest, PositionProtectionIgnoresExactlyL3Mask) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    EXPECT_FALSE(Access::guard(f,10,2,std::numeric_limits<float>::quiet_NaN()));
++    EXPECT_TRUE(Access::guard(f,10,1,18001));
++}
++TEST_F(TripodMultiLegTest, TriggerFrameRetainsRawSignedDataAndFirstReason) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    testing::internal::CaptureStderr();
++    Access::fault_sample(f);
++    const auto fault_log = testing::internal::GetCapturedStderr();
++    ASSERT_TRUE(Access::stopped(f));auto d=Access::debug(f);
++    for(const auto* token : {"TRIPOD_FAULT_FRAME", "L2 group=A", "raw_counts=", "target_counts=",
++                            "signed_error=", "pwm_raw=", "hard=18000", "source_seq="})
++        EXPECT_NE(fault_log.find(token),std::string::npos) << token;
++    EXPECT_TRUE(d.safety_stopped);EXPECT_GT(d.position_error[1],18000);
++    EXPECT_GT(d.raw_pwm[1],80);EXPECT_EQ(d.limited_pwm[1],0);
++    EXPECT_NEAR(d.target_position[1]-d.actual_position[1],d.position_error[1],.01);
++    EXPECT_EQ(d.controller_state,"SAFETY_STOP");EXPECT_FALSE(d.group_b_leg[1]);
++    auto reason=Access::reason(f);f.fail_closed("secondary stale feedback");
++    EXPECT_EQ(Access::reason(f),reason);EXPECT_EQ(Access::debug(f).header.seq,d.header.seq);
++    EXPECT_EQ(Access::debug(f).position_error[1],d.position_error[1]);
++}
++TEST_F(TripodMultiLegTest, SlewUsesRealElapsedTimeAndImmediateStopBypassesIt) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::check_slew(f);
++}
++TEST_F(TripodMultiLegTest, RatioRampIsIndependentOfCallbackRate) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::boundary(f);Access::check_ratio_rate(f);
++}
++TEST_F(TripodMultiLegTest, ShutdownBrakesFromCurrentReferenceIncludingStartup) {
++    for(double v:{-3000.,0.,3000.}) {
++        auto a=rinbo_fsm::tripod::brake(0,2,{12345,v}),b=rinbo_fsm::tripod::brake(2,2,{12345,v});
++        EXPECT_DOUBLE_EQ(a.position,12345);EXPECT_DOUBLE_EQ(a.velocity,v);
++        EXPECT_DOUBLE_EQ(b.velocity,0);EXPECT_DOUBLE_EQ(b.position,12345+v);
++    }
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::initialize(f);
++    std::array<float,6> p{};Access::tick(f,10.01,p);auto before=Access::debug(f);
++    Access::begin_stop(f);Access::tick(f,10.011,p);auto after=Access::debug(f);
++    EXPECT_NEAR(after.target_position[1],before.target_position[1],.01);
++    EXPECT_LE(std::fabs(after.target_velocity[1]),std::fabs(before.target_velocity[1]));
+ }
+ TEST_F(TripodMultiLegTest, NormalStopPublishesDisabledCommandThenEnds) {
+-    mask(5);
+-    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-    PIDController f(session); Access::initialize(f);
+-    auto p = Access::startup_positions(f);
+-    Access::tick(f, 18.0, p); ASSERT_TRUE(Access::running(f));
+-    Access::begin_stop(f, 18.0); Access::tick(f, 20.1, p);
+-    EXPECT_TRUE(Access::fully_stopped(f)); EXPECT_FALSE(Access::stopped(f));
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::boundary(f);
++    Access::begin_stop(f);Access::tick(f,12.2,Access::endpoint(f));
++    EXPECT_TRUE(Access::fully_stopped(f));EXPECT_FALSE(Access::stopped(f));
++}
++TEST_F(TripodMultiLegTest, NonPositiveSampleTimeFailsClosed) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);Access::invalid_dt(f);EXPECT_TRUE(Access::stopped(f));
+ }
+ TEST_F(TripodMultiLegTest, ShutdownPublishFailuresCannotPreservePrerequisiteReceipts) {
+-    mask(5);
+-    {
+-        rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-        PIDController f(session);
+-        rclcpp::shutdown();
+-        Access::fail_publication(f); // deterministically cover both catch paths for every RMW
+-        EXPECT_ANY_THROW(Access::publish_stop(f));
+-        EXPECT_NO_THROW(f.fail_closed("test: ROS context already stopped"));
+-        EXPECT_TRUE(Access::stopped(f));
+-    }
+-    EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod, path), std::exception);
++    fixture(4);
++    {rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);rclcpp::shutdown();
++     Access::fail_publication(f);EXPECT_ANY_THROW(Access::publish_stop(f));EXPECT_NO_THROW(f.fail_closed("ROS context stopped"));EXPECT_TRUE(Access::stopped(f));}
++    EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod,path),std::exception);
++}
++TEST_F(TripodMultiLegTest, SafetyStoppedActionHonorsShutdownWithoutFeedback) {
++    fixture(4);rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    f.fail_closed("first position error");Access::watchdog(f);EXPECT_TRUE(rclcpp::ok());
++    g_shutdown_requested=true;Access::watchdog(f);EXPECT_FALSE(rclcpp::ok());
++    EXPECT_TRUE(Access::fully_stopped(f));EXPECT_EQ(Access::reason(f),"first position error");
+ }
+ } // namespace
+-
+-TEST_F(TripodMultiLegTest, TrackingTransientUsesElapsedTimeAndRecoversBeforeDeadline) {
+-    mask(5);
+-    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-    PIDController f(session);
+-    // Hundreds of 1kHz callbacks must not turn 0.5s into ten milliseconds.
+-    for (int n = 0; n < 400; ++n) EXPECT_FALSE(Access::transient(f, 10.0+n*.001, 6000));
+-    EXPECT_FALSE(Access::transient(f, 10.4, 0));
+-    for (int n = 0; n < 400; ++n) EXPECT_FALSE(Access::transient(f, 11.0+n*.001, 6000));
+-    EXPECT_TRUE(Access::transient(f, 11.51, 6000));
+-}
+-
+-TEST_F(TripodMultiLegTest, StartupBoundaryAllowsBriefTrackingDelayBeforeRunning) {
+-    mask(5);
+-    rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, path);
+-    PIDController f(session); Access::initialize(f);
+-    auto target = Access::startup_positions(f);
+-    auto delayed = target; delayed[1] -= 6000;
+-    Access::tick(f,18.0,delayed);
+-    EXPECT_FALSE(Access::stopped(f)); EXPECT_FALSE(Access::running(f));
+-    Access::tick(f,18.1,target);
+-    EXPECT_FALSE(Access::stopped(f)); EXPECT_TRUE(Access::running(f));
+-}
+-
+-TEST_F(TripodMultiLegTest, SafetyStoppedActionHonorsShutdownWithoutMotorFeedback) {
+-    mask(5);
+-    {
+-        rinbo_config::MotionSession session(rinbo_config::Stage::Tripod,path);
+-        PIDController f(session);
+-        f.fail_closed("position error test");
+-        Access::watchdog(f);
+-        EXPECT_TRUE(rclcpp::ok()); EXPECT_FALSE(Access::fully_stopped(f));
+-        g_shutdown_requested=true;
+-        Access::watchdog(f);
+-        EXPECT_FALSE(rclcpp::ok()); EXPECT_TRUE(Access::fully_stopped(f));
+-        EXPECT_TRUE(Access::stopped(f)); EXPECT_EQ(Access::reason(f),"position error test");
+-    }
+-    EXPECT_THROW(rinbo_config::MotionSession(rinbo_config::Stage::Tripod,path),std::exception);
+-}
+--- a/src/rinbo_fsm/test/test_robot_config.cpp
++++ b/src/rinbo_fsm/test/test_robot_config.cpp
+@@ -250,3 +250,63 @@
+     EXPECT_THROW(assert_no_motion_processes(proc),std::exception);
+ }
+ } // namespace
++
++namespace {
++TEST_F(ConfigTest, TripodTuningPreservesOnlyValidUnchangedPrerequisites) {
++    const auto proc=dir/"empty-proc";fs::create_directory(proc);
++    {MotionSession c(Stage::Calibration,path);c.complete();}
++    {MotionSession s(Stage::Standing,path);s.complete();}
++    const auto before=RobotConfig::load(path);
++    const auto result=tune_tripod(path,{{"startup_duration",30},{"start_ratio",80},{"target_ratio",80},{"kp",.08}},false,proc);
++    EXPECT_NE(result.find("\"calibration_valid\":true"),std::string::npos);
++    const auto after=RobotConfig::load(path);
++    EXPECT_EQ(after.revision(),before.revision()+1);
++    EXPECT_EQ(after.parameters("rinbo_cali"),before.parameters("rinbo_cali"));
++    EXPECT_EQ(after.parameters("rinbo_standing"),before.parameters("rinbo_standing"));
++    EXPECT_EQ(after.disabled_legs(),before.disabled_legs());
++    EXPECT_NO_THROW(MotionSession t(Stage::Tripod,path));
++    for(const auto& p:before.parameters("rinbo_tripod_rslip")){
++        if(p.get_name().find("safety.")!=0 && p.get_name()!="max_pwm")continue;
++        const auto& a=after.parameters("rinbo_tripod_rslip");
++        auto found=std::find_if(a.begin(),a.end(),[&](const auto& v){return v.get_name()==p.get_name();});
++        ASSERT_NE(found,a.end());EXPECT_EQ(*found,p);
++    }
++    const auto unchanged=bytes();tune_tripod(path,{{"kp",.08}},false,proc);EXPECT_EQ(bytes(),unchanged);
++}
++TEST_F(ConfigTest, TripodTuningPreviewIsReadOnlyEvenDuringMotion) {
++    const auto proc=dir/"empty-proc";fs::create_directory(proc);
++    {MotionSession c(Stage::Calibration,path);c.complete();}
++    {MotionSession s(Stage::Standing,path);s.complete();}
++    MotionSession active(Stage::Tripod,path);
++    const auto before=bytes();
++    EXPECT_NO_THROW(tune_tripod(path,{{"startup_duration",20}},true,proc));
++    EXPECT_EQ(bytes(),before);
++    EXPECT_THROW(tune_tripod(path,{{"startup_duration",20}},false,proc),std::exception);
++}
++TEST_F(ConfigTest, TripodTuningNeverCreatesMissingOrInvalidReceipts) {
++    const auto proc=dir/"empty-proc";fs::create_directory(proc);
++    EXPECT_NE(tune_tripod(path,{{"startup_duration",20}},false,proc).find("\"calibration_valid\":false"),std::string::npos);
++    EXPECT_THROW(MotionSession t(Stage::Tripod,path),std::exception);
++    {MotionSession c(Stage::Calibration,path);c.complete();}
++    EXPECT_NE(tune_tripod(path,{{"startup_duration",21}},false,proc).find("\"standing_valid\":false"),std::string::npos);
++    EXPECT_NO_THROW(check_manual_readiness(RobotConfig::load(path)));
++    EXPECT_THROW(MotionSession t(Stage::Tripod,path),std::exception);
++    {MotionSession s(Stage::Standing,path);s.complete();}
++    {auto r=YAML::LoadFile(path.string()+".calibration.json");r["boot_id"]="other-boot";
++     std::ofstream out(path.string()+".calibration.json");out<<r;}
++    tune_tripod(path,{{"startup_duration",22}},false,proc);
++    EXPECT_THROW(MotionSession t(Stage::Tripod,path),std::exception);
++}
++TEST_F(ConfigTest, TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters) {
++    const auto proc=dir/"proc";fs::create_directories(proc/"123");
++    {std::ofstream out(proc/"123"/"cmdline",std::ios::binary);out<<"/bin/rinbo_tripod"<<'\0';}
++    const auto before=bytes();
++    EXPECT_THROW(tune_tripod(path,{{"startup_duration",20}},false,proc),std::exception);
++    for(const auto& key:{"max_pwm","safety.max_position_error_counts","hardware.disabled_legs","unknown"})
++        EXPECT_THROW(tune_tripod(path,{{key,80}},true,proc),std::exception);
++    EXPECT_THROW(tune_tripod(path,{{"startup_duration",0}},true,proc),std::exception);
++    EXPECT_THROW(tune_tripod(path,{{"start_ratio",2},{"target_ratio",8}},true,proc),std::exception);
++    EXPECT_THROW(tune_tripod(path,{{"kp",std::numeric_limits<double>::quiet_NaN()}},true,proc),std::exception);
++    EXPECT_EQ(bytes(),before);
++}
++} // namespace
+--- a/src/rinbo_fsm/src/tripod_reference.hpp
++++ b/src/rinbo_fsm/src/tripod_reference.hpp
+@@ -0,0 +1,40 @@
++#pragma once
++
++#include <algorithm>
++#include <cmath>
++
++namespace rinbo_fsm::tripod {
++// Historical Tripod coordinates, deliberately NOT shared with Standing.
++// Physical direction and counts/revolution still require site verification.
++inline double position(unsigned leg, double raw) { return leg < 3 ? raw : -raw; }
++inline bool direction(unsigned leg, double pwm) { return leg < 3 ? pwm >= 0 : pwm < 0; }
++constexpr double kCountsPerRevolution = 54984.83;
++constexpr float kHardPositionError = 18000.0f;
++
++struct Reference { double position; double velocity; };
++
++// Rest-to-rest, with zero acceleration at both ends. Keeps unwrapped travel.
++inline Reference startup(double t, double duration, double origin, double travel) {
++    const double x = std::clamp(t / duration, 0.0, 1.0);
++    const double s = x*x*x*(10 + x*(-15 + 6*x));
++    const double ds = 30*x*x*(1-x)*(1-x);
++    return {origin + travel*s, travel*ds/duration};
++}
++
++// Smoothly enter the existing phase trajectory from rest, then recover its
++// exact phase (including all revolutions). Derivative is continuous at joins.
++inline Reference launch_phase(double progress, double blend) {
++    if (progress <= 0) return {0, 0};
++    if (progress >= blend) return {progress, 1};
++    const double x = progress/blend;
++    return {blend*x*x*x*(6+x*(-8+3*x)), x*x*(18+x*(-32+15*x))};
++}
++
++// Stop from the last commanded reference, including when interrupted during
++// STARTUP. A slower-than-ratio-10 gait must never accelerate during shutdown.
++inline Reference brake(double t, double duration, Reference initial) {
++    const double x = std::clamp(t/duration, 0.0, 1.0);
++    return {initial.position + initial.velocity*duration*(x-x*x/2),
++            initial.velocity*(1-x)};
++}
++}  // namespace rinbo_fsm::tripod

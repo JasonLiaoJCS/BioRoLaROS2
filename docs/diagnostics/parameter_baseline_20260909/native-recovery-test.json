@@ -1,0 +1,30 @@
+{
+  "test": "Temporary config recovery using production C++ parser before/after",
+  "passed": true,
+  "old_revision": 19,
+  "new_revision": 20,
+  "restored_standing_pwm": 500,
+  "native_operations": [
+    [
+      "status",
+      "--json"
+    ],
+    [
+      "assert-idle"
+    ],
+    [
+      "status",
+      "--json"
+    ],
+    [
+      "status",
+      "--json"
+    ],
+    [
+      "status",
+      "--json"
+    ]
+  ],
+  "real_site_written": false,
+  "hardware_actions": []
+}

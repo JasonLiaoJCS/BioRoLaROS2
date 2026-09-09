@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="23" failures="0" disabled="0" errors="0" time="5.487" timestamp="2026-09-09T12:48:18" name="AllTests">
+  <testsuite name="TripodMultiLegTest" tests="23" failures="0" disabled="0" errors="0" time="5.487" timestamp="2026-09-09T12:48:18">
+    <testcase name="OriginalSiteModelWarningDoesNotAddAnOperationInterlock" status="run" result="completed" time="0.12" timestamp="2026-09-09T12:48:18" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="Suggested20SecondRatio40ProfileFitsNominalBudget" status="run" result="completed" time="0.064" timestamp="2026-09-09T12:48:18" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="RestToRestStartupIsMonotoneWithContinuousEndpoints" status="run" result="completed" time="0.001" timestamp="2026-09-09T12:48:19" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="PhaseLaunchIsContinuousAndKeepsTheUnwrappedPhase" status="run" result="completed" time="0" timestamp="2026-09-09T12:48:19" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="NegativePhaseAndGaitJoinsPreserveMultipleRevolutions" status="run" result="completed" time="0.046" timestamp="2026-09-09T12:48:19" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="HistoricalPolarityAndRawCountsRemainExplicit" status="run" result="completed" time="0" timestamp="2026-09-09T12:48:19" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="All64MasksCoverStartupBothGroupsAndControlledStop" status="run" result="completed" time="4.073" timestamp="2026-09-09T12:48:19" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="NormalTrackingAcrossStartupAndGroupBLaunch" status="run" result="completed" time="0.287" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="StartupErrorIsNotErasedByRebasingAndWaitingBRemainsProtected" status="run" result="completed" time="0.076" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="HealthyBlockedStartupCannotEnterRunningOrRetainReceipts" status="run" result="completed" time="0.052" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="StartupKeepsExistingAlignmentToleranceWithoutAnExtraInterlock" status="run" result="completed" time="0.046" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="TransientLagRecoversButContinuousLagTripsAfterSamplesAndTime" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="SoftGuardRequiresBothTenSamplesAndHalfASecond" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="HardBoundaryAndInvalidFeedbackBypassTransientAllowance" status="run" result="completed" time="0.189" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="PositionProtectionIgnoresExactlyL3Mask" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="TriggerFrameRetainsRawSignedDataAndFirstReason" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="SlewUsesRealElapsedTimeAndImmediateStopBypassesIt" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:23" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="RatioRampIsIndependentOfCallbackRate" status="run" result="completed" time="0.05" timestamp="2026-09-09T12:48:24" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="ShutdownBrakesFromCurrentReferenceIncludingStartup" status="run" result="completed" time="0.047" timestamp="2026-09-09T12:48:24" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="NormalStopPublishesDisabledCommandThenEnds" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:24" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="NonPositiveSampleTimeFailsClosed" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:24" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="ShutdownPublishFailuresCannotPreservePrerequisiteReceipts" status="run" result="completed" time="0.051" timestamp="2026-09-09T12:48:24" classname="rinbo_fsm.TripodMultiLegTest" />
+    <testcase name="SafetyStoppedActionHonorsShutdownWithoutFeedback" status="run" result="completed" time="0.048" timestamp="2026-09-09T12:48:24" classname="rinbo_fsm.TripodMultiLegTest" />
+  </testsuite>
+</testsuites>

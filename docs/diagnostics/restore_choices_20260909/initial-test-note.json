@@ -1,0 +1,5 @@
+{
+  "failure": "Seven config fixture tests refused process PID 152439 while build was still active. PID had exited before identity could be read.",
+  "confirmed": "Guard rejected concurrent process; source guard unchanged. Other nine CTest suites passed.",
+  "next": "Finish build and rerun final offline checks; no deployment before pass."
+}

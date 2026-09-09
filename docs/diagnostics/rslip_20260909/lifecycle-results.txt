@@ -1,0 +1,41 @@
+[
+  {
+    "finished": true,
+    "exit": 0,
+    "escape_output": false,
+    "case": "devnull_unknown_TERM",
+    "alive_before_stop": true
+  },
+  {
+    "finished": true,
+    "exit": 0,
+    "escape_output": false,
+    "case": "pipe_EOF",
+    "alive_before_stop": true
+  },
+  {
+    "finished": false,
+    "alive_after_hup": false,
+    "exit": -1,
+    "escape_output": false,
+    "case": "SIGHUP_default"
+  },
+  {
+    "finished": true,
+    "alive_after_hup": true,
+    "exit": 0,
+    "escape_output": false,
+    "case": "SIGHUP_ignored"
+  },
+  {
+    "exit_after_INT": 0,
+    "CLK_TCK": 100,
+    "cpu_ticks_in_0_6_seconds": 60,
+    "alive_after_loss": true,
+    "case": "PTY_disappears_without_SIGHUP"
+  },
+  {
+    "exit": -1,
+    "case": "controlling_PTY_disconnect"
+  }
+]

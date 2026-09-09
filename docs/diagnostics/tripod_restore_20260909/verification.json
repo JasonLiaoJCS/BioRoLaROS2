@@ -1,0 +1,37 @@
+{
+  "native_cases": {
+    "test_control_velocity.gtest": 5,
+    "test_tripod_multileg.gtest": 33,
+    "test_latest_state_safety.gtest": 29,
+    "test_motor_arbiter_handshake.gtest": 42,
+    "test_manual_controller.gtest": 13,
+    "test_robot_config.gtest": 25,
+    "test_cali_multileg.gtest": 15,
+    "test_manual_motion.gtest": 7,
+    "test_standing_multileg.gtest": 10,
+    "test_motion_effort.gtest": 4
+  },
+  "native_total": 183,
+  "retired_entry_checks": 1,
+  "panel_tests": 74,
+  "total_checks": 258,
+  "all_passed": true,
+  "unchanged_source_and_bridge": {
+    "src/rinbo_fsm/src/rinbo_cali.cpp": true,
+    "src/rinbo_fsm/src/rinbo_standing.cpp": true,
+    "src/rinbo_fsm/src/tripod_reference.hpp": true,
+    "src/rinbo_fsm/src/motion_effort.hpp": true,
+    "src/rinbo_ros_bridge/config/redrhex_safe.yaml": true,
+    "build/rinbo_ros_bridge/rinbo_ros_bridge": true
+  },
+  "unchanged_cali_standing_parameters": true,
+  "unchanged_tripod_safety_and_shutdown_parameters": true,
+  "disabled_legs": [
+    "L3"
+  ],
+  "revision": 14,
+  "site_sha256": "c657c377f47f4277a6b4f1b7e2abb08e1f68eca36c5541df5a28d8e6587dda90",
+  "hardware_actions": [],
+  "initial_test_issue": "Only the new ratio test failed due to test clock truncation / callback-count expectation. Fixed rounding and compared against actual simulated elapsed time, without relaxing tolerance or modifying production limits. Full suite rerun passed.",
+  "robot_sh_install_check_passed": true
+}

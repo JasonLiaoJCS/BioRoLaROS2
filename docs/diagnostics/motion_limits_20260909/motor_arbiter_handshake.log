@@ -1,0 +1,114 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 42 tests from 8 test suites.
+[----------] Global test environment set-up.
+[----------] 6 tests from MotorArbiterPublisherIdentityTest
+[ RUN      ] MotorArbiterPublisherIdentityTest.SoleExpectedPublisherAndCallbackGidIsTrusted
+[       OK ] MotorArbiterPublisherIdentityTest.SoleExpectedPublisherAndCallbackGidIsTrusted (0 ms)
+[ RUN      ] MotorArbiterPublisherIdentityTest.NoPublisherIsRejected
+[       OK ] MotorArbiterPublisherIdentityTest.NoPublisherIsRejected (0 ms)
+[ RUN      ] MotorArbiterPublisherIdentityTest.MultiplePublishersAreRejected
+[       OK ] MotorArbiterPublisherIdentityTest.MultiplePublishersAreRejected (0 ms)
+[ RUN      ] MotorArbiterPublisherIdentityTest.WrongNodeIsRejectedEvenWhenGidMatches
+[       OK ] MotorArbiterPublisherIdentityTest.WrongNodeIsRejectedEvenWhenGidMatches (0 ms)
+[ RUN      ] MotorArbiterPublisherIdentityTest.SameNameInWrongNamespaceIsRejected
+[       OK ] MotorArbiterPublisherIdentityTest.SameNameInWrongNamespaceIsRejected (0 ms)
+[ RUN      ] MotorArbiterPublisherIdentityTest.WrongCallbackGidIsRejected
+[       OK ] MotorArbiterPublisherIdentityTest.WrongCallbackGidIsRejected (0 ms)
+[----------] 6 tests from MotorArbiterPublisherIdentityTest (0 ms total)
+
+[----------] 1 test from MotorArbiterSubscriptionIdentityTest
+[ RUN      ] MotorArbiterSubscriptionIdentityTest.RequiresExpectedNodeInRootNamespace
+[       OK ] MotorArbiterSubscriptionIdentityTest.RequiresExpectedNodeInRootNamespace (0 ms)
+[----------] 1 test from MotorArbiterSubscriptionIdentityTest (0 ms total)
+
+[----------] 4 tests from MotorArbiterEndpointPinStateTest
+[ RUN      ] MotorArbiterEndpointPinStateTest.FirstAndSameEndpointAreAccepted
+[       OK ] MotorArbiterEndpointPinStateTest.FirstAndSameEndpointAreAccepted (0 ms)
+[ RUN      ] MotorArbiterEndpointPinStateTest.UncommittedEndpointChangeRebasesPin
+[       OK ] MotorArbiterEndpointPinStateTest.UncommittedEndpointChangeRebasesPin (0 ms)
+[ RUN      ] MotorArbiterEndpointPinStateTest.CommittedStatusEndpointChangeIsRejected
+[       OK ] MotorArbiterEndpointPinStateTest.CommittedStatusEndpointChangeIsRejected (0 ms)
+[ RUN      ] MotorArbiterEndpointPinStateTest.CommandSubscriptionGidChangeIsRejected
+[       OK ] MotorArbiterEndpointPinStateTest.CommandSubscriptionGidChangeIsRejected (0 ms)
+[----------] 4 tests from MotorArbiterEndpointPinStateTest (0 ms total)
+
+[----------] 1 test from MotorArbiterHeartbeatStateTest
+[ RUN      ] MotorArbiterHeartbeatStateTest.GraphQueryDelayCannotExtendCallbackEntryFreshness
+[       OK ] MotorArbiterHeartbeatStateTest.GraphQueryDelayCannotExtendCallbackEntryFreshness (0 ms)
+[----------] 1 test from MotorArbiterHeartbeatStateTest (0 ms total)
+
+[----------] 4 tests from MotorArbiterEpochStateTest
+[ RUN      ] MotorArbiterEpochStateTest.SameEpochIsStable
+[       OK ] MotorArbiterEpochStateTest.SameEpochIsStable (0 ms)
+[ RUN      ] MotorArbiterEpochStateTest.LatchGenerationChangeIsSticky
+[       OK ] MotorArbiterEpochStateTest.LatchGenerationChangeIsSticky (0 ms)
+[ RUN      ] MotorArbiterEpochStateTest.BridgeRestartIsDetected
+[       OK ] MotorArbiterEpochStateTest.BridgeRestartIsDetected (0 ms)
+[ RUN      ] MotorArbiterEpochStateTest.UncommittedRearmCanAdoptNewEpochBaseline
+[       OK ] MotorArbiterEpochStateTest.UncommittedRearmCanAdoptNewEpochBaseline (0 ms)
+[----------] 4 tests from MotorArbiterEpochStateTest (0 ms total)
+
+[----------] 11 tests from MotorArbiterHandshakeStateTest
+[ RUN      ] MotorArbiterHandshakeStateTest.HistoricalReadyCannotReplaceRearmAck
+[       OK ] MotorArbiterHandshakeStateTest.HistoricalReadyCannotReplaceRearmAck (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.RearmRequiresExactlyOneCommandSubscriber
+[       OK ] MotorArbiterHandshakeStateTest.RearmRequiresExactlyOneCommandSubscriber (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.AckForUnpublishedSequenceIsIgnored
+[       OK ] MotorArbiterHandshakeStateTest.AckForUnpublishedSequenceIsIgnored (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.LateRearmAckMatchesBeyondOldFivePacketBudget
+[       OK ] MotorArbiterHandshakeStateTest.LateRearmAckMatchesBeyondOldFivePacketBudget (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.DelayedReadyAfterAckCompletesRearm
+[       OK ] MotorArbiterHandshakeStateTest.DelayedReadyAfterAckCompletesRearm (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.EndpointFaultAfterRearmAckIsStickyBeforeArming
+[       OK ] MotorArbiterHandshakeStateTest.EndpointFaultAfterRearmAckIsStickyBeforeArming (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.RelatchAfterArmingIsTerminal
+[       OK ] MotorArbiterHandshakeStateTest.RelatchAfterArmingIsTerminal (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.DuplicateSubscriberAfterArmingIsViolation
+[       OK ] MotorArbiterHandshakeStateTest.DuplicateSubscriberAfterArmingIsViolation (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.ActiveAckMustMatchPublishedSequence
+[       OK ] MotorArbiterHandshakeStateTest.ActiveAckMustMatchPublishedSequence (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.AnyRecordedProbeCanBeAcknowledged
+[       OK ] MotorArbiterHandshakeStateTest.AnyRecordedProbeCanBeAcknowledged (0 ms)
+[ RUN      ] MotorArbiterHandshakeStateTest.LateActiveAckMatchesBeyondOldFivePacketBudget
+[       OK ] MotorArbiterHandshakeStateTest.LateActiveAckMatchesBeyondOldFivePacketBudget (0 ms)
+[----------] 11 tests from MotorArbiterHandshakeStateTest (0 ms total)
+
+[----------] 11 tests from RinboPowerGuardTest
+[ RUN      ] RinboPowerGuardTest.FreshInitialRelayOffRemainsSafeWait
+[       OK ] RinboPowerGuardTest.FreshInitialRelayOffRemainsSafeWait (22 ms)
+[ RUN      ] RinboPowerGuardTest.RelayDropAfterSafePowerIsViolation
+[       OK ] RinboPowerGuardTest.RelayDropAfterSafePowerIsViolation (11 ms)
+[ RUN      ] RinboPowerGuardTest.MissingTelemetryStillFaultsAfterDeadline
+[       OK ] RinboPowerGuardTest.MissingTelemetryStillFaultsAfterDeadline (10 ms)
+[ RUN      ] RinboPowerGuardTest.InvalidTelemetryFaultsWhileRelayOff
+[       OK ] RinboPowerGuardTest.InvalidTelemetryFaultsWhileRelayOff (11 ms)
+[ RUN      ] RinboPowerGuardTest.NonFiniteStaleTimeoutIsRejected
+[       OK ] RinboPowerGuardTest.NonFiniteStaleTimeoutIsRejected (9 ms)
+[ RUN      ] RinboPowerGuardTest.BackwardSafetyClockIsFailSafe
+[       OK ] RinboPowerGuardTest.BackwardSafetyClockIsFailSafe (10 ms)
+[ RUN      ] RinboPowerGuardTest.DisabledLegCurrentChannelIsTheOnlyPerLegExemption
+[       OK ] RinboPowerGuardTest.DisabledLegCurrentChannelIsTheOnlyPerLegExemption (10 ms)
+[ RUN      ] RinboPowerGuardTest.RosInputGuardRejectsZeroAndReplayedHeaders
+[       OK ] RinboPowerGuardTest.RosInputGuardRejectsZeroAndReplayedHeaders (10 ms)
+[ RUN      ] RinboPowerGuardTest.ConstructorRejectsDisabledCorePowerFlag
+[       OK ] RinboPowerGuardTest.ConstructorRejectsDisabledCorePowerFlag (10 ms)
+[ RUN      ] RinboPowerGuardTest.SourceAgeOverridesCanOnlyTighten
+[       OK ] RinboPowerGuardTest.SourceAgeOverridesCanOnlyTighten (19 ms)
+[ RUN      ] RinboPowerGuardTest.RunningOutputToleratesTransientButPersistentCurrentStillTrips
+[       OK ] RinboPowerGuardTest.RunningOutputToleratesTransientButPersistentCurrentStillTrips (10 ms)
+[----------] 11 tests from RinboPowerGuardTest (132 ms total)
+
+[----------] 4 tests from SafetyInvariantsTest
+[ RUN      ] SafetyInvariantsTest.CorePowerGuardsCannotBeDisabled
+[       OK ] SafetyInvariantsTest.CorePowerGuardsCannotBeDisabled (0 ms)
+[ RUN      ] SafetyInvariantsTest.PowerEnvelopeAndMappingRemainBounded
+[       OK ] SafetyInvariantsTest.PowerEnvelopeAndMappingRemainBounded (0 ms)
+[ RUN      ] SafetyInvariantsTest.TripodErrorAndSlewGuardsRemainBounded
+[       OK ] SafetyInvariantsTest.TripodErrorAndSlewGuardsRemainBounded (0 ms)
+[ RUN      ] SafetyInvariantsTest.MotorArbiterIdentityAndTimeoutsAreHardBounded
+[       OK ] SafetyInvariantsTest.MotorArbiterIdentityAndTimeoutsAreHardBounded (0 ms)
+[----------] 4 tests from SafetyInvariantsTest (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 42 tests from 8 test suites ran. (145 ms total)
+[  PASSED  ] 42 tests.

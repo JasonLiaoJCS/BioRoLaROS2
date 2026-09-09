@@ -1,0 +1,11 @@
+{
+  "time": "2026-09-09 20:57:27 +0800",
+  "sha256": {
+    "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml": "bd6ada5ff5f9be724f68fb09545f4ba912f6abcbd302b012d291d0353e4788dd",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": "ccb632ff68350084bea53b6cd261bc6d7690caea492ded4314df85ae61ceca80",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": "f0585bc9b3da2494e3f093d7676b4af1b3249dbc932b99b75fc5c10c6b26ed48",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": "e74267257a3aeb054100f616acd57787dc4394e09ba33e208b73bf8132bcb6ac",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": "ed11370dedf751be9c0e3f2b78ac74a6787deb8261e9983cc70c4848c1013f2e",
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": "0ee39e9df4078d6814878de305ed80e93363616e45ccc7080241c1e74516fb94"
+  }
+}

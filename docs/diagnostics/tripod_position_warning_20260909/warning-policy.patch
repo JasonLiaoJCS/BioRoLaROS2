@@ -1,0 +1,366 @@
+--- a/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ b/src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -226,9 +226,13 @@
+                     safety_.voltage_trip_samples,
+                     safety_.stop_on_current_limit ? "ON" : "OFF", safety_.max_current,
+                     safety_.current_trip_samples,
+-                    safety_.stop_on_position_error ? "ON" : "OFF", safety_.max_position_error_counts,
++                    safety_.stop_on_position_error ? "STOP" : "WARN", safety_.max_position_error_counts,
+                     safety_.position_error_trip_samples,
+                     safety_.enable_pwm_slew_limit ? "ON" : "OFF", safety_.pwm_slew_rate_per_sec);
++        RCLCPP_WARN(get_logger(),
++            "TRIPOD_POSITION_POLICY mode=%s finite_error_action=%s invalid_feedback_action=stop",
++            safety_.stop_on_position_error ? "stop" : "warn_only",
++            safety_.stop_on_position_error ? "stop" : "warn_and_continue");
+         if (disabled_legs_.enabled()) {
+             RCLCPP_WARN(this->get_logger(),
+                         "supported_leg_test: hardware.disabled_legs=[%s]. Remaining legs follow their existing independent phase references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed.",
+@@ -762,6 +766,7 @@
+             << " source_seq=" << trace_source_.seq << " source_s=" << source_s
+             << " arrival_s=" << last_motor_state_time_.seconds()
+             << " source_age_s=" << frame_s-source_s
++            << " position_policy=" << (safety_.stop_on_position_error ? "stop" : "warn_only")
+             << " soft=" << safety_.max_position_error_counts
+             << " samples_required=" << safety_.position_error_trip_samples
+             << " seconds_required=" << safety_.position_error_trip_seconds
+@@ -879,10 +884,9 @@
+     }
+ 
+     bool check_position_error_safety(const std::array<float, 6>& pos_errors, double now_s) {
+-        if (!safety_.enabled || !safety_.stop_on_position_error) {
+-            return false;
+-        }
+-
++        // Invalid values always stop, including attended warning-only mode.
++        int warning_idx = -1;
++        float warning_error = 0.0f;
+         int worst_idx = -1;
+         float worst_abs_error = 0.0f;
+         for (int i = 0; i < 6; ++i) {
+@@ -891,12 +895,15 @@
+                 continue;
+             }
+             const float error = std::fabs(pos_errors[i]);
+-            // Large divergence / invalid feedback bypass the transient allowance.
+-            if (!std::isfinite(error) || error > rinbo_fsm::tripod::kHardPositionError) {
++            // Nonfinite feedback is never a finite tracking-error warning.
++            // The historical finite hard limit is advisory in warning-only mode.
++            if (!std::isfinite(error) || (safety_.stop_on_position_error &&
++                error > rinbo_fsm::tripod::kHardPositionError)) {
+                 return trigger_safety_stop(std::string("hard position error: ") + leg_name(i) +
+                     " counts=" + std::to_string(error) + " hard_limit=18000");
+             }
+             if (error > safety_.max_position_error_counts) {
++                if (error > warning_error) { warning_idx = i; warning_error = error; }
+                 if (position_error_trip_counts_[i] == 0) position_error_since_s_[i] = now_s;
+                 position_error_trip_counts_[i] = std::min(
+                     position_error_trip_counts_[i] + 1, safety_.position_error_trip_samples);
+@@ -909,6 +916,23 @@
+                 worst_abs_error = error;
+                 worst_idx = i;
+             }
++        }
++
++        if (!safety_.stop_on_position_error) {
++            if (warning_idx >= 0) {
++                if (!position_warning_active_ || now_s - last_position_warning_s_ >= 1.0) {
++                    RCLCPP_WARN(get_logger(),
++                        "TRIPOD_POSITION_WARNING leg=%s signed_error=%.6f abs_error=%.6f warning_threshold=%.0f historical_hard=%.0f mode=warn_only action=continue",
++                        leg_name(warning_idx), pos_errors[warning_idx], warning_error,
++                        safety_.max_position_error_counts, rinbo_fsm::tripod::kHardPositionError);
++                    last_position_warning_s_ = now_s;
++                }
++                position_warning_active_ = true;
++            } else if (position_warning_active_) {
++                RCLCPP_INFO(get_logger(), "TRIPOD_POSITION_RECOVERED mode=warn_only");
++                position_warning_active_ = false;
++            }
++            return false;
+         }
+ 
+         if (worst_idx >= 0) {
+@@ -1154,10 +1178,12 @@
+                 for (int i = 0; i < 6; ++i) {
+                     if (disabled_legs_.contains(i)) continue;
+                     startup_aligned = startup_aligned && std::isfinite(pos_errors[i]) &&
+-                        std::fabs(pos_errors[i]) <= safety_.max_position_error_counts;
++                        (!safety_.stop_on_position_error ||
++                         std::fabs(pos_errors[i]) <= safety_.max_position_error_counts);
+                 }
+-                // Retain the existing alignment/position guard thresholds.
+-                // The endpoint is now at rest, and its planned zero is retained.
++                // Warning-only position errors must not become a hidden
++                // STARTUP interlock. Invalid references still fail below.
++                // The endpoint is at rest and its planned zero is retained.
+                 if (startup_time_ >= startup_duration_ && startup_aligned) {
+                     state_ = State::RUNNING;
+                     startup_completed = true;
+@@ -1559,6 +1585,8 @@
+         }
+     }
+ 
++    bool position_warning_active_ = false;
++    double last_position_warning_s_ = -1;
+     double reference_peak_pwm_ = 0, reference_peak_slew_ = 0;
+     std::array<float, 6> stopping_positions_{}, stopping_velocities_{};
+     bool stopping_group_b_active_ = false;
+--- a/src/rinbo_fsm/src/safety_invariants.hpp
++++ b/src/rinbo_fsm/src/safety_invariants.hpp
+@@ -166,9 +166,10 @@
+ 
+ inline void validate_tripod_motion_safety_contract(
+     const TripodMotionSafetyContract& safety) {
+-    if (!safety.stop_on_position_error || !safety.enable_pwm_slew_limit) {
+-        throw std::invalid_argument(
+-            "Tripod position-error and PWM-slew guards must remain enabled");
++    // The operator may select warning-only finite tracking errors for attended
++    // tuning. Invalid feedback is always rejected by the controller, separately.
++    if (!safety.enable_pwm_slew_limit) {
++        throw std::invalid_argument("Tripod PWM-slew guard must remain enabled");
+     }
+     validate_bounded_timeout(safety.position_error_trip_seconds, 2.0,
+                              "safety.position_error_trip_seconds");
+--- a/src/rinbo_fsm/src/robot_config.cpp
++++ b/src/rinbo_fsm/src/robot_config.cpp
+@@ -19,6 +19,7 @@
+ #include <iostream>
+ #include <limits>
+ #include <memory>
++#include <optional>
+ #include <regex>
+ #include <set>
+ #include <sstream>
+@@ -663,13 +664,15 @@
+     return true;
+ }
+ 
+-std::string tune_tripod(const std::string& path,
++static std::string apply_tripod_tuning(const std::string& path,
+                        const std::map<std::string, double>& updates,
+-                       bool dry_run, const std::string& proc_root) {
++                       bool dry_run, const std::string& proc_root,
++                       std::optional<bool> stop_on_position_error) {
+     const std::set<std::string> allowed{
+         "startup_duration", "start_ratio", "target_ratio", "ratio_step",
+         "kp", "kd", "k_ff", "friction_pwm", "friction_velocity_counts_s"};
+-    if (updates.empty()) fail("tune-tripod requires KEY=VALUE; use status --json to inspect");
++    if (updates.empty() && !stop_on_position_error.has_value())
++        fail("tune-tripod requires KEY=VALUE; use status --json to inspect");
+     for (const auto& [key, value] : updates)
+         if (!allowed.count(key) || !std::isfinite(value))
+             fail("Unsupported/nonfinite Tripod tuning value: " + key);
+@@ -688,6 +691,11 @@
+         changed = changed || parameters.at(key).as_double() != value;
+         parameters[key] = rclcpp::Parameter(key, value);
+     }
++    if (stop_on_position_error.has_value()) {
++        const std::string key = "safety.stop_on_position_error";
++        changed = changed || parameters.at(key).as_bool() != *stop_on_position_error;
++        parameters[key] = rclcpp::Parameter(key, *stop_on_position_error);
++    }
+     validate_parameters("rinbo_tripod_rslip", parameters);
+     std::map<Stage, YAML::Node> receipts;
+     for (const Stage stage : {Stage::Calibration, Stage::Standing}) {
+@@ -704,6 +712,8 @@
+         if (sha256(current_bytes) != config.hash()) fail("Configuration changed during tuning; retry");
+         auto document = YAML::Load(current_bytes);
+         for (const auto& [key, value] : updates) document["parameters"]["rinbo_tripod_rslip"][key] = value;
++        if (stop_on_position_error.has_value())
++            document["parameters"]["rinbo_tripod_rslip"]["safety"]["stop_on_position_error"] = *stop_on_position_error;
+         document["revision"] = config.revision() + 1;
+         YAML::Emitter emit; emit << document;
+         if (!emit.good()) fail("Cannot serialize Tripod tuning");
+@@ -726,6 +736,8 @@
+            << ",\"changed\":" << (changed ? "true" : "false")
+            << ",\"calibration_valid\":" << (receipts.count(Stage::Calibration) ? "true" : "false")
+            << ",\"standing_valid\":" << (receipts.count(Stage::Standing) ? "true" : "false")
++           << ",\"position_error_policy\":" << quote_json(
++                parameters.at("safety.stop_on_position_error").as_bool() ? "stop" : "warn_only")
+            << ",\"parameters\":{";
+     bool comma = false;
+     for (const auto& key : allowed) {
+@@ -734,6 +746,17 @@
+     }
+     result << "}}";
+     return result.str();
++}
++
++std::string tune_tripod(const std::string& path,
++                       const std::map<std::string, double>& updates,
++                       bool dry_run, const std::string& proc_root) {
++    return apply_tripod_tuning(path, updates, dry_run, proc_root, std::nullopt);
++}
++
++std::string set_tripod_position_policy(const std::string& path, bool stop_on_error,
++                                      bool dry_run, const std::string& proc_root) {
++    return apply_tripod_tuning(path, {}, dry_run, proc_root, stop_on_error);
+ }
+ 
+ bool update_disabled_legs(const std::string& path, const std::string& operation,
+--- a/src/rinbo_fsm/src/robot_config.hpp
++++ b/src/rinbo_fsm/src/robot_config.hpp
+@@ -62,6 +62,10 @@
+ std::string tune_tripod(const std::string& path,
+                        const std::map<std::string, double>& updates,
+                        bool dry_run = false, const std::string& proc_root = "/proc");
++// Only finite Tripod tracking errors change action. Other guards are unchanged.
++std::string set_tripod_position_policy(const std::string& path, bool stop_on_error,
++                                      bool dry_run = false,
++                                      const std::string& proc_root = "/proc");
+ // Pure read-only check, called before rclcpp::init; also rejects competing ROS
+ // parameter inputs in normal startup. Throws on malformed/unsupported options.
+ bool check_config_cli(int argc, char** argv, const std::string& node_name);
+--- a/src/rinbo_fsm/src/rinbo_legs.cpp
++++ b/src/rinbo_fsm/src/rinbo_legs.cpp
+@@ -7,7 +7,7 @@
+ int main(int argc, char** argv) {
+     try {
+         if (argc < 2) throw std::runtime_error(
+-            "Usage: rinbo_legs status [--json] | set LEG... | disable LEG... | enable LEG... | enable-all | tune-tripod [--dry-run] KEY=VALUE... | tune-motion KP KD K_FF FRICTION_PWM FADE_COUNTS_S");
++            "Usage: rinbo_legs status [--json] | set LEG... | disable LEG... | enable LEG... | enable-all | tripod-position-policy warn|stop [--dry-run] | tune-tripod [--dry-run] KEY=VALUE... | tune-motion KP KD K_FF FRICTION_PWM FADE_COUNTS_S");
+         const std::string operation = argv[1];
+         if (operation == "status") {
+             if (argc > 3 || (argc == 3 && std::string(argv[2]) != "--json"))
+@@ -15,6 +15,15 @@
+             const auto config = rinbo_config::RobotConfig::load();
+             if (argc == 3) std::cout << config.json_status() << '\n';
+             else config.print_status(std::cout);
++            return 0;
++        }
++        if (operation == "tripod-position-policy") {
++            if (argc < 3 || argc > 4 ||
++                (std::string(argv[2]) != "warn" && std::string(argv[2]) != "stop") ||
++                (argc == 4 && std::string(argv[3]) != "--dry-run"))
++                throw std::runtime_error("Usage: rinbo_legs tripod-position-policy warn|stop [--dry-run]");
++            std::cout << rinbo_config::set_tripod_position_policy(
++                rinbo_config::kConfigPath, std::string(argv[2]) == "stop", argc == 4) << '\n';
+             return 0;
+         }
+         if (operation == "tune-tripod") {
+--- a/src/rinbo_fsm/test/test_tripod_multileg.cpp
++++ b/src/rinbo_fsm/test/test_tripod_multileg.cpp
+@@ -118,6 +118,26 @@
+         f.current_ratio_=81;
+         for(int n=0;n<10;++n) advance(f,.01);
+         EXPECT_NEAR(f.current_ratio_,80.995,1e-8);
++    }
++    static void warning_tracking(PIDController& f) {
++        initialize(f);f.startup_time_=f.startup_duration_;
++        std::array<float,6> frozen{};
++        frozen[2]=std::numeric_limits<float>::quiet_NaN();
++        tick(f,10.01,frozen);
++        ASSERT_TRUE(running(f)); // No hidden startup alignment interlock.
++        for(int n=0;n<2000;++n) {
++            tick(f,f.prev_time_.seconds()+.05,frozen);
++            ASSERT_TRUE(running(f));ASSERT_FALSE(stopped(f));
++        }
++        EXPECT_GT(f.last_position_errors_[1],18000);
++        EXPECT_TRUE(f.position_warning_active_);
++        EXPECT_TRUE(f.safety_stop_reason_.empty());
++        begin_stop(f);
++        tick(f,f.prev_time_.seconds()+2.1,frozen);
++        EXPECT_TRUE(fully_stopped(f));EXPECT_FALSE(stopped(f));
++    }
++    static void estop(PIDController& f) {
++        auto msg=std::make_shared<std_msgs::msg::Bool>();msg->data=true;f.estop_callback(msg);
+     }
+     static void continuous_running(PIDController& f) {
+         boundary(f);
+@@ -172,6 +192,14 @@
+     }
+     void TearDown() override { std::filesystem::remove_all(dir); }
+     static void TearDownTestSuite(){if(rclcpp::ok())rclcpp::shutdown();}
++    void warning_fixture() {
++        fixture(4);
++        auto d=YAML::LoadFile(path);
++        d["parameters"]["rinbo_tripod_rslip"]["safety"]["stop_on_position_error"]=false;
++        {std::ofstream out(path);out<<d;}
++        {rinbo_config::MotionSession c(rinbo_config::Stage::Calibration,path);c.complete();}
++        {rinbo_config::MotionSession standing(rinbo_config::Stage::Standing,path);standing.complete();}
++    }
+     void fixture(unsigned bits,bool original=false) {
+         auto d=YAML::LoadFile(path);
+         std::vector<std::string> names;
+@@ -189,6 +217,31 @@
+     }
+ };
+ 
++TEST_F(TripodMultiLegTest, WarningOnlyLargeFiniteErrorsNeverStopOrInvalidateReceipts) {
++    warning_fixture();
++    {
++        rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++        for(float error:{9001.f,18020.730469f,1000000.f,-1000000.f})
++            for(int n=0;n<600;++n)EXPECT_FALSE(Access::guard(f,10+n*.001,1,error));
++        EXPECT_FALSE(f.failed());
++    }
++    EXPECT_NO_THROW(rinbo_config::MotionSession again(rinbo_config::Stage::Tripod,path));
++}
++TEST_F(TripodMultiLegTest, WarningOnlyModeRunsPastStartupWithLagAndStillStopsOnRequest) {
++    warning_fixture();rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);
++    PIDController f(s);Access::warning_tracking(f);
++}
++TEST_F(TripodMultiLegTest, WarningOnlyModeStillStopsOnNonfiniteHealthyFeedback) {
++    for(float error:{std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::infinity()}) {
++        warning_fixture();rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++        EXPECT_FALSE(Access::guard(f,10,2,error)); // L3 stays masked.
++        EXPECT_TRUE(Access::guard(f,10,1,error));EXPECT_TRUE(f.failed());
++    }
++}
++TEST_F(TripodMultiLegTest, WarningOnlyModeStillHonorsEstopImmediately) {
++    warning_fixture();rinbo_config::MotionSession s(rinbo_config::Stage::Tripod,path);PIDController f(s);
++    Access::estop(f);EXPECT_TRUE(f.failed());EXPECT_EQ(Access::reason(f),"software /estop asserted");
++}
+ TEST_F(TripodMultiLegTest, OriginalSiteModelWarningDoesNotAddAnOperationInterlock) {
+     fixture(4,true);rinbo_config::MotionSession session(rinbo_config::Stage::Tripod,path);
+     PIDController f(session);
+--- a/src/rinbo_fsm/test/test_robot_config.cpp
++++ b/src/rinbo_fsm/test/test_robot_config.cpp
+@@ -310,3 +310,34 @@
+     EXPECT_EQ(bytes(),before);
+ }
+ } // namespace
++
++namespace {
++TEST_F(ConfigTest, TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers) {
++    const auto proc=dir/"empty-proc";fs::create_directory(proc);
++    {MotionSession c(Stage::Calibration,path);c.complete();}
++    {MotionSession s(Stage::Standing,path);s.complete();}
++    const auto before=RobotConfig::load(path);const auto original_bytes=bytes();
++    EXPECT_NE(set_tripod_position_policy(path,false,true,proc).find("warn_only"),std::string::npos);
++    EXPECT_EQ(bytes(),original_bytes);
++    EXPECT_NE(set_tripod_position_policy(path,false,false,proc).find("warn_only"),std::string::npos);
++    auto after=RobotConfig::load(path);
++    EXPECT_EQ(after.parameters("rinbo_cali"),before.parameters("rinbo_cali"));
++    EXPECT_EQ(after.parameters("rinbo_standing"),before.parameters("rinbo_standing"));
++    EXPECT_EQ(after.disabled_legs(),before.disabled_legs());
++    EXPECT_NO_THROW(MotionSession t(Stage::Tripod,path));
++    const auto unchanged=bytes();set_tripod_position_policy(path,false,false,proc);EXPECT_EQ(bytes(),unchanged);
++    set_tripod_position_policy(path,true,false,proc);
++    EXPECT_NO_THROW(MotionSession t(Stage::Tripod,path));
++    const auto restored=RobotConfig::load(path);
++    EXPECT_EQ(restored.parameters("rinbo_tripod_rslip"),before.parameters("rinbo_tripod_rslip"));
++}
++TEST_F(ConfigTest, TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts) {
++    const auto proc=dir/"empty-proc";fs::create_directory(proc);
++    {
++        MotionSession c(Stage::Calibration,path);
++        EXPECT_THROW(set_tripod_position_policy(path,false,false,proc),std::exception);
++    }
++    EXPECT_NE(set_tripod_position_policy(path,false,false,proc).find("\"calibration_valid\":false"),std::string::npos);
++    EXPECT_THROW(MotionSession t(Stage::Tripod,path),std::exception);
++}
++} // namespace
+--- a/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
++++ b/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
+@@ -569,9 +569,8 @@
+         rinbo_fsm::validate_tripod_motion_safety_contract(contract));
+ 
+     contract.stop_on_position_error = false;
+-    EXPECT_THROW(
+-        rinbo_fsm::validate_tripod_motion_safety_contract(contract),
+-        std::invalid_argument);
++    EXPECT_NO_THROW(
++        rinbo_fsm::validate_tripod_motion_safety_contract(contract));
+     contract = {true, false, 5000.0, 250.0, 0.25, 2.0, 10};
+     EXPECT_THROW(
+         rinbo_fsm::validate_tripod_motion_safety_contract(contract),

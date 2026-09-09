@@ -1,0 +1,1 @@
+PASS: baseline preserved; candidate created separately; changed-source refusal before writes

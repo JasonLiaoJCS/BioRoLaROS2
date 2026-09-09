@@ -1,0 +1,244 @@
+Starting >>> rinbo_fsm
+UpdateCTestConfiguration  from :/home/jetson/rinbo_ros_ws/build/rinbo_fsm/CTestConfiguration.ini
+Parse Config file:/home/jetson/rinbo_ros_ws/build/rinbo_fsm/CTestConfiguration.ini
+   Site: yahboom
+   Build name: (empty)
+ Add coverage exclude regular expressions.
+Create new tag: 20260905-1014 - Experimental
+UpdateCTestConfiguration  from :/home/jetson/rinbo_ros_ws/build/rinbo_fsm/CTestConfiguration.ini
+Parse Config file:/home/jetson/rinbo_ros_ws/build/rinbo_fsm/CTestConfiguration.ini
+Test project /home/jetson/rinbo_ros_ws/build/rinbo_fsm
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: test_motor_arbiter_handshake
+
+1: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_motor_arbiter_handshake.gtest.xml" "--package-name" "rinbo_fsm" "--output-file" "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/ament_cmake_gtest/test_motor_arbiter_handshake.txt" "--env" "ROS_DOMAIN_ID=231" "--command" "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_motor_arbiter_handshake" "--gtest_output=xml:/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_motor_arbiter_handshake.gtest.xml"
+1: Test timeout computed to be: 60
+1: -- run_test.py: extra environment variables:
+1:  - ROS_DOMAIN_ID=231
+1: -- run_test.py: invoking following command in '/home/jetson/rinbo_ros_ws/build/rinbo_fsm':
+1:  - /home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_motor_arbiter_handshake --gtest_output=xml:/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_motor_arbiter_handshake.gtest.xml
+1: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+1: [==========] Running 41 tests from 8 test suites.
+1: [----------] Global test environment set-up.
+1: [----------] 6 tests from MotorArbiterPublisherIdentityTest
+1: [ RUN      ] MotorArbiterPublisherIdentityTest.SoleExpectedPublisherAndCallbackGidIsTrusted
+1: [       OK ] MotorArbiterPublisherIdentityTest.SoleExpectedPublisherAndCallbackGidIsTrusted (0 ms)
+1: [ RUN      ] MotorArbiterPublisherIdentityTest.NoPublisherIsRejected
+1: [       OK ] MotorArbiterPublisherIdentityTest.NoPublisherIsRejected (0 ms)
+1: [ RUN      ] MotorArbiterPublisherIdentityTest.MultiplePublishersAreRejected
+1: [       OK ] MotorArbiterPublisherIdentityTest.MultiplePublishersAreRejected (0 ms)
+1: [ RUN      ] MotorArbiterPublisherIdentityTest.WrongNodeIsRejectedEvenWhenGidMatches
+1: [       OK ] MotorArbiterPublisherIdentityTest.WrongNodeIsRejectedEvenWhenGidMatches (0 ms)
+1: [ RUN      ] MotorArbiterPublisherIdentityTest.SameNameInWrongNamespaceIsRejected
+1: [       OK ] MotorArbiterPublisherIdentityTest.SameNameInWrongNamespaceIsRejected (0 ms)
+1: [ RUN      ] MotorArbiterPublisherIdentityTest.WrongCallbackGidIsRejected
+1: [       OK ] MotorArbiterPublisherIdentityTest.WrongCallbackGidIsRejected (0 ms)
+1: [----------] 6 tests from MotorArbiterPublisherIdentityTest (0 ms total)
+1: 
+1: [----------] 1 test from MotorArbiterSubscriptionIdentityTest
+1: [ RUN      ] MotorArbiterSubscriptionIdentityTest.RequiresExpectedNodeInRootNamespace
+1: [       OK ] MotorArbiterSubscriptionIdentityTest.RequiresExpectedNodeInRootNamespace (0 ms)
+1: [----------] 1 test from MotorArbiterSubscriptionIdentityTest (0 ms total)
+1: 
+1: [----------] 4 tests from MotorArbiterEndpointPinStateTest
+1: [ RUN      ] MotorArbiterEndpointPinStateTest.FirstAndSameEndpointAreAccepted
+1: [       OK ] MotorArbiterEndpointPinStateTest.FirstAndSameEndpointAreAccepted (0 ms)
+1: [ RUN      ] MotorArbiterEndpointPinStateTest.UncommittedEndpointChangeRebasesPin
+1: [       OK ] MotorArbiterEndpointPinStateTest.UncommittedEndpointChangeRebasesPin (0 ms)
+1: [ RUN      ] MotorArbiterEndpointPinStateTest.CommittedStatusEndpointChangeIsRejected
+1: [       OK ] MotorArbiterEndpointPinStateTest.CommittedStatusEndpointChangeIsRejected (0 ms)
+1: [ RUN      ] MotorArbiterEndpointPinStateTest.CommandSubscriptionGidChangeIsRejected
+1: [       OK ] MotorArbiterEndpointPinStateTest.CommandSubscriptionGidChangeIsRejected (0 ms)
+1: [----------] 4 tests from MotorArbiterEndpointPinStateTest (0 ms total)
+1: 
+1: [----------] 1 test from MotorArbiterHeartbeatStateTest
+1: [ RUN      ] MotorArbiterHeartbeatStateTest.GraphQueryDelayCannotExtendCallbackEntryFreshness
+1: [       OK ] MotorArbiterHeartbeatStateTest.GraphQueryDelayCannotExtendCallbackEntryFreshness (0 ms)
+1: [----------] 1 test from MotorArbiterHeartbeatStateTest (0 ms total)
+1: 
+1: [----------] 4 tests from MotorArbiterEpochStateTest
+1: [ RUN      ] MotorArbiterEpochStateTest.SameEpochIsStable
+1: [       OK ] MotorArbiterEpochStateTest.SameEpochIsStable (0 ms)
+1: [ RUN      ] MotorArbiterEpochStateTest.LatchGenerationChangeIsSticky
+1: [       OK ] MotorArbiterEpochStateTest.LatchGenerationChangeIsSticky (0 ms)
+1: [ RUN      ] MotorArbiterEpochStateTest.BridgeRestartIsDetected
+1: [       OK ] MotorArbiterEpochStateTest.BridgeRestartIsDetected (0 ms)
+1: [ RUN      ] MotorArbiterEpochStateTest.UncommittedRearmCanAdoptNewEpochBaseline
+1: [       OK ] MotorArbiterEpochStateTest.UncommittedRearmCanAdoptNewEpochBaseline (0 ms)
+1: [----------] 4 tests from MotorArbiterEpochStateTest (0 ms total)
+1: 
+1: [----------] 11 tests from MotorArbiterHandshakeStateTest
+1: [ RUN      ] MotorArbiterHandshakeStateTest.HistoricalReadyCannotReplaceRearmAck
+1: [       OK ] MotorArbiterHandshakeStateTest.HistoricalReadyCannotReplaceRearmAck (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.RearmRequiresExactlyOneCommandSubscriber
+1: [       OK ] MotorArbiterHandshakeStateTest.RearmRequiresExactlyOneCommandSubscriber (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.AckForUnpublishedSequenceIsIgnored
+1: [       OK ] MotorArbiterHandshakeStateTest.AckForUnpublishedSequenceIsIgnored (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.LateRearmAckMatchesBeyondOldFivePacketBudget
+1: [       OK ] MotorArbiterHandshakeStateTest.LateRearmAckMatchesBeyondOldFivePacketBudget (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.DelayedReadyAfterAckCompletesRearm
+1: [       OK ] MotorArbiterHandshakeStateTest.DelayedReadyAfterAckCompletesRearm (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.EndpointFaultAfterRearmAckIsStickyBeforeArming
+1: [       OK ] MotorArbiterHandshakeStateTest.EndpointFaultAfterRearmAckIsStickyBeforeArming (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.RelatchAfterArmingIsTerminal
+1: [       OK ] MotorArbiterHandshakeStateTest.RelatchAfterArmingIsTerminal (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.DuplicateSubscriberAfterArmingIsViolation
+1: [       OK ] MotorArbiterHandshakeStateTest.DuplicateSubscriberAfterArmingIsViolation (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.ActiveAckMustMatchPublishedSequence
+1: [       OK ] MotorArbiterHandshakeStateTest.ActiveAckMustMatchPublishedSequence (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.AnyRecordedProbeCanBeAcknowledged
+1: [       OK ] MotorArbiterHandshakeStateTest.AnyRecordedProbeCanBeAcknowledged (0 ms)
+1: [ RUN      ] MotorArbiterHandshakeStateTest.LateActiveAckMatchesBeyondOldFivePacketBudget
+1: [       OK ] MotorArbiterHandshakeStateTest.LateActiveAckMatchesBeyondOldFivePacketBudget (0 ms)
+1: [----------] 11 tests from MotorArbiterHandshakeStateTest (0 ms total)
+1: 
+1: [----------] 10 tests from RinboPowerGuardTest
+1: [ RUN      ] RinboPowerGuardTest.FreshInitialRelayOffRemainsSafeWait
+1: [       OK ] RinboPowerGuardTest.FreshInitialRelayOffRemainsSafeWait (21 ms)
+1: [ RUN      ] RinboPowerGuardTest.RelayDropAfterSafePowerIsViolation
+1: [       OK ] RinboPowerGuardTest.RelayDropAfterSafePowerIsViolation (11 ms)
+1: [ RUN      ] RinboPowerGuardTest.MissingTelemetryStillFaultsAfterDeadline
+1: [       OK ] RinboPowerGuardTest.MissingTelemetryStillFaultsAfterDeadline (10 ms)
+1: [ RUN      ] RinboPowerGuardTest.InvalidTelemetryFaultsWhileRelayOff
+1: [       OK ] RinboPowerGuardTest.InvalidTelemetryFaultsWhileRelayOff (9 ms)
+1: [ RUN      ] RinboPowerGuardTest.NonFiniteStaleTimeoutIsRejected
+1: [       OK ] RinboPowerGuardTest.NonFiniteStaleTimeoutIsRejected (10 ms)
+1: [ RUN      ] RinboPowerGuardTest.BackwardSafetyClockIsFailSafe
+1: [       OK ] RinboPowerGuardTest.BackwardSafetyClockIsFailSafe (9 ms)
+1: [ RUN      ] RinboPowerGuardTest.DisabledLegCurrentChannelIsTheOnlyPerLegExemption
+1: [       OK ] RinboPowerGuardTest.DisabledLegCurrentChannelIsTheOnlyPerLegExemption (10 ms)
+1: [ RUN      ] RinboPowerGuardTest.RosInputGuardRejectsZeroAndReplayedHeaders
+1: [       OK ] RinboPowerGuardTest.RosInputGuardRejectsZeroAndReplayedHeaders (10 ms)
+1: [ RUN      ] RinboPowerGuardTest.ConstructorRejectsDisabledCorePowerFlag
+1: [       OK ] RinboPowerGuardTest.ConstructorRejectsDisabledCorePowerFlag (10 ms)
+1: [ RUN      ] RinboPowerGuardTest.SourceAgeOverridesCanOnlyTighten
+1: [       OK ] RinboPowerGuardTest.SourceAgeOverridesCanOnlyTighten (18 ms)
+1: [----------] 10 tests from RinboPowerGuardTest (118 ms total)
+1: 
+1: [----------] 4 tests from SafetyInvariantsTest
+1: [ RUN      ] SafetyInvariantsTest.CorePowerGuardsCannotBeDisabled
+1: [       OK ] SafetyInvariantsTest.CorePowerGuardsCannotBeDisabled (0 ms)
+1: [ RUN      ] SafetyInvariantsTest.PowerBoundsAndMappingCannotBeLoosened
+1: [       OK ] SafetyInvariantsTest.PowerBoundsAndMappingCannotBeLoosened (0 ms)
+1: [ RUN      ] SafetyInvariantsTest.TripodErrorAndSlewGuardsCannotBeLoosened
+1: [       OK ] SafetyInvariantsTest.TripodErrorAndSlewGuardsCannotBeLoosened (0 ms)
+1: [ RUN      ] SafetyInvariantsTest.MotorArbiterIdentityAndTimeoutsAreHardBounded
+1: [       OK ] SafetyInvariantsTest.MotorArbiterIdentityAndTimeoutsAreHardBounded (0 ms)
+1: [----------] 4 tests from SafetyInvariantsTest (0 ms total)
+1: 
+1: [----------] Global test environment tear-down
+1: [==========] 41 tests from 8 test suites ran. (130 ms total)
+1: [  PASSED  ] 41 tests.
+1: -- run_test.py: return code 0
+1: -- run_test.py: inject classname prefix into gtest result file '/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_motor_arbiter_handshake.gtest.xml'
+1: -- run_test.py: verify result file '/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_motor_arbiter_handshake.gtest.xml'
+1/2 Test #1: test_motor_arbiter_handshake .....   Passed    0.41 sec
+test 2
+    Start 2: test_latest_state_safety
+
+2: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_latest_state_safety.gtest.xml" "--package-name" "rinbo_fsm" "--output-file" "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/ament_cmake_gtest/test_latest_state_safety.txt" "--env" "ROS_DOMAIN_ID=231" "--command" "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_latest_state_safety" "--gtest_output=xml:/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_latest_state_safety.gtest.xml"
+2: Test timeout computed to be: 60
+2: -- run_test.py: extra environment variables:
+2:  - ROS_DOMAIN_ID=231
+2: -- run_test.py: invoking following command in '/home/jetson/rinbo_ros_ws/build/rinbo_fsm':
+2:  - /home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_latest_state_safety --gtest_output=xml:/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_latest_state_safety.gtest.xml
+2: Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+2: [==========] Running 24 tests from 6 test suites.
+2: [----------] Global test environment set-up.
+2: [----------] 1 test from LatestStateQosTest
+2: [ RUN      ] LatestStateQosTest.RmwProfileIsReliableVolatileKeepLastOne
+2: [       OK ] LatestStateQosTest.RmwProfileIsReliableVolatileKeepLastOne (0 ms)
+2: [----------] 1 test from LatestStateQosTest (0 ms total)
+2: 
+2: [----------] 2 tests from InputPublisherStartupTest
+2: [ RUN      ] InputPublisherStartupTest.OnlyZeroOrFullyUnknownCorrelatedEndpointsWait
+2: [       OK ] InputPublisherStartupTest.OnlyZeroOrFullyUnknownCorrelatedEndpointsWait (0 ms)
+2: [ RUN      ] InputPublisherStartupTest.WaitIsBoundedAndNeverReopensAfterTrust
+2: [       OK ] InputPublisherStartupTest.WaitIsBoundedAndNeverReopensAfterTrust (0 ms)
+2: [----------] 2 tests from InputPublisherStartupTest (0 ms total)
+2: 
+2: [----------] 18 tests from RosSafetyTest
+2: [ RUN      ] RosSafetyTest.PendingInitialCallbackDoesNotConsumeHeaderOrPinPublisher
+2: [WARN] [1788603291.427292869] [guard_pending_startup_test]: Waiting for initial /rinbo_fsm_safety_test/guard_motor_initial_pending publisher discovery; sample ignored, output remains disabled
+2: [       OK ] RosSafetyTest.PendingInitialCallbackDoesNotConsumeHeaderOrPinPublisher (28 ms)
+2: [ RUN      ] RosSafetyTest.PastStaleStartupSamplesWaitButFreshInputCommitsRuntimeChecks
+2: [WARN] [1788603291.448939705] [guard_stale_startup_test]: Waiting for fresh initial /rinbo_fsm_safety_test/guard_motor_stale_startup; past-stale sample ignored, output remains disabled
+2: [       OK ] RosSafetyTest.PastStaleStartupSamplesWaitButFreshInputCommitsRuntimeChecks (16 ms)
+2: [ RUN      ] RosSafetyTest.StartupBudgetDoesNotResetOnStaleSamples
+2: [       OK ] RosSafetyTest.StartupBudgetDoesNotResetOnStaleSamples (15 ms)
+2: [ RUN      ] RosSafetyTest.FortyHertzMotorBacklogResumesAtNewestSampleOnly
+2: [       OK ] RosSafetyTest.FortyHertzMotorBacklogResumesAtNewestSampleOnly (471 ms)
+2: [ RUN      ] RosSafetyTest.PowerLatestSafeDropsBacklogThenPersistentFaultTripsAndStales
+2: [       OK ] RosSafetyTest.PowerLatestSafeDropsBacklogThenPersistentFaultTripsAndStales (551 ms)
+2: [ RUN      ] RosSafetyTest.ActualBridgeMessageInfoMatchesSoleGraphEndpoint
+2: [       OK ] RosSafetyTest.ActualBridgeMessageInfoMatchesSoleGraphEndpoint (17 ms)
+2: [ RUN      ] RosSafetyTest.SolePublisherWithWrongNodeNameIsRejected
+2: [       OK ] RosSafetyTest.SolePublisherWithWrongNodeNameIsRejected (16 ms)
+2: [ RUN      ] RosSafetyTest.SoleBridgeNameOutsideRootNamespaceIsRejected
+2: [       OK ] RosSafetyTest.SoleBridgeNameOutsideRootNamespaceIsRejected (15 ms)
+2: [ RUN      ] RosSafetyTest.CallbackGidMustMatchSoleBridgeGraphEndpoint
+2: [       OK ] RosSafetyTest.CallbackGidMustMatchSoleBridgeGraphEndpoint (15 ms)
+2: [ RUN      ] RosSafetyTest.SecondPublisherIsRejectedBeforeHeaderAcceptance
+2: [       OK ] RosSafetyTest.SecondPublisherIsRejectedBeforeHeaderAcceptance (21 ms)
+2: [ RUN      ] RosSafetyTest.PublisherGidRemainsPinnedForCallbacksAndWatchdog
+2: [       OK ] RosSafetyTest.PublisherGidRemainsPinnedForCallbacksAndWatchdog (20 ms)
+2: [ RUN      ] RosSafetyTest.GraphDelayDoesNotTurnFreshAtEntryHeaderStale
+2: [       OK ] RosSafetyTest.GraphDelayDoesNotTurnFreshAtEntryHeaderStale (141 ms)
+2: [ RUN      ] RosSafetyTest.GraphDelayCannotRescueHeaderAlreadyStaleAtEntry
+2: [       OK ] RosSafetyTest.GraphDelayCannotRescueHeaderAlreadyStaleAtEntry (271 ms)
+2: [ RUN      ] RosSafetyTest.BackwardRosTimeJumpDuringGraphQueryFailsClosed
+2: [       OK ] RosSafetyTest.BackwardRosTimeJumpDuringGraphQueryFailsClosed (17 ms)
+2: [ RUN      ] RosSafetyTest.InvalidFutureReplaySequenceAndStampRemainRejected
+2: [       OK ] RosSafetyTest.InvalidFutureReplaySequenceAndStampRemainRejected (16 ms)
+2: [ RUN      ] RosSafetyTest.DisabledLegsAcceptOneCanonicalLegAndRejectUnsafeSets
+2: [       OK ] RosSafetyTest.DisabledLegsAcceptOneCanonicalLegAndRejectUnsafeSets (34 ms)
+2: [ RUN      ] RosSafetyTest.PublishBoundaryMaskDisablesEachConfiguredMainDrive
+2: [       OK ] RosSafetyTest.PublishBoundaryMaskDisablesEachConfiguredMainDrive (58 ms)
+2: [ RUN      ] RosSafetyTest.DisabledLegParametersAreStartupOnlyAndRejectRuntimeUpdates
+2: [       OK ] RosSafetyTest.DisabledLegParametersAreStartupOnlyAndRejectRuntimeUpdates (10 ms)
+2: [----------] 18 tests from RosSafetyTest (1732 ms total)
+2: 
+2: [----------] 1 test from TripodPowerPolicyTest
+2: [ RUN      ] TripodPowerPolicyTest.MissingAndStaleTelemetryFailClosed
+2: [       OK ] TripodPowerPolicyTest.MissingAndStaleTelemetryFailClosed (0 ms)
+2: [----------] 1 test from TripodPowerPolicyTest (0 ms total)
+2: 
+2: [----------] 1 test from RosInputGuardValidationTest
+2: [ RUN      ] RosInputGuardValidationTest.GraphDelayCannotExtendArrivalWatchdogFreshness
+2: [       OK ] RosInputGuardValidationTest.GraphDelayCannotExtendArrivalWatchdogFreshness (0 ms)
+2: [----------] 1 test from RosInputGuardValidationTest (0 ms total)
+2: 
+2: [----------] 1 test from FsmSourceContractTest
+2: [ RUN      ] FsmSourceContractTest.AllFsmsShareLatestQosAndDisabledLegSafetyContract
+2: [       OK ] FsmSourceContractTest.AllFsmsShareLatestQosAndDisabledLegSafetyContract (25 ms)
+2: [----------] 1 test from FsmSourceContractTest (25 ms total)
+2: 
+2: [----------] Global test environment tear-down
+2: [==========] 24 tests from 6 test suites ran. (1767 ms total)
+2: [  PASSED  ] 24 tests.
+2: -- run_test.py: return code 0
+2: -- run_test.py: inject classname prefix into gtest result file '/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_latest_state_safety.gtest.xml'
+2: -- run_test.py: verify result file '/home/jetson/rinbo_ros_ws/build/rinbo_fsm/test_results/rinbo_fsm/test_latest_state_safety.gtest.xml'
+2/2 Test #2: test_latest_state_safety .........   Passed    2.04 sec
+
+The following tests passed:
+	test_motor_arbiter_handshake
+	test_latest_state_safety
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+gtest    =   2.45 sec*proc (2 tests)
+
+Total Test time (real) =   2.46 sec
+Finished <<< rinbo_fsm [2.65s]
+
+Summary: 1 package finished [3.42s]
+
+RSLIP_TEST_EXIT=0

@@ -1,0 +1,510 @@
+--- GitHub/src/rinbo_fsm/src/rinbo_cali.cpp
++++ localHEAD/src/rinbo_fsm/src/rinbo_cali.cpp
+@@ -20,7 +20,6 @@
+ 
+ class CalibrationFSM : public rclcpp::Node {
+ public:
+-    // Initialize calibration controller
+     CalibrationFSM() : Node("rinbo_cali") {
+         kp_ = 0.35f;
+         kd_ = 0.002f;
+@@ -37,15 +36,16 @@
+         servo_targets_[3] = 1944;
+         servo_targets_[4] = 2071;
+         servo_targets_[5] = 989; 
++        
+         servo_tolerance_ = 100;
+         
+         state_ = CalibState::SERVO_HOMING; 
+         initialized_ = false;
+         
+         for (int i = 0; i < 6; i++) {
+-            leg_states_[i] = LegState::SPINNING; 
+-            start_positions_[i] = 0.0f; // Initial encoder position
+-            prev_positions_[i] = 0.0f; // Previous position for velocity calculation
++            leg_states_[i] = LegState::SPINNING;
++            start_positions_[i] = 0.0f;
++            prev_positions_[i] = 0.0f;
+             stop_start_times_[i] = this->now();
+         }
+         
+@@ -55,14 +55,13 @@
+         
+         max_pwm_ = 500.0f;
+         stop_velocity_threshold_ = 500.0f;
+-        // Publish motor calibration commands
++        
+         cmd_pub_ = this->create_publisher<rinbo_msgs::msg::MotorCmdStamped>(
+             "/motor/command", 10);
+-        // Subscribe motor feedback states
++        
+         state_sub_ = this->create_subscription<rinbo_msgs::msg::MotorStateStamped>(
+             "/motor/state", 10,
+-            // Call state_callback() whenever a motor state message is received
+-            std::bind(&CalibrationFSM::state_callback, this, std::placeholders::_1)); 
++            std::bind(&CalibrationFSM::state_callback, this, std::placeholders::_1));
+         
+         RCLCPP_INFO(this->get_logger(), "=== 6-Leg Calibration FSM Started ===");
+         RCLCPP_INFO(this->get_logger(), "Servo targets: sl1=%u, sl2=%u, sl3=%u, sr1=%u, sr2=%u, sr3=%u",
+@@ -76,12 +75,12 @@
+     bool is_left_leg(int idx) {
+         return (idx == 0 || idx == 1 || idx == 2);
+     }
+-    // Convert leg index to leg name
++
+     const char* leg_name(int idx) {
+         static const char* names[] = {"L1", "L2", "L3", "R1", "R2", "R3"};
+         return names[idx];
+     }
+-    // Process motor feedback and update calibration FSM
++    
+     void state_callback(const rinbo_msgs::msg::MotorStateStamped::SharedPtr msg) {
+         auto now_time = this->now();
+         float dt = (now_time - prev_time_).seconds();
+@@ -306,7 +305,7 @@
+             positions[0], positions[1], positions[2],
+             positions[3], positions[4], positions[5]);
+     }
+-    // parameters
++
+     float kp_, kd_, k_ff_;
+     float max_pwm_;
+     float stop_velocity_threshold_;
+@@ -338,4 +337,4 @@
+     rclcpp::spin(std::make_shared<CalibrationFSM>());
+     rclcpp::shutdown();
+     return 0;
+-}+}
+--- GitHub/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ localHEAD/src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -9,7 +9,7 @@
+ #include <csignal>
+ 
+ std::atomic<bool> g_shutdown_requested{false};
+-// gradually slows down after entering stopping state
++
+ void signal_handler(int signum) {
+     (void)signum;
+     g_shutdown_requested = true;
+@@ -33,14 +33,21 @@
+         phase_offset_B_ = period_ / 2.0;
+         
+         br_ = 0.3;
++        
++        // 找到 poly(t) = 0 的時間點（Stance 中心 = Standing）
+         t_center_ = find_poly_zero();
+         
+         theta_LO_ = eval_poly_rad(t_stance_);
+         theta_dot_LO_ = eval_poly_derivative_rad(t_stance_);
+         
+-        theta_start_rslip_ = 0.0; 
+-        theta_TD_ = eval_poly_rad(0.0) + 2.0 * M_PI; 
++        // Standing 位置對應 poly = 0
++        theta_start_rslip_ = 0.0;  // Standing 時 poly = 0
++        
++        // TD 點 = Standing + 2π（一圈後回到 TD）
++        theta_TD_ = eval_poly_rad(0.0) + 2.0 * M_PI;  // TD 位置 + 2π
+         theta_dot_TD_ = eval_poly_derivative_rad(0.0);
++        
++        // Standing 時的速度
+         theta_dot_center_ = eval_poly_derivative_rad(t_center_);
+         
+         compute_trapezoid_params();
+@@ -48,7 +55,9 @@
+         rad_to_counts_ = 54984.83 / (2.0 * M_PI);
+         
+         theta_home_ = 2 * M_PI;
+-        startup_duration_ = 4.0;
++        
++        // 啟動階段時間
++        startup_duration_ = 8.0;
+         
+         servo_targets_[0] = 740; 
+         servo_targets_[1] = 2565; 
+@@ -67,7 +76,7 @@
+         
+         start_ratio_ = 8.0;
+         current_ratio_ = 5.0;
+-        target_ratio_ = 1.0;
++        target_ratio_ = 2.0;
+         ratio_step_ = -0.0002;
+         slowdown_step_ = 0.002;
+         
+@@ -109,7 +118,7 @@
+         RUNNING,
+         STOPPING
+     };
+-    // Describes the desired leg angle during stance phase
++    
+     double eval_poly_deg(double t) {
+         double result = 0.0;
+         double t_pow = 1.0;
+@@ -119,11 +128,11 @@
+         }
+         return result;
+     }
+-    // Converts the stance trajectory from degrees to radians
++    
+     double eval_poly_rad(double t) {
+         return eval_poly_deg(t) * M_PI / 180.0;
+     }
+-    // desired angular velocity during stance phase.
++    
+     double eval_poly_derivative_deg(double t) {
+         double result = 0.0;
+         double t_pow = 1.0;
+@@ -138,8 +147,9 @@
+         return eval_poly_derivative_deg(t) * M_PI / 180.0;
+     }
+     
++    // 用牛頓法找 poly(t) = 0 的點
+     double find_poly_zero() {
+-        double t = t_stance_ / 2.0; 
++        double t = t_stance_ / 2.0;  // 初始猜測：Stance 中間
+         
+         for (int i = 0; i < 20; i++) {
+             double f = eval_poly_deg(t);
+@@ -148,6 +158,8 @@
+             if (std::fabs(df) < 1e-10) break;
+             
+             double t_new = t - f / df;
++            
++            // 確保在 [0, t_stance] 範圍內
+             t_new = std::clamp(t_new, 0.0, t_stance_);
+             
+             if (std::fabs(t_new - t) < 1e-10) break;
+@@ -186,7 +198,8 @@
+             theta_dot = w_top_ + a2_ * dt;
+         }
+     }
+-    // smoothly startup (interpolate from current position to target position over given duration)
++    
++    // Cubic polynomial: 從 (p0, v0) 到 (p1, v1)，時間 T
+     void eval_cubic(double t, double T, double p0, double v0, double p1, double v1,
+                     double& pos, double& vel) {
+         if (t <= 0) {
+@@ -208,9 +221,8 @@
+         pos = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
+         vel = a1 + 2.0 * a2 * t + 3.0 * a3 * t * t;
+     }
+-    // Compute the desired RSLIP trajectory state at an arbitrary trajectory time tau_local
++    
+     void compute_trajectory(double tau_local, double& target_rad, double& target_vel_rad, bool& stance_phase) {
+-        // Determine which gait cycle we are currently in
+         int n = static_cast<int>(std::floor(tau_local / period_));
+         double t_local = std::fmod(tau_local, period_);
+         
+@@ -218,7 +230,7 @@
+             t_local += period_;
+             n -= 1;
+         }
+-        // Handle negative times caused by Group-B phase shifting
++        
+         if (t_local < t_stance_) {
+             stance_phase = true;
+             target_rad = eval_poly_rad(t_local);
+@@ -245,6 +257,7 @@
+     void state_callback(const rinbo_msgs::msg::MotorStateStamped::SharedPtr msg) {
+         auto now_time = this->now();
+         
++        // 檢查 shutdown 信號
+         if (g_shutdown_requested && state_ != State::STOPPING) {
+             state_ = State::STOPPING;
+             RCLCPP_INFO(this->get_logger(), "=== Shutdown requested, slowing down... ===");
+@@ -254,6 +267,8 @@
+             rclcpp::shutdown();
+             return;
+         }
++        
++        // 6 隻腳的 encoder
+         std::array<float, 6> positions = {
+             msg->l1.position,
+             msg->l2.position,
+@@ -295,11 +310,12 @@
+         switch (state_) {
+             case State::STARTUP: {
+                 startup_time_ += dt;
++                
++                // RSLIP 起始速度 = Standing 時的速度（用 start_ratio_ 縮放）
+                 double rslip_start_vel = theta_dot_center_ / start_ratio_;
+                 
+                 for (int i = 0; i < 6; i++) {
+                     double p0 = initial_positions_[i];
+-                    // Assumed stationary at startup
+                     double v0 = 0.0;
+                     double p1 = initial_positions_[i] + theta_home_ * rad_to_counts_;
+                     double v1 = rslip_start_vel * rad_to_counts_;
+@@ -308,7 +324,6 @@
+                     eval_cubic(startup_time_, startup_duration_, p0, v0, p1, v1, target_pos, target_vel);
+                     
+                     float actual_vel = (positions[i] - prev_positions_[i]) / dt;
+-                    // Position tracking error
+                     float pos_error = target_pos - positions[i];
+                     float vel_error = target_vel - actual_vel;
+                     
+@@ -316,13 +331,16 @@
+                     pwms[i] = std::clamp(pwm, -max_pwm_, max_pwm_);
+                 }
+                 
++                // 啟動完成，進入 RUNNING
+                 if (startup_time_ >= startup_duration_) {
+                     state_ = State::RUNNING;
+-                    tau_ = t_center_; 
++                    tau_ = t_center_;  // 從 Standing（Stance 中心）開始！
+                     current_ratio_ = start_ratio_;
+                     
+                     for (int i = 0; i < 6; i++) {
++                        // Standing 時 poly = 0，所以 home_offset 對應 theta = 0
+                         home_offsets_[i] = positions[i] - theta_start_rslip_ * rad_to_counts_;
++                        // theta_start_rslip_ = 0，所以 home_offsets_[i] = positions[i]
+                     }
+                     
+                     RCLCPP_INFO(this->get_logger(), "=== Startup done, entering RUNNING ===");
+@@ -337,7 +355,7 @@
+             }
+             
+             case State::RUNNING: {
+-                // Gradually accelerate from startup speed toward nominal gait speed
++                // Ratio 緩降
+                 if (std::fabs(current_ratio_ - target_ratio_) > std::fabs(ratio_step_)) {
+                     current_ratio_ += ratio_step_;
+                 } else {
+@@ -346,11 +364,13 @@
+                 if (current_ratio_ < target_ratio_) {
+                     current_ratio_ = target_ratio_;
+                 }
+-                // Update tau based on current ratio to control gait speed
++                
+                 double d_tau = dt / current_ratio_;
+                 tau_ += d_tau;
+-                // Determine if Group B should be active based on current tau
++                
+                 int n = static_cast<int>(std::floor(tau_ / period_));
++                
++                // Group B 啟動
+                 group_b_active = (tau_ >= t_center_ + phase_offset_B_);
+                 
+                 if (group_b_active && !group_b_started_) {
+@@ -360,7 +380,7 @@
+                     group_b_started_ = true;
+                     RCLCPP_INFO(this->get_logger(), "=== Group B started! ===");
+                 }
+-                // Log new gait cycles
++                
+                 if (n > cycle_count_) {
+                     cycle_count_ = n;
+                     RCLCPP_INFO(this->get_logger(), "=== New cycle: %d (ratio: %.2f) ===", 
+@@ -368,12 +388,14 @@
+                 }
+                 std::array<float, 6> target_positions;
+                 std::array<float, 6> target_velocities;
++                
++                // 計算 PWM
+                 for (int i = 0; i < 6; i++) {
+                     if (is_group_b[i] && !group_b_active) {
+                         pwms[i] = 0.0f;
+                         continue;
+                     }
+-                    //  Apply half-cycle phase shift to Group B
++                    
+                     double tau_for_calc = is_group_b[i] ? (tau_ - phase_offset_B_) : tau_;
+                     
+                     double target_rad, target_vel_rad;
+@@ -472,6 +494,7 @@
+             }
+         }
+         
++        // 發送命令
+         auto cmd = rinbo_msgs::msg::MotorCmdStamped();
+         
+         bool all_enabled = (state_ == State::STARTUP);
+@@ -536,8 +559,9 @@
+     double br_;
+     double rad_to_counts_;
+     
+-    double t_center_; 
+-    double theta_dot_center_;
++    double t_center_;  // poly(t) = 0 的時間點
++    double theta_dot_center_;  // Standing 時的速度
++    
+     double theta_LO_, theta_TD_;
+     double theta_dot_LO_, theta_dot_TD_;
+     double w_top_, a1_, a2_;
+@@ -581,4 +605,4 @@
+     rclcpp::spin(node);
+     rclcpp::shutdown();
+     return 0;
+-}+}
+--- GitHub/src/rinbo_data_recorder/src/rinbo_data_recorder.cpp
++++ localHEAD/src/rinbo_data_recorder/src/rinbo_data_recorder.cpp
+@@ -26,6 +26,7 @@
+         motor_state_sub_ = this->create_subscription<rinbo_msgs::msg::MotorStateStamped>(
+             "/motor/state", 10, std::bind(&RinboDataRecorder::motor_state_cb, this, std::placeholders::_1));
+ 
++        // 初始化
+         for (int i = 0; i < 6; i++) {
+             actual_positions_[i] = 0.0f;
+         }
+@@ -74,6 +75,7 @@
+             output_file_.open(filename);
+             if (output_file_.is_open()) {
+                 record_count_ = 0;
++                // CSV Header
+                 output_file_ << "tau,ratio,"
+                              << "tgt_pos_L1,tgt_pos_L2,tgt_pos_L3,tgt_pos_R1,tgt_pos_R2,tgt_pos_R3,"
+                              << "act_pos_L1,act_pos_L2,act_pos_L3,act_pos_R1,act_pos_R2,act_pos_R3,"
+@@ -96,6 +98,7 @@
+     }
+ 
+     void motor_state_cb(const rinbo_msgs::msg::MotorStateStamped::SharedPtr msg) {
++        // 存儲實際位置（注意 R 側取負號）
+         actual_positions_[0] = msg->l1.position;
+         actual_positions_[1] = msg->l2.position;
+         actual_positions_[2] = msg->l3.position;
+@@ -106,23 +109,35 @@
+ 
+     void pid_data_cb(const std_msgs::msg::Float32MultiArray::SharedPtr msg) {
+         if (!trigger_ || !output_file_.is_open()) return;
++        
++        // 預期格式: [tau, ratio, tgt_pos x6, tgt_vel x6, pwm x6]
++        // 總共 2 + 6 + 6 + 6 = 20 個元素
+         if (msg->data.size() < 20) {
+             RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
+                 "PID data size mismatch: %zu (expected 20)", msg->data.size());
+             return;
+         }
+         
+-        output_file_ << msg->data[0] << "," 
+-                     << msg->data[1] << ",";
++        // tau, ratio
++        output_file_ << msg->data[0] << ","   // tau
++                     << msg->data[1] << ",";  // ratio
++        
++        // target positions (6)
+         for (int i = 0; i < 6; i++) {
+             output_file_ << msg->data[2 + i] << ",";
+         }
++        
++        // actual positions (6)
+         for (int i = 0; i < 6; i++) {
+             output_file_ << actual_positions_[i] << ",";
+         }
++        
++        // target velocities (6)
+         for (int i = 0; i < 6; i++) {
+             output_file_ << msg->data[8 + i] << ",";
+         }
++        
++        // PWMs (6)
+         for (int i = 0; i < 6; i++) {
+             output_file_ << msg->data[14 + i];
+             if (i < 5) output_file_ << ",";
+@@ -138,6 +153,7 @@
+     std::ofstream output_file_;
+     size_t record_count_;
+ 
++    // 儲存 motor state
+     std::array<float, 6> actual_positions_;
+ 
+     rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr trigger_sub_;
+--- GitHub/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
++++ localHEAD/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+@@ -5,7 +5,7 @@
+ #include "rclcpp/rclcpp.hpp"
+ 
+ #include "NodeHandler.h"
+-#include "Motor.pb.h" // protobuf
++#include "Motor.pb.h"
+ #include "Power.pb.h"
+ 
+ #include "rinbo_msgs/msg/motor_cmd_stamped.hpp"
+@@ -13,26 +13,26 @@
+ #include "rinbo_msgs/msg/power_cmd_stamped.hpp"
+ #include "rinbo_msgs/msg/power_state_stamped.hpp"
+ 
+-std::mutex mutex_ros_motor_state; 
++std::mutex mutex_ros_motor_state;
+ std::mutex mutex_ros_power_state;
+ std::mutex mutex_grpc_motor_cmd;
+ std::mutex mutex_grpc_power_cmd;
+-// ros messages
++
+ rinbo_msgs::msg::MotorCmdStamped ros_motor_cmd;
+ rinbo_msgs::msg::MotorStateStamped ros_motor_state;
+ rinbo_msgs::msg::PowerCmdStamped ros_power_cmd;
+ rinbo_msgs::msg::PowerStateStamped ros_power_state;
+-// grpc messages
++
+ motor_msg::MotorCmdStamped grpc_motor_cmd;
+ motor_msg::MotorStateStamped grpc_motor_state;
+ power_msg::PowerCmdStamped grpc_power_cmd;
+ power_msg::PowerStateStamped grpc_power_state;
+-// publishers
++
+ core::Publisher<motor_msg::MotorCmdStamped>* grpc_motor_cmd_pub = nullptr;
+ core::Publisher<power_msg::PowerCmdStamped>* grpc_power_cmd_pub = nullptr;
+ rclcpp::Publisher<rinbo_msgs::msg::MotorStateStamped>::SharedPtr ros_motor_state_pub = nullptr;
+ rclcpp::Publisher<rinbo_msgs::msg::PowerStateStamped>::SharedPtr ros_power_state_pub = nullptr;
+-// convert ROS messages to gRPC messages
++
+ void ros_motor_cmd_cb(const rinbo_msgs::msg::MotorCmdStamped::SharedPtr cmd) {
+     std::lock_guard<std::mutex> lock(mutex_grpc_motor_cmd);
+ 
+@@ -58,7 +58,7 @@
+     for (int i = 0; i < 6; ++i) {
+         const auto& src = ros_legs[i];
+         auto* dst = grpc_legs[i];
+-        // Copy motor state
++
+         dst->set_enable(src.enable);
+         dst->set_direction(src.direction);
+         dst->set_voltage(src.voltage);
+@@ -92,7 +92,6 @@
+     grpc_motor_cmd.mutable_header()->mutable_stamp()->set_sec(ros_motor_cmd.header.stamp.sec);
+     grpc_motor_cmd.mutable_header()->mutable_stamp()->set_usec(ros_motor_cmd.header.stamp.nanosec / 1000);
+     if (grpc_motor_cmd_pub != nullptr) {
+-        // Forward command through gRPC
+         grpc_motor_cmd_pub->publish(grpc_motor_cmd);
+     }
+ }
+@@ -113,7 +112,7 @@
+         grpc_power_cmd_pub->publish(grpc_power_cmd);
+     }
+ }
+-// Convert gRPC motor states to ROS messages
++
+ void grpc_motor_state_cb(motor_msg::MotorStateStamped state) {
+     std::lock_guard<std::mutex> lock(mutex_ros_motor_state);
+ 
+@@ -219,17 +218,15 @@
+             debug_mode = true;
+         }
+     }
+-    // Initialize ROS2
++
+     rclcpp::init(argc, argv);
+-    // ROS2 bridge node
++
+     auto node = std::make_shared<rclcpp::Node>("rinbo_ros2_bridge");
+-    // ROS2 subscribers
+     auto ros_motor_cmd_sub = node->create_subscription<rinbo_msgs::msg::MotorCmdStamped>("motor/command", 1, ros_motor_cmd_cb);
+     auto ros_power_cmd_sub = node->create_subscription<rinbo_msgs::msg::PowerCmdStamped>("power/command", 1, ros_power_cmd_cb);
+-    // ROS2 publishers
+     ros_motor_state_pub = node->create_publisher<rinbo_msgs::msg::MotorStateStamped>("motor/state", 1);
+     ros_power_state_pub = node->create_publisher<rinbo_msgs::msg::PowerStateStamped>("power/state", 1);
+-    // Initialize gRPC communication
++
+     core::NodeHandler nh_;
+     core::Subscriber<motor_msg::MotorStateStamped> &grpc_motor_state_sub = nh_.subscribe<motor_msg::MotorStateStamped>("motor/state", 1000, grpc_motor_state_cb);
+     core::Subscriber<power_msg::PowerStateStamped> &grpc_power_state_sub = nh_.subscribe<power_msg::PowerStateStamped>("power/state", 1000, grpc_power_state_cb);
+@@ -241,9 +238,8 @@
+     int loop_counter = 0;
+     while (rclcpp::ok()) {
+         if (debug_mode) RCLCPP_INFO(rclcpp::get_logger("rinbo_ros2_bridge"), "Loop Count: %d", loop_counter);
+-        // Process ROS2 callbacks
++
+         rclcpp::spin_some(node);
+-        // Process gRPC callbacks
+         core::spinOnce();
+ 
+         if (debug_mode) RCLCPP_INFO(rclcpp::get_logger("rinbo_ros2_bridge"), " ");

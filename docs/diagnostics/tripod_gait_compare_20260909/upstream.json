@@ -1,0 +1,8 @@
+{
+  "repo": "/tmp/rinbo-tripod-upstream-6rvc6c30",
+  "url": "https://github.com/ShuWei-Yang/rinbo_ros_ws",
+  "commit": "ddcbce9fecdf039af17784385839eb55baeed2a3",
+  "tripod_paths": [
+    "src/rinbo_fsm/src/rinbo_tripod.cpp"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "stopped_old_safety_stop_pids": [
+    75799
+  ],
+  "boot_id": "b0008f58-5739-453d-be5f-aa3fa7d3bd72",
+  "deployed_sha256": {
+    "rinbo_tripod": "ebe3f44462d6a0b395750a957384861eb823fb7c07adf0ca80798308d2d2d0ff",
+    "rinbo_cali": "75eb05cec9ab9a1abf490a6f0bdd7cbee5da9a670572a6548e1b78fecfa163ae",
+    "rinbo_standing": "ec2b3ae43c2b132b7d4373a8ea1f42fd1277aad9b463b6182a9bb5a22690bcc6",
+    "rinbo_manual": "1aafce3c0cda230e18523a2e29455117580269fa42a02adb20d9005973c33847",
+    "rinbo_legs": "2edd0b6d66032a7ddef3645cd25bf7ab90473ae2a2c935a16faaf48184e2840c"
+  },
+  "check_config_exit_codes": {
+    "rinbo_cali": 0,
+    "rinbo_standing": 0,
+    "rinbo_tripod": 0
+  },
+  "revision": 9,
+  "hash": "9d37bd6af731953ca8cd771e66a1881be603351575d0bcfdd02ccf3e3859bde8",
+  "policy": "warn_only",
+  "motion_started": false,
+  "power_commands_sent": false,
+  "deployed_at": "2026-09-09T13:12:30.004519+08:00"
+}

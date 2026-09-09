@@ -1,0 +1,11 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-fix-build
+Test project /tmp/rinbo-tripod-fix-build
+    Start 2: test_latest_state_safety
+1/1 Test #2: test_latest_state_safety .........   Passed    4.62 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+gtest    =   4.62 sec*proc (1 test)
+
+Total Test time (real) =   4.63 sec

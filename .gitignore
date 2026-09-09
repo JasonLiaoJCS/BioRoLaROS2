@@ -2,6 +2,7 @@
 build/
 install/
 log/
+symlink_install_manifest.txt
 
 # Local editor and OS files
 .DS_Store

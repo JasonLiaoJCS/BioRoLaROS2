@@ -1,0 +1,9 @@
+{
+  "revision": 15,
+  "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+  "parameter_differences": [],
+  "source_changes": [
+    "src/rinbo_control/rinbo_control/motion_limits.py"
+  ],
+  "baseline_unchanged": true
+}

@@ -1,0 +1,136 @@
+--- docs/diagnostics/control_panel_settings_20260909/before/motion_limits.py
++++ src/rinbo_control/rinbo_control/motion_limits.py
+@@ -6,7 +6,7 @@
+ class Field:
+     label: str
+     unit: str
+-    default: float
++    default: float  # Explicit standard_20260909_r15 restore; never a live-value gate.
+     minimum: float
+     maximum: float
+     help: str
+@@ -15,25 +15,25 @@
+ NODES = {'calibration': 'rinbo_cali', 'standing': 'rinbo_standing', 'tripod': 'rinbo_tripod_rslip'}
+ FIELDS = {
+     'calibration': {
+-        'servo_homing_timeout_s': Field('伺服定位最多等待', '秒', 20, .1, 600, '延長等待；仍需收到伺服到位回讀。'),
+-        'hall_search_timeout_s': Field('尋找零點最多等待', '秒', 30, .1, 600, '延長尋零；沒有找到 Hall 零點仍不算校正完成。'),
+-        'stop_timeout_s': Field('停穩／確認歸零最多等待', '秒', 5, .1, 600, '每階段各自計時，仍需實際停穩與歸零。'),
++        'servo_homing_timeout_s': Field('伺服定位最多等待', '秒', 60, .1, 600, '延長等待；仍需收到伺服到位回讀。'),
++        'hall_search_timeout_s': Field('尋找零點最多等待', '秒', 60, .1, 600, '延長尋零；沒有找到 Hall 零點仍不算校正完成。'),
++        'stop_timeout_s': Field('停穩／確認歸零最多等待', '秒', 15, .1, 600, '每階段各自計時，仍需實際停穩與歸零。'),
+     },
+     'standing': {
+-        'position_tolerance_counts': Field('到位容許誤差', 'counts', 200, 1, 12000, '越大越容易判定到位；1000 counts 約 6.51°（採 55296 counts/rev）。'),
+-        'rotate_timeout_s': Field('轉到站姿最多等待', '秒', 20, .1, 600, '只限制這次到位等待，並非持續站立的總時間。'),
+-        'hall_search_timeout_s': Field('尋找零點最多等待', '秒', 30, .1, 600, '沒找到零點仍會停止，避免把未知位置當完成。'),
+-        'settle_velocity_counts_s': Field('判定停穩的速度上限', 'counts/s', 500, 1, 5000, '位置到位還需要低於這個速度；500 counts/s 約 3.26°/s。'),
+-        'settle_time_s': Field('到位且停穩需維持', '秒', .3, 0, 10, '填 0 使用舊版位置到位判定，不要求低速停穩；大於 0 時才要求位置與速度連續符合。'),
++        'position_tolerance_counts': Field('到位容許誤差', 'counts', 1000, 1, 12000, '越大越容易判定到位；1000 counts 約 6.51°（採 55296 counts/rev）。'),
++        'rotate_timeout_s': Field('轉到站姿最多等待', '秒', 60, .1, 600, '只限制這次到位等待，並非持續站立的總時間。'),
++        'hall_search_timeout_s': Field('尋找零點最多等待', '秒', 60, .1, 600, '沒找到零點仍會停止，避免把未知位置當完成。'),
++        'settle_velocity_counts_s': Field('判定停穩的速度上限', 'counts/s', 500, 1, 5000, '只有停穩維持時間大於 0 才要求此速度；500 counts/s 約 3.26°/s。'),
++        'settle_time_s': Field('到位且停穩需維持', '秒', 0, 0, 10, '填 0 使用舊版位置到位判定，不要求低速停穩；大於 0 時才要求位置與速度連續符合。'),
+         'hold_error_counts': Field('站穩後偏離停止門檻', 'counts', 12000, 1, 55296, '適用已到位後；必須不小於到位容許誤差。'),
+     },
+     'tripod': {
+-        'stop_on_position_error': Field('位置誤差處理', '0=只警告；1=停止', 1, 0, 1, '0：有限位置誤差只警告。1：恢復軟門檻與 18000 counts 硬停止。無效回饋兩者都停止。'),
++        'stop_on_position_error': Field('位置誤差處理', '0=只警告；1=停止', 0, 0, 1, '0：有限位置誤差只警告。1：恢復軟門檻與 18000 counts 硬停止。無效回饋兩者都停止。'),
+         'max_position_error_counts': Field('追蹤誤差警告／軟門檻', 'counts', 9000, 1, 12000, '只警告模式下不會因此停機；採 54984.83 counts/rev 換算，硬體比例尚待確認。'),
+         'position_error_trip_seconds': Field('持續超過軟門檻的時間', '秒', .5, .01, 2, '停止模式必須同時滿足持續時間與次數；硬上限不等待。'),
+         'position_error_trip_samples': Field('連續超過軟門檻的次數', '次', 10, 1, 10, '整數。只警告模式仍記錄計數，持續執行。'),
+-        'max_pwm': Field('Tripod 出力上限 Max PWM', '原始命令值', 80, 1, 3300, '最大允許出力；不是固定輸出或百分比。Bridge 需使用本次支援 3300 的版本。'),
+-        'enable_pwm_slew_limit': Field('額外限制出力變化速度', '0=不限制；1=限制', 1, 0, 1, '目前建議 0：讓控制器即時修正。舊版 250 PWM/s 會拖延加速與反向修正；3300 出力上限仍保留。'),
++        'max_pwm': Field('Tripod 出力上限 Max PWM', '原始命令值', 3300, 1, 3300, '最大允許出力；不是固定輸出或百分比。Bridge 需使用本次支援 3300 的版本。'),
++        'enable_pwm_slew_limit': Field('額外限制出力變化速度', '0=不限制；1=限制', 0, 0, 1, '目前建議 0：讓控制器即時修正。舊版 250 PWM/s 會拖延加速與反向修正；3300 出力上限仍保留。'),
+         'pwm_slew_rate_per_sec': Field('出力每秒最多改變', 'PWM/s', 250, 1, 1000000, '只有上一項為 1 才生效。數字越大，對控制修正的延遲越少；這不是出力上限。'),
+     },
+ }
+@@ -78,7 +78,7 @@
+                 value = float(values[key])
+                 angle = f' ≈ {value * 360 / (54984.83 if stage == "tripod" else 55296):.2f}°' if f.unit == 'counts' else ''
+                 say(f'{index} {f.label}：{value:g} {f.unit}{angle}')
+-            say('p 套用較寬調機設定　r 還原本頁舊版數值　0 返回；或選一項自行填值')
++            say('p 套用調機預設　r 恢復本頁標準值（20260909 r15）　0 返回；或選一項自行填值')
+             selected = ask('選項').lower()
+             if selected in ('0', 'q', ''):
+                 break
+@@ -99,7 +99,7 @@
+                 say(f'{FIELDS[stage][key].label}：{float(change["before"]):g} → {float(change["after"]):g} {FIELDS[stage][key].unit}')
+             if not preview['changed']:
+                 say('設定已是這個值，沒有變更。'); continue
+-            say('修改校正限制需重新校正；修改站姿限制需重做 Standing。既有錯誤不會被自動清除。')
++            say('儲存會更新設定版本；舊完成紀錄可能失效，下次執行會按需要重做校正／Standing。連線不要求參數等於標準值。')
+             if ask('Enter 儲存；q 取消', '') != '':
+                 say('已取消，原設定保留。'); continue
+             applied = runtime.tune_limits(stage, updates, False, site['revision'])
+--- docs/diagnostics/control_panel_settings_20260909/before/presentation.py
++++ src/rinbo_control/rinbo_control/presentation.py
+@@ -5,6 +5,32 @@
+ from .plans import LEGS, describe, motion_pwm_cap
+ 
+ POSITIONS = ('左前', '左中', '左後', '右前', '右中', '右後')
++
++
++def settings_summary(site, plan):
++    """Display native effective values; standard presets never gate operation."""
++    if not site or not site.get('parameters'):
++        return ''
++    nodes = site['parameters']
++    lines = [f'現場設定版本：{site.get("revision", "未知")}（依目前設定執行，調參不需符合固定預設）']
++    for name, key in (('Calibration', 'rinbo_cali'), ('Standing', 'rinbo_standing'),
++                      ('Manual', 'rinbo_manual'), ('Tripod', 'rinbo_tripod_rslip')):
++        params = nodes.get(key)
++        if params is None and key == 'rinbo_manual':
++            params = nodes.get('rinbo_standing')
++        if not params:
++            continue
++        values = []
++        for label, field in (('KP', 'kp'), ('KD', 'kd'), ('K_FF', 'k_ff'), ('PWM', 'max_pwm')):
++            value = params.get(field)
++            if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value):
++                values.append(f'{label}={value:g}')
++        if values:
++            lines.append(f'{name}：'+ '　'.join(values))
++    cap = motion_pwm_cap(site)
++    lines.append(f'逐腳本次有效 PWM 上限：{min(plan["max_pwm"], cap):g}'
++                 f'（計畫 {plan["max_pwm"]:g}、現場 Manual {cap:g}，取較小值）')
++    return '\n'.join(lines)
+ 
+ 
+ def effort_note(plan, site):
+@@ -99,6 +125,9 @@
+         if blocked:
+             lines.append('目前動作中的 '+' '.join(blocked)+' 已屏蔽，不能執行。')
+     lines.extend(['\n【本次動作】', describe(plan)])
++    summary = settings_summary(site, plan)
++    if summary:
++        lines.append(summary)
+     note = effort_note(plan, site)
+     if note:
+         lines.append(note)
+--- docs/diagnostics/control_panel_settings_20260909/before/console.py
++++ src/rinbo_control/rinbo_control/console.py
+@@ -76,9 +76,12 @@
+         say('通訊埠請填 1～65535 的整數，通常是 50051；前面填的位址仍保留。')
+ 
+ 
+-def edit_limits(plan):
++def edit_limits(plan, site=None):
+     updated = copy.deepcopy(plan)
+     say('這裡只調整校正後的逐腳動作。q 取消整次修改；Enter 保留目前值。')
++    if site is not None:
++        cap = motion_pwm_cap(site)
++        say(f'目前現場 Manual 上限：{cap:g}；計畫與現場上限取較小值。調整計畫不會改動現場控制參數。')
+     updated['max_pwm'] = numeric('逐腳動作出力上限', plan['max_pwm'], 1, 500,
+         suggestion='可填 1～500；實際出力也受現場 Manual 上限限制。選 13 可查看並採用現場上限。',
+         explanation='這是允許的驅動出力上限；慢轉也需要足夠出力。它不是轉速、伏特或百分比。')
+@@ -613,7 +616,7 @@
+                 ip, jetson, port = target
+                 last_result = f'網路位址已儲存：sbRIO {ip}:{port}，Jetson {jetson}。'
+             elif choice == '7':
+-                updated = edit_limits(plan)
++                updated = edit_limits(plan, runtime.site())
+                 apply_plan(updated)
+                 say('限制已儲存，尚未執行；可選 3 檢查動作。')
+                 last_result = '出力、加速度與速度上限已儲存。'

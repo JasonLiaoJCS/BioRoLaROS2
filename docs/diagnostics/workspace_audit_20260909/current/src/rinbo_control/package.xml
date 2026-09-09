@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>rinbo_control</name><version>0.1.0</version>
+  <description>Chinese single-terminal operator console for Rinbo.</description>
+  <maintainer email="redrhex@example.com">RedRhex Team</maintainer><license>MIT</license>
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>rclpy</exec_depend><exec_depend>ament_index_python</exec_depend>
+  <exec_depend>python3-yaml</exec_depend><exec_depend>rinbo_msgs</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>std_msgs</exec_depend><exec_depend>openssh-client</exec_depend>
+  <exec_depend>rinbo_fsm</exec_depend><exec_depend>rinbo_ros_bridge</exec_depend>
+  <exec_depend>redrhex_lowlevel_bridge</exec_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

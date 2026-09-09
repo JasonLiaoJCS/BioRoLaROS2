@@ -1,0 +1,13 @@
+Internal ctest changing into directory: /tmp/rinbo-tripod-fix-build
+Test project /tmp/rinbo-tripod-fix-build
+    Start 5: test_cali_multileg
+1/2 Test #5: test_cali_multileg ...............   Passed    3.72 sec
+    Start 6: test_standing_multileg
+2/2 Test #6: test_standing_multileg ...........   Passed    3.42 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+gtest    =   7.14 sec*proc (2 tests)
+
+Total Test time (real) =   7.16 sec

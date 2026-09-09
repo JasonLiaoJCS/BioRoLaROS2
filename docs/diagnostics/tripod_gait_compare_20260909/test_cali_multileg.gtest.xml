@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="15" failures="0" disabled="0" errors="0" time="2.797" timestamp="2026-09-09T21:08:01" name="AllTests">
+  <testsuite name="CaliMultiLegTest" tests="15" failures="0" disabled="0" errors="0" time="2.755" timestamp="2026-09-09T21:08:01">
+    <testcase name="WrongDirectionCannotBeHiddenByFindingHall" status="run" result="completed" time="0.058" timestamp="2026-09-09T21:08:01" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="ManualPlanValuesOnlySelectLegsAndDoNotOverrideCalibrationParameters" status="run" result="completed" time="0.041" timestamp="2026-09-09T21:08:01" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="All64MasksUseActualHealthyCalibrationTransitions" status="run" result="completed" time="1.35" timestamp="2026-09-09T21:08:01" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="L1AndL3MissingOnlyPassWhenBothExplicitlyMasked" status="run" result="completed" time="0.043" timestamp="2026-09-09T21:08:02" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="SelectedL2IgnoresOtherHallsAndOnlyCertifiesL2" status="run" result="completed" time="0.027" timestamp="2026-09-09T21:08:02" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="EverySingleLegCompletesWithoutWaitingForFiveUnselectedLegs" status="run" result="completed" time="0.133" timestamp="2026-09-09T21:08:02" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="StopSignalsAfterDoneKeepContextAliveUntilCallbacksEndAndPreserveReceipt" status="run" result="completed" time="0.467" timestamp="2026-09-09T21:08:02" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="StopBeforeCompletionCannotLeaveAnApprovedReceipt" status="run" result="completed" time="0.201" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="RealFailureAfterDoneIsNotHiddenByNormalShutdown" status="run" result="completed" time="0.233" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="ResetWithoutZeroFeedbackFailsAndCannotCreateReceipt" status="run" result="completed" time="0.061" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="ReenabledServoMustHomeAgain" status="run" result="completed" time="0.031" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="LostResetRetriesOnlyWhileStationaryAndNeverCompletesWithoutFeedback" status="run" result="completed" time="0.031" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="LostResetStillTimesOutAtOriginalDeadlineWithDiagnosticValues" status="run" result="completed" time="0.025" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="RelaxedResetWaitStillRequiresActualZeroFeedback" status="run" result="completed" time="0.028" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+    <testcase name="LongerHallWaitStillRequiresRealHallAndCannotApproveCalibration" status="run" result="completed" time="0.026" timestamp="2026-09-09T21:08:03" classname="rinbo_fsm.CaliMultiLegTest" />
+  </testsuite>
+</testsuites>

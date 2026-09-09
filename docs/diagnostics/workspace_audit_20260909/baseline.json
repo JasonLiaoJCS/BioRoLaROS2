@@ -1,0 +1,6 @@
+{
+  "url": "https://github.com/ShuWei-Yang/rinbo_ros_ws",
+  "upstream_commit": "ddcbce9fecdf039af17784385839eb55baeed2a3",
+  "local_head": "20a0151b9641d733140b710fe3b0128ca08f8b7b",
+  "scope": "all upstream tracked entries, all rg-visible local src/tools files; excludes generated build/install/log and diagnostic archives"
+}

@@ -1,0 +1,12 @@
+{
+  "new_test": "TargetRatioAndElapsedTimeNeverAutoCompleteRunning",
+  "passed": true,
+  "simulated_seconds": 250,
+  "ratio_start": 81,
+  "ratio_target": 80,
+  "shutdown_requested_only_after_simulation": true,
+  "test_source_sha256": "4fc613f39d7e0e8befdd5e1fbd82ac7e63eb555a3a3bddf96d50d33b1671d80d",
+  "production_source_changed_this_followup": false,
+  "deployed": false,
+  "hardware_commands_sent": false
+}

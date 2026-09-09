@@ -1,0 +1,1 @@
+PASS: legacy-binary refusal, missing-service refusal, detached launch, idempotent start, monitor close, identity stop, wait exit receipt; one fake initialization

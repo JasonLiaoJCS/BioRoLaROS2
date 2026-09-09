@@ -1,0 +1,1877 @@
+[
+  {
+    "path": "README.md",
+    "upstream_type": "blob",
+    "upstream_object": "d7657f442a6428ea0a8b818e5da5a3da8fa487e4",
+    "local_exists": true,
+    "upstream_sha256": "70d7a0c733183c31da96d7ade6c85703954b63ca6b9c5589e8415ded52394da4",
+    "local_sha256": "f44ea5ca70bce3599c716ab93f66367107f5572c1da61028f786cf398df9d790",
+    "status": "modified",
+    "in_local_head": false
+  },
+  {
+    "path": "src/microstrain_inertial",
+    "upstream_type": "commit",
+    "upstream_object": "88c53dc66f45cad01821a441250bfb97d294deed",
+    "local_exists": false,
+    "status": "gitlink_absent",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_data_recorder/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "f1af94b56489830708f9122cd4a1dbe9e2b7816f",
+    "local_exists": true,
+    "upstream_sha256": "fdba91c7723ca217115867b3b6c47fb9e0f94bd604e4c96b41bad1780c31793c",
+    "local_sha256": "719b31eec63f4f6a201f3c7009f4ab877f3b0334a947be8c1a50e0f6b368697e",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "ca6af0c7a2759cc07148835560d0e7d28939bd772c8cad12682cf6352b2d4880",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_data_recorder/package.xml",
+    "upstream_type": "blob",
+    "upstream_object": "88ead6ac0bdbc1bdbe77767adeed0669a1d8eda5",
+    "local_exists": true,
+    "upstream_sha256": "adfd47feb952ce9d7ea9a774ca3f33383122388c3686564f1bdcccb4549834f7",
+    "local_sha256": "97b51e4a80075beb99cc252b702ea7857e54e1dc3aee83a0dd3e6e7e105968ce",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "71d6fcf64bd892fbe8433a38fe836a26663b0e4cbb864fb6785ed55e278b743b",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_data_recorder/src/rinbo_data_recorder.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "076f687b28e37edf52fd8aaeb87bb01464c536c2",
+    "local_exists": true,
+    "upstream_sha256": "d7434ef1afa458cd9ff6937c1f3cc4fb6cf598796b62fe3910333ff7692cd932",
+    "local_sha256": "5cde87f147770ea3832e55014e2a268c807ba8404b1782af96cfc2cee0652041",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "1784bfab6e0d7f080d6c8d1b1a7477e5e8849f9484823a99edafc0f5b516ebd9",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": true,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_fsm/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "ffb0f09f2282bb6fd00e5b845de48a1a682dea0b",
+    "local_exists": true,
+    "upstream_sha256": "eb0f2512659f9ed0f42a41b62938a16103942c6c22edf7862a9bffbe5297b7f2",
+    "local_sha256": "9c8c17a85c5f5bfc53e65bdb51b992cfdc2b4f2b1d11b0e01675c0909dca1475",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "551e5a791177022ec9318fb7eee3b2c5d613cfd32f9f56cc62142017962909ea",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_fsm/package.xml",
+    "upstream_type": "blob",
+    "upstream_object": "602ec3984a700331db07412a2bde60f71fc5967d",
+    "local_exists": true,
+    "upstream_sha256": "084283033b0d777484a2c315fbee6c39268def00d01211f8d833d575032907dc",
+    "local_sha256": "69ae76911a9151e407a89d49a51e7d151c9afe87c61a1926e62b6a6594927b44",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "6133d1e45658985257386f4a7a2e20ec1239291e4d1d2334c3c225d6fa662926",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_cali.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "4f98d3f646b0bd4c5a28d07e7fb82b2428c91196",
+    "local_exists": true,
+    "upstream_sha256": "216c6071dd256407cc7229ef830ba2c847f1d764349b541dea805f1f64cb762a",
+    "local_sha256": "653645dc80437feaadb607527df7664a5bd8c72177b07f6e2bfb538c7961f38c",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "e3ca9c1b62018cd11649028b6d23f0b20e0a7e4a2f8e94ca0665c83c0a661768",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": true,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_standing.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "5c512bc2ca5083b951aa4a8c9e79835c8e5bde98",
+    "local_exists": true,
+    "upstream_sha256": "2f1fec9e8b91b034b0cc263d962166599ed95c1ed71f77a71c6017eccfedb327",
+    "local_sha256": "c7e810e61b7e78ee41705d87349c910542281641ab58344e8e9d7b3d805c4d89",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "0c822029cb22aa705e3fc45219600275dec04f640274b6e354003b4165e4f7f3",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_tripod.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "81f6f4b8cd0dd17e1804b4532b4000425516a666",
+    "local_exists": true,
+    "upstream_sha256": "d9eb6df4cdddd271c58727d564aad504ec2bd0d95542e6dfc16f9e11d3722810",
+    "local_sha256": "7ce324b72a5d591f8e26f850783ac3817f9ba73990cdb075ad177ff8a73ea4a8",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "a7ed925988cf845ee579ddc2183761cdf7f3124aaaf22d6927c3ed3ccf5a2ecd",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": true,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_msgs/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "bec9b57c66b80c113d08f1cf089a6faaf3c4f44d",
+    "local_exists": true,
+    "upstream_sha256": "6bdbc384157679e90a6dc7389d852886ff256368ab860a8e8240ec90f8fdc8fb",
+    "local_sha256": "e3e80350d57305c2f096c10ce42122cb2580f192572030ac02c9b6dae1857468",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "6bdbc384157679e90a6dc7389d852886ff256368ab860a8e8240ec90f8fdc8fb",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_msgs/README.md",
+    "upstream_type": "blob",
+    "upstream_object": "c8c771f48b116d252fbb62fea537235e1e0c0e33",
+    "local_exists": true,
+    "upstream_sha256": "4f84e931398592388c2bb13b5bcfa7143b515a530e858f863f1d9d49911565ff",
+    "local_sha256": "4f84e931398592388c2bb13b5bcfa7143b515a530e858f863f1d9d49911565ff",
+    "status": "identical",
+    "in_local_head": true,
+    "local_head_sha256": "4f84e931398592388c2bb13b5bcfa7143b515a530e858f863f1d9d49911565ff",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/Header.msg",
+    "upstream_type": "blob",
+    "upstream_object": "ba4b18cdf06b015802b5b035100b841eadf32cd2",
+    "local_exists": true,
+    "upstream_sha256": "f5a865b26ac43e599442264a323fd7d56ca65a9fb5972d3792cf3c6d00afd5a7",
+    "local_sha256": "2dfb1ed4fda2b89d04c7717dafae30c84e2b21087f5757a4d3e152f718bd47e3",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "2dfb1ed4fda2b89d04c7717dafae30c84e2b21087f5757a4d3e152f718bd47e3",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/LegCmd.msg",
+    "upstream_type": "blob",
+    "upstream_object": "16f43b087a2c676c6c06082f045076ccdbc4a4e3",
+    "local_exists": true,
+    "upstream_sha256": "266ec4e3312b1e22201268a02f0cbf9f46ed07b3f5ce61c262f78b4ee35827aa",
+    "local_sha256": "9d7206ede34f9f3e01715a22dd4e3d23bf132da4ea3dbc7410b6bb7cee4bbb6d",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "9d7206ede34f9f3e01715a22dd4e3d23bf132da4ea3dbc7410b6bb7cee4bbb6d",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/LegState.msg",
+    "upstream_type": "blob",
+    "upstream_object": "8bdb013b6060934fc9ec940ad25bd9aa563edcdb",
+    "local_exists": true,
+    "upstream_sha256": "2cbbc7fae50873f18a2074cd0b649bec8ef7261bb1367c48d8ba13be43285dad",
+    "local_sha256": "248733e49e5bf97120e6cbe6134592f6cef49228e1c8b036e27b6e7bb3ae4c43",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "248733e49e5bf97120e6cbe6134592f6cef49228e1c8b036e27b6e7bb3ae4c43",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/MotorCmdStamped.msg",
+    "upstream_type": "blob",
+    "upstream_object": "94d4bd236e54c047bb787eb9137dea1a6519e541",
+    "local_exists": true,
+    "upstream_sha256": "dd3093a04077a348d85dad25d61b653f03be82dc54225d7c97512dfc69b5b3a1",
+    "local_sha256": "0ed09cc696e4c01e7da3623f8cb83a05f63e069514a5a0b6475d8aaea9fd56aa",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "0ed09cc696e4c01e7da3623f8cb83a05f63e069514a5a0b6475d8aaea9fd56aa",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/MotorStateStamped.msg",
+    "upstream_type": "blob",
+    "upstream_object": "7f8d2e0447b615ffec81d6e364ad1730cab81d8f",
+    "local_exists": true,
+    "upstream_sha256": "6673ca9b0e414d12db8209b86410b92eeeb0895b2fab6e8299bc60eb59899b76",
+    "local_sha256": "4edeabdef98e65509aed6034820b60b6ca136901c9e9eaaab76c3220de317586",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "4edeabdef98e65509aed6034820b60b6ca136901c9e9eaaab76c3220de317586",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/PowerCmdStamped.msg",
+    "upstream_type": "blob",
+    "upstream_object": "f87eaec8f9e6c80dbff8f8bab0abcfe486173909",
+    "local_exists": true,
+    "upstream_sha256": "76ad238406ca1f64b0b94974e18e19829a5b146c08ede9c01af64b00b9689d6e",
+    "local_sha256": "b05cbcb0995fef02a98dc672088801b50b039b8abd13700afc755e159c864869",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "b05cbcb0995fef02a98dc672088801b50b039b8abd13700afc755e159c864869",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/PowerStateStamped.msg",
+    "upstream_type": "blob",
+    "upstream_object": "63223b55c3165f02a431da310da495089b869280",
+    "local_exists": true,
+    "upstream_sha256": "873ff5da192aaed3bd2bd8585804d543551e545a3c8b662b1ca1e25b08b72723",
+    "local_sha256": "0e696bc47db8cbefe11f378ba569ccb0fa3753ba602928349754010ae6d16d92",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "0e696bc47db8cbefe11f378ba569ccb0fa3753ba602928349754010ae6d16d92",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/ServoCmd.msg",
+    "upstream_type": "blob",
+    "upstream_object": "c40d02fcbcf1a07e4863f3cbe0f537d6cc1530d7",
+    "local_exists": true,
+    "upstream_sha256": "1e1f41d18df6eca3301018508162c82fc5207ddb4594625c716e427c72fe5aae",
+    "local_sha256": "706c51398a963ee2e50ea8509c505b9b30f716a45306967f2ad4ccd3e98a90e2",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "706c51398a963ee2e50ea8509c505b9b30f716a45306967f2ad4ccd3e98a90e2",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/ServoState.msg",
+    "upstream_type": "blob",
+    "upstream_object": "770c6b54ac44e665c52ed89ed944acd81c00af67",
+    "local_exists": true,
+    "upstream_sha256": "b50d6aca7e3e5faa9f347a962f21ed393ed98c83130a8b05fa1bbde6dd69bf09",
+    "local_sha256": "80cd3a6b3684cdc97b64af677893d634c173fe3e7b2791b5f5f4f2eb5936f330",
+    "status": "line_endings_only",
+    "in_local_head": true,
+    "local_head_sha256": "80cd3a6b3684cdc97b64af677893d634c173fe3e7b2791b5f5f4f2eb5936f330",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/package.xml",
+    "upstream_type": "blob",
+    "upstream_object": "f029236ce1329b0ca387f1a4ae3f98561cc15ca5",
+    "local_exists": true,
+    "upstream_sha256": "bf82df71b332749cf2205cea07bf6f82db0d4f26f080c5d0749d1436568489cf",
+    "local_sha256": "bf82df71b332749cf2205cea07bf6f82db0d4f26f080c5d0749d1436568489cf",
+    "status": "identical",
+    "in_local_head": true,
+    "local_head_sha256": "bf82df71b332749cf2205cea07bf6f82db0d4f26f080c5d0749d1436568489cf",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_panel/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "3abe39f8dfa21493a7e04b7c3433b6e0e2bfe595",
+    "local_exists": false,
+    "upstream_sha256": "51bb125d010d3682cd540306ba56b7eb7805513caebd26bb06e737b0d6ab3633",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_panel/launch/rinbo_control_panel.launch",
+    "upstream_type": "blob",
+    "upstream_object": "9e15efb5074d700bd648bdf883a822f2afd4a779",
+    "local_exists": false,
+    "upstream_sha256": "3789f432890d02771876fbf3bd7347b37992ed9f7c36cd866fa9ac1686b3045e",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_panel/package.xml",
+    "upstream_type": "blob",
+    "upstream_object": "053a16d6f86ca239fc9b2a036255e68872b73f00",
+    "local_exists": false,
+    "upstream_sha256": "64d8275886afae7c3393f1986ff0beb8c8169204db8bb71c2ccddeaad7484595",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_panel/scripts/rinbo_control_panel.py",
+    "upstream_type": "blob",
+    "upstream_object": "a26f3c7393accbb27b827a6e79261d75db948dab",
+    "local_exists": false,
+    "upstream_sha256": "d8e3e05625c4f3163cbd17e26662b80171d04830fc14f2c93ffd31f581ddff52",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_pid_test/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "4ad5d9cb424aeb8a96f8d45610b6532be45e52bc",
+    "local_exists": false,
+    "upstream_sha256": "f07d29539cdac2a268b46a2f17dcfba341e8476d171d2b621c9138e4530b9698",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_pid_test/package.xml",
+    "upstream_type": "blob",
+    "upstream_object": "d12bcaf930dc09cc8d35a99c68a89b60b088526b",
+    "local_exists": false,
+    "upstream_sha256": "a29da715fece85c56d9d115a3c00e6f6334f6feccab1bd66988df851902564f4",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_pid_test/src/rinbo_pid_test.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "fd41c766834ade03268276e63d63b214f5f7984b",
+    "local_exists": false,
+    "upstream_sha256": "e7001fa86fbc1d1024617e33d74cd9493c2bb267224fc783cd4732f32fcfb9e2",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_pid_test/src/rinbo_traj_rslip.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "c044c534a7c24629098894bb1c87876dc415aa57",
+    "local_exists": false,
+    "upstream_sha256": "578991ba3784ed7315de693d7eaa2be9c228e55c778bbb81a8bb5d684c0cdbde",
+    "status": "absent_locally",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "13d8c84aa9fd964759fd4446b76d72baf22c7a6a",
+    "local_exists": true,
+    "upstream_sha256": "c228b8657bf177be3e09281d74d163e690c41f24ce42c5feb1406783caf2fb86",
+    "local_sha256": "0e7605c9ca89341c9d7cba121c707b6856f3444eebc5b45c23e2e5c16cb22be0",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "c228b8657bf177be3e09281d74d163e690c41f24ce42c5feb1406783caf2fb86",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_ros_bridge/cmake/common.cmake",
+    "upstream_type": "blob",
+    "upstream_object": "aba0fa19f5397bf2ecaa256f3c8a743c9841a769",
+    "local_exists": true,
+    "upstream_sha256": "b7ed1dec313d50b7216da79cffb064a6a86039825d6ba508d62861b718750b8a",
+    "local_sha256": "b7ed1dec313d50b7216da79cffb064a6a86039825d6ba508d62861b718750b8a",
+    "status": "identical",
+    "in_local_head": true,
+    "local_head_sha256": "b7ed1dec313d50b7216da79cffb064a6a86039825d6ba508d62861b718750b8a",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/launch/rinbo_ros_bridge.launch",
+    "upstream_type": "blob",
+    "upstream_object": "41bea34f4a030626d90f104abfe5562f1e5a6762",
+    "local_exists": true,
+    "upstream_sha256": "bee1a22a50a61e02423ec33f3053fbbfa5214b9fe5e2f2f25633ce55ae9a2066",
+    "local_sha256": "bee1a22a50a61e02423ec33f3053fbbfa5214b9fe5e2f2f25633ce55ae9a2066",
+    "status": "identical",
+    "in_local_head": true,
+    "local_head_sha256": "bee1a22a50a61e02423ec33f3053fbbfa5214b9fe5e2f2f25633ce55ae9a2066",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/package.xml",
+    "upstream_type": "blob",
+    "upstream_object": "e98c549391159dd8cd1c302b2cae868cc154e4f4",
+    "local_exists": true,
+    "upstream_sha256": "41a53108d5ac305fc2c95a9ae17c07a092e62bd3236aa974c71c856d940f6a55",
+    "local_sha256": "29d690d7f9cc1f814a2033df0d60e0298f0d99bf9fa5e6837ab2fcdaf9a611e0",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "41a53108d5ac305fc2c95a9ae17c07a092e62bd3236aa974c71c856d940f6a55",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "src/rinbo_ros_bridge/scripts/rinbo_ros_bridge.sh",
+    "upstream_type": "blob",
+    "upstream_object": "2a8393ba096936ea6511b2bf0bdef4cde1134ef7",
+    "local_exists": true,
+    "upstream_sha256": "d00c033ccfd421d8a64def81b597ebcc39ba1fb39a34a4f10fc710fe38855f1f",
+    "local_sha256": "d00c033ccfd421d8a64def81b597ebcc39ba1fb39a34a4f10fc710fe38855f1f",
+    "status": "identical",
+    "in_local_head": true,
+    "local_head_sha256": "d00c033ccfd421d8a64def81b597ebcc39ba1fb39a34a4f10fc710fe38855f1f",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/src/CMakeLists.txt",
+    "upstream_type": "blob",
+    "upstream_object": "649dc11ade804013e3a832ff483f55fd93b0a3d0",
+    "local_exists": true,
+    "upstream_sha256": "1109bb04e338f36fe8abd349480eb75e2f4f77a852dc768a1071f3fa16c17d77",
+    "local_sha256": "1109bb04e338f36fe8abd349480eb75e2f4f77a852dc768a1071f3fa16c17d77",
+    "status": "identical",
+    "in_local_head": true,
+    "local_head_sha256": "1109bb04e338f36fe8abd349480eb75e2f4f77a852dc768a1071f3fa16c17d77",
+    "working_differs_from_head": false,
+    "upstream_differs_from_local_head": false,
+    "upstream_text_differs_from_local_head": false,
+    "working_text_differs_from_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp",
+    "upstream_type": "blob",
+    "upstream_object": "238825b70a07571699ccda174c1bddf66a5dfa23",
+    "local_exists": true,
+    "upstream_sha256": "60da40799e512784da885ed63b4d428d0fc97af50cfc4f4b549739c517e269e5",
+    "local_sha256": "e91119de01a602dcb686ca54802da4c7b88af10cf7c07eff1b85ae129111e5f2",
+    "status": "modified",
+    "in_local_head": true,
+    "local_head_sha256": "6a6929bc58abcb2cf2a39821fa42933f91e5773903ccca951cb22143e3d4071f",
+    "working_differs_from_head": true,
+    "upstream_differs_from_local_head": true,
+    "upstream_text_differs_from_local_head": true,
+    "working_text_differs_from_head": true
+  },
+  {
+    "path": "tools/evaluate_tripod_velocity_filter.py",
+    "status": "local_only",
+    "local_sha256": "b9952cc33bbc3d9f4d84e45132837ed82739dbd4094e91b4c31e07d0c6131509",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline-sha256.json",
+    "status": "local_only",
+    "local_sha256": "85f2cd8c096f93952c55053003b89a9c986943bbc168a5ee28a10dfe1390e21a",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/fpga-service",
+    "status": "local_only",
+    "local_sha256": "808bf2f627f2f076a7343f126c52e448f3ba7fedb0263f0d5003f01fb61cc5e5",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/lifecycle.patch",
+    "status": "local_only",
+    "local_sha256": "7861a1d42ae601c6095769075014f5ce073628400da615f9185d40f04861fcbf",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/README.md",
+    "status": "local_only",
+    "local_sha256": "fbdf14d788141444212afe7fe0ba4d2f6a56ded7e4f29b8cb0ed14185c9a66a2",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/prepare_candidate.py",
+    "status": "local_only",
+    "local_sha256": "8024df400461730ebd7057eb60defeaa1adda7ad9a9e9bd010aa5da2af392eb4",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/endpoint_test.cpp",
+    "status": "local_only",
+    "local_sha256": "5f01c190ac34a297c43068626f19bd95425287298ff366a1f973c93a79d829f5",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/test_lifecycle.py",
+    "status": "local_only",
+    "local_sha256": "4afc5cba1634e6e58d13eeacd4964a940c093f56712d427be2cca4ac076a33ea",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/fake_ni.cpp",
+    "status": "local_only",
+    "local_sha256": "0a5e8a616866a6fe0bb0ccdbc8fd12fc1b7c1a72365e28d91fcaae59106a8e41",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/SafetyEventStamped.msg",
+    "status": "local_only",
+    "local_sha256": "dbe270e6b0a883140cd0c0d1702f7a77550dd46ef817a8f1982d587bc6df5129",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_msgs/msg/ControllerDebugStamped.msg",
+    "status": "local_only",
+    "local_sha256": "f35e2b2d9528f57d96e2224c478d7c18b50fea0577b42e79e66047f959b6679e",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/fake/messages.hpp",
+    "status": "local_only",
+    "local_sha256": "aa28a5e605f2b3a729edc6a4906bb89bc447aff55518001e8db6a31dda8b283c",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/fake/NodeHandler.h",
+    "status": "local_only",
+    "local_sha256": "3f84f416bbaa75477e63d664c1825aeb19f480cb57b587ff6528b1eb171ae471",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/fake/Power.pb.h",
+    "status": "local_only",
+    "local_sha256": "e0c4e4e7d0dd6c91f18c3c2b955b79d185f83b5fff46d1dedfb987a22e555d86",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/fake/Motor.pb.h",
+    "status": "local_only",
+    "local_sha256": "e0c4e4e7d0dd6c91f18c3c2b955b79d185f83b5fff46d1dedfb987a22e555d86",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/build.sh",
+    "status": "local_only",
+    "local_sha256": "8306215bf9c4a29581332ab8c3214a7b5e4e2e16e1a669e670796f096c845b8d",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/test_service.py",
+    "status": "local_only",
+    "local_sha256": "fb4489de903993a927438b4b66ce8d5729c6fc6fcc91f810896fc1129f8aa4f6",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/config.yaml",
+    "status": "local_only",
+    "local_sha256": "bb68e4be9a350ba2de4ddc6568c1fc5bf4c99de586addea2676a01883fbceb6e",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/NiFpga_FPGA_POWER_RS485_v2.h",
+    "status": "local_only",
+    "local_sha256": "fd44b8b7c97e7447f410961aaf7e6f1f40b09e2e01b7421f02acc2c348c9ae4d",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/NiFpga.h",
+    "status": "local_only",
+    "local_sha256": "cd14d4d02f15075c55713374b297025686f93ea4dd438d394d9828d1b5f9d3f6",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/unctrl.h",
+    "status": "local_only",
+    "local_sha256": "68ea2a9aafb4de1080630eb9d84c7289440743c0f90b4ff32f7191248f232824",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/ncurses.h",
+    "status": "local_only",
+    "local_sha256": "e02d07d59451341667b527b19a46495dcfff318e597598f951d730236b1286de",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/ncurses_dll.h",
+    "status": "local_only",
+    "local_sha256": "cd59c7e24b87401d036be945686d2b4d230039a02efe315be1fd5964b749c33b",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/color.hpp",
+    "status": "local_only",
+    "local_sha256": "cec4180b63f49616036594a6cdeba99b2da27e8f942917444490dab8d03c4b7d",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/curses.h",
+    "status": "local_only",
+    "local_sha256": "e02d07d59451341667b527b19a46495dcfff318e597598f951d730236b1286de",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/test/vendor/curses-64.h",
+    "status": "local_only",
+    "local_sha256": "f8e506a0e75720d5b1eb8cbc1386ec8f355ae1354c17f18643e51a1e8ebab271",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/src/fpga_handler.cpp",
+    "status": "local_only",
+    "local_sha256": "0847bbf183e2ecb83c6810b4a77abdf2f73ba6c27e14cae44b585a03315530ee",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/src/fpga_server.cpp",
+    "status": "local_only",
+    "local_sha256": "2fa0a7b291fe10613496729abddba112923862ff0ee8fd0a5b2225ebfb18612c",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/src/console.cpp",
+    "status": "local_only",
+    "local_sha256": "bd3362d2ea0338fa06fa20a9ce3f350733afa3a94a14f560af7cbcf19242687e",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline/fpga_handler.cpp",
+    "status": "local_only",
+    "local_sha256": "806e0fdf5bf217e84c02e7d56bef73a64d6ef700ca62a05317f1b371b1917cb8",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline/fpga_handler.hpp",
+    "status": "local_only",
+    "local_sha256": "c67c2b50470a11af2b48f648df5d3bb8159405975089a24bb19ae82add045e1d",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline/fpga_server.cpp",
+    "status": "local_only",
+    "local_sha256": "ad008f2a61cf0f0bc4a364c5febf7e17b8c1355d84aec797d0dcace907d9c373",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline/fpga_server.hpp",
+    "status": "local_only",
+    "local_sha256": "d617c6a8425d4622b4ae05d50e3c5c462c9f825803703f0a48c984165272edfe",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline/console.cpp",
+    "status": "local_only",
+    "local_sha256": "e2438c64480bb10d0a751ac5625aeb29b0bb7fa6af44054a2c7c7e689a503a66",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/baseline/console.hpp",
+    "status": "local_only",
+    "local_sha256": "c8bece003d82d2d2914424ddedc99eeb772583703bdc79d096087e38f3d27b3a",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/include/fpga_handler.hpp",
+    "status": "local_only",
+    "local_sha256": "cf20bea6ffc963b6250cc5afdfb6285d252cc2702c16baa52ffaf73e11b4c36b",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/include/fpga_server.hpp",
+    "status": "local_only",
+    "local_sha256": "d1095485aeb45b12bbd9a5aa613bec2941cebb207f3ee4a1cbca627560478ebb",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/include/console.hpp",
+    "status": "local_only",
+    "local_sha256": "b04bc0e4df97aab0fdb8f9854affec2972c25844dafac8593a68a77683d0b421",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/include/driver_lifecycle.hpp",
+    "status": "local_only",
+    "local_sha256": "ac36e1a4996757566d23ca961909b188bb0d745b3649699eab075596c534d771",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/plot_tripod_gait_compare.py",
+    "status": "local_only",
+    "local_sha256": "8dc74471a78786eeb6ac20cab84cb3aa70395a13b95a49d37c6f8671be7a8a1b",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/analyze_tripod_gait_compare.py",
+    "status": "local_only",
+    "local_sha256": "60a18527e565afcf7b56e431dd5458b94ac33e4d39029a820cb6df0c7c30e8cd",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/SHA256SUMS",
+    "status": "local_only",
+    "local_sha256": "5d32b7c1a74496f0de72b2263bea1afccf7c33e5079f9703b739f084871729af",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/overlay-results.txt",
+    "status": "local_only",
+    "local_sha256": "4e9f53b24dbc295fe96405227e03c325e9318a10e8a3028b249d8802f938d181",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/candidate-source-sha256.json",
+    "status": "local_only",
+    "local_sha256": "71cb7bdf61f989613013aa02ceed9582ce68931bff782b12f309d4a73b7091cb",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/fake-linkage.txt",
+    "status": "local_only",
+    "local_sha256": "9b3c896ba06dd5dc02871dbbfc1530e984150af2ad237f2c5ef3a09580947c49",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/native-compile.txt",
+    "status": "local_only",
+    "local_sha256": "e3f58b5d26605b6d7af8117215b696377800a9aa9fa5605f14b8845383cf7b87",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/native-command.txt",
+    "status": "local_only",
+    "local_sha256": "dab367de2a37fcd4915bac0f29d1b1739967582c73a999df8849942b660cf273",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/orin-recheck.json",
+    "status": "local_only",
+    "local_sha256": "922505ff1457764b27b3cd635eaaf5f571025c1833a1eb5c32f789253e893d0c",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/new-bridge.json",
+    "status": "local_only",
+    "local_sha256": "a51b318762df694c3aadbd1ddf124a3a692e6155f57c1a539a7d7be1cad081c6",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/service-results.txt",
+    "status": "local_only",
+    "local_sha256": "df73438cb8e9f1a0dd1b8bf275a451c1924cde5fe234c9398d6e74ed067e349f",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/endpoint-results.txt",
+    "status": "local_only",
+    "local_sha256": "23523b90a5869f961057fa559d5b966d3fcbd084434ed2431c19556889b92715",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/sbrio-recheck.txt",
+    "status": "local_only",
+    "local_sha256": "42a193d099a97ebab57a7a9c4f184d5f74cd8684b790a09e912106ae304592b6",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/offline-results.json",
+    "status": "local_only",
+    "local_sha256": "10f7b7675dbfb430c525cc8fa731070813017cd474d12f2288b7ff30232e9d90",
+    "in_local_head": false
+  },
+  {
+    "path": "tools/fpga_lifecycle/evidence/orin-journal-filter.txt",
+    "status": "local_only",
+    "local_sha256": "2d220443075d8353c202ee8e8b605ac42b649b2af93cf44972f480bcdfb83d3b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_msgs/package.xml",
+    "status": "local_only",
+    "local_sha256": "f6269fe1634e1ea29bbe366adb77cd2955b363d226501354a6dc77b00387d3b0",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_msgs/CMakeLists.txt",
+    "status": "local_only",
+    "local_sha256": "c7ecf0236e9fc47befff2b576d4fd938b782c5c5f02e4a07c2925f178a00ef80",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_msgs/msg/RedRhexMotorState.msg",
+    "status": "local_only",
+    "local_sha256": "04f39e4b676c9590a965f841e2dc53241ffa49b2e20d4556424efe2e34dd2aba",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_msgs/msg/RedRhexMotorCommand.msg",
+    "status": "local_only",
+    "local_sha256": "6e85e9ab46c546451e6c31496471a9b33e7b96aff9ea819b9137b9994cb9ddb8",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/config/manual_velocity.yaml",
+    "status": "local_only",
+    "local_sha256": "7224e98c57171da0808ba88ad6cd96cc43911db7bbbc8ba544549f5e0e104a54",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/config/tripod_safety_test.yaml",
+    "status": "local_only",
+    "local_sha256": "ad974a1585f4d194cd837b1805bec2769912751d23bb08fed8e40339c76dfa7a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/config/manual_phase.yaml",
+    "status": "local_only",
+    "local_sha256": "a936e2ddf8ce74f27b058d476c5851c55159090038a9d8e798cd31cb4c59456c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/config/manual_single_leg.yaml",
+    "status": "local_only",
+    "local_sha256": "10460f802770f20e3bbd4812c48fa1a4817cd99796df929d30df5a0505e61dc9",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/config/disabled_leg_template.yaml",
+    "status": "local_only",
+    "local_sha256": "e7199556f7483a93c20cefe93c631150e7498df97e76e775ebb3735ef6e12e9b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/config/l1_degraded_test.yaml",
+    "status": "local_only",
+    "local_sha256": "434f34fdf67a368f617a76d50615ba591cb2cb15aa44dfaf1fae5df29ed1d657",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/test/test_motor_output_limits.cpp",
+    "status": "local_only",
+    "local_sha256": "c578eebfcf85e8db769fae93e208e497c0dd42f332d26c9d48706a94588aef25",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/test/test_power_command_epoch_guard.cpp",
+    "status": "local_only",
+    "local_sha256": "3c0152f71014b2269edcd0e619071668b2e3b971d2c84c70b62ef7212a9b8d12",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_data_recorder/scripts/rinbo_log_control",
+    "status": "local_only",
+    "local_sha256": "4646d1084ed6feaf5db6d69b228fbcb575dd17741398c3ac5af9c8ca27be5cbc",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_control_velocity.cpp",
+    "status": "local_only",
+    "local_sha256": "46d03ec1c5483a986b0d597b1846e161fcc5f562b50a3c0fd5920f5d921e49ea",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_standing_multileg.cpp",
+    "status": "local_only",
+    "local_sha256": "2586fc17c44b6ae6389dbc83270c2f119b8dc25105f389038bfbce0aecd56d90",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/assert_sin_sweep_retired.cmake",
+    "status": "local_only",
+    "local_sha256": "052fef9c2806591bc2fe04d6154f34f907ce81d32586ffdd53690f34bc2a61ca",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_manual_motion.cpp",
+    "status": "local_only",
+    "local_sha256": "7a9a78e09f3693e0ba2da5f5e524071f0114cfeb9b119e82cdb5c93dd079d1e5",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_manual_controller.cpp",
+    "status": "local_only",
+    "local_sha256": "fdf6cfe0c307bd2efbacb99dca1a3f2a8a91739ed72e3b1bea837504f5e27013",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_robot_config.cpp",
+    "status": "local_only",
+    "local_sha256": "524ffa9f55dc5e88cefdbf744ed77a3cafd1615274897f64f2d7c2757f67af6d",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_cali_multileg.cpp",
+    "status": "local_only",
+    "local_sha256": "e4523e43d43190fef88747ccebd3d534b74471ff2813b07cd57ebf1304d923c8",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp",
+    "status": "local_only",
+    "local_sha256": "3f3759ede1990a78a5c1c7504ef53bcee187d2a270b0e6af22f88d166c580cf6",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_latest_state_safety.cpp",
+    "status": "local_only",
+    "local_sha256": "8005baa5c7e90c4c507985b7c64fb8eb3625f358e60d27b1a4429d2b54abef48",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_tripod_multileg.cpp",
+    "status": "local_only",
+    "local_sha256": "445d1ef40ce7536c27b19f51459faae671b7ea2377d574c432f7f8b6c8a93f0d",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/setup.cfg",
+    "status": "local_only",
+    "local_sha256": "205db50d0a333b2e54eb2984c2383fdcf36c3feb61fd90af51b210804cfacff6",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/package.xml",
+    "status": "local_only",
+    "local_sha256": "8bea3dec9112ae907cc26fb861749587c3609e178a7691132431d387a00c3a4b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/src/power_command_epoch_guard.hpp",
+    "status": "local_only",
+    "local_sha256": "13db4e203fcd662f3d5ef56b25114885357da0f6130e9d349009aa3dcc6381f0",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_data_recorder/test/test_command_recording.py",
+    "status": "local_only",
+    "local_sha256": "638c7d34727ed8439daff06d88e5c7d9772382b2c966e17496469e8458caafcd",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/src/motor_output_limits.hpp",
+    "status": "local_only",
+    "local_sha256": "94227920138618aa9f2e527235827b1eca51c90f443c20f8af85c0b83ff99961",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/setup.cfg",
+    "status": "local_only",
+    "local_sha256": "2e69942fdf39af8e92fa408a5bde4862da82aecc387eb76eb85f6de4978a72de",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/package.xml",
+    "status": "local_only",
+    "local_sha256": "3d780224ff606434dda8ade897f9bef678c8bc3ef7edb9f82c6942b4a4ef856c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/setup.py",
+    "status": "local_only",
+    "local_sha256": "b1064efcf862d86f8dd6148c5b2d6376dc602554993619f31bbd54178f913d15",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/motion_effort.hpp",
+    "status": "local_only",
+    "local_sha256": "60f6ff4ca13c38069f17e08f5aa053a2a3ab69538711df53131057bcfa858612",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/safety_invariants.hpp",
+    "status": "local_only",
+    "local_sha256": "cbbc3f82d40d837c091c63a745367ae39ed397b3b0be2925a54cfc01e45d4cf2",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_legs.cpp",
+    "status": "local_only",
+    "local_sha256": "bdd0a5388edc2c3a09b40ee807f0c4110e417bccf78a63d5e77a822b484f7696",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/fixtures/robot_test.yaml",
+    "status": "local_only",
+    "local_sha256": "688705ec3bc9b01717e57aab81bece1ac5c165f0169dcf52f679cc45abd7571c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/disabled_legs.hpp",
+    "status": "local_only",
+    "local_sha256": "378c37d98af8b44e9d83364e09fb74b97ea778b9b5e7cd6a7bae304baaa75cc0",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/latest_state_qos.hpp",
+    "status": "local_only",
+    "local_sha256": "40366bb9d4d0d37a80f1f06f99b1c2840da43e46b7c4759caea9c32d1f78879a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/ros_input_guard.hpp",
+    "status": "local_only",
+    "local_sha256": "b741405fdabad32dd0a3deccdae4a1d6dafeaebb55aea284a235b095dd5c235e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/test/test_motion_effort.cpp",
+    "status": "local_only",
+    "local_sha256": "9cf2a4a48af05a8a4e24d587336932f89c5bbe1ca518c83d1f7adcc3366744be",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/tripod_power_policy.hpp",
+    "status": "local_only",
+    "local_sha256": "9ff45e997bf47981606d5a06afe39d2583176830f3b740b30a860114fd345f85",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_power_guard.hpp",
+    "status": "local_only",
+    "local_sha256": "a5eb7f531c7053d573faf9e3b2a9f5d667b2ab36ff8aa856c585c10c4b39dfa0",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/bridge_input_discovery.hpp",
+    "status": "local_only",
+    "local_sha256": "59303c53954f3929edd8d4839c141072926f86730b055d4f05abef2f6a5a9c57",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/robot_config.hpp",
+    "status": "local_only",
+    "local_sha256": "acf0a6417df7865336811e7b0b87a534cc2ef57c64d817614a33bb460d58305e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/motor_tracking.hpp",
+    "status": "local_only",
+    "local_sha256": "f3d273c99486bdc110c2a14012fda3c4bbe52342ea6e0b16f50647105cb8343f",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_manual.cpp",
+    "status": "local_only",
+    "local_sha256": "0a381252be413b7a6111f9e530d180d9c264b34c629eb76cb7e172e5a4b1be4f",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/rinbo_sin_sweep.cpp",
+    "status": "local_only",
+    "local_sha256": "d98396fed265d745e1925aa47c69576ecbf24e03c7ae112da4b24108ec5cd0f3",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/manual_motion.hpp",
+    "status": "local_only",
+    "local_sha256": "6fe0f0e19c4d8eb8270dbfe30d3b0fce92db1725125234e8319c586fbc7a5866",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/tripod_reference.hpp",
+    "status": "local_only",
+    "local_sha256": "b9f73e2e2058f40ef6ab713c837c48871ad7e56a704c989faa7dd61772e2da66",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/control_velocity.hpp",
+    "status": "local_only",
+    "local_sha256": "13118fea1df02af445283f4a54e8a46b2fef3f84e7cfc2cfd14c542d93ba4865",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/robot_config.cpp",
+    "status": "local_only",
+    "local_sha256": "69376ef59c0e230e8ec5f21acb970e1c238de122959a72d9d8f313b14a1d40ec",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_fsm/src/motor_arbiter_handshake.hpp",
+    "status": "local_only",
+    "local_sha256": "c5fd6055f7a339bb10075380950842ee71d4ef2eeb87ebd5f89bb9a438bebfff",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/scripts/package_verified_policy.py",
+    "status": "local_only",
+    "local_sha256": "8a8136f45cc417f79ae4f95eae12544105114e83738a93cb7651a7da0aec9c89",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/scripts/check_onnx_io.py",
+    "status": "local_only",
+    "local_sha256": "bc367bb468eb8df263177ea04d9cba1a20dfae2bc93fde476215a39a08f5e958",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/scripts/compare_onnx_with_torch.py",
+    "status": "local_only",
+    "local_sha256": "b91b136887eb9bde29ec1963c65060529673768ec99dc0167dad110525bce5b6",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/setup.py",
+    "status": "local_only",
+    "local_sha256": "899f6a28510feded48b6021b0f4376f5bbf52bb8af153fc2728dfc6c81cdc57a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_data_recorder/launch/record_experiment.launch.py",
+    "status": "local_only",
+    "local_sha256": "896452b2789cc8df620b9706e38a579c6ecca1a43f03cc620d2c9cc343acaf53",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_ros_bridge/config/redrhex_safe.yaml",
+    "status": "local_only",
+    "local_sha256": "3b3843b56f4589a7433c7df03d06e3f83253068e867e63859cdb873b8e040538",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/resource/rinbo_monitor",
+    "status": "local_only",
+    "local_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_data_recorder/config/logging_tripod_safety.yaml",
+    "status": "local_only",
+    "local_sha256": "3abac4e26f2bf9cc903c99c14831a9caceee18e041cc9c3c7c682f6fa772fefd",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/setup.cfg",
+    "status": "local_only",
+    "local_sha256": "afeb71a042d00c18cc4f1ee241b057b3c9526d743a93c774fa5d1f8ac1a64fe3",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/package.xml",
+    "status": "local_only",
+    "local_sha256": "39bc1bf54b112ed86877702e047599024fae74e10ba9ccd34a66b15ae8b37e9a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/setup.py",
+    "status": "local_only",
+    "local_sha256": "062f48792d351340e5161ce56384e4f994c1faf7b765c17b57930932ca8205fb",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/rinbo_monitor/recording.py",
+    "status": "local_only",
+    "local_sha256": "f531d78b856570b9e2169eec7979f9a1d1d6bc2d6f62788e9db0ddc996f9338a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/rinbo_monitor/model.py",
+    "status": "local_only",
+    "local_sha256": "addceabc9cc80433bed74136aec49cdc671a7abf5bef9888e7e445844a798cd3",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/rinbo_monitor/panel.html",
+    "status": "local_only",
+    "local_sha256": "35cdc700a8e9c3d7f06aed3149261961faa18115b1da3ea4b7b89d89f97aae82",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/rinbo_monitor/__init__.py",
+    "status": "local_only",
+    "local_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/rinbo_monitor/server.py",
+    "status": "local_only",
+    "local_sha256": "ce9ebe6c9f82ed49bb7e2b6953ef927986968d445b1fcb24fd293baff456880a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_bringup_check.py",
+    "status": "local_only",
+    "local_sha256": "1a8ad252b5ea5df2abd4686466ea8cb8b4971777f786dcc48175b1968fe426d0",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_servo_probe.py",
+    "status": "local_only",
+    "local_sha256": "cd8aa2e4fd3ec49b3023de1f514eea4a674c45760b6e9d3ddbf70bdd0669e320",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py",
+    "status": "local_only",
+    "local_sha256": "2a97be1209376f4dc7c43bcd2765e7a04ea6f8ba8091ac5e83e9c1071d135b77",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/serial_bridge.py",
+    "status": "local_only",
+    "local_sha256": "24f27e729eba29e8a485ffd603867b28ddecafc032fcee642bb43bd26eca2f7b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/mock_bridge.py",
+    "status": "local_only",
+    "local_sha256": "b04a64fd7d0c6a4165ad6e3a48b32f76cb5fe45723a1c132899f9c67a806b77b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/sbrio_udp_bridge.py",
+    "status": "local_only",
+    "local_sha256": "6920514e5b5d9efb671ba21e625c83cc7579a0674fc242232dc0194ad4726cab",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_fault_diag.py",
+    "status": "local_only",
+    "local_sha256": "a1fbbc85234268cc2868faa9ed5b5d99330a86c8f4e59961dc9edf5e718db02b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py",
+    "status": "local_only",
+    "local_sha256": "c4bf0dc4765dbfa6938c23ef64a402152839c1cb7fae93c94dbf1851ab4e2803",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/__init__.py",
+    "status": "local_only",
+    "local_sha256": "50f5b3e6ec83bb75eba1b4dc81cc1aa97df554ca56660121f7154e755cb2721b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/bridge_base.py",
+    "status": "local_only",
+    "local_sha256": "1413d44d319508c53dea07bcd8e76ca6d1430f2facd702b545317d61d2c4aaf5",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_bringup_plan.py",
+    "status": "local_only",
+    "local_sha256": "3cff662194d9ed2d61d6f8eb20b1d46c61f4ab6fd9870320a6419774ccad2b99",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/lowlevel_bridge_node.py",
+    "status": "local_only",
+    "local_sha256": "f3b242f8c952e5f25fd513476bf5c0a5897fb766003f9a58fb5f2af926ff5f96",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/test/test_recording.py",
+    "status": "local_only",
+    "local_sha256": "f2a66f56fafd76f19ce894bba500f86485a1328f632577c44763978901e6da97",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/test/test_panel.js",
+    "status": "local_only",
+    "local_sha256": "85d2a9e59dd51bb544b32723d702680b0dfa9f8d223daf2c165f72d587628e1e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/test/test_monitor.py",
+    "status": "local_only",
+    "local_sha256": "4321bf964d1ba37f4a1c1c288e2aa2d14e478b0a3a891dfdfcb76a56b9777bf7",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_monitor/test/test_ros_monitor.py",
+    "status": "local_only",
+    "local_sha256": "39944c137be0f087d645eecd16fb543589fd383e210f90994f274205acaa59fa",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/resource/redrhex_rl_controller",
+    "status": "local_only",
+    "local_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/resource/redrhex_lowlevel_bridge",
+    "status": "local_only",
+    "local_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/config/lowlevel_bridge_full_feedback_rig.yaml",
+    "status": "local_only",
+    "local_sha256": "7eaf59f4898d100f74b26dd6ab3fa20fd2a8907cfaefde79a6672daca8387662",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/config/lowlevel_bridge_locomotion_tune.yaml",
+    "status": "local_only",
+    "local_sha256": "c6f146bffd33f1667139aaa48072edf2d3c2d3f2cb2da4c78a80579f0eb8c490",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/config/lowlevel_bridge_encoder_only_rig.yaml",
+    "status": "local_only",
+    "local_sha256": "a6d54918e719efcb3df864465e17484a60b037d5755a2a84e64c7ed92338ea0e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/config/lowlevel_bridge_sensor_v2_suspended_experimental.yaml",
+    "status": "local_only",
+    "local_sha256": "f21c6542c3a09f74e87b645a9dd6ac8c8193e63ed94a61db92b2fcd2396091ef",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/config/lowlevel_bridge_bench_safe.yaml",
+    "status": "local_only",
+    "local_sha256": "db56c71b177f422d8f392ab8fc4655b30be57a00c944bb0c18911db89c8c17fb",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/config/lowlevel_bridge.yaml",
+    "status": "local_only",
+    "local_sha256": "67e2dd5a209defa9a30b5499d272520c1cb58dd9a0d4b2472fd9ffc171e7aed8",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/config/redrhex_policy.yaml",
+    "status": "local_only",
+    "local_sha256": "16bbfc9b20484bf3f3777dcb02aab2521981c335b9a3b2210c3bcaa0c8b78089",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/config/redrhex_policy_bench_safe.yaml",
+    "status": "local_only",
+    "local_sha256": "024b20473b22b5e0d78a4ad56e1182e3b9df8614b109d0f79133a9e194260abf",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/config/redrhex_policy_encoder_only_rig.yaml",
+    "status": "local_only",
+    "local_sha256": "f0919e4a3264ed5a8f493b212e4b321665c0f4688ca8a5dd7a3d603bf1e05586",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/config/redrhex_policy_locomotion_tune.yaml",
+    "status": "local_only",
+    "local_sha256": "3daaaf7ff2ea29e61e4bf4fcdd5c1d8f55d258029780ea8e523f59b483977602",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/config/redrhex_policy_sensor_v2_suspended_experimental.yaml",
+    "status": "local_only",
+    "local_sha256": "0b050584f6fa54063bda26ccd45c354412b972b044b12c2d2f433dff71b5b1c2",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/config/redrhex_policy_full_feedback_rig.yaml",
+    "status": "local_only",
+    "local_sha256": "a282eae723714215e980425356d27b41551b1d7fbbebf410bbdad6f511965639",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/setup.cfg",
+    "status": "local_only",
+    "local_sha256": "c5ea7663b79f3fcfbd1b74708423252e16233b167c8777ae5a043f65e00d2d47",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/package.xml",
+    "status": "local_only",
+    "local_sha256": "39f39eede48a1d6421d4d8a9c1f7cdcedd5c330f038831f311153d900e954fc8",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/setup.py",
+    "status": "local_only",
+    "local_sha256": "a73b9d8fdccb1f719786c3bf0cb05f73def43bf57e2488bc2709edc44c3bc86c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/sim_motion_limits.py",
+    "status": "local_only",
+    "local_sha256": "2360a6afeb7c2dc46f399190455ea2750211f901704dcb1f7e3456dbc90425d8",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/ssh_auth.py",
+    "status": "local_only",
+    "local_sha256": "65a697b748092fc436138ae23e1c3f09eea6d5ddce5d3257fd659d31be213fa1",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/motion_limits.py",
+    "status": "local_only",
+    "local_sha256": "3b95144bd7902832a216f8f5e644cf0074b959ffb882371abc0a682973954f59",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/demo.py",
+    "status": "local_only",
+    "local_sha256": "5a1f42cd3424857ab007b5c87f8e56ced02c898000654e653455deba7ebf7c51",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/calibration_progress.py",
+    "status": "local_only",
+    "local_sha256": "29d00bf2f65fc19127949b9f3c0af8e55968bd189466f0dce1cda7d43958204e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/console.py",
+    "status": "local_only",
+    "local_sha256": "0230c5b9f8b42512b372d54883ab485d760fd1b1956ba5d35f7f53ddd1795a0d",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/library.py",
+    "status": "local_only",
+    "local_sha256": "95ba185c53a299ace54153634bddd792022f4f022ccf598d265a977878abaa74",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/runtime.py",
+    "status": "local_only",
+    "local_sha256": "a1d77457d67207eb86924075075030a3b1f4506a7ded003cb9be151e29b4e71d",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/__init__.py",
+    "status": "local_only",
+    "local_sha256": "a191c309eb89e9a5f904d838d01a259dab32bcd11c6c3958d911493ea32183c9",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/presentation.py",
+    "status": "local_only",
+    "local_sha256": "1bef692cc04631cfcd2adfc7b6a581442b3aab121a0dc0a5069a49bd9ee187b5",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/README.md",
+    "status": "local_only",
+    "local_sha256": "c65c1dae3e89ab0fc65b62474e21bcc9e91a4000e306101605937ae035771c79",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/rl_controller_node.py",
+    "status": "local_only",
+    "local_sha256": "19f1c898e82affc8349f1c93905e251ca75fab029ba7bf54278c577a699ae248",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/sbrio.py",
+    "status": "local_only",
+    "local_sha256": "eb87b72ba193cf0d23ffe1a889f7202f6d45a488845a9551c98ca537eb1fed68",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/guardian.py",
+    "status": "local_only",
+    "local_sha256": "6cf880ab8b94c4e2de00d4ad6f12181b9ebdae1be552bc907a10a6213c2a3522",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/terminal.py",
+    "status": "local_only",
+    "local_sha256": "eb65a29175ba154a9c7627634c7f3f9fb05e07fa936a533007473e585ba16543",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/feedback.py",
+    "status": "local_only",
+    "local_sha256": "5d6dca607dd70b883f08819eb7caa0225574ff6e4749328a3efd922ca437b565",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/plans.py",
+    "status": "local_only",
+    "local_sha256": "4668d010ff4845a4a3f9269e8b52071cd357bff9807fc6e9ac5690fdc474bf24",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/rinbo_control/connection_recovery.py",
+    "status": "local_only",
+    "local_sha256": "b6b5c7e0c30e550ace219ecf9bcaf4c79ff4ea4b5f8a481c70827e4b307d126b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/resource/rinbo_control",
+    "status": "local_only",
+    "local_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/README.md",
+    "status": "local_only",
+    "local_sha256": "0fbcedecaae302fdfbe059e2d65accb15daea6bf75496537687f97d5558dc832",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/degraded_mode.py",
+    "status": "local_only",
+    "local_sha256": "b3b09d4addabd105bf176240c88da31624a6775f3538778d437f74029d88aa04",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/state_machine.py",
+    "status": "local_only",
+    "local_sha256": "33eb8b63293fd73fd4c908ae80a5147651c241659d403661e891c95c3b1b409a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/golden_policy.py",
+    "status": "local_only",
+    "local_sha256": "ff8749cf0f5b6e16ea235c28a7aef5f9078c492264abb3ecd859e2c6ac4b2fd6",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/policy_onnx_runner.py",
+    "status": "local_only",
+    "local_sha256": "5b178d051679d5a552c96d9734a5cb14ff112c68c5f8e34b7a8beadcee98dcfe",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/action_decoder.py",
+    "status": "local_only",
+    "local_sha256": "d52811b30183c628644cf7cae83bc1f11a8ba6927362179250bc61a8093e6322",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/rinbo_leg_mask.py",
+    "status": "local_only",
+    "local_sha256": "dbe4f91e194ccb10f70573604c6e67beef6f4244258ecb5a0cb5922f446bf806",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/policy_validation.py",
+    "status": "local_only",
+    "local_sha256": "f9fb326684e057ac2e1063ff0f55cabcc81f2517cca2c82c413ed70d8dffa28c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/golden_recorder.py",
+    "status": "local_only",
+    "local_sha256": "b3b76511b9c69179b344f0eefb0a08627629cbf5392198ea9dc4319c4758ca4d",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/motor_command_tool.py",
+    "status": "local_only",
+    "local_sha256": "005db99fbe6b9f675aeb533dc2247d50d326dc10b66d2b522d5f150fe98e5daf",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/preflight_check.py",
+    "status": "local_only",
+    "local_sha256": "59e167c6f7292db2ff94887a05b4a5f32b89979c728bd2e1d7b7af1793e8113b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/estop_tool.py",
+    "status": "local_only",
+    "local_sha256": "35574980b390049f4df527ccfbb1d0bf29c797ac027fc2656ef45e9a0173bdf4",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/fake_sensor_node.py",
+    "status": "local_only",
+    "local_sha256": "7de55af1dddc55d19b9b58ac38a83c999b399f89cb0ce4b06c91b3e12e9b7bba",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/__init__.py",
+    "status": "local_only",
+    "local_sha256": "7ee680188ae00018ed789add7d0c2a42c2c2460d882ff70f91959d269da85e31",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/bridge_config_hash.py",
+    "status": "local_only",
+    "local_sha256": "aa4b6e790c5a357ce162b56e47ad00869a23dad2e6537b32d737af8737aad74c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/safety_filter.py",
+    "status": "local_only",
+    "local_sha256": "59202f4593b26ca5dba9b11dcf8a355146be81395cf625b021d6a1209c70dff6",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/observation_builder.py",
+    "status": "local_only",
+    "local_sha256": "5ea0440cf0ed92dc1bef9341d56676980f2d3c32eb25cfc74b9458c933951d29",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/redrhex_contract.py",
+    "status": "local_only",
+    "local_sha256": "9eb7f737809816dc2eedf262c20d9e9dc871150e2a5ea61b2a8f908724645592",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/redrhex_rl_controller/imu_alignment_tool.py",
+    "status": "local_only",
+    "local_sha256": "b800bc060a503dde518d6ba47b10e0f60cfc096848f803aa60b0cb6a8067640a",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/launch/lowlevel_bridge.launch.py",
+    "status": "local_only",
+    "local_sha256": "a32784dd7569e1ee356f74e32f27e4ebfc6a2043cfc232101d28d714cea73314",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/launch/redrhex_policy_bringup.launch.py",
+    "status": "local_only",
+    "local_sha256": "b71b50157411797c1426c7949659df6e4ea3f54d790350ab600e30407f470302",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_sensor_v2_runtime.py",
+    "status": "local_only",
+    "local_sha256": "0bd69799013ebeed1f18eb784dcb2e5259668dc1007b62d9068807d97779746e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_observation_imu_alignment.py",
+    "status": "local_only",
+    "local_sha256": "478d4aa883b2de655a1adaf266f1c92303ab1f78e3da8fb9b9feb2cf311d8983",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_rinbo_leg_mask.py",
+    "status": "local_only",
+    "local_sha256": "77dcba18fd37e836cc77b303104c754f8b5bd3d612cf5610531f7d90a9ba0ded",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_core_logic.py",
+    "status": "local_only",
+    "local_sha256": "baeeb640305faa838b8b4944b5cc1f90da521beb68525d4c5e01c3f3cd6fddb5",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_policy_metadata_gates.py",
+    "status": "local_only",
+    "local_sha256": "159d3a11d8821106da8c30cbb38fd5770799c1b823eeb22197b87d33d9137363",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_policy_launch_safety.py",
+    "status": "local_only",
+    "local_sha256": "9e4c291193fa40c4425692622302912271b06932526bca49244e96a72dff8d08",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_motor_command_tool.py",
+    "status": "local_only",
+    "local_sha256": "1c4cb28d9f76911dcf91f4331b6d27547edcd4dab7c9f6e49e4858bfa84fc88e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_policy_validation.py",
+    "status": "local_only",
+    "local_sha256": "b989ed2ecb2309528b67467c869c7175672fea27a2fa996ee8a7bc7dba678337",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_full_feedback_profile.py",
+    "status": "local_only",
+    "local_sha256": "48668a7560d8ae2852682d240abdff7ca6dc8fef60cdb751065a73510199e308",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_sensor_v2_offline_check.py",
+    "status": "local_only",
+    "local_sha256": "df92405c3c0e30194b62da9501381c5cf34f99889d158a497ddc6608af42e5d4",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_rl_controller/test/test_estop_tool.py",
+    "status": "local_only",
+    "local_sha256": "8a7a112b8a98b2d56306c5df6a8e86fb918f7ea494ea5abed029a8b720f1ebb9",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_lowlevel_launch_contract.py",
+    "status": "local_only",
+    "local_sha256": "c05e6a5da4cbf634b1c0abcec93594e71da1a8527eb494d87b72cc2c56d7e258",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_active_rinbo_safety_contract.py",
+    "status": "local_only",
+    "local_sha256": "6d7eaf9c75d271de0dfb9b2f017025040844cf26fe4fbe6bfea0dde2a391b798",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_rinbo_backend.py",
+    "status": "local_only",
+    "local_sha256": "2dc010e6131e5df425d934272cffe7205209e1443222cc74c7294cf458e4e4dd",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_power_tool.py",
+    "status": "local_only",
+    "local_sha256": "3ed3da02a6de1835aee255eb89b69cf017265ea2a5e313cc5bd94abe9a835988",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_bringup_plan_retired.py",
+    "status": "local_only",
+    "local_sha256": "0b779712c8add377333e15489c45ff8dfca539682b8bd0bc720bde0b59bfc10e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_rinbo_bringup_check.py",
+    "status": "local_only",
+    "local_sha256": "7a8c2fc106ceaa7b6eb814476c6691431b85e415dd6930327471b8df46bd062c",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_biorola_fault_diag.py",
+    "status": "local_only",
+    "local_sha256": "3d328a7815139af5170c0e527dad8b2efcd5239579e48617302ac6289271d738",
+    "in_local_head": false
+  },
+  {
+    "path": "src/redrhex_lowlevel_bridge/test/test_biorola_servo_probe.py",
+    "status": "local_only",
+    "local_sha256": "453ed079aea429e5befb9aedb9880d9d8e4df0e0796bbdedfb2ac1d8e4d503bf",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_motion_limits.py",
+    "status": "local_only",
+    "local_sha256": "3334535760122dbcf18eef784557c432dd4205532d9a1993b857ac6e4f7b122b",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_plans.py",
+    "status": "local_only",
+    "local_sha256": "726857ffa5a344980cda5511bff0e5e93f14827bd2fba33efb82682153af6edb",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_runtime.py",
+    "status": "local_only",
+    "local_sha256": "b73bf7d0e08920b8b478ef34cf57582a0784d7be92578221c3a63387ae9de7fc",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_feedback.py",
+    "status": "local_only",
+    "local_sha256": "27a1f5c8a9fad36454d49b4bcdcc457c8562b01a47c5a23e36b1697a75cfcd65",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_ssh_auth.py",
+    "status": "local_only",
+    "local_sha256": "8db59dd1852782970bed5e0a3098b0a843e6cba3e83eab708df581e139e988d8",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_calibration_progress.py",
+    "status": "local_only",
+    "local_sha256": "7a46a5f1449750d75d62f1d555230c9ed0a73d09c02afc38993d94f167708f70",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_presentation.py",
+    "status": "local_only",
+    "local_sha256": "d5c1d29f0dbcb4d7a9e9b2687d043a032681810c4868e65bbacd1a8a8c5bd73e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_connection_recovery.py",
+    "status": "local_only",
+    "local_sha256": "72a0ce429ce63e0b43d737e41f2c23139d18e381b43683e1681f3733d33f9528",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_sbrio.py",
+    "status": "local_only",
+    "local_sha256": "0e5f8e38a42df362cd44a4edaa57ab9740f8f63c4bfd390145776a6fca9f2b42",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_leg_management.py",
+    "status": "local_only",
+    "local_sha256": "da29d393d425b196cd838c071165bfbb216b1fabab55ff91394c5d7a11174181",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_workshop.py",
+    "status": "local_only",
+    "local_sha256": "5733d53c55da4869489f81b3160f4121fad440e4497c32b5e4356638b305774e",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_console.py",
+    "status": "local_only",
+    "local_sha256": "76dd20d8f4b617ab57c53223859398a09e0d3c6eec6bcd7454c360aea541edad",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_convenience.py",
+    "status": "local_only",
+    "local_sha256": "619bf7d0b83c85da80082ca2eec225f1016e18c8f04d165a6260db6c16d251ee",
+    "in_local_head": false
+  },
+  {
+    "path": "src/rinbo_control/test/test_terminal.py",
+    "status": "local_only",
+    "local_sha256": "7279a45e706866dab27782d623da740a25eca1486e29123b7ee60570f4bc4be2",
+    "in_local_head": false
+  },
+  {
+    "path": "robot.sh",
+    "status": "local_only",
+    "local_sha256": "5a8307f480f437abbc27d276508f73858896880e45027bc2a6e8c090a1301674",
+    "in_local_head": false
+  },
+  {
+    "path": "start_rinbo_monitor.sh",
+    "status": "local_only",
+    "local_sha256": "a1fd5cf2041836379ec5365b0c9e9f780d11c6e8d8ec2c8137d7b89514bbaf03",
+    "in_local_head": false
+  },
+  {
+    "path": "Rinbo-Monitor.desktop",
+    "status": "local_only",
+    "local_sha256": "d31a386645f0b37950c30ea8cf162f72206930b34ecc6a86c7bc5efdf231980d",
+    "in_local_head": false
+  }
+]

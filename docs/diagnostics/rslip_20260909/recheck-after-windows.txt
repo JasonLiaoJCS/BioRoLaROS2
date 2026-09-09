@@ -1,0 +1,23 @@
+{"uptime": "1557.54", "CLK_TCK": 100, "wall": "2026-09-08T19:42:01+0000", "boot_id": "64ed8560-4fd6-411a-af52-15dbf953c1ad"}
+{"cmdline": "/home/admin/rinbo_sbRIO_ws/install/bin/grpccore ", "cwd": "/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build", "env": {"CORE_LOCAL_IP": "192.168.30.254", "CORE_MASTER_ADDR": "192.168.30.254:50051", "LD_LIBRARY_PATH": "/home/admin/rinbo_sbRIO_ws/install/lib:/home/admin/kilin_sbRIO_ws/install/lib:/home/admin/rinbo_sbRIO_ws/install/lib:/home/admin/kilin_sbRIO_ws/install/lib:", "SSH_CONNECTION": "192.168.30.213 49337 192.168.30.254 22", "SSH_TTY": "/dev/pts/0", "TERM": "xterm"}, "exe": "/home/admin/rinbo_sbRIO_ws/install/bin/grpccore", "fd": {"0": "/dev/null", "1": "/var/volatile/tmp/grpccore.log", "10": "anon_inode:[eventpoll]", "11": "anon_inode:[eventfd]", "12": "anon_inode:[eventpoll]", "13": "anon_inode:[eventfd]", "14": "socket:[20329]", "15": "anon_inode:[eventpoll]", "16": "anon_inode:[eventfd]", "17": "socket:[20373]", "18": "anon_inode:[eventpoll]", "19": "anon_inode:[eventfd]", "2": "/var/volatile/tmp/grpccore.log", "20": "socket:[18751]", "21": "anon_inode:[eventpoll]", "22": "anon_inode:[eventfd]", "23": "socket:[18758]", "24": "anon_inode:[eventpoll]", "25": "anon_inode:[eventfd]", "26": "socket:[21527]", "27": "anon_inode:[eventpoll]", "28": "anon_inode:[eventfd]", "29": "socket:[25016]", "3": "socket:[17398]", "30": "anon_inode:[eventpoll]", "31": "anon_inode:[eventfd]", "32": "socket:[24310]", "33": "anon_inode:[eventpoll]", "34": "anon_inode:[eventfd]", "4": "anon_inode:[eventpoll]", "5": "anon_inode:[eventfd]", "6": "socket:[19488]", "7": "anon_inode:[eventpoll]", "8": "anon_inode:[eventfd]", "9": "socket:[20490]"}, "pid": 2762, "ppid": 1, "session": "2748", "sha256": "20f56da6d967944db2f035144df8ff72aa6254ca8b1eb9f0ec6e15dd77bbdf3c", "start_ticks": 6123, "state": "S", "tty_nr": "0"}
+SigIgn:	0000000000000001
+SigCgt:	0000000180000000
+{"cmdline": "./fpga_driver ", "cwd": "/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build", "env": {"CORE_LOCAL_IP": "192.168.30.254", "CORE_MASTER_ADDR": "192.168.30.254:50051", "LD_LIBRARY_PATH": "/home/admin/rinbo_sbRIO_ws/install/lib:/home/admin/kilin_sbRIO_ws/install/lib:", "SSH_CONNECTION": "192.168.30.213 58107 192.168.30.254 22", "SSH_TTY": "/dev/pts/0", "TERM": "xterm"}, "exe": "/home/admin/rinbo_sbRIO_ws/rinbo_fpga_driver/build/fpga_driver", "fd": {"0": "/dev/pts/0", "1": "/var/volatile/tmp/fpga_driver_console.log", "10": "pipe:[26778]", "11": "pipe:[26778]", "12": "anon_inode:inotify", "13": "pipe:[26779]", "14": "anon_inode:inotify", "15": "/dev/ni/pci:0000:01:00.0\\atomicchinchk_atomicchinchk\\0", "16": "/dev/pts/0", "17": "/dev/pts/0", "18": "/dev/pts/0", "19": "/dev/pts/0", "2": "/var/volatile/tmp/fpga_driver_console.log", "20": "anon_inode:[eventpoll]", "21": "anon_inode:[eventfd]", "22": "anon_inode:[eventpoll]", "23": "anon_inode:[eventfd]", "24": "socket:[26782]", "25": "anon_inode:[eventpoll]", "26": "anon_inode:[eventfd]", "27": "anon_inode:[eventpoll]", "28": "anon_inode:[eventfd]", "29": "socket:[23112]", "3": "/var/volatile/tmp/fpga_server_debug.log", "30": "socket:[26783]", "32": "anon_inode:[eventpoll]", "33": "anon_inode:[eventfd]", "34": "socket:[26784]", "4": "pipe:[26779]", "5": "pipe:[25889]", "6": "pipe:[25889]", "7": "/var/local/natinst/nirio_control/atomicchinch.config", "8": "anon_inode:inotify", "9": "/var/volatile/tmp/rslip-fpga-console.lock"}, "pid": 4777, "ppid": 4774, "session": "4777", "sha256": "c847394fa8ff915fc48013783c8b05b7abc4cb48b4b390fce5957550c830c2c8", "start_ticks": 149273, "state": "S", "tty_nr": "34816"}
+SigIgn:	0000000000001000
+SigCgt:	0000000188084002
+CONSOLE_LOG
+bytes 8400
+first lines: [Debug] Rinbo init done. Entering loop...
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+lifecycle/error matches: []
+last lines: [motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0
+[motorPack] Set encoder: 0, 0, 0, 0, 0, 0

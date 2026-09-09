@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/jetson/rinbo_ros_ws/docs/diagnostics/tripod_gait_compare_20260909/deploy_slew_change.py", line 104, in <module>
+    if __name__=='__main__':main()
+  File "/home/jetson/rinbo_ros_ws/docs/diagnostics/tripod_gait_compare_20260909/deploy_slew_change.py", line 60, in main
+    run([BUILD/'rinbo_legs','assert-idle'])
+  File "/home/jetson/rinbo_ros_ws/docs/diagnostics/tripod_gait_compare_20260909/deploy_slew_change.py", line 28, in run
+    raise RuntimeError(f'{args[0]} returned {result.returncode}: {result.stderr}')
+RuntimeError: /tmp/rinbo-tripod-slew-build/rinbo_legs returned 2: [FATAL] Configuration/action is busy; stop active motion/power tools before changing it: /home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml.lock: Resource temporarily unavailable
+

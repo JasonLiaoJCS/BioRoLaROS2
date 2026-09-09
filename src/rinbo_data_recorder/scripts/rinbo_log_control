@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+import subprocess
+import sys
+
+
+SET_BOOL = "std_srvs/srv/SetBool"
+PAUSE = "rosbag2_interfaces/srv/Pause"
+RESUME = "rosbag2_interfaces/srv/Resume"
+RECORDER_SERVICES = ["/set_recording", "/rinbo_data_recorder/set_recording"]
+
+
+def run(cmd, optional=False):
+    print("+ " + " ".join(cmd))
+    completed = subprocess.run(cmd, text=True, capture_output=True)
+    if completed.stdout:
+        print(completed.stdout.strip())
+    if completed.stderr:
+        print(completed.stderr.strip())
+    if completed.returncode != 0 and not optional:
+        return False
+    if completed.returncode != 0:
+        print("warning: optional command failed")
+    return True
+
+
+def service_exists(name):
+    completed = subprocess.run(["ros2", "service", "list"], text=True, capture_output=True)
+    return completed.returncode == 0 and name in completed.stdout.splitlines()
+
+
+def call_service(name, srv_type, request, optional=False):
+    if optional and not service_exists(name):
+        print(f"warning: service {name} not available")
+        return True
+    return run(["ros2", "service", "call", name, srv_type, request], optional=optional)
+
+
+def call_recorder(request):
+    for name in RECORDER_SERVICES:
+        if service_exists(name):
+            return call_service(name, SET_BOOL, request)
+    print("error: recorder service not available")
+    return False
+
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] not in ("start", "stop", "pause", "resume", "status"):
+        print("usage: rinbo_log_control {start|stop|pause|resume|status}")
+        return 2
+
+    action = sys.argv[1]
+    if action == "status":
+        run(["ros2", "service", "list"])
+        return 0
+
+    ok = True
+    if action in ("start", "resume"):
+        ok &= call_recorder("{data: true}")
+        ok &= call_service("/rosbag2_recorder/resume", RESUME, "{}", optional=True)
+    elif action in ("stop", "pause"):
+        ok &= call_recorder("{data: false}")
+        ok &= call_service("/rosbag2_recorder/pause", PAUSE, "{}", optional=True)
+
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

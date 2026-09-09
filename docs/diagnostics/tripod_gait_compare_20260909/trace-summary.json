@@ -1,0 +1,579 @@
+{
+  "log": "/tmp/rslip-launcher/20260909-204023-023/rinbo_tripod.log",
+  "sha256": "55b946a00c8c77fc23ec3695eb1c2e5564f234193aae85022c616fce7d29a6b2",
+  "nearest_5_9": {
+    "frame_s": 1788957897.01,
+    "phase": "RUNNING",
+    "startup_s": 8.000108044,
+    "tau": 6.15187112819,
+    "ratio": 5.89795730245,
+    "group_b_active": 1.0,
+    "phase_A": 6.0967434239,
+    "phase_B": 5.8949849961,
+    "source_seq": 225683.0,
+    "source_s": 1788957897.01,
+    "arrival_s": 1788957897.01,
+    "source_age_s": 0.000190258026123,
+    "position_policy": "warn_only",
+    "soft": 9000.0,
+    "samples_required": 10.0,
+    "seconds_required": 0.5,
+    "hard": 18000.0,
+    "line": 1038,
+    "legs": {
+      "L1": {
+        "group": "B",
+        "masked": 0.0,
+        "raw_counts": 819306.0,
+        "origin_counts": -27606.0,
+        "home_counts": 27378.8300781,
+        "target_raw_counts": 824346.0,
+        "target_counts": 824346.0,
+        "actual_counts": 819306.0,
+        "signed_error": 5040.0,
+        "target_v": 37291.265625,
+        "actual_v": 82073.015625,
+        "filtered_v": 40011.859375,
+        "ff_pwm": 226.456328125,
+        "pwm_raw": 613.332763672,
+        "pwm_capped": 613.332763672,
+        "pwm_slew_candidate": 249.164962769,
+        "pwm_output": 249.164962769,
+        "command_dir": 1.0,
+        "saturation_s": 0.0,
+        "slew_limited_s": 0.764250377,
+        "guard_count": 0.0,
+        "guard_s": 0.0
+      },
+      "L2": {
+        "group": "A",
+        "masked": 0.0,
+        "raw_counts": 854186.0,
+        "origin_counts": -27551.0,
+        "home_counts": 27433.8300781,
+        "target_raw_counts": 856110.375,
+        "target_counts": 856110.375,
+        "actual_counts": 854186.0,
+        "signed_error": 1924.375,
+        "target_v": 10738.5556641,
+        "actual_v": 121865.992188,
+        "filtered_v": 61763.8867188,
+        "ff_pwm": 93.6927783203,
+        "pwm_raw": -58.5092086792,
+        "pwm_capped": -58.5092086792,
+        "pwm_slew_candidate": 344.623748779,
+        "pwm_output": 344.623748779,
+        "command_dir": 1.0,
+        "saturation_s": 0.0,
+        "slew_limited_s": 1.828458008,
+        "guard_count": 0.0,
+        "guard_s": 0.0
+      },
+      "L3": {
+        "group": "B",
+        "masked": 1.0,
+        "raw_counts": 1.0,
+        "origin_counts": 1.0,
+        "home_counts": 0.0,
+        "target_raw_counts": 1.0,
+        "target_counts": 1.0,
+        "actual_counts": 1.0,
+        "signed_error": 0.0,
+        "target_v": 0.0,
+        "actual_v": 0.0,
+        "filtered_v": 0.0,
+        "ff_pwm": 0.0,
+        "pwm_raw": 0.0,
+        "pwm_capped": 0.0,
+        "pwm_slew_candidate": 0.0,
+        "pwm_output": 0.0,
+        "command_dir": 1.0,
+        "saturation_s": 0.0,
+        "slew_limited_s": 0.0,
+        "guard_count": 0.0,
+        "guard_s": 0.0
+      },
+      "R1": {
+        "group": "A",
+        "masked": 0.0,
+        "raw_counts": -865454.0,
+        "origin_counts": -27681.0,
+        "home_counts": 27303.8300781,
+        "target_raw_counts": -855980.375,
+        "target_counts": 855980.375,
+        "actual_counts": 865454.0,
+        "signed_error": -9473.625,
+        "target_v": 10738.5556641,
+        "actual_v": 39792.9765625,
+        "filtered_v": 20958.1269531,
+        "ff_pwm": 93.6927783203,
+        "pwm_raw": -725.514648438,
+        "pwm_capped": -725.514648438,
+        "pwm_slew_candidate": 134.565322876,
+        "pwm_output": 134.565322876,
+        "command_dir": 0.0,
+        "saturation_s": 0.0,
+        "slew_limited_s": 2.047128232,
+        "guard_count": 10.0,
+        "guard_s": 0.0525145530701
+      },
+      "R2": {
+        "group": "B",
+        "masked": 0.0,
+        "raw_counts": -813582.0,
+        "origin_counts": -27843.0,
+        "home_counts": 27141.8300781,
+        "target_raw_counts": -824109.0,
+        "target_counts": 824109.0,
+        "actual_counts": 813582.0,
+        "signed_error": 10527.0,
+        "target_v": 37291.265625,
+        "actual_v": 32331.7929688,
+        "filtered_v": 15560.5136719,
+        "ff_pwm": 226.456328125,
+        "pwm_raw": 1199.00085449,
+        "pwm_capped": 1199.00085449,
+        "pwm_slew_candidate": 123.943222046,
+        "pwm_output": 123.943222046,
+        "command_dir": 0.0,
+        "saturation_s": 0.0,
+        "slew_limited_s": 6.889416752,
+        "guard_count": 10.0,
+        "guard_s": 0.0666751861572
+      },
+      "R3": {
+        "group": "A",
+        "masked": 0.0,
+        "raw_counts": -860681.0,
+        "origin_counts": -27779.0,
+        "home_counts": 27205.8300781,
+        "target_raw_counts": -855882.375,
+        "target_counts": 855882.375,
+        "actual_counts": 860681.0,
+        "signed_error": -4798.625,
+        "target_v": 10738.5556641,
+        "actual_v": 7461.18310547,
+        "filtered_v": 5380.91113281,
+        "ff_pwm": 93.6927783203,
+        "pwm_raw": -258.051361084,
+        "pwm_capped": -258.051361084,
+        "pwm_slew_candidate": 51.0546722412,
+        "pwm_output": 51.0546722412,
+        "command_dir": 0.0,
+        "saturation_s": 0.0,
+        "slew_limited_s": 1.959525738,
+        "guard_count": 0.0,
+        "guard_s": 0.0
+      }
+    }
+  },
+  "ratio_bins": [
+    {
+      "ratio_bin": [
+        7.5,
+        8
+      ],
+      "samples": 96,
+      "legs": {
+        "L1": {
+          "max_abs_error": 3566.890625,
+          "rms_error": 901.8629859110445,
+          "max_abs_pwm_raw": 483.663879395,
+          "max_abs_pwm_output": 250.191818237,
+          "slew_limited_fraction": 0.7395833333333334,
+          "opposite_command_fraction": 0.020833333333333332
+        },
+        "L2": {
+          "max_abs_error": 4638.44140625,
+          "rms_error": 1205.1951537244713,
+          "max_abs_pwm_raw": 569.533935547,
+          "max_abs_pwm_output": 271.924835205,
+          "slew_limited_fraction": 0.8125,
+          "opposite_command_fraction": 0.07291666666666667
+        },
+        "R1": {
+          "max_abs_error": 4175.44140625,
+          "rms_error": 1058.1543422101727,
+          "max_abs_pwm_raw": 537.049621582,
+          "max_abs_pwm_output": 249.363891602,
+          "slew_limited_fraction": 0.8541666666666666,
+          "opposite_command_fraction": 0.052083333333333336
+        },
+        "R2": {
+          "max_abs_error": 4634.890625,
+          "rms_error": 1336.8094693377727,
+          "max_abs_pwm_raw": 564.116821289,
+          "max_abs_pwm_output": 261.131652832,
+          "slew_limited_fraction": 0.7395833333333334,
+          "opposite_command_fraction": 0.09375
+        },
+        "R3": {
+          "max_abs_error": 3462.44140625,
+          "rms_error": 916.5365770130254,
+          "max_abs_pwm_raw": 482.516113281,
+          "max_abs_pwm_output": 248.074234009,
+          "slew_limited_fraction": 0.875,
+          "opposite_command_fraction": 0.03125
+        }
+      }
+    },
+    {
+      "ratio_bin": [
+        6.5,
+        7
+      ],
+      "samples": 96,
+      "legs": {
+        "L1": {
+          "max_abs_error": 2254.5625,
+          "rms_error": 740.9346052134971,
+          "max_abs_pwm_raw": 401.827392578,
+          "max_abs_pwm_output": 265.597991943,
+          "slew_limited_fraction": 0.875,
+          "opposite_command_fraction": 0
+        },
+        "L2": {
+          "max_abs_error": 2938.375,
+          "rms_error": 973.8462729111508,
+          "max_abs_pwm_raw": 470.710205078,
+          "max_abs_pwm_output": 273.993804932,
+          "slew_limited_fraction": 0.7916666666666666,
+          "opposite_command_fraction": 0
+        },
+        "R1": {
+          "max_abs_error": 2778.375,
+          "rms_error": 882.3953063129869,
+          "max_abs_pwm_raw": 461.793457031,
+          "max_abs_pwm_output": 259.929992676,
+          "slew_limited_fraction": 0.7708333333333334,
+          "opposite_command_fraction": 0
+        },
+        "R2": {
+          "max_abs_error": 4147.375,
+          "rms_error": 1693.9985824212722,
+          "max_abs_pwm_raw": 553.310913086,
+          "max_abs_pwm_output": 280.572937012,
+          "slew_limited_fraction": 0.8958333333333334,
+          "opposite_command_fraction": 0.0625
+        },
+        "R3": {
+          "max_abs_error": 2295.3125,
+          "rms_error": 697.2499155268134,
+          "max_abs_pwm_raw": 419.855255127,
+          "max_abs_pwm_output": 248.702133179,
+          "slew_limited_fraction": 0.8020833333333334,
+          "opposite_command_fraction": 0
+        }
+      }
+    },
+    {
+      "ratio_bin": [
+        6,
+        6.5
+      ],
+      "samples": 97,
+      "legs": {
+        "L1": {
+          "max_abs_error": 3777.6875,
+          "rms_error": 1691.5052642770572,
+          "max_abs_pwm_raw": 540.936584473,
+          "max_abs_pwm_output": 289.339660645,
+          "slew_limited_fraction": 0.9381443298969072,
+          "opposite_command_fraction": 0.09278350515463918
+        },
+        "L2": {
+          "max_abs_error": 6223.8125,
+          "rms_error": 2980.3915586283683,
+          "max_abs_pwm_raw": 676.700500488,
+          "max_abs_pwm_output": 310.195678711,
+          "slew_limited_fraction": 0.9690721649484536,
+          "opposite_command_fraction": 0.30927835051546393
+        },
+        "R1": {
+          "max_abs_error": 4578.625,
+          "rms_error": 2059.4006850685373,
+          "max_abs_pwm_raw": 603.64050293,
+          "max_abs_pwm_output": 300.776489258,
+          "slew_limited_fraction": 0.9587628865979382,
+          "opposite_command_fraction": 0.16494845360824742
+        },
+        "R2": {
+          "max_abs_error": 21196.3125,
+          "rms_error": 8895.557959792952,
+          "max_abs_pwm_raw": 1910.65673828,
+          "max_abs_pwm_output": 326.570404053,
+          "slew_limited_fraction": 0.979381443298969,
+          "opposite_command_fraction": 0.4329896907216495
+        },
+        "R3": {
+          "max_abs_error": 4173.1875,
+          "rms_error": 1784.8623936132967,
+          "max_abs_pwm_raw": 526.653259277,
+          "max_abs_pwm_output": 274.716094971,
+          "slew_limited_fraction": 0.9175257731958762,
+          "opposite_command_fraction": 0.16494845360824742
+        }
+      }
+    },
+    {
+      "ratio_bin": [
+        5.8,
+        6
+      ],
+      "samples": 38,
+      "legs": {
+        "L1": {
+          "max_abs_error": 6140.3125,
+          "rms_error": 3600.116183849095,
+          "max_abs_pwm_raw": 649.817382812,
+          "max_abs_pwm_output": 300.785552979,
+          "slew_limited_fraction": 0.9736842105263158,
+          "opposite_command_fraction": 0.47368421052631576
+        },
+        "L2": {
+          "max_abs_error": 22948.8125,
+          "rms_error": 14001.309423991339,
+          "max_abs_pwm_raw": 2063.77441406,
+          "max_abs_pwm_output": 370.273406982,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.42105263157894735
+        },
+        "R1": {
+          "max_abs_error": 20761.375,
+          "rms_error": 10061.6202690383,
+          "max_abs_pwm_raw": 1883.03491211,
+          "max_abs_pwm_output": 318.1043396,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.34210526315789475
+        },
+        "R2": {
+          "max_abs_error": 19028.25,
+          "rms_error": 9575.390830506556,
+          "max_abs_pwm_raw": 1472.04272461,
+          "max_abs_pwm_output": 329.712219238,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.4473684210526316
+        },
+        "R3": {
+          "max_abs_error": 19955.875,
+          "rms_error": 9111.51465473518,
+          "max_abs_pwm_raw": 1840.44262695,
+          "max_abs_pwm_output": 294.345367432,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.2894736842105263
+        }
+      }
+    },
+    {
+      "ratio_bin": [
+        5,
+        5.8
+      ],
+      "samples": 28,
+      "legs": {
+        "L1": {
+          "max_abs_error": 22893.0625,
+          "rms_error": 15814.30108362908,
+          "max_abs_pwm_raw": 2072.65283203,
+          "max_abs_pwm_output": 363.845733643,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.4642857142857143
+        },
+        "L2": {
+          "max_abs_error": 12381.25,
+          "rms_error": 6961.6393139174825,
+          "max_abs_pwm_raw": 1253.88696289,
+          "max_abs_pwm_output": 333.961273193,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.39285714285714285
+        },
+        "R1": {
+          "max_abs_error": 18217.5625,
+          "rms_error": 9458.956755680378,
+          "max_abs_pwm_raw": 1494.63513184,
+          "max_abs_pwm_output": 325.059936523,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.5
+        },
+        "R2": {
+          "max_abs_error": 16654.4375,
+          "rms_error": 8056.567816534649,
+          "max_abs_pwm_raw": 1101.92419434,
+          "max_abs_pwm_output": 266.721954346,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.39285714285714285
+        },
+        "R3": {
+          "max_abs_error": 23614.0,
+          "rms_error": 12589.751786974086,
+          "max_abs_pwm_raw": 1797.0201416,
+          "max_abs_pwm_output": 349.136016846,
+          "slew_limited_fraction": 1,
+          "opposite_command_fraction": 0.5357142857142857
+        }
+      }
+    },
+    {
+      "ratio_bin": [
+        4,
+        5
+      ],
+      "samples": 0,
+      "legs": {}
+    }
+  ],
+  "events": [
+    [
+      1,
+      "[INFO] [1788957846.824307587] [rinbo_tripod_rslip]: Motion effort: kp=0.0800 kd=0.0060 k_ff=0.0050 friction_pwm=40.0 fade_counts_s=153.6"
+    ],
+    [
+      2,
+      "[WARN] [1788957846.832124181] [rinbo_tripod_rslip]: TRIPOD_REFERENCE_WARNING nominal_feedforward_peak=314.928 pwm_limit=3300 nominal_feedforward_slew=6345.04 slew_limit=250; nominal effort will clip/lag; review a slower trajectory (advisory only)"
+    ],
+    [
+      3,
+      "[INFO] [1788957846.832194072] [rinbo_tripod_rslip]: TRIPOD_REFERENCE_BUDGET startup=8.000s ratios=8.000->4.000 ff_peak=314.928/3300.000 ff_slew=6345.038/250.000 (model only)"
+    ],
+    [
+      4,
+      "[INFO] [1788957846.832352797] [rinbo_tripod_rslip]: DISCOVERY READY: Bridge input identities resolved; fresh-input and arbiter checks follow"
+    ],
+    [
+      5,
+      "[INFO] [1788957846.851492142] [rinbo_tripod_rslip]: === RSLIP Tripod Controller (5 healthy legs) ==="
+    ],
+    [
+      6,
+      "[INFO] [1788957846.851603506] [rinbo_tripod_rslip]: L3: SKIPPED (main drive disabled)"
+    ],
+    [
+      7,
+      "[INFO] [1788957846.851630835] [rinbo_tripod_rslip]: Startup: Move to 360.0 deg in 8.0 s"
+    ],
+    [
+      8,
+      "[INFO] [1788957846.851660308] [rinbo_tripod_rslip]: t_center (Standing): 0.055128 s"
+    ],
+    [
+      9,
+      "[INFO] [1788957846.851676660] [rinbo_tripod_rslip]: theta_dot at Standing: 12.86 rad/s"
+    ],
+    [
+      10,
+      "[INFO] [1788957846.851691477] [rinbo_tripod_rslip]: Group A (phase 0): R1, L2, R3"
+    ],
+    [
+      11,
+      "[INFO] [1788957846.851703541] [rinbo_tripod_rslip]: Group B (phase 0.2018): L1, R2, L3"
+    ],
+    [
+      12,
+      "[INFO] [1788957846.851717205] [rinbo_tripod_rslip]: t_stance: 0.1759 s, t_flight: 0.2276 s, period: 0.4035 s"
+    ],
+    [
+      13,
+      "[INFO] [1788957846.851732406] [rinbo_tripod_rslip]: w_top: 25.13 rad/s"
+    ],
+    [
+      14,
+      "[INFO] [1788957846.851745590] [rinbo_tripod_rslip]: Safety limits | max_pwm=3300 start_ratio=8.00 target_ratio=4.00 | bus=ch7 range=[18.0,42.0]V samples=5 | leg_current=ON 5.0A samples=25 | position=WARN 9000 counts samples=10 | pwm_slew=ON 250/s"
+    ],
+    [
+      15,
+      "[WARN] [1788957846.851770039] [rinbo_tripod_rslip]: TRIPOD_POSITION_POLICY mode=warn_only finite_error_action=warn_and_continue invalid_feedback_action=stop"
+    ],
+    [
+      16,
+      "[WARN] [1788957846.851790360] [rinbo_tripod_rslip]: supported_leg_test: hardware.disabled_legs=[L3]. Remaining legs follow their existing independent phase references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed."
+    ],
+    [
+      17,
+      "[INFO] [1788957846.852283943] [rinbo_tripod_rslip]: Motor arbiter reports ready=false"
+    ],
+    [
+      18,
+      "[INFO] [1788957846.852449836] [rinbo_tripod_rslip]: Motor arbiter epoch confirmed: rinbo_ros2_bridge/boot-18d3a77cb0669632-f17f4dd69a-d991ca9c-61360991-5e02b289-bd21517b:6"
+    ],
+    [
+      19,
+      "[WARN] [1788957846.852609969] [rinbo_tripod_rslip]: Motor output remains disabled: waiting for a trusted arbiter heartbeat"
+    ],
+    [
+      20,
+      "[INFO] [1788957846.954520459] [rinbo_tripod_rslip]: Motor arbiter reports ready=true"
+    ],
+    [
+      21,
+      "[INFO] [1788957846.954736370] [rinbo_tripod_rslip]: Bridge acknowledged disabled-command rearm sequence 5"
+    ],
+    [
+      22,
+      "[INFO] [1788957846.971472953] [rinbo_tripod_rslip]: Motor arbiter rearm ACK and post-ACK ready state confirmed"
+    ],
+    [
+      23,
+      "[WARN] [1788957846.971985097] [rinbo_tripod_rslip]: Motion remains paused: waiting for correlated /rinbo/motor_active_ack"
+    ],
+    [
+      24,
+      "[INFO] [1788957846.972962055] [rinbo_tripod_rslip]: Bridge acknowledged active command sequence 6"
+    ],
+    [
+      25,
+      "[INFO] [1788957846.973339571] [rinbo_tripod_rslip]: Initialized!"
+    ],
+    [
+      26,
+      "[INFO] [1788957846.973408821] [rinbo_tripod_rslip]:   L1-L3: [-27606, -27551, 1]"
+    ],
+    [
+      1225,
+      "  safety.stop_on_position_error: false"
+    ],
+    [
+      1226,
+      "  safety.stop_on_power_stale: true"
+    ],
+    [
+      1227,
+      "  safety.stop_on_voltage_sag: true"
+    ],
+    [
+      1228,
+      "  safety.voltage_trip_samples: 5"
+    ],
+    [
+      1229,
+      "  shutdown.slowdown_duration_s: 2"
+    ],
+    [
+      1230,
+      "  shutdown.timeout_s: 5"
+    ],
+    [
+      1231,
+      "  slowdown_step: 0.002"
+    ],
+    [
+      1232,
+      "  start_ratio: 8"
+    ],
+    [
+      1233,
+      "  startup_duration: 8"
+    ],
+    [
+      1234,
+      "  stop_servo_control_mode: 0"
+    ],
+    [
+      1235,
+      "  target_ratio: 4"
+    ],
+    [
+      1236,
+      "RSLIP_TRIPOD_EXIT=103285:857ceece-04cd-4513-a1fd-e2dcc32e59ab:125299:0"
+    ]
+  ]
+}

@@ -1,0 +1,7 @@
+sbRIO fake-hardware build succeeded. g++ -std=c++14 -Wall -Wextra -pthread, linked ncurses only.
+Original test/test_pty.py failed at line 68:
+assert b'Window too small' in small and b'Command>' in small
+AssertionError
+The test reached the resize stage; later shutdown/headless cases in that script did not execute.
+Independent lifecycle tests are in lifecycle-results.txt.
+No hardware driver, gRPC Core, Bridge, or motion executable was started by this diagnosis.
