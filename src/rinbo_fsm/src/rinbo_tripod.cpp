@@ -10,6 +10,7 @@
 #include <cstdio>
 #include "latest_state_qos.hpp"
 #include "motor_arbiter_handshake.hpp"
+#include "safety_recording.hpp"
 #include "ros_input_guard.hpp"
 #include "bridge_input_discovery.hpp"
 #include "safety_invariants.hpp"
@@ -160,6 +161,7 @@ public:
                 safety_.current_trip_samples});
         motor_state_guard_ = std::make_unique<rinbo_fsm::RosInputGuard>(
             *this, "/motor/state");
+        safety_recording_ = std::make_unique<rinbo_fsm::SafetyRecording>(*this, disabled_legs_.mask(), false);
         power_state_guard_ = std::make_unique<rinbo_fsm::RosInputGuard>(
             *this, "/power/state");
         
@@ -285,6 +287,7 @@ private:
         int position_error_trip_samples = 10;
     };
 
+    std::string first_fault_phase_;
     struct PowerSnapshot {
         bool received = false;
         bool relay_power_on = false;
@@ -547,6 +550,7 @@ private:
         const auto clock_type = this->get_clock()->get_clock_type();
         const rclcpp::Time arrival_time(input.observed_ns, clock_type);
         const rclcpp::Time validated_time(input.validated_ns, clock_type);
+        safety_recording_->observe(*msg);
         power_snapshot_.received = true;
         power_snapshot_.relay_power_on = msg->power;
         power_snapshot_.stamp = arrival_time;
@@ -629,7 +633,7 @@ private:
     uint32_t publish_motor_command(
         rinbo_msgs::msg::MotorCmdStamped& cmd,
         const std::string& frame_id = std::string()) {
-        if (state_ == State::SAFETY_STOP || !motor_handshake_->ready_for_output(cmd_pub_->get_subscription_count())) {
+        if (state_ == State::SAFETY_STOP || !motor_handshake_->ready_for_output()) {
             const std::array<rinbo_msgs::msg::LegCmd *, 6> legs = {
                 &cmd.l1, &cmd.l2, &cmd.l3, &cmd.r1, &cmd.r2, &cmd.r3};
             for (auto *leg : legs) {
@@ -694,6 +698,7 @@ private:
         event.tau = tau_;
         event.ratio = current_ratio_;
         event.cycle_count = static_cast<uint32_t>(std::max(cycle_count_, 0));
+        if(safety_recording_) safety_recording_->emit(reason, first_fault_phase_, tau_, current_ratio_, event.cycle_count, event.header.seq);
         safety_event_pub_->publish(event);
     }
 
@@ -833,6 +838,7 @@ private:
 
     bool trigger_safety_stop(const std::string& reason) {
         const bool first_failure = state_ != State::SAFETY_STOP;
+        if(first_failure) first_fault_phase_=state_name(state_);
         state_ = State::SAFETY_STOP;
         if (first_failure) safety_stop_reason_ = reason;
         // ROS may already be shutting down. Publication failure must not skip
@@ -1054,14 +1060,13 @@ private:
             }
         }
 
-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
+        if (const auto reason = motor_handshake_->violation()) {
             trigger_safety_stop(*reason);
             update_previous_samples(positions, now_time);
             return;
         }
-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) {
-            const auto reason = motor_handshake_->waiting_reason(command_subscriber_count);
+        if (!motor_handshake_->ready_for_output()) {
+            const auto reason = motor_handshake_->waiting_reason();
             RCLCPP_WARN_THROTTLE(
                 this->get_logger(), *this->get_clock(), 1000,
                 "Motor output remains disabled: %s", reason.c_str());
@@ -1088,8 +1093,7 @@ private:
             probe.servo_control_mode = 2;
             const uint32_t probe_sequence = publish_motor_command(
                 probe, motor_handshake_->active_probe_frame_id());
-            if (!motor_handshake_->mark_active_command_published(
-                    command_subscriber_count, probe_sequence)) {
+            if (!motor_handshake_->mark_active_command_published(probe_sequence)) {
                 trigger_safety_stop("motor arbiter refused the first active hold command");
                 update_previous_samples(positions, now_time);
                 return;
@@ -1515,13 +1519,11 @@ private:
 
     void handshake_timer_callback() {
         if (fully_stopped_ || state_ == State::SAFETY_STOP) return;
-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
+        if (const auto reason = motor_handshake_->violation()) {
             trigger_safety_stop(*reason);
             return;
         }
-        if (motor_handshake_->mark_rearm_command_about_to_publish(
-                command_subscriber_count)) {
+        if (motor_handshake_->mark_rearm_command_about_to_publish()) {
             const uint32_t sequence = publish_stop_command(
                 motor_handshake_->rearm_frame_id());
             if (!motor_handshake_->record_rearm_command_published(sequence)) {
@@ -1547,13 +1549,12 @@ private:
             }
             return;
         }
-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
+        if (const auto reason = motor_handshake_->violation()) {
             trigger_safety_stop(*reason);
             return;
         }
         const auto now_time = this->now();
-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) {
+        if (!motor_handshake_->ready_for_output()) {
             if (g_shutdown_requested) {
                 publish_stop_command();
                 fully_stopped_ = true;
@@ -1704,6 +1705,7 @@ private:
     rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr cmd_pub_;
     std::unique_ptr<rinbo_fsm::MotorArbiterHandshake> motor_handshake_;
     std::unique_ptr<rinbo_fsm::RosInputGuard> motor_state_guard_;
+    std::unique_ptr<rinbo_fsm::SafetyRecording> safety_recording_;
     std::unique_ptr<rinbo_fsm::RosInputGuard> power_state_guard_;
     rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr pid_data_pub_;
     rclcpp::Publisher<rinbo_msgs::msg::ControllerDebugStamped>::SharedPtr controller_debug_pub_;
@@ -1720,6 +1722,10 @@ private:
 
 #ifndef RINBO_FSM_OFFLINE_TEST
 int main(int argc, char* argv[]) {
+    if(argc==2 && std::string(argv[1])=="--version") {
+        std::puts("native-observer-v2-20260911 unique-bridge+passive-recorder safety-detail-v1");
+        return 0;
+    }
     try {
         if (rinbo_config::check_config_cli(argc, argv, "rinbo_tripod_rslip")) return 0;
         rinbo_config::MotionSession session(rinbo_config::Stage::Tripod, argc, argv);

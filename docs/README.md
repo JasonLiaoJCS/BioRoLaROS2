@@ -14,6 +14,8 @@
 
 需要看即時角度回讀、校正錯誤或保存紀錄時，開 [監控與錄製](rinbo_monitor.md)。
 
+電源工具的冪等開電、Off 搶占與 Windows JSON 介面，見 [電源操作 v2 契約](power/power_handoff_v2_20260911.md)。
+
 ## 常用檔案在哪裡
 
 | 找什麼 | 位置 |
@@ -30,3 +32,7 @@
 - [手動控制技術參考](reference/manual_control.md)：自己寫 YAML、角度定義、控制計算、分視窗指令與排錯。
 - [Windows R-Slip v6.6 參考](reference/rslip_v6_6.md)：原有 Windows 啟動器的操作流程；其中 Windows 檔案不在這個 ROS 工作區。
 - [操作台程式結構](../src/rinbo_control/README.md)、[RL 程式規格](../src/redrhex_rl_controller/README.md)：修改程式時查閱。
+
+Windows 原生控制入口、操作結果與部署：[Orin panel API v1](power/orin_panel_api_v1.md)。
+
+原生資料記錄器、過流事件與 Windows 錄製介面：[Recorder v2](recording/native_recorder_v2.md)、[Windows 接線 prompt](recording/WINDOWS_RECORDER_V2_PROMPT.md)。

@@ -1,0 +1,191 @@
+{
+  "verified_at": "2026-09-10T00:16:56.598171+08:00",
+  "build": {
+    "exit_code": 0,
+    "log": "build-final.log",
+    "cmake_build_type": "",
+    "same_build_type_as_production": true,
+    "parallel_jobs": 2
+  },
+  "fsm_ctest": {
+    "suites": 12,
+    "failed": 0,
+    "gtest_cases": 201,
+    "non_gtest_checks": 1,
+    "details": [
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_cali_multileg.gtest.xml",
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_control_velocity.gtest.xml",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_latest_state_safety.gtest.xml",
+        "tests": 29,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_manual_controller.gtest.xml",
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_manual_motion.gtest.xml",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_motion_effort.gtest.xml",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_motor_arbiter_handshake.gtest.xml",
+        "tests": 41,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_motor_recorder_compat.gtest.xml",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_robot_config.gtest.xml",
+        "tests": 30,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_standing_multileg.gtest.xml",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      },
+      {
+        "file": "build/recorder_compat/rinbo_fsm/test_results/rinbo_fsm/test_tripod_multileg.gtest.xml",
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "disabled": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "recorder_integration": {
+    "passed": 1,
+    "log": "recorder-test.log"
+  },
+  "power_tool_pytest": {
+    "passed": 157,
+    "log": "power-tool-test.log"
+  },
+  "bridge_power_guard": {
+    "passed": 16,
+    "log": "bridge-power-test.log"
+  },
+  "parameters": {
+    "old_and_new_effective_config_equal": true,
+    "site_sha256": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+    "site_unchanged": true,
+    "receipts": {
+      "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml.calibration.json": false,
+      "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml.standing.json": false
+    },
+    "baseline_check_exit_code": 2,
+    "baseline_check_log": "baseline-after.log",
+    "preexisting_difference": "src/rinbo_control/rinbo_control/motion_limits.py"
+  },
+  "original_binary_hashes_unchanged": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": true
+  },
+  "artifacts": {
+    "rinbo_cali": {
+      "build_path": "/home/jetson/rinbo_ros_ws/build/recorder_compat/rinbo_fsm/rinbo_cali",
+      "sha256": "85376365f9d90ebe30be990552e440c9ddf92bd16afdfeafcf91fa868e8f5776",
+      "staged_install_path": "/home/jetson/rinbo_ros_ws/install/recorder_compat/rinbo_fsm/lib/rinbo_fsm/rinbo_cali",
+      "staged_install_sha256": "5b1396cbfb688a6f2c6f1d4d0e782acdbd8d9d1a094ae1c65013b7fc3b02ccd9"
+    },
+    "rinbo_standing": {
+      "build_path": "/home/jetson/rinbo_ros_ws/build/recorder_compat/rinbo_fsm/rinbo_standing",
+      "sha256": "8415b2d1e4bb1d7dbf4bea3bce71fd238419943d12dee72d34e093fc2e2bf831",
+      "staged_install_path": "/home/jetson/rinbo_ros_ws/install/recorder_compat/rinbo_fsm/lib/rinbo_fsm/rinbo_standing",
+      "staged_install_sha256": "02933cc38fd59d32aa21e95e5e25f93f1800df61e6a35871d7f7cdd41b175110"
+    },
+    "rinbo_tripod": {
+      "build_path": "/home/jetson/rinbo_ros_ws/build/recorder_compat/rinbo_fsm/rinbo_tripod",
+      "sha256": "783cca23f79064d12b181587b4725453234afa169e1b56c41bd6fb17d38a8f11",
+      "staged_install_path": "/home/jetson/rinbo_ros_ws/install/recorder_compat/rinbo_fsm/lib/rinbo_fsm/rinbo_tripod",
+      "staged_install_sha256": "6ed750c3717c58e4326f8b18dd8667f0ab97c32f1552b6963fee4cc50555a500"
+    },
+    "rinbo_manual": {
+      "build_path": "/home/jetson/rinbo_ros_ws/build/recorder_compat/rinbo_fsm/rinbo_manual",
+      "sha256": "531f050877a1497f5018420a0cd97766c9002cddf84a8284fd5b84c864e946e6",
+      "staged_install_path": "/home/jetson/rinbo_ros_ws/install/recorder_compat/rinbo_fsm/lib/rinbo_fsm/rinbo_manual",
+      "staged_install_sha256": "9ec958c41ed55fed784e931e208d05b1ae23cd47d732551f410642b10c5b12f5"
+    },
+    "rinbo_legs": {
+      "build_path": "/home/jetson/rinbo_ros_ws/build/recorder_compat/rinbo_fsm/rinbo_legs",
+      "sha256": "e8f02cc608852cfdee11d06624b7fcbc97dc1553b1ec8da0fe1c6d492a441f3d",
+      "staged_install_path": "/home/jetson/rinbo_ros_ws/install/recorder_compat/rinbo_fsm/lib/rinbo_fsm/rinbo_legs",
+      "staged_install_sha256": "d76be8093790e02b9a5277eb88e01699cd71cdd7c5bccc46741aabae04915fb7"
+    }
+  },
+  "live_processes_read_only": [
+    {
+      "pid": 19492,
+      "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+      "start_ticks": "26834",
+      "exe_sha256": "bfeae6d0caf24066158480b21f638a47b348fecddbb85cf66ccd8bf7e0ff87d7"
+    },
+    {
+      "pid": 41958,
+      "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge",
+      "start_ticks": "48078",
+      "exe_sha256": "f075c4166c01d2fa3c768877825295b9289840a947bc274c4b46f0bc0f2d3038"
+    },
+    {
+      "pid": 44145,
+      "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali",
+      "start_ticks": "50912",
+      "exe_sha256": "3ba6b4dd107de9ecfa936f3d471229e8c2507aa09202a4ac2eb6dc0619b5718e"
+    }
+  ],
+  "deployment": "Isolated build and install complete. Production build/rinbo_fsm and install/rinbo_fsm not replaced; existing Calibration remains alive. No live node restarted or signalled.",
+  "historical_logs": "build.log and handshake-initial.* are superseded pre-final build/test fixture attempts; final results above cover the corrected final sources."
+}

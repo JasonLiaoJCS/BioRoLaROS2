@@ -1,0 +1,16 @@
+[Unit]
+Description=Rinbo native GUI controller (inert until explicit Communications)
+
+[Service]
+Type=simple
+ExecStart=/home/jetson/rinbo_ros_ws/tools/rslip_panel_server.sh
+Environment=ROS_DOMAIN_ID=99
+Restart=no
+KillMode=mixed
+TimeoutStopSec=360
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

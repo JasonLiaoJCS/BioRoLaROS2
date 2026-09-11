@@ -114,6 +114,7 @@ class Child:
         self.done_marker = threading.Event()
         self.fatal = threading.Event()
         self.tail = ''
+        self.first_failure = ''
         self.log_path = Path(log_path)
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
         self.handler = RotatingFileHandler(self.log_path, maxBytes=2*1024*1024, backupCount=2)
@@ -138,6 +139,8 @@ class Child:
                 if 'State: DONE' in line:
                     self.done_marker.set()
                 if '[FATAL]' in line or 'SAFETY STOP' in line:
+                    if not self.first_failure:
+                        self.first_failure = line
                     self.fatal.set()
                 try:
                     self.lines.put_nowait(line)
@@ -175,7 +178,8 @@ class Child:
 
 
 class Runtime:
-    def __init__(self, state_dir, progress=print, cancel=lambda: False):
+    def __init__(self, state_dir, progress=print, cancel=lambda: False, noninteractive=False):
+        self.noninteractive = noninteractive
         self.state_dir = Path(state_dir)
         self.log_dir = self.state_dir/'logs'/f'{datetime.now():%Y%m%d-%H%M%S}-{os.getpid()}'
         self.progress, self.cancel = progress, cancel
@@ -280,7 +284,7 @@ class Runtime:
         return Child(self.command(package, name, *args), self.env,
                      self.log_dir/f'{self.serial:02d}-{name}.log')
 
-    def connect(self, ip, port=50051, local_ip=DEFAULT_JETSON_IP):
+    def connect(self, ip, port=50051, local_ip=DEFAULT_JETSON_IP, *, verify_feedback=True, recover_owned_bridge=False):
         self.connected_target = None
         ip, local_ip = ipv4(ip), ipv4(local_ip)
         self.progress(f'檢查 sbRIO {ip}:{port} …')
@@ -290,7 +294,7 @@ class Runtime:
         self.progress(f'Jetson 網路位址正確：{source}')
         if self.remote is None:
             from .sbrio import RemoteServices
-            self.remote = RemoteServices(self.state_dir, self.progress, self.log_dir)
+            self.remote = RemoteServices(self.state_dir, self.progress, self.log_dir, noninteractive=self.noninteractive)
         self.progress('依 v6.6 檢查／啟動 sbRIO core 與 FPGA（不上電）…')
         self.remote.start(ip, port)
         result = tcp_probe(ip, port, 2)
@@ -302,6 +306,8 @@ class Runtime:
         feedback = self.probe()
         feedback.spin(.5)
         count = feedback.bridge_count()
+        if count == 0 and recover_owned_bridge and self.bridge and self.bridge.process.poll() is None:
+            count = self.recover_owned_bridge(feedback)
         if count > 1:
             raise RuntimeError('偵測到多個 Bridge，請先關閉重複的程式')
         if count == 1:
@@ -312,6 +318,8 @@ class Runtime:
         else:
             if self.bridge and self.bridge.process.poll() is None:
                 raise RuntimeError('本工具的 Bridge 程序還在，但 ROS 看不到它；請先退出並查看日誌')
+            if recover_owned_bridge and self.cancel():
+                raise Cancelled('停止已接手，不啟動新的 Bridge')
             self.env.update(CORE_MASTER_ADDR=f'{ip}:{port}', CORE_LOCAL_IP=local_ip, CORE_IP=ip)
             from ament_index_python.packages import get_package_share_directory
             cfg = Path(get_package_share_directory('rinbo_ros_bridge'))/'config/redrhex_safe.yaml'
@@ -327,6 +335,11 @@ class Runtime:
             if feedback.bridge_count() != 1 or feedback.bridge_ip() != ip:
                 raise RuntimeError('Bridge 未正常出現在 ROS 中，請查看日誌')
             self.progress('Bridge 已啟動。啟動保護是正常等待；接下來仍需確認實際回讀。')
+        if not verify_feedback:
+            # Panel's authenticated power protocol owns the fresh motor/power
+            # readiness gate. This return only confirms transport/discovery.
+            self.connected_target = (ip, port, local_ip)
+            return {'bridge_count': 1, 'readiness': 'starting'}
         # The SOP requires actual state messages before any power command.
         end = time.monotonic()+8
         while True:
@@ -342,7 +355,29 @@ class Runtime:
             if time.monotonic() >= end:
                 raise RuntimeError('Bridge 已開，但 8 秒內未收到 motor/state 與 power/state 新回讀；請檢查 sbRIO driver 日誌。尚未上電。')
 
-    def reconnect(self, ip, port=50051, local_ip=DEFAULT_JETSON_IP):
+    def recover_owned_bridge(self, feedback):
+        """Bounded discovery/reap of our own Child only, before one replacement."""
+        deadline = time.monotonic()+5
+        while feedback.bridge_count() == 0 and time.monotonic() < deadline:
+            if self.cancel():
+                raise Cancelled('已取消通訊恢復')
+            feedback.spin(.05)
+        count = feedback.bridge_count()
+        if count:
+            return count  # caller checks uniqueness and destination
+        if self.cancel():
+            raise Cancelled('已取消通訊恢復')
+        self.progress('本工具的 Bridge 未恢復 DDS 探索；收尾這個已持有的程序，再建立一次通訊。')
+        child = self.bridge
+        child.stop()
+        if child.process.poll() is None:
+            raise RuntimeError('Bridge 收尾未完成，不能啟動第二份；請查看原生程序退出日誌。')
+        self.bridge = None
+        if self.cancel():
+            raise Cancelled('已取消通訊恢復')
+        return feedback.bridge_count()
+
+    def reconnect(self, ip, port=50051, local_ip=DEFAULT_JETSON_IP, *, verify_stopped=True, verify_feedback=True, recover_owned_bridge=False):
         """Operator's explicit step 1; action startup retains the idle-only gate."""
         from .connection_recovery import MOTION_NAMES, find_motion, recovery_lock, stop_motion
         ip, local_ip = ipv4(ip), ipv4(local_ip)
@@ -361,18 +396,20 @@ class Runtime:
             stop_motion(processes, self.log_dir, self.progress)
             # Unknown/Python/other-host publishers are never guessed from a name.
             self.idle()
-            if processes and feedback.bridge_count() == 1:
+            if verify_stopped and processes and feedback.bridge_count() == 1:
                 feedback.wait_motor_disabled()
                 self.progress('舊動作已停止，已收到新的 motor output=false 回讀。')
             if self.remote is not None:
                 # Refresh only this console's private SSH master, not other logins.
                 self.remote.refresh_transport()
             self.progress('自動整理：核對 sbRIO 開機／程序身分，封存過期紀錄，沿用正確的通訊。')
-            snapshot = self.connect(ip, port, local_ip)
+            snapshot = (self.connect(ip, port, local_ip) if verify_feedback and not recover_owned_bridge else
+                        self.connect(ip, port, local_ip, verify_feedback=verify_feedback,
+                                     recover_owned_bridge=recover_owned_bridge))
             # A controller can appear during discovery/bootstrap; do not declare
             # a clean connection based only on the earlier graph snapshot.
             self.idle()
-            if processes:
+            if verify_stopped and processes:
                 self.probe().wait_motor_disabled()
             return snapshot
 

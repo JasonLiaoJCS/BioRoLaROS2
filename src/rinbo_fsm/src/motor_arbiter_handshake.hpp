@@ -23,6 +23,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 namespace rinbo_fsm {
 
@@ -92,27 +93,73 @@ inline bool validate_motor_arbiter_publisher_identity(
     return true;
 }
 
-inline bool validate_motor_arbiter_subscription_identity(
-    const std::string& topic,
-    const std::string& expected_node_name,
-    std::size_t endpoint_count,
-    const std::string& node_name,
-    const std::string& node_namespace,
+// Only the audited recorder is an observation-only command subscriber. Node
+// names are ROS graph identities, not cryptographic credentials: publisher
+// arbitration remains mandatory, including for a node using the recorder name.
+struct MotorCommandEndpoint {
+    std::string node_name;
+    std::string node_namespace;
+    std::string topic_type;
+    MotorArbiterPublisherGid gid {};
+};
+
+inline bool validate_motor_command_graph(
+    const std::vector<MotorCommandEndpoint>& subscribers,
+    const std::vector<MotorCommandEndpoint>& motor_publishers,
+    const std::vector<MotorCommandEndpoint>& power_publishers,
+    const std::string& expected_bridge,
+    const std::string& expected_controller,
+    MotorArbiterPublisherGid& bridge_gid,
     std::string& issue) {
     issue.clear();
-    if (endpoint_count != 1U) {
-        std::ostringstream out;
-        out << "expected exactly one subscriber on " << topic
-            << ", got " << endpoint_count;
-        issue = out.str();
+    constexpr const char* motor_type = "rinbo_msgs/msg/MotorCmdStamped";
+    constexpr const char* power_type = "rinbo_msgs/msg/PowerCmdStamped";
+    std::size_t bridges = 0;
+    for (const auto& endpoint : subscribers) {
+        const auto name = motor_arbiter_fully_qualified_node_name(
+            endpoint.node_namespace, endpoint.node_name);
+        if (endpoint.topic_type != motor_type) {
+            issue = "/motor/command subscriber " + name + " has unexpected type " + endpoint.topic_type;
+            return false;
+        }
+        if (motor_arbiter_is_expected_root_node(
+                expected_bridge, endpoint.node_name, endpoint.node_namespace)) {
+            ++bridges;
+            bridge_gid = endpoint.gid;
+        } else if (!motor_arbiter_is_expected_root_node(
+                       "rinbo_data_recorder", endpoint.node_name, endpoint.node_namespace)) {
+            issue = "/motor/command has unexpected subscriber " + name +
+                "; expected /" + expected_bridge + " or passive /rinbo_data_recorder";
+            return false;
+        }
+    }
+    if (bridges != 1U) {
+        issue = "/motor/command requires exactly one expected Bridge subscriber, got " +
+            std::to_string(bridges) + " (passive recorder excluded)";
         return false;
     }
-    if (!motor_arbiter_is_expected_root_node(
-            expected_node_name, node_name, node_namespace)) {
-        issue = "subscriber on " + topic + " is node " +
-            motor_arbiter_fully_qualified_node_name(node_namespace, node_name) +
-            ", not node /" + expected_node_name;
+    // Do not apply the subscriber exception to command publishers.
+    if (motor_publishers.size() != 1U) {
+        issue = "/motor/command requires exactly one controller publisher, got " +
+            std::to_string(motor_publishers.size());
         return false;
+    }
+    const auto& source = motor_publishers.front();
+    if (source.topic_type != motor_type || !motor_arbiter_is_expected_root_node(
+            expected_controller, source.node_name, source.node_namespace)) {
+        issue = "/motor/command publisher is not this controller /" + expected_controller +
+            " with type " + motor_type;
+        return false;
+    }
+    if (power_publishers.size() > 1U) {
+        issue = "/power/command has multiple publishers";
+        return false;
+    }
+    for (const auto& endpoint : power_publishers) {
+        if (endpoint.node_name == "rinbo_data_recorder" || endpoint.topic_type != power_type) {
+            issue = "/power/command has a recorder publisher or unexpected command type";
+            return false;
+        }
     }
     return true;
 }
@@ -198,13 +245,13 @@ public:
         }
     }
 
-    bool can_publish_rearm(std::size_t command_subscriber_count) const {
+    bool can_publish_rearm(bool command_graph_valid) const {
         return !armed_ && !faulted_ && status_received_ &&
-            command_subscriber_count == 1U;
+            command_graph_valid;
     }
 
     bool start_rearm_request() {
-        if (!can_publish_rearm(1U)) return false;
+        if (!can_publish_rearm(true)) return false;
         if (!rearm_requested_) {
             rearm_requested_ = true;
             return true;
@@ -231,9 +278,9 @@ public:
         return false;
     }
 
-    bool ready_for_output(std::size_t command_subscriber_count) const {
+    bool ready_for_output(bool command_graph_valid) const {
         return armed_ && !faulted_ && ready_status_ &&
-            command_subscriber_count == 1U;
+            command_graph_valid;
     }
 
     bool note_active_command(uint32_t sequence) {
@@ -256,12 +303,12 @@ public:
     void force_fault() { faulted_ = true; }
 
     std::optional<std::string> immediate_violation(
-        std::size_t command_subscriber_count) const {
+        bool command_graph_valid) const {
         if (faulted_) {
             return "motor arbiter readiness or endpoint identity was revoked after protocol commitment";
         }
-        if (armed_ && command_subscriber_count != 1U) {
-            return "expected exactly one /motor/command bridge subscriber after arming";
+        if (armed_ && !command_graph_valid) {
+            return "motor command graph became invalid after arming";
         }
         return std::nullopt;
     }
@@ -518,19 +565,18 @@ public:
     const std::string& rearm_frame_id() const { return rearm_frame_id_; }
     const std::string& active_probe_frame_id() const { return active_probe_frame_id_; }
 
-    bool ready_for_output(std::size_t command_subscriber_count) const {
+    bool ready_for_output() const {
         std::lock_guard<std::mutex> lock(mutex_);
-        return state_.ready_for_output(command_subscriber_count) &&
+        return state_.ready_for_output(command_bridge_valid_) &&
             epoch_state_.received() && !epoch_state_.changed() &&
             command_bridge_valid_ &&
             heartbeat_is_fresh_locked(std::chrono::steady_clock::now());
     }
 
-    bool mark_rearm_command_about_to_publish(
-        std::size_t command_subscriber_count) {
+    bool mark_rearm_command_about_to_publish() {
         std::lock_guard<std::mutex> lock(mutex_);
         const auto now = std::chrono::steady_clock::now();
-        if (!state_.can_publish_rearm(command_subscriber_count) ||
+        if (!state_.can_publish_rearm(command_bridge_valid_) ||
             !epoch_state_.received() || epoch_state_.changed() ||
             !command_bridge_valid_ || !heartbeat_is_fresh_locked(now)) {
             return false;
@@ -545,10 +591,10 @@ public:
     }
 
     bool mark_active_command_published(
-        std::size_t command_subscriber_count, uint32_t sequence) {
+        uint32_t sequence) {
         std::lock_guard<std::mutex> lock(mutex_);
         const auto now = std::chrono::steady_clock::now();
-        if (!state_.ready_for_output(command_subscriber_count) ||
+        if (!state_.ready_for_output(command_bridge_valid_) ||
             !epoch_state_.received() || epoch_state_.changed() ||
             !command_bridge_valid_ || !heartbeat_is_fresh_locked(now)) {
             return false;
@@ -564,11 +610,10 @@ public:
         return state_.active_output_confirmed();
     }
 
-    std::optional<std::string> violation(
-        std::size_t command_subscriber_count) const {
+    std::optional<std::string> violation() const {
         std::lock_guard<std::mutex> lock(mutex_);
         if (!external_fault_reason_.empty()) return external_fault_reason_;
-        if (const auto reason = state_.immediate_violation(command_subscriber_count)) {
+        if (const auto reason = state_.immediate_violation(command_bridge_valid_)) {
             return reason;
         }
 
@@ -588,7 +633,7 @@ public:
                 return "bridge did not acknowledge a correlated active motor command";
             }
         }
-        if (state_.ready_for_output(command_subscriber_count) &&
+        if (state_.ready_for_output(command_bridge_valid_) &&
             command_bridge_valid_ && heartbeat_is_fresh_locked(now)) {
             return std::nullopt;
         }
@@ -597,9 +642,6 @@ public:
         const double elapsed = std::chrono::duration<double>(now - reference).count();
         if (elapsed <= timeout_seconds_) return std::nullopt;
 
-        if (command_subscriber_count != 1U) {
-            return "motor arbiter handshake timeout: /motor/command must have exactly one subscriber";
-        }
         if (!heartbeat_state_.received()) {
             return "motor arbiter handshake timeout: no trusted arbiter heartbeat";
         }
@@ -612,7 +654,7 @@ public:
         if (!command_bridge_valid_) {
             return command_bridge_issue_.empty()
                 ? "motor arbiter handshake timeout: command subscriber is not the expected bridge"
-                : command_bridge_issue_;
+                : "motor arbiter handshake timeout: " + command_bridge_issue_;
         }
         if (!state_.status_received()) {
             return "motor arbiter handshake timeout: no trusted readiness status";
@@ -626,11 +668,8 @@ public:
         return "motor arbiter handshake timeout: no post-ACK ready status";
     }
 
-    std::string waiting_reason(std::size_t command_subscriber_count) const {
+    std::string waiting_reason() const {
         std::lock_guard<std::mutex> lock(mutex_);
-        if (command_subscriber_count != 1U) {
-            return "waiting for exactly one /motor/command subscriber";
-        }
         if (!heartbeat_state_.received()) return "waiting for a trusted arbiter heartbeat";
         if (!epoch_state_.received()) return "waiting for the Bridge boot/latch epoch";
         if (!command_bridge_valid_) {
@@ -713,20 +752,26 @@ private:
 
     bool command_endpoint_is_unique_bridge(std::string& issue) {
         try {
-            const auto endpoints = node_.get_subscriptions_info_by_topic(kCommandTopic);
-            const std::string node_name = endpoints.size() == 1U
-                ? endpoints.front().node_name() : std::string();
-            const std::string node_namespace = endpoints.size() == 1U
-                ? endpoints.front().node_namespace() : std::string();
-            if (!validate_motor_arbiter_subscription_identity(
-                    kCommandTopic, expected_bridge_node_name_, endpoints.size(),
-                    node_name, node_namespace, issue)) {
+            const auto snapshot = [](const auto& endpoints) {
+                std::vector<MotorCommandEndpoint> result;
+                for (const auto& endpoint : endpoints) {
+                    result.push_back({endpoint.node_name(), endpoint.node_namespace(),
+                                      endpoint.topic_type(), endpoint.endpoint_gid()});
+                }
+                return result;
+            };
+            MotorArbiterPublisherGid bridge_gid {};
+            if (!validate_motor_command_graph(
+                    snapshot(node_.get_subscriptions_info_by_topic(kCommandTopic)),
+                    snapshot(node_.get_publishers_info_by_topic(kCommandTopic)),
+                    snapshot(node_.get_publishers_info_by_topic("/power/command")),
+                    expected_bridge_node_name_, node_.get_name(), bridge_gid, issue)) {
                 return false;
             }
             {
                 std::lock_guard<std::mutex> lock(mutex_);
                 if (!command_subscription_pin_.observe(
-                        endpoints.front().endpoint_gid(), state_.protocol_committed())) {
+                        bridge_gid, state_.protocol_committed())) {
                     issue = "/motor/command subscriber endpoint GID changed after motor "
                         "arbiter protocol commitment";
                     return false;
@@ -734,7 +779,7 @@ private:
             }
             return true;
         } catch (const std::exception& exc) {
-            issue = std::string("subscription graph query failed for /motor/command: ") +
+            issue = std::string("command graph query failed for /motor/command or /power/command: ") +
                 exc.what();
             return false;
         }

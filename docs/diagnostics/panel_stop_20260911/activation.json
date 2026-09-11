@@ -1,0 +1,23 @@
+{
+  "activated_at": "2026-09-11T16:18:01.865048+08:00",
+  "authorizing_stop_operation_id": "1a0f668a55f6445cb8705dbb328003ad",
+  "controller_version": "panel-stop-v2-20260911",
+  "controller_epoch": "d345aca5fa38474fa17cb45155af978b",
+  "service": "MainPID=213339\nActiveState=active\n",
+  "active_operation": null,
+  "readiness": "backend_unavailable",
+  "emergency_latched": true,
+  "recorder": {
+    "pid": 53632,
+    "start_ticks": "276275",
+    "executable": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+    "sha256": "bfeae6d0caf24066158480b21f638a47b348fecddbb85cf66ccd8bf7e0ff87d7",
+    "open_csv": [
+      "/home/jetson/rinbo_logs/20260911_143610_tripod_current_debug_20260911_143608/summary.csv",
+      "/home/jetson/rinbo_logs/20260911_143610_tripod_current_debug_20260911_143608/events.csv"
+    ]
+  },
+  "service_restarted": true,
+  "automatic_communications": false,
+  "automatic_power_or_motion": false
+}

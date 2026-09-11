@@ -2,6 +2,7 @@ rinbo_data_recorder:
   ros__parameters:
     output_root: "~/rinbo_logs"
     workspace_root: "~/rinbo_ros_ws"
+    command_source: "diagnostic"
     profile: "tripod_safety"
     run_name: "rinbo_run"
     auto_start: true
@@ -21,14 +22,13 @@ rinbo_data_recorder:
 
     bag_topics:
       - "/motor/state"
-      - "/motor/command"
       - "/rinbo/monitor/motor_requested"
       - "/rinbo/monitor/motor_forwarded"
       - "/rinbo/motor_output_enabled"
       - "/rinbo/motor_arbiter_ready"
       - "/power/state"
-      - "/power/command"
       - "/pid/data"
       - "/rinbo/controller_debug"
       - "/rinbo/safety_event"
+      - "/rinbo/safety_detail"
       - "/rosout"

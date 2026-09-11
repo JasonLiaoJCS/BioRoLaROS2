@@ -7,7 +7,7 @@ from types import MethodType
 
 import pytest
 
-from redrhex_lowlevel_bridge import rinbo_power_tool
+from redrhex_lowlevel_bridge import rinbo_power_tool, power_operation
 from redrhex_lowlevel_bridge.rinbo_power_tool import (
     LEG_CURRENT_CHANNELS,
     POWER_BUS_CHANNEL,
@@ -455,7 +455,7 @@ def test_power_cleanup_failure_is_bounded_and_reports_unknown(monkeypatch) -> No
     assert all(not msg.power for msg in published[3:])
 
 
-def test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown(monkeypatch, pinned_configuration) -> None:
+def test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown(monkeypatch, pinned_configuration, capsys) -> None:
     instances = []
 
     class InterruptedNode:
@@ -467,6 +467,9 @@ def test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown(monkeyp
         def run(self):
             raise KeyboardInterrupt
 
+        def result(self, status, reason):
+            return dict(status=status, reason=reason, exit_code=40)
+
         def publish_unverified_emergency_off(self):
             self.off_attempts += 1
             return True
@@ -474,7 +477,7 @@ def test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown(monkeyp
         def destroy_node(self):
             return None
 
-    monkeypatch.setattr(rinbo_power_tool, "RinboPowerTool", InterruptedNode)
+    monkeypatch.setattr(power_operation, "PowerSession", InterruptedNode)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "init", lambda **_kwargs: None)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "ok", lambda: True)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "shutdown", lambda: None)
@@ -483,12 +486,13 @@ def test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown(monkeyp
         rinbo_power_tool.main(["relay", "--confirm-relay"])
 
     assert exc_info.value.code != 0
-    assert "relay state is UNKNOWN" in str(exc_info.value)
-    assert "unverified best effort" in str(exc_info.value)
+    result=json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert result["status"]=="interrupted" and exc_info.value.code==40
+    assert "unverified best effort" in result["reason"]
     assert instances[0].off_attempts == 1
 
 
-def test_interrupted_status_does_not_publish_power_command(monkeypatch, pinned_configuration) -> None:
+def test_interrupted_status_does_not_publish_power_command(monkeypatch, pinned_configuration, capsys) -> None:
     instances = []
 
     class InterruptedNode:
@@ -500,6 +504,9 @@ def test_interrupted_status_does_not_publish_power_command(monkeypatch, pinned_c
         def run(self):
             raise KeyboardInterrupt
 
+        def result(self, status, reason):
+            return dict(status=status, reason=reason, exit_code=40)
+
         def publish_unverified_emergency_off(self):
             self.off_attempts += 1
             return True
@@ -507,7 +514,7 @@ def test_interrupted_status_does_not_publish_power_command(monkeypatch, pinned_c
         def destroy_node(self):
             return None
 
-    monkeypatch.setattr(rinbo_power_tool, "RinboPowerTool", InterruptedNode)
+    monkeypatch.setattr(power_operation, "PowerSession", InterruptedNode)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "init", lambda **_kwargs: None)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "ok", lambda: True)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "shutdown", lambda: None)
@@ -516,7 +523,8 @@ def test_interrupted_status_does_not_publish_power_command(monkeypatch, pinned_c
         rinbo_power_tool.main(["status"])
 
     assert exc_info.value.code != 0
-    assert "relay state is UNKNOWN" in str(exc_info.value)
+    assert exc_info.value.code==40
+    assert json.loads(capsys.readouterr().out.strip().splitlines()[-1])["status"]=="interrupted"
     assert instances[0].off_attempts == 0
 
 
@@ -693,12 +701,13 @@ def test_snapshot_lock_blocks_manager_until_ros_cleanup(monkeypatch, tmp_path):
 
         def run(self):
             assert_pinned("run")
+            return dict(status="success",exit_code=0)
 
         def destroy_node(self):
             assert_pinned("destroy")
 
     monkeypatch.setattr(rinbo_power_tool.rclpy, "init", lambda **_kwargs: assert_pinned("init"))
-    monkeypatch.setattr(rinbo_power_tool, "RinboPowerTool", FakeNode)
+    monkeypatch.setattr(power_operation, "PowerSession", FakeNode)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "ok", lambda: True)
     monkeypatch.setattr(rinbo_power_tool.rclpy, "shutdown", lambda: assert_pinned("shutdown"))
     rinbo_power_tool.main(["digital"])

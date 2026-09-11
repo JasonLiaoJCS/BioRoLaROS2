@@ -1,6 +1,7 @@
 import os
 import re
 import time
+from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction
@@ -20,20 +21,23 @@ def _sanitize(value):
 
 def _unique_run_dir(output_root, run_name, output_dir):
     if output_dir:
-        run_dir = os.path.expanduser(output_dir)
-        os.makedirs(run_dir, exist_ok=True)
-        return run_dir
-
-    output_root = os.path.expanduser(output_root)
-    stamp = time.strftime("%Y%m%d_%H%M%S")
-    base = os.path.join(output_root, f"{stamp}_{_sanitize(run_name)}")
+        base = os.path.expanduser(output_dir)
+        # Share a fresh directory between CSV and bag; never reuse history.
+        if os.path.isdir(base) and not os.listdir(base):
+            return base
+    else:
+        output_root = os.path.expanduser(output_root)
+        stamp = time.strftime("%Y%m%d_%H%M%S")
+        base = os.path.join(output_root, f"{stamp}_{_sanitize(run_name)}")
     candidate = base
     index = 1
-    while os.path.exists(candidate):
-        candidate = f"{base}_{index}"
-        index += 1
-    os.makedirs(candidate, exist_ok=True)
-    return candidate
+    while True:
+        try:
+            os.makedirs(candidate, exist_ok=False)
+            return candidate
+        except FileExistsError:
+            candidate = f"{base}_{index}"
+            index += 1
 
 
 def _launch_setup(context):
@@ -50,6 +54,9 @@ def _launch_setup(context):
         for topic in LaunchConfiguration("bag_topics").perform(context).split(",")
         if topic.strip()
     ]
+
+    if "/motor/command" in bag_topics or "/power/command" in bag_topics:
+        raise ValueError("diagnostic bag must use monitor topics, not control topics")
 
     run_dir = _unique_run_dir(output_root, run_name, output_dir)
     raw_bag_dir = os.path.join(run_dir, "raw_bag")
@@ -68,6 +75,7 @@ def _launch_setup(context):
                     "run_name": run_name,
                     "profile": profile,
                     "auto_start": not start_paused,
+                    "command_source": "diagnostic",
                     "record_csv": record_csv,
                     # Keep metadata aligned with the actual rosbag CLI list,
                     # including when the operator overrides bag_topics.
@@ -81,6 +89,7 @@ def _launch_setup(context):
         cmd = [
             "ros2", "bag", "record",
             "--max-cache-size", "0",
+            "--qos-profile-overrides-path", os.path.join(get_package_share_directory("rinbo_data_recorder"), "config", "diagnostic_bag_qos.yaml"),
             "-o", raw_bag_dir,
         ]
         if start_paused:
@@ -101,16 +110,15 @@ def generate_launch_description():
 
     default_topics = ",".join([
         "/motor/state",
-        "/motor/command",
         "/rinbo/monitor/motor_requested",
         "/rinbo/monitor/motor_forwarded",
         "/rinbo/motor_output_enabled",
         "/rinbo/motor_arbiter_ready",
         "/power/state",
-        "/power/command",
         "/pid/data",
         "/rinbo/controller_debug",
         "/rinbo/safety_event",
+        "/rinbo/safety_detail",
         "/rosout",
     ])
 

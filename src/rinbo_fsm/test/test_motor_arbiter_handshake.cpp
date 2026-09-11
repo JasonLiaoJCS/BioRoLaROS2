@@ -98,20 +98,6 @@ TEST(MotorArbiterPublisherIdentityTest, WrongCallbackGidIsRejected) {
     EXPECT_NE(issue.find("callback source GID does not match"), std::string::npos);
 }
 
-TEST(MotorArbiterSubscriptionIdentityTest, RequiresExpectedNodeInRootNamespace) {
-    std::string issue;
-    EXPECT_TRUE(rinbo_fsm::validate_motor_arbiter_subscription_identity(
-        "/motor/command", "rinbo_ros2_bridge", 1U,
-        "rinbo_ros2_bridge", "/", issue));
-    EXPECT_TRUE(issue.empty());
-
-    EXPECT_FALSE(rinbo_fsm::validate_motor_arbiter_subscription_identity(
-        "/motor/command", "rinbo_ros2_bridge", 1U,
-        "rinbo_ros2_bridge", "/unexpected", issue));
-    EXPECT_NE(issue.find("/unexpected/rinbo_ros2_bridge"), std::string::npos);
-    EXPECT_NE(issue.find("not node /rinbo_ros2_bridge"), std::string::npos);
-}
-
 TEST(MotorArbiterEndpointPinStateTest, FirstAndSameEndpointAreAccepted) {
     MotorArbiterEndpointPinState pin;
     const auto gid = publisher_gid(1U);
@@ -199,9 +185,9 @@ void arm_with_correlated_rearm(
     ASSERT_TRUE(state.start_rearm_request());
     ASSERT_TRUE(state.note_rearm_command(sequence));
     ASSERT_TRUE(state.observe_rearm_ack(sequence));
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
     state.observe_ready_status(true);
-    ASSERT_TRUE(state.ready_for_output(1U));
+    ASSERT_TRUE(state.ready_for_output(true));
 }
 
 TEST(MotorArbiterHandshakeStateTest, HistoricalReadyCannotReplaceRearmAck) {
@@ -211,25 +197,24 @@ TEST(MotorArbiterHandshakeStateTest, HistoricalReadyCannotReplaceRearmAck) {
     ASSERT_TRUE(state.start_rearm_request());
     ASSERT_TRUE(state.note_rearm_command(42U));
     state.observe_ready_status(true);
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
 
     EXPECT_FALSE(state.observe_rearm_ack(41U));
     state.observe_ready_status(true);
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
 
     EXPECT_TRUE(state.observe_rearm_ack(42U));
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
     state.observe_ready_status(true);
-    EXPECT_TRUE(state.ready_for_output(1U));
+    EXPECT_TRUE(state.ready_for_output(true));
 }
 
-TEST(MotorArbiterHandshakeStateTest, RearmRequiresExactlyOneCommandSubscriber) {
+TEST(MotorArbiterHandshakeStateTest, RearmRequiresValidatedCommandGraph) {
     MotorArbiterHandshakeState state;
     state.observe_ready_status(false);
 
-    EXPECT_FALSE(state.can_publish_rearm(0U));
-    EXPECT_TRUE(state.can_publish_rearm(1U));
-    EXPECT_FALSE(state.can_publish_rearm(2U));
+    EXPECT_FALSE(state.can_publish_rearm(false));
+    EXPECT_TRUE(state.can_publish_rearm(true));
 }
 
 TEST(MotorArbiterHandshakeStateTest, AckForUnpublishedSequenceIsIgnored) {
@@ -240,7 +225,7 @@ TEST(MotorArbiterHandshakeStateTest, AckForUnpublishedSequenceIsIgnored) {
 
     EXPECT_FALSE(state.observe_rearm_ack(8U));
     state.observe_ready_status(true);
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
 }
 
 TEST(MotorArbiterHandshakeStateTest, LateRearmAckMatchesBeyondOldFivePacketBudget) {
@@ -252,9 +237,9 @@ TEST(MotorArbiterHandshakeStateTest, LateRearmAckMatchesBeyondOldFivePacketBudge
     }
 
     EXPECT_TRUE(state.observe_rearm_ack(20U));
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
     state.observe_ready_status(true);
-    EXPECT_TRUE(state.ready_for_output(1U));
+    EXPECT_TRUE(state.ready_for_output(true));
 }
 
 TEST(MotorArbiterHandshakeStateTest, DelayedReadyAfterAckCompletesRearm) {
@@ -267,9 +252,9 @@ TEST(MotorArbiterHandshakeStateTest, DelayedReadyAfterAckCompletesRearm) {
     EXPECT_FALSE(state.armed());
 
     state.observe_ready_status(false);
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
     state.observe_ready_status(true);
-    EXPECT_TRUE(state.ready_for_output(1U));
+    EXPECT_TRUE(state.ready_for_output(true));
 }
 
 TEST(MotorArbiterHandshakeStateTest, EndpointFaultAfterRearmAckIsStickyBeforeArming) {
@@ -283,8 +268,8 @@ TEST(MotorArbiterHandshakeStateTest, EndpointFaultAfterRearmAckIsStickyBeforeArm
 
     state.force_fault();
     state.observe_ready_status(true);
-    EXPECT_FALSE(state.ready_for_output(1U));
-    EXPECT_TRUE(state.immediate_violation(1U).has_value());
+    EXPECT_FALSE(state.ready_for_output(true));
+    EXPECT_TRUE(state.immediate_violation(true).has_value());
 }
 
 TEST(MotorArbiterHandshakeStateTest, RelatchAfterArmingIsTerminal) {
@@ -292,19 +277,18 @@ TEST(MotorArbiterHandshakeStateTest, RelatchAfterArmingIsTerminal) {
     arm_with_correlated_rearm(state);
 
     state.observe_ready_status(false);
-    EXPECT_FALSE(state.ready_for_output(1U));
-    EXPECT_TRUE(state.immediate_violation(1U).has_value());
+    EXPECT_FALSE(state.ready_for_output(true));
+    EXPECT_TRUE(state.immediate_violation(true).has_value());
 
     state.observe_ready_status(true);
-    EXPECT_FALSE(state.ready_for_output(1U));
+    EXPECT_FALSE(state.ready_for_output(true));
 }
 
-TEST(MotorArbiterHandshakeStateTest, DuplicateSubscriberAfterArmingIsViolation) {
+TEST(MotorArbiterHandshakeStateTest, InvalidCommandGraphAfterArmingIsViolation) {
     MotorArbiterHandshakeState state;
     arm_with_correlated_rearm(state);
 
-    EXPECT_TRUE(state.immediate_violation(0U).has_value());
-    EXPECT_TRUE(state.immediate_violation(2U).has_value());
+    EXPECT_TRUE(state.immediate_violation(false).has_value());
 }
 
 TEST(MotorArbiterHandshakeStateTest, ActiveAckMustMatchPublishedSequence) {

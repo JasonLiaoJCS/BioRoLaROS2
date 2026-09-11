@@ -1,0 +1,62 @@
+........................................................................ [ 22%]
+........................................................................ [ 45%]
+..........................................................FF............ [ 68%]
+........................................................................ [ 90%]
+.............................                                            [100%]
+=================================== FAILURES ===================================
+____________ test_old_completed_stop_does_not_authorize_new_cleanup ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-jetson/pytest-31/test_old_completed_stop_does_n0')
+
+    def test_old_completed_stop_does_not_authorize_new_cleanup(tmp_path):
+        n=Native(tmp_path,lambda *a:None)
+        n.last_completed_stop={'operation_id':'old','epoch':'old','historical_only':True}
+        n.stop_motion=lambda **kw:pytest.fail('cleanup must not start without this Off ACK')
+        with pytest.raises(NativeFailure) as error:n.execute(request('Stop'))
+>       assert error.value.code==31 and error.value.data['verified_off'] is None
+E       AssertionError: assert (20 == 31)
+E        +  where 20 = NativeFailure('domain_mismatch: controller ROS_DOMAIN_ID is fixed for its lifetime').code
+E        +    where NativeFailure('domain_mismatch: controller ROS_DOMAIN_ID is fixed for its lifetime') = <ExceptionInfo NativeFailure('domain_mismatch: controller ROS_DOMAIN_ID is fixed for its lifetime') tblen=3>.value
+
+src/rinbo_control/test/test_panel_stop_recovery.py:162: AssertionError
+_______ test_verified_off_precedes_cleanup_and_recorder_is_not_targeted ________
+
+tmp_path = PosixPath('/tmp/pytest-of-jetson/pytest-31/test_verified_off_precedes_cle0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff8f4ba260>
+
+    def test_verified_off_precedes_cleanup_and_recorder_is_not_targeted(tmp_path,monkeypatch):
+        from rinbo_control import panel_native as module
+        n=Native(tmp_path,lambda *a:None);req=request('Stop');events=[]
+        n.power=lambda *a,**kw:(events.append('off_ack') or ack(req['request_id']))
+        n.urgent_off(req['request_id'])
+        n.stop_motion=lambda **kw:(events.append('motion_verified') or {'verified':True})
+        n.runtime.executable=lambda package,name:name
+        monkeypatch.setattr(module,'find_motion',lambda names,*a:(events.append(tuple(names)) or []))
+        monkeypatch.setattr(module,'stop_motion',lambda *a:events.append('bridge_stop'))
+        n.runtime.remote=SimpleNamespace(stop=lambda:events.append('remote_stop'),close=lambda:events.append('ssh_close'))
+        n.runtime.feedback=SimpleNamespace(close=lambda:events.append('feedback_close'))
+        n.runtime.close=lambda:True
+>       value=n.execute(req)
+
+src/rinbo_control/test/test_panel_stop_recovery.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/rinbo_control/rinbo_control/panel_native.py:232: in execute
+    self.bind(req)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rinbo_control.panel_native.Native object at 0xffff8f4bad70>
+req = {'action': 'Stop', 'orin_ip': '192.168.30.8', 'protocol': 1, 'request_id': 'd0bcebd2d37842439046d4588d3101a6', ...}
+
+    def bind(self, req):
+        target = (req['sbrio_ip'], req['orin_ip'], req['ros_domain_id'])
+        if self.target and target != self.target:
+            raise NativeFailure('target_changed: complete Stop at the original address before switching')
+        if target[2] != int(os.environ.get('ROS_DOMAIN_ID', '99')):
+>           raise NativeFailure('domain_mismatch: controller ROS_DOMAIN_ID is fixed for its lifetime')
+E           rinbo_control.panel_native.NativeFailure: domain_mismatch: controller ROS_DOMAIN_ID is fixed for its lifetime
+
+src/rinbo_control/rinbo_control/panel_native.py:53: NativeFailure
+=========================== short test summary info ============================
+FAILED src/rinbo_control/test/test_panel_stop_recovery.py::test_old_completed_stop_does_not_authorize_new_cleanup
+FAILED src/rinbo_control/test/test_panel_stop_recovery.py::test_verified_off_precedes_cleanup_and_recorder_is_not_targeted
+2 failed, 315 passed in 82.03s (0:01:22)

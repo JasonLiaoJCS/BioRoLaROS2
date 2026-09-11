@@ -1,0 +1,10 @@
+{
+  "old_new_effective_equal": true,
+  "original_binaries_still_match_baseline": {
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual": true,
+    "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_legs": true
+  }
+}

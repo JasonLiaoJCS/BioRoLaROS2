@@ -1,0 +1,922 @@
+diff --git a/src/rinbo_data_recorder/test/test_command_recording.py b/src/rinbo_data_recorder/test/test_command_recording.py
+index 1babedb..0796fd4 100644
+--- a/src/rinbo_data_recorder/test/test_command_recording.py
++++ b/src/rinbo_data_recorder/test/test_command_recording.py
+@@ -3,6 +3,7 @@
+ Integration test requires ROS_DOMAIN_ID=232 ROS_LOCALHOST_ONLY=1.
+ """
+ import importlib.util
++import csv
+ import os
+ from pathlib import Path
+ import signal
+@@ -14,6 +15,63 @@ import pytest
+ import yaml
+ 
+ 
++@pytest.mark.skipif(
++    os.environ.get('ROS_DOMAIN_ID') != '232' or os.environ.get('ROS_LOCALHOST_ONLY') != '1',
++    reason='requires isolated localhost ROS domain 232')
++def test_csv_recorder_observes_both_commands_without_publishing_them(tmp_path):
++    import rclpy
++    from ament_index_python.packages import get_package_prefix
++    from rinbo_msgs.msg import MotorCmdStamped, PowerCmdStamped
++
++    rclpy.init()
++    node = rclpy.create_node('recorder_command_fixture', enable_rosout=False)
++    motor = node.create_publisher(MotorCmdStamped, '/motor/command', 10)
++    power = node.create_publisher(PowerCmdStamped, '/power/command', 10)
++    executable = Path(get_package_prefix('rinbo_data_recorder')) / 'lib/rinbo_data_recorder/rinbo_data_recorder'
++    process = subprocess.Popen([
++        str(executable), '--ros-args', '-p', 'auto_start:=true',
++        '-p', f'output_dir:={tmp_path}', '-p', 'summary_hz:=20.0',
++    ], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
++    try:
++        deadline = time.monotonic() + 8
++        saw_csv = False
++        while time.monotonic() < deadline:
++            assert process.poll() is None, process.stderr.read()
++            m = MotorCmdStamped()
++            m.l2.enable = True
++            m.l2.direction = False
++            m.l2.voltage = 12.0
++            motor.publish(m)
++            power.publish(PowerCmdStamped(digital=True))
++            rclpy.spin_once(node, timeout_sec=.05)
++            for topic in ('/motor/command', '/power/command'):
++                publishers = node.get_publishers_info_by_topic(topic)
++                assert all(e.node_name != 'rinbo_data_recorder' for e in publishers)
++            path = tmp_path / 'summary.csv'
++            if path.exists():
++                with path.open() as stream:
++                    rows = list(csv.DictReader(stream))
++                saw_csv = any(row.get('cmd_voltage_l2') == '12.000000' and
++                              row.get('power_cmd_digital') == '1' for row in rows)
++                if saw_csv:
++                    break
++        assert saw_csv, 'recorder must continue collecting both command streams'
++        for topic in ('/motor/command', '/power/command'):
++            observers = node.get_subscriptions_info_by_topic(topic)
++            assert [(e.node_name, e.node_namespace) for e in observers] == [('rinbo_data_recorder', '/')]
++    finally:
++        # This handle belongs only to our isolated test child, never the live recorder.
++        process.send_signal(signal.SIGINT)
++        try:
++            process.wait(timeout=5)
++        except subprocess.TimeoutExpired:
++            process.kill()
++            process.wait(timeout=5)
++        process.stderr.close()
++        node.destroy_node()
++        rclpy.shutdown()
++
++
+ def launch_module():
+     path = Path(__file__).parents[1] / 'launch/record_experiment.launch.py'
+     spec = importlib.util.spec_from_file_location('record_experiment', path)
+diff --git a/src/rinbo_fsm/CMakeLists.txt b/src/rinbo_fsm/CMakeLists.txt
+index d30d6b2..9ad4e83 100644
+--- a/src/rinbo_fsm/CMakeLists.txt
++++ b/src/rinbo_fsm/CMakeLists.txt
+@@ -76,6 +76,14 @@ install(DIRECTORY
+ 
+ if(BUILD_TESTING)
+   find_package(ament_cmake_gtest REQUIRED)
++  ament_add_gtest(test_motor_recorder_compat
++    test/test_motor_recorder_compat.cpp
++    ENV ROS_DOMAIN_ID=231 ROS_LOCALHOST_ONLY=1
++    TIMEOUT 60
++  )
++  target_include_directories(test_motor_recorder_compat PRIVATE src)
++  ament_target_dependencies(test_motor_recorder_compat rclcpp rinbo_msgs std_msgs)
++  set_tests_properties(test_motor_recorder_compat PROPERTIES RUN_SERIAL TRUE)
+   ament_add_gtest(test_motor_arbiter_handshake
+     test/test_motor_arbiter_handshake.cpp
+     ENV ROS_DOMAIN_ID=231 ROS_LOCALHOST_ONLY=1
+diff --git a/src/rinbo_fsm/src/motor_arbiter_handshake.hpp b/src/rinbo_fsm/src/motor_arbiter_handshake.hpp
+index 29c1858..06fb71f 100644
+--- a/src/rinbo_fsm/src/motor_arbiter_handshake.hpp
++++ b/src/rinbo_fsm/src/motor_arbiter_handshake.hpp
+@@ -23,6 +23,7 @@
+ #include <string>
+ #include <unordered_map>
+ #include <unordered_set>
++#include <vector>
+ 
+ namespace rinbo_fsm {
+ 
+@@ -92,28 +93,74 @@ inline bool validate_motor_arbiter_publisher_identity(
+     return true;
+ }
+ 
+-inline bool validate_motor_arbiter_subscription_identity(
+-    const std::string& topic,
+-    const std::string& expected_node_name,
+-    std::size_t endpoint_count,
+-    const std::string& node_name,
+-    const std::string& node_namespace,
++// Only the audited recorder is an observation-only command subscriber. Node
++// names are ROS graph identities, not cryptographic credentials: publisher
++// arbitration remains mandatory, including for a node using the recorder name.
++struct MotorCommandEndpoint {
++    std::string node_name;
++    std::string node_namespace;
++    std::string topic_type;
++    MotorArbiterPublisherGid gid {};
++};
++
++inline bool validate_motor_command_graph(
++    const std::vector<MotorCommandEndpoint>& subscribers,
++    const std::vector<MotorCommandEndpoint>& motor_publishers,
++    const std::vector<MotorCommandEndpoint>& power_publishers,
++    const std::string& expected_bridge,
++    const std::string& expected_controller,
++    MotorArbiterPublisherGid& bridge_gid,
+     std::string& issue) {
+     issue.clear();
+-    if (endpoint_count != 1U) {
+-        std::ostringstream out;
+-        out << "expected exactly one subscriber on " << topic
+-            << ", got " << endpoint_count;
+-        issue = out.str();
++    constexpr const char* motor_type = "rinbo_msgs/msg/MotorCmdStamped";
++    constexpr const char* power_type = "rinbo_msgs/msg/PowerCmdStamped";
++    std::size_t bridges = 0;
++    for (const auto& endpoint : subscribers) {
++        const auto name = motor_arbiter_fully_qualified_node_name(
++            endpoint.node_namespace, endpoint.node_name);
++        if (endpoint.topic_type != motor_type) {
++            issue = "/motor/command subscriber " + name + " has unexpected type " + endpoint.topic_type;
++            return false;
++        }
++        if (motor_arbiter_is_expected_root_node(
++                expected_bridge, endpoint.node_name, endpoint.node_namespace)) {
++            ++bridges;
++            bridge_gid = endpoint.gid;
++        } else if (!motor_arbiter_is_expected_root_node(
++                       "rinbo_data_recorder", endpoint.node_name, endpoint.node_namespace)) {
++            issue = "/motor/command has unexpected subscriber " + name +
++                "; expected /" + expected_bridge + " or passive /rinbo_data_recorder";
++            return false;
++        }
++    }
++    if (bridges != 1U) {
++        issue = "/motor/command requires exactly one expected Bridge subscriber, got " +
++            std::to_string(bridges) + " (passive recorder excluded)";
+         return false;
+     }
+-    if (!motor_arbiter_is_expected_root_node(
+-            expected_node_name, node_name, node_namespace)) {
+-        issue = "subscriber on " + topic + " is node " +
+-            motor_arbiter_fully_qualified_node_name(node_namespace, node_name) +
+-            ", not node /" + expected_node_name;
++    // Do not apply the subscriber exception to command publishers.
++    if (motor_publishers.size() != 1U) {
++        issue = "/motor/command requires exactly one controller publisher, got " +
++            std::to_string(motor_publishers.size());
++        return false;
++    }
++    const auto& source = motor_publishers.front();
++    if (source.topic_type != motor_type || !motor_arbiter_is_expected_root_node(
++            expected_controller, source.node_name, source.node_namespace)) {
++        issue = "/motor/command publisher is not this controller /" + expected_controller +
++            " with type " + motor_type;
+         return false;
+     }
++    if (power_publishers.size() > 1U) {
++        issue = "/power/command has multiple publishers";
++        return false;
++    }
++    for (const auto& endpoint : power_publishers) {
++        if (endpoint.node_name == "rinbo_data_recorder" || endpoint.topic_type != power_type) {
++            issue = "/power/command has a recorder publisher or unexpected command type";
++            return false;
++        }
++    }
+     return true;
+ }
+ 
+@@ -198,13 +245,13 @@ public:
+         }
+     }
+ 
+-    bool can_publish_rearm(std::size_t command_subscriber_count) const {
++    bool can_publish_rearm(bool command_graph_valid) const {
+         return !armed_ && !faulted_ && status_received_ &&
+-            command_subscriber_count == 1U;
++            command_graph_valid;
+     }
+ 
+     bool start_rearm_request() {
+-        if (!can_publish_rearm(1U)) return false;
++        if (!can_publish_rearm(true)) return false;
+         if (!rearm_requested_) {
+             rearm_requested_ = true;
+             return true;
+@@ -231,9 +278,9 @@ public:
+         return false;
+     }
+ 
+-    bool ready_for_output(std::size_t command_subscriber_count) const {
++    bool ready_for_output(bool command_graph_valid) const {
+         return armed_ && !faulted_ && ready_status_ &&
+-            command_subscriber_count == 1U;
++            command_graph_valid;
+     }
+ 
+     bool note_active_command(uint32_t sequence) {
+@@ -256,12 +303,12 @@ public:
+     void force_fault() { faulted_ = true; }
+ 
+     std::optional<std::string> immediate_violation(
+-        std::size_t command_subscriber_count) const {
++        bool command_graph_valid) const {
+         if (faulted_) {
+             return "motor arbiter readiness or endpoint identity was revoked after protocol commitment";
+         }
+-        if (armed_ && command_subscriber_count != 1U) {
+-            return "expected exactly one /motor/command bridge subscriber after arming";
++        if (armed_ && !command_graph_valid) {
++            return "motor command graph became invalid after arming";
+         }
+         return std::nullopt;
+     }
+@@ -518,19 +565,18 @@ public:
+     const std::string& rearm_frame_id() const { return rearm_frame_id_; }
+     const std::string& active_probe_frame_id() const { return active_probe_frame_id_; }
+ 
+-    bool ready_for_output(std::size_t command_subscriber_count) const {
++    bool ready_for_output() const {
+         std::lock_guard<std::mutex> lock(mutex_);
+-        return state_.ready_for_output(command_subscriber_count) &&
++        return state_.ready_for_output(command_bridge_valid_) &&
+             epoch_state_.received() && !epoch_state_.changed() &&
+             command_bridge_valid_ &&
+             heartbeat_is_fresh_locked(std::chrono::steady_clock::now());
+     }
+ 
+-    bool mark_rearm_command_about_to_publish(
+-        std::size_t command_subscriber_count) {
++    bool mark_rearm_command_about_to_publish() {
+         std::lock_guard<std::mutex> lock(mutex_);
+         const auto now = std::chrono::steady_clock::now();
+-        if (!state_.can_publish_rearm(command_subscriber_count) ||
++        if (!state_.can_publish_rearm(command_bridge_valid_) ||
+             !epoch_state_.received() || epoch_state_.changed() ||
+             !command_bridge_valid_ || !heartbeat_is_fresh_locked(now)) {
+             return false;
+@@ -545,10 +591,10 @@ public:
+     }
+ 
+     bool mark_active_command_published(
+-        std::size_t command_subscriber_count, uint32_t sequence) {
++        uint32_t sequence) {
+         std::lock_guard<std::mutex> lock(mutex_);
+         const auto now = std::chrono::steady_clock::now();
+-        if (!state_.ready_for_output(command_subscriber_count) ||
++        if (!state_.ready_for_output(command_bridge_valid_) ||
+             !epoch_state_.received() || epoch_state_.changed() ||
+             !command_bridge_valid_ || !heartbeat_is_fresh_locked(now)) {
+             return false;
+@@ -564,11 +610,10 @@ public:
+         return state_.active_output_confirmed();
+     }
+ 
+-    std::optional<std::string> violation(
+-        std::size_t command_subscriber_count) const {
++    std::optional<std::string> violation() const {
+         std::lock_guard<std::mutex> lock(mutex_);
+         if (!external_fault_reason_.empty()) return external_fault_reason_;
+-        if (const auto reason = state_.immediate_violation(command_subscriber_count)) {
++        if (const auto reason = state_.immediate_violation(command_bridge_valid_)) {
+             return reason;
+         }
+ 
+@@ -588,7 +633,7 @@ public:
+                 return "bridge did not acknowledge a correlated active motor command";
+             }
+         }
+-        if (state_.ready_for_output(command_subscriber_count) &&
++        if (state_.ready_for_output(command_bridge_valid_) &&
+             command_bridge_valid_ && heartbeat_is_fresh_locked(now)) {
+             return std::nullopt;
+         }
+@@ -597,9 +642,6 @@ public:
+         const double elapsed = std::chrono::duration<double>(now - reference).count();
+         if (elapsed <= timeout_seconds_) return std::nullopt;
+ 
+-        if (command_subscriber_count != 1U) {
+-            return "motor arbiter handshake timeout: /motor/command must have exactly one subscriber";
+-        }
+         if (!heartbeat_state_.received()) {
+             return "motor arbiter handshake timeout: no trusted arbiter heartbeat";
+         }
+@@ -612,7 +654,7 @@ public:
+         if (!command_bridge_valid_) {
+             return command_bridge_issue_.empty()
+                 ? "motor arbiter handshake timeout: command subscriber is not the expected bridge"
+-                : command_bridge_issue_;
++                : "motor arbiter handshake timeout: " + command_bridge_issue_;
+         }
+         if (!state_.status_received()) {
+             return "motor arbiter handshake timeout: no trusted readiness status";
+@@ -626,11 +668,8 @@ public:
+         return "motor arbiter handshake timeout: no post-ACK ready status";
+     }
+ 
+-    std::string waiting_reason(std::size_t command_subscriber_count) const {
++    std::string waiting_reason() const {
+         std::lock_guard<std::mutex> lock(mutex_);
+-        if (command_subscriber_count != 1U) {
+-            return "waiting for exactly one /motor/command subscriber";
+-        }
+         if (!heartbeat_state_.received()) return "waiting for a trusted arbiter heartbeat";
+         if (!epoch_state_.received()) return "waiting for the Bridge boot/latch epoch";
+         if (!command_bridge_valid_) {
+@@ -713,20 +752,26 @@ private:
+ 
+     bool command_endpoint_is_unique_bridge(std::string& issue) {
+         try {
+-            const auto endpoints = node_.get_subscriptions_info_by_topic(kCommandTopic);
+-            const std::string node_name = endpoints.size() == 1U
+-                ? endpoints.front().node_name() : std::string();
+-            const std::string node_namespace = endpoints.size() == 1U
+-                ? endpoints.front().node_namespace() : std::string();
+-            if (!validate_motor_arbiter_subscription_identity(
+-                    kCommandTopic, expected_bridge_node_name_, endpoints.size(),
+-                    node_name, node_namespace, issue)) {
++            const auto snapshot = [](const auto& endpoints) {
++                std::vector<MotorCommandEndpoint> result;
++                for (const auto& endpoint : endpoints) {
++                    result.push_back({endpoint.node_name(), endpoint.node_namespace(),
++                                      endpoint.topic_type(), endpoint.endpoint_gid()});
++                }
++                return result;
++            };
++            MotorArbiterPublisherGid bridge_gid {};
++            if (!validate_motor_command_graph(
++                    snapshot(node_.get_subscriptions_info_by_topic(kCommandTopic)),
++                    snapshot(node_.get_publishers_info_by_topic(kCommandTopic)),
++                    snapshot(node_.get_publishers_info_by_topic("/power/command")),
++                    expected_bridge_node_name_, node_.get_name(), bridge_gid, issue)) {
+                 return false;
+             }
+             {
+                 std::lock_guard<std::mutex> lock(mutex_);
+                 if (!command_subscription_pin_.observe(
+-                        endpoints.front().endpoint_gid(), state_.protocol_committed())) {
++                        bridge_gid, state_.protocol_committed())) {
+                     issue = "/motor/command subscriber endpoint GID changed after motor "
+                         "arbiter protocol commitment";
+                     return false;
+@@ -734,7 +779,7 @@ private:
+             }
+             return true;
+         } catch (const std::exception& exc) {
+-            issue = std::string("subscription graph query failed for /motor/command: ") +
++            issue = std::string("command graph query failed for /motor/command or /power/command: ") +
+                 exc.what();
+             return false;
+         }
+diff --git a/src/rinbo_fsm/src/rinbo_cali.cpp b/src/rinbo_fsm/src/rinbo_cali.cpp
+index 21765cd..ad75988 100644
+--- a/src/rinbo_fsm/src/rinbo_cali.cpp
++++ b/src/rinbo_fsm/src/rinbo_cali.cpp
+@@ -204,7 +204,7 @@ private:
+     uint32_t publish_motor_command(
+         rinbo_msgs::msg::MotorCmdStamped& cmd,
+         const std::string& frame_id = std::string()) {
+-        if (safety_stopped_ || !motor_handshake_->ready_for_output(cmd_pub_->get_subscription_count())) {
++        if (safety_stopped_ || !motor_handshake_->ready_for_output()) {
+             disable_all_legs(cmd);
+             cmd.servo_control_mode = 0;
+         }
+@@ -297,14 +297,13 @@ private:
+             return;
+         }
+ 
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             update_previous_samples(positions, now_time);
+             return;
+         }
+-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) {
+-            const auto reason = motor_handshake_->waiting_reason(command_subscriber_count);
++        if (!motor_handshake_->ready_for_output()) {
++            const auto reason = motor_handshake_->waiting_reason();
+             RCLCPP_WARN_THROTTLE(
+                 this->get_logger(), *this->get_clock(), 1000,
+                 "Motor output remains disabled: %s", reason.c_str());
+@@ -328,8 +327,7 @@ private:
+             cmd.servo_control_mode = 2;
+             const uint32_t probe_sequence = publish_motor_command(
+                 cmd, motor_handshake_->active_probe_frame_id());
+-            if (!motor_handshake_->mark_active_command_published(
+-                    command_subscriber_count, probe_sequence)) {
++            if (!motor_handshake_->mark_active_command_published(probe_sequence)) {
+                 trigger_safety_stop("motor arbiter refused the first active hold command");
+                 update_previous_samples(positions, now_time);
+                 return;
+@@ -688,13 +686,11 @@ private:
+ 
+     void handshake_timer_callback() {
+         if (safety_stopped_ || state_ == CalibState::DONE) return;
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             return;
+         }
+-        if (motor_handshake_->mark_rearm_command_about_to_publish(
+-                command_subscriber_count)) {
++        if (motor_handshake_->mark_rearm_command_about_to_publish()) {
+             const uint32_t sequence = publish_stop_command(
+                 motor_handshake_->rearm_frame_id());
+             if (!motor_handshake_->record_rearm_command_published(sequence)) {
+@@ -708,12 +704,11 @@ private:
+             publish_stop_command();
+             return;
+         }
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             return;
+         }
+-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) return;
++        if (!motor_handshake_->ready_for_output()) return;
+         const auto now_time = this->now();
+         if (motor_state_received_) {
+             if (const auto reason = motor_state_guard_->publisher_violation()) {
+diff --git a/src/rinbo_fsm/src/rinbo_manual.cpp b/src/rinbo_fsm/src/rinbo_manual.cpp
+index 2ac2cc8..f977675 100644
+--- a/src/rinbo_fsm/src/rinbo_manual.cpp
++++ b/src/rinbo_fsm/src/rinbo_manual.cpp
+@@ -101,7 +101,7 @@ public:
+     }
+ private:
+     uint32_t publish(rinbo_msgs::msg::MotorCmdStamped cmd, const std::string& frame = "") {
+-        if (stopping_ || !handshake_->ready_for_output(command_->get_subscription_count()))
++        if (stopping_ || !handshake_->ready_for_output())
+             cmd = rinbo_msgs::msg::MotorCmdStamped{};
+         rinbo_fsm::enforce_disabled_leg_commands(cmd, disabled_);
+         const bool active = cmd.l1.enable || cmd.l2.enable || cmd.l3.enable ||
+@@ -196,8 +196,7 @@ private:
+         const double ros_now = now().seconds();
+         if (ros_now < previous_ros_) { stop("ROS clock moved backward", true); return; }
+         previous_ros_ = ros_now;
+-        const auto count = command_->get_subscription_count();
+-        if (const auto why = handshake_->violation(count)) { stop(*why, true); return; }
++        if (const auto why = handshake_->violation()) { stop(*why, true); return; }
+         if (motor_received_) {
+             if (const auto why = motor_input_->publisher_violation()) { stop(*why, true); return; }
+         }
+@@ -209,8 +208,8 @@ private:
+             stop("missing/stale /motor/state", true); return;
+         }
+         if (const auto why = power_->violation(ros_now, start_ros_)) { stop(*why, true); return; }
+-        if (!handshake_->ready_for_output(count)) {
+-            if (handshake_->mark_rearm_command_about_to_publish(count)) {
++        if (!handshake_->ready_for_output()) {
++            if (handshake_->mark_rearm_command_about_to_publish()) {
+                 const auto seq = publish_disabled(handshake_->rearm_frame_id());
+                 if (!handshake_->record_rearm_command_published(seq)) stop("cannot record rearm ACK request", true);
+             }
+@@ -228,7 +227,7 @@ private:
+             rinbo_msgs::msg::MotorCmdStamped probe;
+             rinbo_manual::set_outputs(probe, plan_, disabled_.mask(), {}, cap_, true);
+             const auto seq = publish(probe, handshake_->active_probe_frame_id());
+-            if (!handshake_->mark_active_command_published(count, seq)) stop("cannot record active probe", true);
++            if (!handshake_->mark_active_command_published(seq)) stop("cannot record active probe", true);
+             return;
+         }
+         if (!trajectory_) {
+diff --git a/src/rinbo_fsm/src/rinbo_standing.cpp b/src/rinbo_fsm/src/rinbo_standing.cpp
+index d3c50f7..34b7106 100644
+--- a/src/rinbo_fsm/src/rinbo_standing.cpp
++++ b/src/rinbo_fsm/src/rinbo_standing.cpp
+@@ -156,7 +156,7 @@ private:
+     uint32_t publish_motor_command(
+         rinbo_msgs::msg::MotorCmdStamped& cmd,
+         const std::string& frame_id = std::string()) {
+-        if (safety_stopped_ || !motor_handshake_->ready_for_output(cmd_pub_->get_subscription_count())) {
++        if (safety_stopped_ || !motor_handshake_->ready_for_output()) {
+             disable_all_legs(cmd);
+             cmd.servo_control_mode = 0;
+         }
+@@ -266,14 +266,13 @@ private:
+             return;
+         }
+ 
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             update_previous_samples(positions, now_time);
+             return;
+         }
+-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) {
+-            const auto reason = motor_handshake_->waiting_reason(command_subscriber_count);
++        if (!motor_handshake_->ready_for_output()) {
++            const auto reason = motor_handshake_->waiting_reason();
+             RCLCPP_WARN_THROTTLE(
+                 this->get_logger(), *this->get_clock(), 1000,
+                 "Motor output remains disabled: %s", reason.c_str());
+@@ -296,8 +295,7 @@ private:
+             probe.servo_control_mode = 2;
+             const uint32_t probe_sequence = publish_motor_command(
+                 probe, motor_handshake_->active_probe_frame_id());
+-            if (!motor_handshake_->mark_active_command_published(
+-                    command_subscriber_count, probe_sequence)) {
++            if (!motor_handshake_->mark_active_command_published(probe_sequence)) {
+                 trigger_safety_stop("motor arbiter refused the first active hold command");
+                 update_previous_samples(positions, now_time);
+                 return;
+@@ -587,13 +585,11 @@ private:
+ 
+     void handshake_timer_callback() {
+         if (safety_stopped_) return;
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             return;
+         }
+-        if (motor_handshake_->mark_rearm_command_about_to_publish(
+-                command_subscriber_count)) {
++        if (motor_handshake_->mark_rearm_command_about_to_publish()) {
+             const uint32_t sequence = publish_stop_command(
+                 motor_handshake_->rearm_frame_id());
+             if (!motor_handshake_->record_rearm_command_published(sequence)) {
+@@ -607,12 +603,11 @@ private:
+             publish_stop_command();
+             return;
+         }
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             return;
+         }
+-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) return;
++        if (!motor_handshake_->ready_for_output()) return;
+         const auto now_time = this->now();
+         if (motor_state_received_) {
+             if (const auto reason = motor_state_guard_->publisher_violation()) {
+diff --git a/src/rinbo_fsm/src/rinbo_tripod.cpp b/src/rinbo_fsm/src/rinbo_tripod.cpp
+index 15faa15..e11bda2 100644
+--- a/src/rinbo_fsm/src/rinbo_tripod.cpp
++++ b/src/rinbo_fsm/src/rinbo_tripod.cpp
+@@ -629,7 +629,7 @@ private:
+     uint32_t publish_motor_command(
+         rinbo_msgs::msg::MotorCmdStamped& cmd,
+         const std::string& frame_id = std::string()) {
+-        if (state_ == State::SAFETY_STOP || !motor_handshake_->ready_for_output(cmd_pub_->get_subscription_count())) {
++        if (state_ == State::SAFETY_STOP || !motor_handshake_->ready_for_output()) {
+             const std::array<rinbo_msgs::msg::LegCmd *, 6> legs = {
+                 &cmd.l1, &cmd.l2, &cmd.l3, &cmd.r1, &cmd.r2, &cmd.r3};
+             for (auto *leg : legs) {
+@@ -1054,14 +1054,13 @@ private:
+             }
+         }
+ 
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             update_previous_samples(positions, now_time);
+             return;
+         }
+-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) {
+-            const auto reason = motor_handshake_->waiting_reason(command_subscriber_count);
++        if (!motor_handshake_->ready_for_output()) {
++            const auto reason = motor_handshake_->waiting_reason();
+             RCLCPP_WARN_THROTTLE(
+                 this->get_logger(), *this->get_clock(), 1000,
+                 "Motor output remains disabled: %s", reason.c_str());
+@@ -1088,8 +1087,7 @@ private:
+             probe.servo_control_mode = 2;
+             const uint32_t probe_sequence = publish_motor_command(
+                 probe, motor_handshake_->active_probe_frame_id());
+-            if (!motor_handshake_->mark_active_command_published(
+-                    command_subscriber_count, probe_sequence)) {
++            if (!motor_handshake_->mark_active_command_published(probe_sequence)) {
+                 trigger_safety_stop("motor arbiter refused the first active hold command");
+                 update_previous_samples(positions, now_time);
+                 return;
+@@ -1515,13 +1513,11 @@ private:
+ 
+     void handshake_timer_callback() {
+         if (fully_stopped_ || state_ == State::SAFETY_STOP) return;
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             return;
+         }
+-        if (motor_handshake_->mark_rearm_command_about_to_publish(
+-                command_subscriber_count)) {
++        if (motor_handshake_->mark_rearm_command_about_to_publish()) {
+             const uint32_t sequence = publish_stop_command(
+                 motor_handshake_->rearm_frame_id());
+             if (!motor_handshake_->record_rearm_command_published(sequence)) {
+@@ -1547,13 +1543,12 @@ private:
+             }
+             return;
+         }
+-        const auto command_subscriber_count = cmd_pub_->get_subscription_count();
+-        if (const auto reason = motor_handshake_->violation(command_subscriber_count)) {
++        if (const auto reason = motor_handshake_->violation()) {
+             trigger_safety_stop(*reason);
+             return;
+         }
+         const auto now_time = this->now();
+-        if (!motor_handshake_->ready_for_output(command_subscriber_count)) {
++        if (!motor_handshake_->ready_for_output()) {
+             if (g_shutdown_requested) {
+                 publish_stop_command();
+                 fully_stopped_ = true;
+diff --git a/src/rinbo_fsm/test/test_cali_multileg.cpp b/src/rinbo_fsm/test/test_cali_multileg.cpp
+index 4c768fc..0a8df3c 100644
+--- a/src/rinbo_fsm/test/test_cali_multileg.cpp
++++ b/src/rinbo_fsm/test/test_cali_multileg.cpp
+@@ -65,6 +65,26 @@ struct CalibrationOfflineTestAccess {
+         halls[0] = !hall_triggered;
+         f.handle_dc_spinning(cmd,p,v,halls,time(10.1));
+     }
++    static void l2_negative_origin(CalibrationFSM& f) {
++        std::array<float,6> p{}, v{};
++        std::array<bool,6> halls{}; halls.fill(true);
++        rinbo_msgs::msg::MotorCmdStamped cmd;
++        p[1] = -27663;
++        f.handle_dc_spinning(cmd, p, v, halls, time(10));
++        f.set_leg_cmd(cmd, 1, true, 50, false);
++        EXPECT_FALSE(cmd.l2.direction);
++        EXPECT_EQ(cmd.l2.voltage, 50);
++        f.set_leg_cmd(cmd, 1, true, -50, false);
++        EXPECT_TRUE(cmd.l2.direction);
++        EXPECT_EQ(cmd.l2.voltage, 50);
++        p[1] = -27163;  // exactly 500 counts: preserve the existing strict bound
++        f.handle_dc_spinning(cmd, p, v, halls, time(10.17));
++        EXPECT_FALSE(f.safety_stopped_);
++        EXPECT_LT(f.trace_targets_[1], -27663);  // requested search decreases raw counts
++        EXPECT_FALSE(cmd.l2.direction);
++        p[1] = -27131;
++        f.handle_dc_spinning(cmd, p, v, halls, time(10.181));
++    }
+     static bool stopped(const CalibrationFSM& f){return f.safety_stopped_;}
+     static std::string reason(const CalibrationFSM& f){return f.safety_stop_reason_;}
+     static LegState leg(const CalibrationFSM& f,int i){return f.leg_states_[i];}
+@@ -118,6 +138,16 @@ TEST_F(CaliMultiLegTest, WrongDirectionCannotBeHiddenByFindingHall) {
+     }
+ }
+ 
++TEST_F(CaliMultiLegTest, ObservedL2ReverseTravelFromNegativeOriginStillStops) {
++    rinbo_config::MotionSession session(rinbo_config::Stage::Calibration, path);
++    CalibrationFSM f(session);
++    Access::l2_negative_origin(f);
++    EXPECT_TRUE(Access::stopped(f));
++    EXPECT_NE(Access::reason(f).find("opposite encoder travel: L2 start=-27663"), std::string::npos);
++    EXPECT_NE(Access::reason(f).find("actual=-27131"), std::string::npos);
++    EXPECT_FALSE(std::filesystem::exists(path.string() + ".calibration.json"));
++}
++
+ TEST_F(CaliMultiLegTest, ManualPlanValuesOnlySelectLegsAndDoNotOverrideCalibrationParameters) {
+     mask(0);
+     const auto before = rinbo_config::RobotConfig::load(path).hash();
+diff --git a/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp b/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
+index 999ffe4..5c5db6e 100644
+--- a/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
++++ b/src/rinbo_fsm/test/test_motor_arbiter_handshake.cpp
+@@ -98,20 +98,6 @@ TEST(MotorArbiterPublisherIdentityTest, WrongCallbackGidIsRejected) {
+     EXPECT_NE(issue.find("callback source GID does not match"), std::string::npos);
+ }
+ 
+-TEST(MotorArbiterSubscriptionIdentityTest, RequiresExpectedNodeInRootNamespace) {
+-    std::string issue;
+-    EXPECT_TRUE(rinbo_fsm::validate_motor_arbiter_subscription_identity(
+-        "/motor/command", "rinbo_ros2_bridge", 1U,
+-        "rinbo_ros2_bridge", "/", issue));
+-    EXPECT_TRUE(issue.empty());
+-
+-    EXPECT_FALSE(rinbo_fsm::validate_motor_arbiter_subscription_identity(
+-        "/motor/command", "rinbo_ros2_bridge", 1U,
+-        "rinbo_ros2_bridge", "/unexpected", issue));
+-    EXPECT_NE(issue.find("/unexpected/rinbo_ros2_bridge"), std::string::npos);
+-    EXPECT_NE(issue.find("not node /rinbo_ros2_bridge"), std::string::npos);
+-}
+-
+ TEST(MotorArbiterEndpointPinStateTest, FirstAndSameEndpointAreAccepted) {
+     MotorArbiterEndpointPinState pin;
+     const auto gid = publisher_gid(1U);
+@@ -199,9 +185,9 @@ void arm_with_correlated_rearm(
+     ASSERT_TRUE(state.start_rearm_request());
+     ASSERT_TRUE(state.note_rearm_command(sequence));
+     ASSERT_TRUE(state.observe_rearm_ack(sequence));
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+     state.observe_ready_status(true);
+-    ASSERT_TRUE(state.ready_for_output(1U));
++    ASSERT_TRUE(state.ready_for_output(true));
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, HistoricalReadyCannotReplaceRearmAck) {
+@@ -211,25 +197,24 @@ TEST(MotorArbiterHandshakeStateTest, HistoricalReadyCannotReplaceRearmAck) {
+     ASSERT_TRUE(state.start_rearm_request());
+     ASSERT_TRUE(state.note_rearm_command(42U));
+     state.observe_ready_status(true);
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+ 
+     EXPECT_FALSE(state.observe_rearm_ack(41U));
+     state.observe_ready_status(true);
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+ 
+     EXPECT_TRUE(state.observe_rearm_ack(42U));
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+     state.observe_ready_status(true);
+-    EXPECT_TRUE(state.ready_for_output(1U));
++    EXPECT_TRUE(state.ready_for_output(true));
+ }
+ 
+-TEST(MotorArbiterHandshakeStateTest, RearmRequiresExactlyOneCommandSubscriber) {
++TEST(MotorArbiterHandshakeStateTest, RearmRequiresValidatedCommandGraph) {
+     MotorArbiterHandshakeState state;
+     state.observe_ready_status(false);
+ 
+-    EXPECT_FALSE(state.can_publish_rearm(0U));
+-    EXPECT_TRUE(state.can_publish_rearm(1U));
+-    EXPECT_FALSE(state.can_publish_rearm(2U));
++    EXPECT_FALSE(state.can_publish_rearm(false));
++    EXPECT_TRUE(state.can_publish_rearm(true));
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, AckForUnpublishedSequenceIsIgnored) {
+@@ -240,7 +225,7 @@ TEST(MotorArbiterHandshakeStateTest, AckForUnpublishedSequenceIsIgnored) {
+ 
+     EXPECT_FALSE(state.observe_rearm_ack(8U));
+     state.observe_ready_status(true);
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, LateRearmAckMatchesBeyondOldFivePacketBudget) {
+@@ -252,9 +237,9 @@ TEST(MotorArbiterHandshakeStateTest, LateRearmAckMatchesBeyondOldFivePacketBudge
+     }
+ 
+     EXPECT_TRUE(state.observe_rearm_ack(20U));
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+     state.observe_ready_status(true);
+-    EXPECT_TRUE(state.ready_for_output(1U));
++    EXPECT_TRUE(state.ready_for_output(true));
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, DelayedReadyAfterAckCompletesRearm) {
+@@ -267,9 +252,9 @@ TEST(MotorArbiterHandshakeStateTest, DelayedReadyAfterAckCompletesRearm) {
+     EXPECT_FALSE(state.armed());
+ 
+     state.observe_ready_status(false);
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+     state.observe_ready_status(true);
+-    EXPECT_TRUE(state.ready_for_output(1U));
++    EXPECT_TRUE(state.ready_for_output(true));
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, EndpointFaultAfterRearmAckIsStickyBeforeArming) {
+@@ -283,8 +268,8 @@ TEST(MotorArbiterHandshakeStateTest, EndpointFaultAfterRearmAckIsStickyBeforeArm
+ 
+     state.force_fault();
+     state.observe_ready_status(true);
+-    EXPECT_FALSE(state.ready_for_output(1U));
+-    EXPECT_TRUE(state.immediate_violation(1U).has_value());
++    EXPECT_FALSE(state.ready_for_output(true));
++    EXPECT_TRUE(state.immediate_violation(true).has_value());
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, RelatchAfterArmingIsTerminal) {
+@@ -292,19 +277,18 @@ TEST(MotorArbiterHandshakeStateTest, RelatchAfterArmingIsTerminal) {
+     arm_with_correlated_rearm(state);
+ 
+     state.observe_ready_status(false);
+-    EXPECT_FALSE(state.ready_for_output(1U));
+-    EXPECT_TRUE(state.immediate_violation(1U).has_value());
++    EXPECT_FALSE(state.ready_for_output(true));
++    EXPECT_TRUE(state.immediate_violation(true).has_value());
+ 
+     state.observe_ready_status(true);
+-    EXPECT_FALSE(state.ready_for_output(1U));
++    EXPECT_FALSE(state.ready_for_output(true));
+ }
+ 
+-TEST(MotorArbiterHandshakeStateTest, DuplicateSubscriberAfterArmingIsViolation) {
++TEST(MotorArbiterHandshakeStateTest, InvalidCommandGraphAfterArmingIsViolation) {
+     MotorArbiterHandshakeState state;
+     arm_with_correlated_rearm(state);
+ 
+-    EXPECT_TRUE(state.immediate_violation(0U).has_value());
+-    EXPECT_TRUE(state.immediate_violation(2U).has_value());
++    EXPECT_TRUE(state.immediate_violation(false).has_value());
+ }
+ 
+ TEST(MotorArbiterHandshakeStateTest, ActiveAckMustMatchPublishedSequence) {
+diff --git a/src/rinbo_fsm/test/test_robot_config.cpp b/src/rinbo_fsm/test/test_robot_config.cpp
+index 63e9b78..cd5c681 100644
+--- a/src/rinbo_fsm/test/test_robot_config.cpp
++++ b/src/rinbo_fsm/test/test_robot_config.cpp
+@@ -7,6 +7,8 @@
+ #include <sstream>
+ #include <sys/wait.h>
+ #include <unistd.h>
++#include <atomic>
++#include <thread>
+ 
+ namespace {
+ namespace fs = std::filesystem;
+@@ -183,6 +185,64 @@ TEST_F(ConfigTest, ManualEditsCannotReuseCalibrationAtSameRevision) {
+     change([](auto& d){d["parameters"]["rinbo_cali"]["max_pwm"]=70.0;});
+     EXPECT_THROW(MotionSession(Stage::Standing,path),std::exception);
+ }
++
++TEST_F(ConfigTest, ReceiptReplacementIsAtomicAndPinnedToConfiguration) {
++    MotionSession session(Stage::Calibration, path);
++    session.complete();
++    const auto receipt_path = path.string() + ".calibration.json";
++    const auto expected = session.config();
++    std::atomic<bool> done{false};
++    std::atomic<int> reads{0}, invalid{0};
++    std::thread reader([&] {
++        while (!done.load()) {
++            try {
++                const auto receipt = YAML::LoadFile(receipt_path);
++                if (receipt["revision"].as<int64_t>() != expected.revision() ||
++                    receipt["hash"].as<std::string>() != expected.hash() ||
++                    receipt["stage"].as<std::string>() != "Calibration" ||
++                    receipt["legs"].size() != expected.enabled_legs().size()) ++invalid;
++            } catch (...) { ++invalid; }
++            ++reads;
++        }
++    });
++    // Repeated commits exercise real fsync+rename while a reader opens the path.
++    for (int i = 0; i < 30; ++i) {
++        EXPECT_NO_THROW(session.complete());
++    }
++    done = true;
++    reader.join();
++    EXPECT_GT(reads.load(), 0);
++    EXPECT_EQ(invalid.load(), 0);
++    for (const auto& entry : fs::directory_iterator(dir))
++        EXPECT_EQ(entry.path().filename().string().find(".tmp."), std::string::npos);
++}
++
++TEST_F(ConfigTest, CompletionRejectsExternalRevisionOrHashChange) {
++    for (bool change_revision : {false, true}) {
++        MotionSession session(Stage::Calibration, path);
++        session.complete();
++        change([&](auto& document) {
++            if (change_revision) document["revision"] = session.config().revision() + 1;
++            else document["parameters"]["rinbo_cali"]["max_pwm"] = 71.0;
++        });
++        EXPECT_THROW(session.complete(), std::exception);
++        EXPECT_FALSE(fs::exists(path.string() + ".calibration.json"));
++        EXPECT_FALSE(fs::exists(path.string() + ".standing.json"));
++    }
++}
++
++TEST_F(ConfigTest, FailedStandingInvalidatesCalibrationAndNewAttemptCannotResurrectIt) {
++    { MotionSession calibration(Stage::Calibration, path); calibration.complete(); }
++    {
++        MotionSession standing(Stage::Standing, path);
++        standing.complete();
++        standing.invalidate();  // includes the recorder-induced safety stop
++    }
++    EXPECT_FALSE(fs::exists(path.string() + ".calibration.json"));
++    EXPECT_THROW(MotionSession(Stage::Tripod, path), std::exception);
++    { MotionSession calibration(Stage::Calibration, path); }
++    EXPECT_THROW(MotionSession(Stage::Standing, path), std::exception);
++}
+ TEST_F(ConfigTest, AllDisabledCanBeSavedButNoMotionStageCanStart) {
+     update_disabled_legs(path,"set",{"L1","L2","L3","R1","R2","R3"});
+     EXPECT_TRUE(RobotConfig::load(path).enabled_legs().empty());
+diff --git a/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp b/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+index 71c4792..165fdd2 100644
+--- a/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
++++ b/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+@@ -65,9 +65,9 @@ rclcpp::Node::SharedPtr bridge_node = nullptr;
+ rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr motor_requested_monitor_pub;
+ rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr motor_forwarded_monitor_pub;
+ 
+-// Observers must never subscribe to /motor/command: the motion handshake
+-// requires that its sole subscriber is this bridge. Diagnostics are lossy and
+-// cannot throw into the control path or participate in rearm/ack decisions.
++// General diagnostics use these mirrors. The motion handshake accepts only
++// this Bridge plus the audited passive /rinbo_data_recorder on /motor/command.
++// Mirrors are lossy and cannot throw into the control path or affect rearm/ACK.
+ void publish_command_monitor(
+     const rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr& publisher,
+     const rinbo_msgs::msg::MotorCmdStamped& command) noexcept {

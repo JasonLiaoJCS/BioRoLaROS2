@@ -1,0 +1,4 @@
+[ 50%] Built target robot_config
+[ 75%] Building CXX object CMakeFiles/rinbo_manual.dir/src/rinbo_manual.cpp.o
+[100%] Linking CXX executable rinbo_manual
+[100%] Built target rinbo_manual

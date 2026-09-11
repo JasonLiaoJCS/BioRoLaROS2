@@ -1,0 +1,57 @@
+{
+  "site_sha256": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+  "receipts": {
+    "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml.calibration.json": false,
+    "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml.standing.json": false
+  },
+  "baseline_preexisting_source_difference": [
+    "src/rinbo_control/rinbo_control/motion_limits.py"
+  ],
+  "launcher_logs": [
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-2ae390cfd7b04848bde7f6caee9b1137/rinbo_tripod.log",
+      "mtime_ns": 1788968762119764752,
+      "size": 349
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "mtime_ns": 1788968758495651763,
+      "size": 88099
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-8085cb1473cc4a4b843d3f7f61f786ce/rinbo_tripod.log",
+      "mtime_ns": 1788968770552018045,
+      "size": 349
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "mtime_ns": 1788968790172563519,
+      "size": 5914
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "mtime_ns": 1788968636620400230,
+      "size": 26895
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-9b47e84feaae4d2fbcf0b67035971289/rinbo_cali.log",
+      "mtime_ns": 1788968841317790465,
+      "size": 4351
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "mtime_ns": 1788968888466783966,
+      "size": 3835
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234830-177/direct-91837f492ab04ff1bb14ba4dceaeef56/rinbo_cali.log",
+      "mtime_ns": 1788968951660025794,
+      "size": 2309
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234830-177/rinbo_ros_bridge.log",
+      "mtime_ns": 1788968951656025718,
+      "size": 932
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+........................................FF.............................. [ 45%]
+........................................................................ [ 91%]
+..........F..                                                            [100%]
+=================================== FAILURES ===================================
+_____ test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffffaaefb6d0>
+pinned_configuration = LegConfiguration(path='/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml', schema_version=1, revision=42, hash='snapshot-hash', disabled_legs=('L1', 'L3'), enabled_legs=('L2', 'R1', 'R2', 'R3'))
+
+    def test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown(monkeypatch, pinned_configuration) -> None:
+        instances = []
+    
+        class InterruptedNode:
+            def __init__(self, args):
+                self.args = args
+                self.off_attempts = 0
+                instances.append(self)
+    
+            def run(self):
+                raise KeyboardInterrupt
+    
+            def publish_unverified_emergency_off(self):
+                self.off_attempts += 1
+                return True
+    
+            def destroy_node(self):
+                return None
+    
+        monkeypatch.setattr(rinbo_power_tool, "RinboPowerTool", InterruptedNode)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "init", lambda **_kwargs: None)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "ok", lambda: True)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "shutdown", lambda: None)
+    
+        with pytest.raises(SystemExit) as exc_info:
+>           rinbo_power_tool.main(["relay", "--confirm-relay"])
+
+src/redrhex_lowlevel_bridge/test/test_power_tool.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py:848: in main
+    _run_ros(args)
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py:875: in _run_ros
+    node = PowerSession(args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <redrhex_lowlevel_bridge.power_operation.PowerSession object at 0xffffaaefb550>
+args = Namespace(mode='relay', json=False, request_id=None, topic='/power/command', state_topic='/power/state', repeat=3, rep..., hash='snapshot-hash', disabled_legs=('L1', 'L3'), enabled_legs=('L2', 'R1', 'R2', 'R3')), disabled_legs=('L1', 'L3'))
+
+    def __init__(self, args):
+        super().__init__(args)
+        self.request_id = args.request_id or uuid.uuid4().hex
+        self.operation_started = time.monotonic()
+        self.status = None
+        self.status_receipt = 0.0
+        self.status_key = None
+        self.status_gids = None
+        self.epoch = None
+        self.generation = None
+        self.sent = False
+        self.last_sent_sequence = 0
+        self.last_ack = None
+        self.operation_result = None
+>       self.create_subscription(String, STATUS_TOPIC, self._on_status, 10)
+E       AttributeError: 'PowerSession' object has no attribute 'create_subscription'
+
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py:59: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{
+  "leg_configuration": {
+    "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+    "schema_version": 1,
+    "revision": 42,
+    "hash": "snapshot-hash",
+    "disabled_legs": [
+      "L1",
+      "L3"
+    ],
+    "enabled_legs": [
+      "L2",
+      "R1",
+      "R2",
+      "R3"
+    ]
+  }
+}
+____________ test_interrupted_status_does_not_publish_power_command ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffffaad6e7a0>
+pinned_configuration = LegConfiguration(path='/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml', schema_version=1, revision=42, hash='snapshot-hash', disabled_legs=('L1', 'L3'), enabled_legs=('L2', 'R1', 'R2', 'R3'))
+
+    def test_interrupted_status_does_not_publish_power_command(monkeypatch, pinned_configuration) -> None:
+        instances = []
+    
+        class InterruptedNode:
+            def __init__(self, args):
+                self.args = args
+                self.off_attempts = 0
+                instances.append(self)
+    
+            def run(self):
+                raise KeyboardInterrupt
+    
+            def publish_unverified_emergency_off(self):
+                self.off_attempts += 1
+                return True
+    
+            def destroy_node(self):
+                return None
+    
+        monkeypatch.setattr(rinbo_power_tool, "RinboPowerTool", InterruptedNode)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "init", lambda **_kwargs: None)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "ok", lambda: True)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "shutdown", lambda: None)
+    
+        with pytest.raises(SystemExit) as exc_info:
+>           rinbo_power_tool.main(["status"])
+
+src/redrhex_lowlevel_bridge/test/test_power_tool.py:516: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py:848: in main
+    _run_ros(args)
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py:875: in _run_ros
+    node = PowerSession(args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <redrhex_lowlevel_bridge.power_operation.PowerSession object at 0xffffaad6dab0>
+args = Namespace(mode='status', json=False, request_id=None, topic='/power/command', state_topic='/power/state', repeat=3, re..., hash='snapshot-hash', disabled_legs=('L1', 'L3'), enabled_legs=('L2', 'R1', 'R2', 'R3')), disabled_legs=('L1', 'L3'))
+
+    def __init__(self, args):
+        super().__init__(args)
+        self.request_id = args.request_id or uuid.uuid4().hex
+        self.operation_started = time.monotonic()
+        self.status = None
+        self.status_receipt = 0.0
+        self.status_key = None
+        self.status_gids = None
+        self.epoch = None
+        self.generation = None
+        self.sent = False
+        self.last_sent_sequence = 0
+        self.last_ack = None
+        self.operation_result = None
+>       self.create_subscription(String, STATUS_TOPIC, self._on_status, 10)
+E       AttributeError: 'PowerSession' object has no attribute 'create_subscription'
+
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py:59: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{
+  "leg_configuration": {
+    "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+    "schema_version": 1,
+    "revision": 42,
+    "hash": "snapshot-hash",
+    "disabled_legs": [
+      "L1",
+      "L3"
+    ],
+    "enabled_legs": [
+      "L2",
+      "R1",
+      "R2",
+      "R3"
+    ]
+  }
+}
+_____________ test_snapshot_lock_blocks_manager_until_ros_cleanup ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffffaac69210>
+tmp_path = PosixPath('/tmp/pytest-of-jetson/pytest-0/test_snapshot_lock_blocks_mana0')
+
+    def test_snapshot_lock_blocks_manager_until_ros_cleanup(monkeypatch, tmp_path):
+        lock_path = tmp_path / "config.lock"
+        monkeypatch.setattr(rinbo_power_tool, "ORIN_LEGS_LOCK_PATH", str(lock_path))
+        monkeypatch.setattr(rinbo_power_tool.subprocess, "run", lambda *_args, **_kwargs: SimpleNamespace(
+            returncode=0, stdout=json.dumps(_configuration_data()), stderr=""
+        ))
+        checkpoints = []
+    
+        def assert_pinned(stage):
+            with lock_path.open("r+") as manager:
+                with pytest.raises(BlockingIOError):
+                    fcntl.flock(manager, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            checkpoints.append(stage)
+    
+        class FakeNode:
+            def __init__(self, args):
+                assert_pinned("node")
+                assert args.disabled_legs == ("L1", "L3")
+                self.args = args
+    
+            def run(self):
+                assert_pinned("run")
+    
+            def destroy_node(self):
+                assert_pinned("destroy")
+    
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "init", lambda **_kwargs: assert_pinned("init"))
+        monkeypatch.setattr(rinbo_power_tool, "RinboPowerTool", FakeNode)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "ok", lambda: True)
+        monkeypatch.setattr(rinbo_power_tool.rclpy, "shutdown", lambda: assert_pinned("shutdown"))
+>       rinbo_power_tool.main(["digital"])
+
+src/redrhex_lowlevel_bridge/test/test_power_tool.py:704: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py:848: in main
+    _run_ros(args)
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py:875: in _run_ros
+    node = PowerSession(args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <redrhex_lowlevel_bridge.power_operation.PowerSession object at 0xffffaac7c100>
+args = Namespace(mode='digital', json=False, request_id=None, topic='/power/command', state_topic='/power/state', repeat=3, r..., hash='snapshot-hash', disabled_legs=('L1', 'L3'), enabled_legs=('L2', 'R1', 'R2', 'R3')), disabled_legs=('L1', 'L3'))
+
+    def __init__(self, args):
+        super().__init__(args)
+        self.request_id = args.request_id or uuid.uuid4().hex
+        self.operation_started = time.monotonic()
+        self.status = None
+        self.status_receipt = 0.0
+        self.status_key = None
+        self.status_gids = None
+        self.epoch = None
+        self.generation = None
+        self.sent = False
+        self.last_sent_sequence = 0
+        self.last_ack = None
+        self.operation_result = None
+>       self.create_subscription(String, STATUS_TOPIC, self._on_status, 10)
+E       AttributeError: 'PowerSession' object has no attribute 'create_subscription'
+
+src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py:59: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{
+  "leg_configuration": {
+    "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+    "schema_version": 1,
+    "revision": 42,
+    "hash": "snapshot-hash",
+    "disabled_legs": [
+      "L1",
+      "L3"
+    ],
+    "enabled_legs": [
+      "L2",
+      "R1",
+      "R2",
+      "R3"
+    ]
+  }
+}
+=========================== short test summary info ============================
+FAILED src/redrhex_lowlevel_bridge/test/test_power_tool.py::test_interrupted_power_command_exits_nonzero_and_keeps_state_unknown
+FAILED src/redrhex_lowlevel_bridge/test/test_power_tool.py::test_interrupted_status_does_not_publish_power_command
+FAILED src/redrhex_lowlevel_bridge/test/test_power_tool.py::test_snapshot_lock_blocks_manager_until_ros_cleanup
+3 failed, 154 passed in 0.91s

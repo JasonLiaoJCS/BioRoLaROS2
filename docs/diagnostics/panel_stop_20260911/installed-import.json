@@ -1,0 +1,8 @@
+{
+  "version": "panel-stop-v2-20260911",
+  "paths": {
+    "rinbo_control.panel_server": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_server.py",
+    "rinbo_control.panel_native": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_native.py",
+    "rinbo_control.feedback": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/feedback.py"
+  }
+}

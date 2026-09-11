@@ -14,6 +14,12 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <deque>
+#include <map>
+#include <sys/file.h>
+#include <fcntl.h>
+#include "recorder_support.hpp"
+#include "rcl_interfaces/srv/set_parameters_atomically.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
@@ -32,6 +38,15 @@ class RinboDataRecorder : public rclcpp::Node {
 public:
     RinboDataRecorder() : Node("rinbo_data_recorder") {
         load_parameters();
+        const auto lock_path = expand_user(this->declare_parameter<std::string>("lock_file",
+            home_dir()+"/.local/state/rinbo-recorder/recorder-"+
+            std::string(std::getenv("ROS_DOMAIN_ID") ? std::getenv("ROS_DOMAIN_ID") : "0")+".lock"));
+        std::filesystem::create_directories(std::filesystem::path(lock_path).parent_path());
+        lock_fd_ = ::open(lock_path.c_str(), O_CREAT|O_RDWR|O_CLOEXEC, 0600);
+        if(lock_fd_<0 || flock(lock_fd_, LOCK_EX|LOCK_NB)) throw std::runtime_error("recorder_already_owned");
+        control_srv_ = this->create_service<rcl_interfaces::srv::SetParametersAtomically>(
+            "/rinbo/recorder/control", std::bind(&RinboDataRecorder::control_cb, this,
+                std::placeholders::_1, std::placeholders::_2));
 
         trigger_sub_ = this->create_subscription<std_msgs::msg::Bool>(
             "trigger", 10, std::bind(&RinboDataRecorder::trigger_cb, this, std::placeholders::_1));
@@ -44,11 +59,21 @@ public:
 
         motor_state_sub_ = this->create_subscription<rinbo_msgs::msg::MotorStateStamped>(
             "/motor/state", 50, std::bind(&RinboDataRecorder::motor_state_cb, this, std::placeholders::_1));
-        motor_cmd_sub_ = this->create_subscription<rinbo_msgs::msg::MotorCmdStamped>(
-            "/motor/command", 50, std::bind(&RinboDataRecorder::motor_cmd_cb, this, std::placeholders::_1));
+        if(command_source_ == "legacy") {
+            motor_cmd_sub_ = this->create_subscription<rinbo_msgs::msg::MotorCmdStamped>(
+                "/motor/command", 50, std::bind(&RinboDataRecorder::motor_cmd_cb, this, std::placeholders::_1));
+        } else {
+            const auto mirror_qos = rclcpp::QoS(100).best_effort();
+            motor_cmd_sub_ = this->create_subscription<rinbo_msgs::msg::MotorCmdStamped>(
+                "/rinbo/monitor/motor_requested", mirror_qos,
+                std::bind(&RinboDataRecorder::motor_cmd_cb, this, std::placeholders::_1));
+            forwarded_sub_ = this->create_subscription<rinbo_msgs::msg::MotorCmdStamped>(
+                "/rinbo/monitor/motor_forwarded", mirror_qos,
+                std::bind(&RinboDataRecorder::forwarded_cb, this, std::placeholders::_1));
+        }
         power_state_sub_ = this->create_subscription<rinbo_msgs::msg::PowerStateStamped>(
             "/power/state", 50, std::bind(&RinboDataRecorder::power_state_cb, this, std::placeholders::_1));
-        power_cmd_sub_ = this->create_subscription<rinbo_msgs::msg::PowerCmdStamped>(
+        if(command_source_ == "legacy") power_cmd_sub_ = this->create_subscription<rinbo_msgs::msg::PowerCmdStamped>(
             "/power/command", 10, std::bind(&RinboDataRecorder::power_cmd_cb, this, std::placeholders::_1));
         pid_data_sub_ = this->create_subscription<std_msgs::msg::Float32MultiArray>(
             "/pid/data", 50, std::bind(&RinboDataRecorder::pid_data_cb, this, std::placeholders::_1));
@@ -56,6 +81,9 @@ public:
             "/rinbo/controller_debug", 50, std::bind(&RinboDataRecorder::controller_debug_cb, this, std::placeholders::_1));
         safety_event_sub_ = this->create_subscription<rinbo_msgs::msg::SafetyEventStamped>(
             "/rinbo/safety_event", 20, std::bind(&RinboDataRecorder::safety_event_cb, this, std::placeholders::_1));
+
+        safety_detail_sub_ = this->create_subscription<std_msgs::msg::String>(
+            "/rinbo/safety_detail", 100, std::bind(&RinboDataRecorder::safety_detail_cb, this, std::placeholders::_1));
 
         const int period_ms = std::max(1, static_cast<int>(std::round(1000.0 / std::max(summary_hz_, 1.0))));
         summary_timer_ = this->create_wall_timer(
@@ -72,6 +100,7 @@ public:
 
     ~RinboDataRecorder() override {
         close_files();
+        if(lock_fd_>=0) ::close(lock_fd_);
     }
 
 private:
@@ -83,6 +112,8 @@ private:
         output_dir_param_ = expand_user(this->declare_parameter<std::string>("output_dir", ""));
         workspace_root_ = expand_user(this->declare_parameter<std::string>("workspace_root", home_dir() + "/rinbo_ros_ws"));
         run_name_ = sanitize_name(this->declare_parameter<std::string>("run_name", "rinbo_run"));
+        command_source_ = this->declare_parameter<std::string>("command_source", "diagnostic");
+        if(command_source_!="diagnostic" && command_source_!="legacy") throw std::invalid_argument("command_source must be diagnostic or legacy");
         profile_ = sanitize_name(this->declare_parameter<std::string>("profile", "tripod_safety"));
         auto_start_ = this->declare_parameter<bool>("auto_start", true);
         record_csv_ = this->declare_parameter<bool>("record_csv", true);
@@ -100,10 +131,12 @@ private:
         bag_topics_ = this->declare_parameter<std::vector<std::string>>(
             "bag_topics",
             std::vector<std::string>{
-                "/motor/state", "/motor/command", "/power/state", "/power/command",
+                "/motor/state", "/power/state",
                 "/rinbo/monitor/motor_requested", "/rinbo/monitor/motor_forwarded",
                 "/rinbo/motor_output_enabled", "/rinbo/motor_arbiter_ready",
-                "/pid/data", "/rinbo/controller_debug", "/rinbo/safety_event", "/rosout"});
+                "/pid/data", "/rinbo/controller_debug", "/rinbo/safety_event", "/rinbo/safety_detail", "/rosout"});
+        if(command_source_=="diagnostic" && std::find(bag_topics_.begin(),bag_topics_.end(),"/motor/command")!=bag_topics_.end())
+            throw std::invalid_argument("diagnostic bag_topics must not include /motor/command");
     }
 
     static std::string home_dir() {
@@ -121,7 +154,7 @@ private:
     static std::string sanitize_name(const std::string& input) {
         std::string out;
         for (char c : input) {
-            if (std::isalnum(static_cast<unsigned char>(c)) || c == '_' || c == '-') {
+            if (static_cast<unsigned char>(c)>=128 || std::isalnum(static_cast<unsigned char>(c)) || c == '_' || c == '-') {
                 out.push_back(c);
             } else if (c == ' ' || c == '/' || c == '.') {
                 out.push_back('_');
@@ -184,7 +217,7 @@ private:
 
         const std::string suffix = sanitize_name(requested_name.empty() ? run_name_ : requested_name);
         std::filesystem::path base = std::filesystem::path(output_root_) /
-            (wall_time_string("%Y%m%d_%H%M%S") + "_" + suffix);
+            (wall_time_string("%Y%m%d_%H%M%S") + "_" + suffix + "_" + std::to_string(getpid()));
         std::filesystem::path candidate = base;
         int index = 1;
         while (std::filesystem::exists(candidate)) {
@@ -193,70 +226,85 @@ private:
         return candidate;
     }
 
+    void io_failed(const std::string& reason) {
+        if(disk_error_.empty()) disk_error_=reason;
+        recording_=false;
+        RCLCPP_ERROR(get_logger(), "RECORDER DISK ERROR: %s", disk_error_.c_str());
+    }
+    bool streams_ok() {
+        if (!summary_file_ || !events_file_ || !commands_file_ || !power_file_ || !controller_file_) {
+            io_failed("write_or_flush_failed: " + active_run_dir_.string()); return false;
+        }
+        return true;
+    }
+    void flush_files() {
+        for(auto* f:{&summary_file_,&events_file_,&commands_file_,&power_file_,&controller_file_}) if(f->is_open()) f->flush();
+        if(summary_file_.is_open() && summary_file_) summary_flushed_rows_=summary_rows_;
+        if(!active_run_dir_.empty()) streams_ok();
+    }
     void start_recording(const std::string& requested_name) {
-        if (recording_) return;
-
-        if (!record_csv_) {
-            recording_ = true;
-            RCLCPP_INFO(this->get_logger(), "CSV recording disabled by parameter; recorder marked active.");
-            return;
-        }
-
-        active_run_dir_ = choose_run_dir(requested_name);
-        std::filesystem::create_directories(active_run_dir_);
-
-        const auto summary_path = active_run_dir_ / "summary.csv";
-        const auto events_path = active_run_dir_ / "events.csv";
-        const bool append_summary = std::filesystem::exists(summary_path) && std::filesystem::file_size(summary_path) > 0;
-        const bool append_events = std::filesystem::exists(events_path) && std::filesystem::file_size(events_path) > 0;
-
-        summary_file_.open(summary_path, std::ios::out | std::ios::app);
-        events_file_.open(events_path, std::ios::out | std::ios::app);
-        if (!summary_file_.is_open() || !events_file_.is_open()) {
-            RCLCPP_ERROR(this->get_logger(), "Failed to open log files in %s", active_run_dir_.c_str());
-            close_files();
-            return;
-        }
-
-        if (!append_summary) write_summary_header();
-        if (!append_events) write_events_header();
-        write_metadata(requested_name);
-
-        recording_ = true;
-        rows_since_flush_ = 0;
-        RCLCPP_INFO(this->get_logger(), "Recording CSV logs to: %s", active_run_dir_.c_str());
+        if(recording_) return;
+        if(!disk_error_.empty()) return;
+        if(!record_csv_) { io_failed("CSV recording is disabled");return; }
+        try {
+            actual_name_=sanitize_name(requested_name.empty()?run_name_:requested_name);
+            active_run_dir_=choose_run_dir(actual_name_);
+            if(!output_dir_param_.empty() && (std::filesystem::exists(active_run_dir_/"metadata.yaml") || std::filesystem::exists(active_run_dir_/"summary.csv"))) {
+                const auto base=active_run_dir_; unsigned index=1;
+                do { active_run_dir_=base.string()+"_"+std::to_string(index++); } while(std::filesystem::exists(active_run_dir_));
+            }
+            std::filesystem::create_directories(active_run_dir_);
+            // No previous CSV is ever appended with a potentially different schema.
+            for(const auto* name:{"summary.csv","events.csv","commands.csv","power_samples.csv","controller_samples.csv"})
+                if(std::filesystem::exists(active_run_dir_/name)) throw std::runtime_error("run_directory_contains_history");
+            summary_file_.open(active_run_dir_/"summary.csv"); events_file_.open(active_run_dir_/"events.csv");
+            commands_file_.open(active_run_dir_/"commands.csv"); power_file_.open(active_run_dir_/"power_samples.csv");
+            controller_file_.open(active_run_dir_/"controller_samples.csv");
+            if(!streams_ok()) { close_files(); return; }
+            summary_rows_=summary_flushed_rows_=event_rows_=command_rows_=power_rows_=controller_rows_=0;
+            write_summary_header();write_events_header();write_raw_headers();write_metadata(actual_name_);
+            if(!disk_error_.empty()) {close_files();return;}
+            recording_=true; rows_since_flush_=0;
+            for(const auto& item:power_buffer_) if(recorder::monotonic()-item.first<=2.0) {
+                write_csv_line(power_file_,item.second);power_file_.flush();
+                if(streams_ok()) ++power_rows_; else break;
+            }
+            flush_files();
+            RCLCPP_INFO(get_logger(),"Recording CSV logs to: %s",active_run_dir_.c_str());
+        } catch(const std::exception& e) { io_failed(e.what());close_files(); }
     }
-
     void stop_recording() {
-        if (!recording_) return;
-        recording_ = false;
-        close_files();
-        RCLCPP_INFO(this->get_logger(), "CSV recording paused/stopped. summary_rows=%zu event_rows=%zu",
-                    summary_rows_, event_rows_);
+        if(recording_) flush_files();
+        recording_=false;close_files();
     }
-
     void close_files() {
-        if (summary_file_.is_open()) summary_file_.close();
-        if (events_file_.is_open()) events_file_.close();
+        for(auto* f:{&summary_file_,&events_file_,&commands_file_,&power_file_,&controller_file_}) {
+            if(f->is_open()) {f->flush();if(!*f) io_failed("flush_failed");f->close();if(f->fail()) io_failed("close_failed");}
+        }
     }
 
     void write_metadata(const std::string& requested_name) {
         std::ofstream metadata(active_run_dir_ / "metadata.yaml");
-        if (!metadata.is_open()) return;
+        if (!metadata.is_open()) { io_failed("metadata_open_failed");return; }
+        metadata << "schema_version: 2\nrecorder_version: " << recorder::version << "\n";
+        metadata << "command_source: " << command_source_ << "\n";
+        metadata << "requested_topic: " << motor_cmd_sub_->get_topic_name() << "\n";
+        metadata << "forwarded_topic: " << (forwarded_sub_ ? forwarded_sub_->get_topic_name() : "unavailable") << "\n";
+        metadata << "command_qos: " << (command_source_=="legacy" ? "reliable depth50" : "best_effort depth100") << "\n";
+        metadata << "state_qos: reliable depth50\nlegacy_cmd_columns: requested_only_not_applied\n";
+        metadata << "forwarded_semantics: bridge_forwarded_not_hardware_ack\npre_record_power_buffer_s: 2\n";
 
         char host[256] {};
         gethostname(host, sizeof(host) - 1);
 
-        metadata << "run_name: " << csv_escape(requested_name.empty() ? run_name_ : requested_name) << "\n";
-        metadata << "profile: " << profile_ << "\n";
+        metadata << "run_name: " << recorder::quote(requested_name.empty() ? run_name_ : requested_name) << "\n";
+        metadata << "profile: " << recorder::quote(profile_) << "\n";
         metadata << "start_wall_time: " << wall_time_string("%Y-%m-%dT%H:%M:%S%z") << "\n";
-        metadata << "output_dir: " << active_run_dir_.string() << "\n";
-        metadata << "raw_bag_dir: " << (active_run_dir_ / "raw_bag").string() << "\n";
+        metadata << "output_dir: " << recorder::quote(active_run_dir_.string()) << "\n";
+        metadata << "raw_bag_dir: " << recorder::quote((active_run_dir_ / "raw_bag").string()) << "\n";
         metadata << "hostname: " << host << "\n";
         metadata << "workspace_root: " << workspace_root_ << "\n";
-        metadata << "git_branch: " << shell_line("git -C " + workspace_root_ + " branch --show-current 2>/dev/null") << "\n";
-        metadata << "git_sha: " << shell_line("git -C " + workspace_root_ + " rev-parse HEAD 2>/dev/null") << "\n";
-        metadata << "git_dirty: " << (!shell_line("git -C " + workspace_root_ + " status --short 2>/dev/null").empty() ? "true" : "false") << "\n";
+        metadata << "executable: " << std::filesystem::read_symlink("/proc/self/exe").string() << "\n";
         metadata << "record_csv: " << (record_csv_ ? "true" : "false") << "\n";
         metadata << "summary_hz: " << summary_hz_ << "\n";
         metadata << "csv_flush_every_n_rows: " << flush_every_n_rows_ << "\n";
@@ -264,6 +312,7 @@ private:
         for (const auto& topic : bag_topics_) {
             metadata << "  - " << topic << "\n";
         }
+        metadata.flush(); if(!metadata) io_failed("metadata_write_failed");
     }
 
     void write_summary_header() {
@@ -280,6 +329,11 @@ private:
         if (log_pid_data_) append_pid_header(cols);
         if (log_controller_debug_) append_controller_debug_header(cols);
         if (log_safety_) append(cols, {"safety_last_source", "safety_last_severity", "safety_last_reason"});
+        append(cols,{"age_requested_s","age_forwarded_s","requested_seq","forwarded_seq"});
+        for(const auto* prefix:{"requested_","forwarded_"}) {
+            std::vector<std::string> fields;append_motor_cmd_header(fields);
+            for(const auto& field:fields) cols.push_back(std::string(prefix)+field);
+        }
         write_csv_line(summary_file_, cols);
     }
 
@@ -289,6 +343,7 @@ private:
             "min_bus_voltage", "max_current", "tau", "ratio", "cycle_count"
         };
         for (const auto* leg : kLegNames) cols.push_back(std::string("pos_error_") + leg);
+        append(cols,{"schema_version","event_kind","event_stamp_ns","event_seq","detail_json","controller_state"});
         write_csv_line(events_file_, cols);
     }
 
@@ -375,11 +430,16 @@ private:
         if (log_controller_debug_) append_controller_debug_row(row);
         if (log_safety_) append_safety_row(row);
 
+        append(row,{topic_age("requested"),topic_age("forwarded"),has_motor_cmd_?std::to_string(motor_cmd_.header.seq):"",has_forwarded_?std::to_string(forwarded_.header.seq):""});
+        append_motor_cmd_row(row);
+        const auto saved=motor_cmd_;const bool had=has_motor_cmd_;
+        motor_cmd_=forwarded_;has_motor_cmd_=has_forwarded_;append_motor_cmd_row(row);motor_cmd_=saved;has_motor_cmd_=had;
         write_csv_line(summary_file_, row);
+        if(!streams_ok()) return;
         summary_rows_++;
         rows_since_flush_++;
         if (rows_since_flush_ >= static_cast<std::size_t>(flush_every_n_rows_)) {
-            summary_file_.flush();
+            flush_files();
             rows_since_flush_ = 0;
         }
     }
@@ -525,9 +585,10 @@ private:
             num(msg.tau), num(msg.ratio), std::to_string(msg.cycle_count)
         };
         for (float value : msg.position_error) row.push_back(num(value));
+        append(row,{"2","safety_event",std::to_string(stamp_ns(msg.header)),std::to_string(msg.header.seq),"",has_controller_debug_?controller_debug_.controller_state:""});
         write_csv_line(events_file_, row);
         events_file_.flush();
-        event_rows_++;
+        if(streams_ok()) event_rows_++;
     }
 
     void set_recording_cb(const std::shared_ptr<std_srvs::srv::SetBool::Request> request,
@@ -538,8 +599,8 @@ private:
             response->message = recording_ ? active_run_dir_.string() : "failed to start recording";
         } else {
             stop_recording();
-            response->success = true;
-            response->message = "recording stopped";
+            response->success = disk_error_.empty();
+            response->message = disk_error_.empty()?"recording stopped":disk_error_;
         }
     }
 
@@ -557,47 +618,81 @@ private:
 
     void motor_state_cb(const rinbo_msgs::msg::MotorStateStamped::SharedPtr msg) {
         motor_state_ = *msg;
+        seen_["motor"]=recorder::monotonic();
+        source_stamp_["motor"]=stamp_ns(msg->header);source_seq_["motor"]=msg->header.seq;
         motor_state_time_ = this->now();
         has_motor_state_ = true;
     }
 
     void motor_cmd_cb(const rinbo_msgs::msg::MotorCmdStamped::SharedPtr msg) {
         motor_cmd_ = *msg;
+        seen_["requested"]=recorder::monotonic();
+        source_stamp_["requested"]=stamp_ns(msg->header);source_seq_["requested"]=msg->header.seq;
         motor_cmd_time_ = this->now();
         has_motor_cmd_ = true;
+        write_command_sample(*msg,"requested");
     }
 
     void power_state_cb(const rinbo_msgs::msg::PowerStateStamped::SharedPtr msg) {
         power_state_ = *msg;
+        seen_["power"]=recorder::monotonic();
+        source_stamp_["power"]=stamp_ns(msg->header);source_seq_["power"]=msg->header.seq;
         power_state_time_ = this->now();
         has_power_state_ = true;
+        write_power_sample(*msg);
     }
 
     void power_cmd_cb(const rinbo_msgs::msg::PowerCmdStamped::SharedPtr msg) {
         power_cmd_ = *msg;
+        seen_["power_command"]=recorder::monotonic();
         power_cmd_time_ = this->now();
         has_power_cmd_ = true;
     }
 
     void pid_data_cb(const std_msgs::msg::Float32MultiArray::SharedPtr msg) {
         pid_data_ = *msg;
+        seen_["pid"]=recorder::monotonic();
         pid_data_time_ = this->now();
         has_pid_data_ = true;
     }
 
     void controller_debug_cb(const rinbo_msgs::msg::ControllerDebugStamped::SharedPtr msg) {
         controller_debug_ = *msg;
+        seen_["controller"]=recorder::monotonic();
+        source_stamp_["controller"]=stamp_ns(msg->header);source_seq_["controller"]=msg->header.seq;
         controller_debug_time_ = this->now();
         has_controller_debug_ = true;
+        if(recording_) {
+            std::vector<std::string> row={num(this->now().seconds()),std::to_string(stamp_ns(msg->header)),std::to_string(msg->header.seq)};
+            append_controller_debug_row(row);write_csv_line(controller_file_,row);controller_file_.flush();
+            if(streams_ok()) ++controller_rows_;
+        }
     }
 
     void safety_event_cb(const rinbo_msgs::msg::SafetyEventStamped::SharedPtr msg) {
         safety_event_ = *msg;
+        seen_["safety"]=recorder::monotonic();
+        source_stamp_["safety"]=stamp_ns(msg->header);source_seq_["safety"]=msg->header.seq;
         safety_event_time_ = this->now();
         has_safety_event_ = true;
         write_safety_event_row(*msg);
     }
 
+    // API and raw diagnostics are serialized by the same ROS executor as CSV writes.
+    #include "recorder_methods.inc"
+    int lock_fd_=-1;
+    std::string command_source_,actual_name_,disk_error_;
+    std::map<std::string,double> seen_;
+    std::map<std::string,int64_t> source_stamp_;
+    std::map<std::string,uint32_t> source_seq_;
+    std::ofstream commands_file_,power_file_,controller_file_;
+    std::size_t command_rows_=0,power_rows_=0,controller_rows_=0;
+    std::deque<std::pair<double,std::vector<std::string>>> power_buffer_;
+    rinbo_msgs::msg::MotorCmdStamped forwarded_;
+    bool has_forwarded_=false;
+    rclcpp::Subscription<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr forwarded_sub_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr safety_detail_sub_;
+    rclcpp::Service<rcl_interfaces::srv::SetParametersAtomically>::SharedPtr control_srv_;
     std::string output_root_;
     std::string output_dir_param_;
     std::string workspace_root_;
@@ -624,6 +719,7 @@ private:
     std::ofstream summary_file_;
     std::ofstream events_file_;
     std::size_t summary_rows_ = 0;
+    std::size_t summary_flushed_rows_ = 0;
     std::size_t event_rows_ = 0;
     std::size_t rows_since_flush_ = 0;
 
@@ -664,6 +760,7 @@ private:
 };
 
 int main(int argc, char** argv) {
+    if(argc==2 && std::string(argv[1])=="--version") {std::printf("%s schema=2 control_api=1 observer=diagnostic-mirrors\n",recorder::version);return 0;}
     rclcpp::init(argc, argv);
     rclcpp::spin(std::make_shared<RinboDataRecorder>());
     rclcpp::shutdown();

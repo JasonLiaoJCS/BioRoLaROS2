@@ -1,0 +1,72 @@
+{
+  "deployed": true,
+  "hardware_actions": false,
+  "live_recorder_preserved": true,
+  "recorder_service": "installed_inactive_not_enabled",
+  "motion_ctest_suites_passed": 12,
+  "motion_gtest_cases_passed": 201,
+  "recording_tests_installed_passed": 29,
+  "site_sha256": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+  "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder",
+  "executables": [
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_cali",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_cali",
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali",
+      "symlink": true,
+      "sha256": "03a254c67235a79fdf8e709e96ae7610afd73a75f2e0e469e1fcdf6c4fa9a5c3",
+      "version": "native-observer-v2-20260911 unique-bridge+passive-recorder safety-detail-v1",
+      "version_exit": 0,
+      "stderr": "",
+      "settings_unchanged": true
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_standing",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_standing",
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing",
+      "symlink": true,
+      "sha256": "6884f1dbcdc439c501ef7f37021a00b5474dcc2f53c9801e9ba7e2b02f287f00",
+      "version": "native-observer-v2-20260911 unique-bridge+passive-recorder safety-detail-v1",
+      "version_exit": 0,
+      "stderr": "",
+      "settings_unchanged": true
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_tripod",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_tripod",
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod",
+      "symlink": true,
+      "sha256": "eb4bd12ca634e22e711253a00a8d62aad2c1e7813138636558304b990ac0d5a6",
+      "version": "native-observer-v2-20260911 unique-bridge+passive-recorder safety-detail-v1",
+      "version_exit": 0,
+      "stderr": "",
+      "settings_unchanged": true
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_manual",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_manual",
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual",
+      "symlink": true,
+      "sha256": "03dfa8cd52c0f249aa9021137ebf29a6fd724934a3dcb0def80bee301a2bfdb5",
+      "version": "native-observer-v2-20260911 unique-bridge+passive-recorder",
+      "version_exit": 0,
+      "stderr": "",
+      "settings_unchanged": true
+    },
+    {
+      "package": "rinbo_data_recorder",
+      "name": "rinbo_data_recorder",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/lib/rinbo_data_recorder/rinbo_data_recorder",
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/releases/native-recorder-v2-20260911/rinbo_data_recorder",
+      "symlink": true,
+      "sha256": "a6fb03d68b7bab32f334789cc9b005c139674efe01376183415dcc007039bfb3",
+      "version": "native-recorder-v2-20260911 schema=2 control_api=1 observer=diagnostic-mirrors",
+      "version_exit": 0,
+      "stderr": ""
+    }
+  ]
+}

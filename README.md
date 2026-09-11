@@ -7,3 +7,7 @@
 **不知道要看哪份教學，先開 [三大工作入口](docs/README.md)。**
 
 裡面依「單腳測試」「Sim2Real」「腿部啟用／屏蔽」分類，並列出教學、設定檔和程式碼位置。
+
+電源重按開啟、發布者交接與 Windows 整合，見 [電源操作 v2 契約](docs/power/power_handoff_v2_20260911.md)（成對部署候選，非自動上線）。
+
+Windows 原生控制入口、操作結果與部署：[Orin panel API v1](docs/power/orin_panel_api_v1.md)。

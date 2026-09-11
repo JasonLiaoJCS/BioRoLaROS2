@@ -1,0 +1,356 @@
+--- before/rinbo_ros_bridge.cpp
++++ src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+@@ -26,6 +26,8 @@
+ #include "Motor.pb.h"
+ #include "Power.pb.h"
+ #include "power_command_epoch_guard.hpp"
++#include "power_operation_protocol.hpp"
++#include "std_msgs/msg/string.hpp"
+ #include "motor_output_limits.hpp"
+ 
+ #include "rinbo_msgs/msg/motor_cmd_stamped.hpp"
+@@ -117,6 +119,52 @@
+ uint32_t motor_latch_generation = 0;
+ std::atomic<bool> software_estop_asserted{false};
+ rinbo_ros_bridge::PowerCommandEpochGuard power_command_epoch_guard;
++rinbo_ros_bridge::PowerOperationProtocol power_operation;
++rclcpp::Publisher<std_msgs::msg::String>::SharedPtr power_operation_status_pub;
++std::string power_accepted_gid, power_rejected_gid;
++uint32_t power_rejected_sequence=0;
++uint64_t power_status_sequence = 0;
++int64_t power_accepted_ros_ns = 0;
++int64_t steady_ns() {
++    return std::chrono::duration_cast<std::chrono::nanoseconds>(
++        std::chrono::steady_clock::now().time_since_epoch()).count();
++}
++std::string power_gid_string(const std::vector<uint8_t>& gid) {
++    std::ostringstream out;
++    for (auto b:gid) out << std::hex << std::setw(2) << std::setfill('0') << unsigned(b);
++    return out.str();
++}
++void publish_power_operation_status() {
++    std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd);
++    if (!power_operation_status_pub) return;
++    const auto now=steady_ns();
++    using rinbo_ros_bridge::power_json_string;
++    const auto& p=power_operation;
++    std::ostringstream out;
++    out << "{\"protocol\":2,\"epoch\":" << power_json_string(p.epoch)
++        << ",\"generation\":" << p.generation
++        << ",\"status_sequence\":" << ++power_status_sequence
++        << ",\"stamp_ns\":" << bridge_node->now().nanoseconds()
++        << ",\"readiness\":" << power_json_string(p.readiness(now,software_estop_asserted.load()))
++        << ",\"reason\":" << power_json_string(software_estop_asserted.load() ? "software_estop_latched" : p.fault)
++        << ",\"feedback_serial\":" << p.feedback_serial
++        << ",\"feedback_mask\":" << p.feedback_mask
++        << ",\"power_age_ms\":" << (p.power_time ? (now-p.power_time)/1000000 : -1)
++        << ",\"motor_age_ms\":" << (p.motor_time ? (now-p.motor_time)/1000000 : -1)
++        << ",\"can_handoff\":" << (power_command_epoch_guard.can_handoff() ? "true" : "false")
++        << ",\"owner_present\":" << (power_command_epoch_guard.has_owner() ? "true" : "false")
++        << ",\"accepted_request_id\":" << power_json_string(p.accepted_id)
++        << ",\"accepted_sequence\":" << p.accepted_sequence
++        << ",\"accepted_gid\":" << power_json_string(power_accepted_gid)
++        << ",\"accepted_stamp_ns\":" << power_accepted_ros_ns
++        << ",\"target_mask\":" << p.target_mask
++        << ",\"acknowledged\":" << (p.acknowledged(now) ? "true" : "false")
++        << ",\"rejected_gid\":" << power_json_string(power_rejected_gid)
++        << ",\"rejected_sequence\":" << power_rejected_sequence
++        << ",\"rejected_request_id\":" << power_json_string(p.rejected_id)
++        << ",\"rejection_reason\":" << power_json_string(p.rejection_reason) << "}";
++    std_msgs::msg::String msg; msg.data=out.str(); power_operation_status_pub->publish(msg);
++}
+ std::chrono::steady_clock::time_point last_motor_output_status_time;
+ bool motor_output_status_time_valid = false;
+ 
+@@ -721,6 +769,7 @@
+         rmw_received_gid.data + RMW_GID_STORAGE_SIZE);
+ 
+     using PowerGuard = rinbo_ros_bridge::PowerCommandEpochGuard;
++    const auto request = rinbo_ros_bridge::PowerOperationProtocol::parse(cmd->header.frame_id);
+     const auto classification = PowerGuard::classify(PowerGuard::Payload {
+         cmd->digital,
+         cmd->signal,
+@@ -742,20 +791,46 @@
+         ros_power_cmd = safe_all_off;
+         publish_power_command_to_grpc_locked(safe_all_off);
+         power_command_epoch_guard.observe_all_off();
++        power_operation.off(request,cmd->header.seq);
++        power_accepted_gid=power_gid_string(received_gid);
++        power_accepted_ros_ns=bridge_node->now().nanoseconds();
+         return;
+     }
+ 
+     const auto publisher_guard = inspect_power_command_publishers();
+     std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd);
++    if (const auto reason=power_operation.fence(request)) {
++        // A stale in-flight operation cannot win against Off. Do not let its
++        // rejection overwrite the accepted Off receipt or create a new latch.
++        power_rejected_gid=power_gid_string(received_gid);power_rejected_sequence=cmd->header.seq;
++        power_operation.rejected(request,*reason,false);
++        reject_power_command_locked(*reason);
++        return;
++    }
++    auto reject_operation = [&](const std::string& reason) {
++        power_rejected_gid=power_gid_string(received_gid);power_rejected_sequence=cmd->header.seq;
++        power_operation.rejected(request,reason);
++        reject_power_command_locked(reason);
++    };
+     if (software_estop_asserted.load()) {
+-        reject_power_command_locked("software /estop is asserted");
++        reject_operation("software /estop is asserted");
+         return;
+     }
+     if (classification.kind == PowerGuard::CommandKind::kInvalid) {
+-        reject_power_command_locked(
++        reject_operation(
+             classification.rejection_reason.value_or(
+                 "invalid power command payload"));
+         return;
++    }
++    if (!power_operation.fault.empty()) {
++        reject_operation("fault_latched: " + power_operation.fault + "; require verified Off"); return;
++    }
++    if (!power_operation.fresh(steady_ns())) {
++        reject_operation("backend_unavailable: require fresh motor and power feedback"); return;
++    }
++    if (power_command_epoch_guard.publisher_changed(received_gid) &&
++        power_command_epoch_guard.can_handoff() && !power_operation.acknowledged(steady_ns())) {
++        reject_operation("handoff_not_acknowledged: require fresh relay-off feedback or verified Off"); return;
+     }
+     const PowerGuard::Header header {
+         cmd->header.seq,
+@@ -774,12 +849,16 @@
+             header,
+             observed_ns,
+             static_cast<int64_t>(power_command_max_age_ms) * 1000000LL)) {
+-        reject_power_command_locked(*reason);
++        reject_operation(*reason);
+         return;
+     }
+ 
+     ros_power_cmd = *cmd;
+     publish_power_command_to_grpc_locked(*cmd);
++    power_operation.accepted(*request,cmd->header.seq,
++        (cmd->digital ? 1:0) | (cmd->signal ? 2:0) | (cmd->power ? 4:0));
++    power_accepted_gid=power_gid_string(received_gid);
++    power_accepted_ros_ns=observed_ns;
+ }
+ 
+ void estop_cb(const std_msgs::msg::Bool::SharedPtr msg) {
+@@ -825,6 +904,9 @@
+         source_header.stamp().sec() == last_source_stamp_sec &&
+         source_header.stamp().usec() == last_source_stamp_usec;
+     if (exact_replay) return;
++    static rinbo_ros_bridge::DeviceFeedbackOrder ordered_source;
++    if (!ordered_source.accept(static_cast<uint32_t>(source_header.seq()),
++                               source_header.stamp().sec(),source_header.stamp().usec())) return;
+     source_header_seen = true;
+     last_source_sequence = source_header.seq();
+     last_source_stamp_sec = source_header.stamp().sec();
+@@ -902,6 +984,7 @@
+             static_cast<uint32_t>(receipt_ns % 1000000000LL);
+     }
+ 
++    { std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd); power_operation.motor_time=steady_ns(); }
+     if (ros_motor_state_pub) {
+         ros_motor_state_pub->publish(ros_motor_state);
+     }
+@@ -923,6 +1006,9 @@
+         source_header.stamp().sec() == last_source_stamp_sec &&
+         source_header.stamp().usec() == last_source_stamp_usec;
+     if (exact_replay) return;
++    static rinbo_ros_bridge::DeviceFeedbackOrder ordered_source;
++    if (!ordered_source.accept(static_cast<uint32_t>(source_header.seq()),
++                               source_header.stamp().sec(),source_header.stamp().usec())) return;
+     source_header_seen = true;
+     last_source_sequence = source_header.seq();
+     last_source_stamp_sec = source_header.stamp().sec();
+@@ -958,6 +1044,10 @@
+             static_cast<uint32_t>(receipt_ns % 1000000000LL);
+     }
+ 
++    {
++        std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd);
++        power_operation.feedback((state.digital()?1:0) | (state.signal()?2:0) | (state.power()?4:0),steady_ns());
++    }
+     if (ros_power_state_pub) {
+         ros_power_state_pub->publish(ros_power_state);
+     }
+@@ -1121,6 +1211,12 @@
+     auto estop_sub = node->create_subscription<std_msgs::msg::Bool>(
+         kEstopTopic, 10, estop_cb);
+ 
++    power_operation.epoch=bridge_boot_id;
++    power_operation_status_pub=node->create_publisher<std_msgs::msg::String>(
++        "/rinbo/power/operation_status",rclcpp::QoS(10).reliable());
++    auto power_operation_timer=node->create_wall_timer(
++        std::chrono::milliseconds(50),publish_power_operation_status);
++
+     core::NodeHandler nh_;
+     core::Subscriber<motor_msg::MotorStateStamped> &grpc_motor_state_sub = nh_.subscribe<motor_msg::MotorStateStamped>("motor/state", 1000, grpc_motor_state_cb);
+     core::Subscriber<power_msg::PowerStateStamped> &grpc_power_state_sub = nh_.subscribe<power_msg::PowerStateStamped>("power/state", 1000, grpc_power_state_cb);
+@@ -1249,6 +1345,8 @@
+     // publish/data-reader destruction failures and turns a normal Ctrl+C into
+     // exit status 1.
+     ros_motor_cmd_sub.reset();
++    power_operation_timer.reset();
++    power_operation_status_pub.reset();
+     ros_power_cmd_sub.reset();
+     estop_sub.reset();
+     motor_output_enabled_pub.reset();
+--- before/power_command_epoch_guard.hpp
++++ src/rinbo_ros_bridge/src/power_command_epoch_guard.hpp
+@@ -185,6 +185,12 @@
+         return std::nullopt;
+     }
+ 
++    bool can_handoff() const noexcept { return !publisher_seen_ || next_publisher_handoff_allowed_; }
++    bool publisher_changed(const PublisherGid& gid) const noexcept {
++        return publisher_seen_ && gid != last_publisher_gid_;
++    }
++    bool has_owner() const noexcept { return publisher_seen_; }
++
+ private:
+     static constexpr const char *kExpectedPublisherNodeName =
+         "redrhex_rinbo_power_tool";
+--- before/rinbo_power_tool.py
++++ src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py
+@@ -308,11 +308,12 @@
+ def print_dry_run(args: argparse.Namespace) -> None:
+     configuration = args.leg_configuration
+     config_summary = configuration.summary() if configuration is not None else None
+-    if args.mode == "status":
++    if args.mode in ("status", "ready"):
+         print(json.dumps({"state_topic": args.state_topic, "mode": "status", "dry_run": True, "leg_configuration": config_summary}, indent=2))
+         return
+     modes = ["digital", "sensors"]
+-    if args.mode == "sequence":
++    if args.mode in ("sequence", "ensure-on"):
++        if args.mode == "ensure-on": args.include_relay = True
+         if args.include_relay:
+             modes.append("relay")
+     else:
+@@ -351,7 +352,7 @@
+         # violate the single-writer safety contract of another process.
+         self.pub = (
+             None
+-            if args.mode == "status"
++            if args.mode in ("status", "ready") or getattr(args, "protocol_v2", False)
+             else self.create_publisher(PowerCmdStamped, args.topic, 10)
+         )
+         self.create_subscription(PowerStateStamped, args.state_topic, self._on_power_state, 10)
+@@ -740,7 +741,9 @@
+ 
+ def build_parser() -> argparse.ArgumentParser:
+     parser = argparse.ArgumentParser(description="Publish BioRoLaROS2/RhexROS2 rinbo_msgs/PowerCmdStamped safely.")
+-    parser.add_argument("mode", choices=["off", "digital", "sensors", "relay", "sequence", "status"])
++    parser.add_argument("mode", choices=["off", "digital", "sensors", "relay", "sequence", "status", "ensure-on", "ready"])
++    parser.add_argument("--json", action="store_true", help="One machine-readable result; stable exit codes.")
++    parser.add_argument("--request-id", default=None, help="Diagnostic request identifier (new id per invocation).")
+     parser.add_argument("--topic", default=POWER_COMMAND_TOPIC)
+     parser.add_argument("--state-topic", default=POWER_STATE_TOPIC)
+     parser.add_argument("--repeat", type=int, default=3)
+@@ -781,17 +784,43 @@
+ 
+ 
+ def main(argv=None) -> None:
++    import sys
++    actual=list(sys.argv[1:] if argv is None else argv)
++    try:
++        _main(actual)
++    except SystemExit as exc:
++        # Argparse/confirmation errors occur before a node exists. Runtime
++        # failures already emitted their correlated result and numeric code.
++        if "--json" in actual and (isinstance(exc.code,str) or exc.code==2):
++            code=2 if exc.code==2 else 10
++            print(json.dumps(dict(schema_version=1,status="not_sent",exit_code=code,
++                                  command_sent=False,reason=str(exc.code))))
++            raise SystemExit(code) from exc
++        raise
++
++
++def _main(argv=None) -> None:
+     parser = build_parser()
+     args = parser.parse_args(argv)
++    args.protocol_v2 = True
++    if args.request_id is not None:
++        import re
++        if not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", args.request_id):
++            parser.error("--request-id requires 1..80 letters/digits/_/-")
++    for field, low, high in (("wait_for_subscriber_s", .1, 30),
++                             ("step_delay_s", 0, 5), ("status_timeout_s", .1, 30)):
++        value=getattr(args,field)
++        if not math.isfinite(value) or not low <= value <= high:
++            parser.error(f"--{field.replace('_','-')} must be in [{low}, {high}]")
+     if args.disabled_leg is not None:
+         raise SystemExit(
+             "--disabled-leg is retired and cannot override the Orin configuration. "
+             "Use ros2 run rinbo_fsm rinbo_legs on Orin."
+         )
+-    wants_relay = args.mode == "relay" or (args.mode == "sequence" and args.include_relay)
++    wants_relay = args.mode in ("relay", "ensure-on") or (args.mode == "sequence" and args.include_relay)
+     if wants_relay and not args.confirm_relay and not args.dry_run:
+         raise SystemExit("Refusing power=true without --confirm-relay. Keep E-stop ready and rerun intentionally.")
+-    if args.mode == "status":
++    if args.mode in ("status", "ready"):
+         if args.state_topic != POWER_STATE_TOPIC:
+             raise SystemExit(
+                 "Power status requires the exact /power/state topic."
+@@ -830,10 +859,14 @@
+             if args.dry_run:
+                 print_dry_run(args)
+                 return
+-            if configuration is not None:
++            if configuration is not None and not args.json:
+                 print(json.dumps({"leg_configuration": configuration.summary()}, indent=2))
+             _run_ros(args)
+     except RuntimeError as exc:
++        if args.json:
++            print(json.dumps(dict(schema_version=1,request_id=args.request_id,operation=args.mode,
++                                  status="not_sent",exit_code=10,command_sent=False,reason=str(exc))))
++            raise SystemExit(10) from exc
+         raise SystemExit(f"[FATAL] {exc}") from exc
+ 
+ 
+@@ -853,8 +886,15 @@
+         previous_handlers[signum] = signal.getsignal(signum)
+         signal.signal(signum, _request_stop)
+     try:
+-        node = RinboPowerTool(args)
+-        node.run()
++        if getattr(args, "protocol_v2", False):
++            from .power_operation import PowerSession
++            node = PowerSession(args)
++            result = node.run()
++            print(json.dumps(result, ensure_ascii=False))
++            if result["exit_code"]: raise SystemExit(result["exit_code"])
++        else:
++            node = RinboPowerTool(args)
++            node.run()
+     except (KeyboardInterrupt, ExternalShutdownException, RCLError) as exc:
+         off_published = False
+         if node is not None and args.mode != "status":
+@@ -864,6 +904,11 @@
+             if off_published
+             else "No best-effort power-off could be published; "
+         )
++        if getattr(args,"protocol_v2",False):
++            from .power_operation import EXIT_CODES
++            result=(node.result("interrupted",cleanup) if node is not None else
++                    dict(schema_version=1,status="interrupted",exit_code=40,command_sent=False,reason=cleanup))
++            print(json.dumps(result));raise SystemExit(EXIT_CODES["interrupted"]) from exc
+         raise SystemExit(
+             "Power command/status was interrupted before verified completion; "
+             f"relay state is UNKNOWN. {cleanup}"
+@@ -871,6 +916,11 @@
+             "acknowledged power-off/status check."
+         ) from exc
+     except RuntimeError as exc:
++        if getattr(args,"protocol_v2",False):
++            result=(node.result("state_unknown" if node.sent else "not_sent",str(exc)) if node is not None else
++                    dict(schema_version=1,request_id=args.request_id,operation=args.mode,
++                         status="not_sent",exit_code=10,command_sent=False,reason=str(exc)))
++            print(json.dumps(result));raise SystemExit(result["exit_code"]) from exc
+         raise SystemExit(str(exc)) from exc
+     finally:
+         if node is not None:

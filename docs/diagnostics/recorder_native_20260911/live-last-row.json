@@ -1,0 +1,12 @@
+{
+  "ros_time_s": "1789110183.056889",
+  "wall_time": "2026-09-11T15:03:03+0800",
+  "row": "161078",
+  "age_motor_state_s": "-1.000000",
+  "age_motor_cmd_s": "-1.000000",
+  "age_power_state_s": "-1.000000",
+  "age_power_cmd_s": "-1.000000",
+  "age_pid_data_s": "-1.000000",
+  "age_controller_debug_s": "-1.000000",
+  "age_safety_event_s": "-1.000000"
+}

@@ -1,0 +1,92 @@
+..........F                                                              [100%]
+=================================== FAILURES ===================================
+_________ test_real_bag_preserves_requested_forwarded_and_encoder_data _________
+
+tmp_path = PosixPath('/tmp/pytest-of-jetson/pytest-26/test_real_bag_preserves_reques0')
+
+    @pytest.mark.skipif(
+        os.environ.get('ROS_DOMAIN_ID') != '232' or os.environ.get('ROS_LOCALHOST_ONLY') != '1',
+        reason='requires isolated localhost ROS domain 232')
+    def test_real_bag_preserves_requested_forwarded_and_encoder_data(tmp_path):
+        import rclpy
+        from rclpy.qos import QoSProfile, ReliabilityPolicy
+        from rclpy.serialization import deserialize_message
+        from rinbo_msgs.msg import MotorCmdStamped, MotorStateStamped
+        from std_msgs.msg import Bool
+    
+        rclpy.init()
+        node = rclpy.create_node('recorder_test_fake_telemetry', enable_rosout=False)
+        qos = QoSProfile(depth=100, reliability=ReliabilityPolicy.BEST_EFFORT)
+        requested = MotorCmdStamped()
+        requested.header.seq = 123
+        requested.l1.enable = True
+        requested.l1.direction = False
+        requested.l1.voltage = 40.0
+        # Simulate a Bridge rejection: forwarded output must stay distinguishable.
+        forwarded = MotorCmdStamped()
+        forwarded.header.seq = 124
+        feedback = MotorStateStamped()
+        feedback.l1.position = -1234.0
+        feedback.l1.tick_count = 4321
+        feedback.l1.hall_effect = True
+        samples = {
+            '/rinbo/monitor/motor_requested': requested,
+            '/rinbo/monitor/motor_forwarded': forwarded,
+            '/motor/state': feedback,
+            '/rinbo/motor_output_enabled': Bool(data=False),
+            '/rinbo/motor_arbiter_ready': Bool(data=False),
+        }
+        pubs = {topic: node.create_publisher(type(msg), topic, qos)
+                for topic, msg in samples.items()}
+        # No /motor/command, /power/command, /estop publishers; no Bridge launched.
+        run_dir = tmp_path / 'recorded'
+        process = None
+        try:
+            with (tmp_path / 'launch.log').open('w') as log:
+                process = subprocess.Popen(
+                    ['ros2', 'launch', 'rinbo_data_recorder', 'record_experiment.launch.py',
+                     'output_dir:=' + str(run_dir)],
+                    stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+                deadline = time.monotonic() + 20
+                while not all(pub.get_subscription_count() for pub in pubs.values()):
+                    assert process.poll() is None, (tmp_path / 'launch.log').read_text()
+>                   assert time.monotonic() < deadline, (tmp_path / 'launch.log').read_text()
+E                   AssertionError: [INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-09-11-15-10-49-131086-yahboom-135433
+E                     [INFO] [launch]: Default logging verbosity is set to INFO
+E                     [rinbo_data_recorder] run_dir=/tmp/pytest-of-jetson/pytest-26/test_real_bag_preserves_reques0/recorded
+E                     [INFO] [rinbo_data_recorder-1]: process started with pid [135629]
+E                     [INFO] [ros2-2]: process started with pid [135631]
+E                     [rinbo_data_recorder-1] [INFO] [1789110649.344372423] [rinbo_data_recorder]: Recording CSV logs to: /tmp/pytest-of-jetson/pytest-26/test_real_bag_preserves_reques0/recorded
+E                     [rinbo_data_recorder-1] [INFO] [1789110649.344648082] [rinbo_data_recorder]: Rinbo data recorder ready | output_root=/home/jetson/rinbo_logs profile=tripod_safety auto_start=true
+E                     [rinbo_data_recorder-1] [WARN] [1789110649.345383373] [rinbo_data_recorder]: New publisher discovered on topic '/motor/state', offering incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
+E                     [ros2-2] usage: ros2 bag record [-h] [-a] [-e REGEX] [-x EXCLUDE]
+E                     [ros2-2]                        [--include-unpublished-topics]
+E                     [ros2-2]                        [--include-hidden-topics] [-o OUTPUT]
+E                     [ros2-2]                        [-s {sqlite3,my_test_plugin}] [-f {a,s}]
+E                     [ros2-2]                        [--no-discovery] [-p POLLING_INTERVAL]
+E                     [ros2-2]                        [-b MAX_BAG_SIZE] [-d MAX_BAG_DURATION]
+E                     [ros2-2]                        [--max-cache-size MAX_CACHE_SIZE]
+E                     [ros2-2]                        [--compression-mode {none,file,message}]
+E                     [ros2-2]                        [--compression-format {zstd,fake_comp}]
+E                     [ros2-2]                        [--compression-queue-size COMPRESSION_QUEUE_SIZE]
+E                     [ros2-2]                        [--compression-threads COMPRESSION_THREADS]
+E                     [ros2-2]                        [--snapshot-mode] [--ignore-leaf-topics]
+E                     [ros2-2]                        [--qos-profile-overrides-path QOS_PROFILE_OVERRIDES_PATH]
+E                     [ros2-2]                        [--storage-preset-profile STORAGE_PRESET_PROFILE]
+E                     [ros2-2]                        [--storage-config-file STORAGE_CONFIG_FILE]
+E                     [ros2-2]                        [--start-paused] [--use-sim-time]
+E                     [ros2-2]                        [--log-level {debug,info,warn,error,fatal}]
+E                     [ros2-2]                        [topics ...]
+E                     [ros2-2] ros2 bag record: error: argument --qos-profile-overrides-path: can't open '/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/config/diagnostic_bag_qos.yaml': [Errno 2] No such file or directory: '/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/config/diagnostic_bag_qos.yaml'
+E                     [ERROR] [ros2-2]: process has died [pid 135631, exit code 2, cmd 'ros2 bag record --max-cache-size 0 --qos-profile-overrides-path /home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/config/diagnostic_bag_qos.yaml -o /tmp/pytest-of-jetson/pytest-26/test_real_bag_preserves_reques0/recorded/raw_bag /motor/state /rinbo/monitor/motor_requested /rinbo/monitor/motor_forwarded /rinbo/motor_output_enabled /rinbo/motor_arbiter_ready /power/state /pid/data /rinbo/controller_debug /rinbo/safety_event /rinbo/safety_detail /rosout'].
+E                     
+E                   assert 4861.21977644 < 4861.192810142
+E                    +  where 4861.21977644 = <built-in function monotonic>()
+E                    +    where <built-in function monotonic> = time.monotonic
+
+src/rinbo_data_recorder/test/test_command_recording.py:148: AssertionError
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1789110649.370910689] [recorder_test_fake_telemetry]: New subscription discovered on topic '/motor/state', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+=========================== short test summary info ============================
+FAILED src/rinbo_data_recorder/test/test_command_recording.py::test_real_bag_preserves_requested_forwarded_and_encoder_data
+1 failed, 10 passed in 35.44s

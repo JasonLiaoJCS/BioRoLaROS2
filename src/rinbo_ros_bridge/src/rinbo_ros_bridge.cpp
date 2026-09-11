@@ -26,6 +26,8 @@
 #include "Motor.pb.h"
 #include "Power.pb.h"
 #include "power_command_epoch_guard.hpp"
+#include "power_operation_protocol.hpp"
+#include "std_msgs/msg/string.hpp"
 #include "motor_output_limits.hpp"
 
 #include "rinbo_msgs/msg/motor_cmd_stamped.hpp"
@@ -65,9 +67,9 @@ rclcpp::Node::SharedPtr bridge_node = nullptr;
 rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr motor_requested_monitor_pub;
 rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr motor_forwarded_monitor_pub;
 
-// Observers must never subscribe to /motor/command: the motion handshake
-// requires that its sole subscriber is this bridge. Diagnostics are lossy and
-// cannot throw into the control path or participate in rearm/ack decisions.
+// General diagnostics use these mirrors. The motion handshake accepts only
+// this Bridge plus the audited passive /rinbo_data_recorder on /motor/command.
+// Mirrors are lossy and cannot throw into the control path or affect rearm/ACK.
 void publish_command_monitor(
     const rclcpp::Publisher<rinbo_msgs::msg::MotorCmdStamped>::SharedPtr& publisher,
     const rinbo_msgs::msg::MotorCmdStamped& command) noexcept {
@@ -117,6 +119,52 @@ std::string bridge_boot_id;
 uint32_t motor_latch_generation = 0;
 std::atomic<bool> software_estop_asserted{false};
 rinbo_ros_bridge::PowerCommandEpochGuard power_command_epoch_guard;
+rinbo_ros_bridge::PowerOperationProtocol power_operation;
+rclcpp::Publisher<std_msgs::msg::String>::SharedPtr power_operation_status_pub;
+std::string power_accepted_gid, power_rejected_gid;
+uint32_t power_rejected_sequence=0;
+uint64_t power_status_sequence = 0;
+int64_t power_accepted_ros_ns = 0;
+int64_t steady_ns() {
+    return std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+std::string power_gid_string(const std::vector<uint8_t>& gid) {
+    std::ostringstream out;
+    for (auto b:gid) out << std::hex << std::setw(2) << std::setfill('0') << unsigned(b);
+    return out.str();
+}
+void publish_power_operation_status() {
+    std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd);
+    if (!power_operation_status_pub) return;
+    const auto now=steady_ns();
+    using rinbo_ros_bridge::power_json_string;
+    const auto& p=power_operation;
+    std::ostringstream out;
+    out << "{\"protocol\":2,\"epoch\":" << power_json_string(p.epoch)
+        << ",\"generation\":" << p.generation
+        << ",\"status_sequence\":" << ++power_status_sequence
+        << ",\"stamp_ns\":" << bridge_node->now().nanoseconds()
+        << ",\"readiness\":" << power_json_string(p.readiness(now,software_estop_asserted.load()))
+        << ",\"reason\":" << power_json_string(software_estop_asserted.load() ? "software_estop_latched" : p.fault)
+        << ",\"feedback_serial\":" << p.feedback_serial
+        << ",\"feedback_mask\":" << p.feedback_mask
+        << ",\"power_age_ms\":" << (p.power_time ? (now-p.power_time)/1000000 : -1)
+        << ",\"motor_age_ms\":" << (p.motor_time ? (now-p.motor_time)/1000000 : -1)
+        << ",\"can_handoff\":" << (power_command_epoch_guard.can_handoff() ? "true" : "false")
+        << ",\"owner_present\":" << (power_command_epoch_guard.has_owner() ? "true" : "false")
+        << ",\"accepted_request_id\":" << power_json_string(p.accepted_id)
+        << ",\"accepted_sequence\":" << p.accepted_sequence
+        << ",\"accepted_gid\":" << power_json_string(power_accepted_gid)
+        << ",\"accepted_stamp_ns\":" << power_accepted_ros_ns
+        << ",\"target_mask\":" << p.target_mask
+        << ",\"acknowledged\":" << (p.acknowledged(now) ? "true" : "false")
+        << ",\"rejected_gid\":" << power_json_string(power_rejected_gid)
+        << ",\"rejected_sequence\":" << power_rejected_sequence
+        << ",\"rejected_request_id\":" << power_json_string(p.rejected_id)
+        << ",\"rejection_reason\":" << power_json_string(p.rejection_reason) << "}";
+    std_msgs::msg::String msg; msg.data=out.str(); power_operation_status_pub->publish(msg);
+}
 std::chrono::steady_clock::time_point last_motor_output_status_time;
 bool motor_output_status_time_valid = false;
 
@@ -721,6 +769,7 @@ void ros_power_cmd_cb(
         rmw_received_gid.data + RMW_GID_STORAGE_SIZE);
 
     using PowerGuard = rinbo_ros_bridge::PowerCommandEpochGuard;
+    const auto request = rinbo_ros_bridge::PowerOperationProtocol::parse(cmd->header.frame_id);
     const auto classification = PowerGuard::classify(PowerGuard::Payload {
         cmd->digital,
         cmd->signal,
@@ -742,20 +791,46 @@ void ros_power_cmd_cb(
         ros_power_cmd = safe_all_off;
         publish_power_command_to_grpc_locked(safe_all_off);
         power_command_epoch_guard.observe_all_off();
+        power_operation.off(request,cmd->header.seq);
+        power_accepted_gid=power_gid_string(received_gid);
+        power_accepted_ros_ns=bridge_node->now().nanoseconds();
         return;
     }
 
     const auto publisher_guard = inspect_power_command_publishers();
     std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd);
+    if (const auto reason=power_operation.fence(request)) {
+        // A stale in-flight operation cannot win against Off. Do not let its
+        // rejection overwrite the accepted Off receipt or create a new latch.
+        power_rejected_gid=power_gid_string(received_gid);power_rejected_sequence=cmd->header.seq;
+        power_operation.rejected(request,*reason,false);
+        reject_power_command_locked(*reason);
+        return;
+    }
+    auto reject_operation = [&](const std::string& reason) {
+        power_rejected_gid=power_gid_string(received_gid);power_rejected_sequence=cmd->header.seq;
+        power_operation.rejected(request,reason);
+        reject_power_command_locked(reason);
+    };
     if (software_estop_asserted.load()) {
-        reject_power_command_locked("software /estop is asserted");
+        reject_operation("software /estop is asserted");
         return;
     }
     if (classification.kind == PowerGuard::CommandKind::kInvalid) {
-        reject_power_command_locked(
+        reject_operation(
             classification.rejection_reason.value_or(
                 "invalid power command payload"));
         return;
+    }
+    if (!power_operation.fault.empty()) {
+        reject_operation("fault_latched: " + power_operation.fault + "; require verified Off"); return;
+    }
+    if (!power_operation.fresh(steady_ns())) {
+        reject_operation("backend_unavailable: require fresh motor and power feedback"); return;
+    }
+    if (power_command_epoch_guard.publisher_changed(received_gid) &&
+        power_command_epoch_guard.can_handoff() && !power_operation.acknowledged(steady_ns())) {
+        reject_operation("handoff_not_acknowledged: require fresh relay-off feedback or verified Off"); return;
     }
     const PowerGuard::Header header {
         cmd->header.seq,
@@ -773,13 +848,21 @@ void ros_power_cmd_cb(
             received_gid,
             header,
             observed_ns,
-            static_cast<int64_t>(power_command_max_age_ms) * 1000000LL)) {
-        reject_power_command_locked(*reason);
+            static_cast<int64_t>(power_command_max_age_ms) * 1000000LL,
+            // A fresh, correlated explicit relay release never enables a rail.
+            // Keep graph/GID/header checks; allow only 111 -> 110.
+            cmd->digital && cmd->signal && !cmd->power &&
+                power_operation.feedback_mask == 7 && power_operation.acknowledged(steady_ns()))) {
+        reject_operation(*reason);
         return;
     }
 
     ros_power_cmd = *cmd;
     publish_power_command_to_grpc_locked(*cmd);
+    power_operation.accepted(*request,cmd->header.seq,
+        (cmd->digital ? 1:0) | (cmd->signal ? 2:0) | (cmd->power ? 4:0));
+    power_accepted_gid=power_gid_string(received_gid);
+    power_accepted_ros_ns=observed_ns;
 }
 
 void estop_cb(const std_msgs::msg::Bool::SharedPtr msg) {
@@ -825,6 +908,9 @@ void grpc_motor_state_cb(motor_msg::MotorStateStamped state) {
         source_header.stamp().sec() == last_source_stamp_sec &&
         source_header.stamp().usec() == last_source_stamp_usec;
     if (exact_replay) return;
+    static rinbo_ros_bridge::DeviceFeedbackOrder ordered_source;
+    if (!ordered_source.accept(static_cast<uint32_t>(source_header.seq()),
+                               source_header.stamp().sec(),source_header.stamp().usec())) return;
     source_header_seen = true;
     last_source_sequence = source_header.seq();
     last_source_stamp_sec = source_header.stamp().sec();
@@ -902,6 +988,7 @@ void grpc_motor_state_cb(motor_msg::MotorStateStamped state) {
             static_cast<uint32_t>(receipt_ns % 1000000000LL);
     }
 
+    { std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd); power_operation.motor_time=steady_ns(); }
     if (ros_motor_state_pub) {
         ros_motor_state_pub->publish(ros_motor_state);
     }
@@ -923,6 +1010,9 @@ void grpc_power_state_cb(power_msg::PowerStateStamped state) {
         source_header.stamp().sec() == last_source_stamp_sec &&
         source_header.stamp().usec() == last_source_stamp_usec;
     if (exact_replay) return;
+    static rinbo_ros_bridge::DeviceFeedbackOrder ordered_source;
+    if (!ordered_source.accept(static_cast<uint32_t>(source_header.seq()),
+                               source_header.stamp().sec(),source_header.stamp().usec())) return;
     source_header_seen = true;
     last_source_sequence = source_header.seq();
     last_source_stamp_sec = source_header.stamp().sec();
@@ -958,6 +1048,10 @@ void grpc_power_state_cb(power_msg::PowerStateStamped state) {
             static_cast<uint32_t>(receipt_ns % 1000000000LL);
     }
 
+    {
+        std::lock_guard<std::mutex> lock(mutex_grpc_power_cmd);
+        power_operation.feedback((state.digital()?1:0) | (state.signal()?2:0) | (state.power()?4:0),steady_ns());
+    }
     if (ros_power_state_pub) {
         ros_power_state_pub->publish(ros_power_state);
     }
@@ -1121,6 +1215,12 @@ int main(int argc, char **argv) {
     auto estop_sub = node->create_subscription<std_msgs::msg::Bool>(
         kEstopTopic, 10, estop_cb);
 
+    power_operation.epoch=bridge_boot_id;
+    power_operation_status_pub=node->create_publisher<std_msgs::msg::String>(
+        "/rinbo/power/operation_status",rclcpp::QoS(10).reliable());
+    auto power_operation_timer=node->create_wall_timer(
+        std::chrono::milliseconds(50),publish_power_operation_status);
+
     core::NodeHandler nh_;
     core::Subscriber<motor_msg::MotorStateStamped> &grpc_motor_state_sub = nh_.subscribe<motor_msg::MotorStateStamped>("motor/state", 1000, grpc_motor_state_cb);
     core::Subscriber<power_msg::PowerStateStamped> &grpc_power_state_sub = nh_.subscribe<power_msg::PowerStateStamped>("power/state", 1000, grpc_power_state_cb);
@@ -1249,6 +1349,8 @@ int main(int argc, char **argv) {
     // publish/data-reader destruction failures and turns a normal Ctrl+C into
     // exit status 1.
     ros_motor_cmd_sub.reset();
+    power_operation_timer.reset();
+    power_operation_status_pub.reset();
     ros_power_cmd_sub.reset();
     estop_sub.reset();
     motor_output_enabled_pub.reset();

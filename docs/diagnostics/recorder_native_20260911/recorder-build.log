@@ -1,0 +1,28 @@
+[ 50%] Building CXX object CMakeFiles/rinbo_data_recorder.dir/src/rinbo_data_recorder.cpp.o
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/rinbo_data_recorder.cpp:675:
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc: In member function ‘std::string RinboDataRecorder::status_json(const string&, const string&, const string&, int, const string&)’:
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc:24:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   24 |             if(!first)s<<',';first=false;
+      |             ^~
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc:24:30: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   24 |             if(!first)s<<',';first=false;
+      |                              ^~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/rinbo_data_recorder.cpp:675:
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc:35:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   35 |             if(!first)s<<',';first=false;
+      |             ^~
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc:35:30: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   35 |             if(!first)s<<',';first=false;
+      |                              ^~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc: In member function ‘void RinboDataRecorder::control_cb(std::shared_ptr<rcl_interfaces::srv::SetParametersAtomically_Request_<std::allocator<void> > >, std::shared_ptr<rcl_interfaces::srv::SetParametersAtomically_Response_<std::allocator<void> > >)’:
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc:66:30: error: ‘using _result_type = struct rcl_interfaces::msg::SetParametersResult_<std::allocator<void> >’ {aka ‘struct rcl_interfaces::msg::SetParametersResult_<std::allocator<void> >’} has no member named ‘success’; did you mean ‘successful’?
+   66 |             response->result.success=code==0;
+      |                              ^~~~~~~
+      |                              successful
+/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/src/recorder_methods.inc:69:30: error: ‘using _result_type = struct rcl_interfaces::msg::SetParametersResult_<std::allocator<void> >’ {aka ‘struct rcl_interfaces::msg::SetParametersResult_<std::allocator<void> >’} has no member named ‘success’; did you mean ‘successful’?
+   69 |             response->result.success=false;
+      |                              ^~~~~~~
+      |                              successful
+gmake[2]: *** [CMakeFiles/rinbo_data_recorder.dir/build.make:76: CMakeFiles/rinbo_data_recorder.dir/src/rinbo_data_recorder.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/rinbo_data_recorder.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

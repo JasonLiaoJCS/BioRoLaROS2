@@ -1,0 +1,51 @@
+........................................................................ [ 21%]
+........................................................................ [ 43%]
+........................................................................ [ 65%]
+............................................................F........... [ 87%]
+........................................                                 [100%]
+=================================== FAILURES ===================================
+________________ test_parent_death_terminates_owned_child[True] ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-jetson/pytest-38/test_parent_death_terminates_o1')
+ignore_interrupt = True
+
+    @pytest.mark.parametrize('ignore_interrupt', [False, True])
+    def test_parent_death_terminates_owned_child(tmp_path, ignore_interrupt):
+        pidfile=tmp_path/'pid'
+        script=tmp_path/'parent.py'
+        script.write_text("from rinbo_control.runtime import Child\nimport os,sys,time,signal\nfrom pathlib import Path\n"
+                          + ("signal.signal(signal.SIGINT,signal.SIG_IGN)\n" if ignore_interrupt else "") +
+                          "c=Child([sys.executable,'-c','import time; time.sleep(60)'],dict(os.environ),sys.argv[2])\n"
+                          "Path(sys.argv[1]).write_text(str(c.process.pid))\ntime.sleep(60)\n")
+        parent=subprocess.Popen([sys.executable,str(script),str(pidfile),str(tmp_path/'child.log')])
+        child_pid=None
+        try:
+            end=time.monotonic()+3
+            while not pidfile.exists() and time.monotonic()<end: time.sleep(.02)
+            assert pidfile.exists()
+            child_pid=int(pidfile.read_text())
+            time.sleep(.15)  # allow guardian to exec its payload
+            parent.kill(); parent.wait(timeout=3)
+            end=time.monotonic()+3
+            while time.monotonic()<end:
+                status=Path(f'/proc/{child_pid}/status')
+>               if not status.exists() or '\nState:\tZ' in status.read_text():
+
+src/rinbo_control/test/test_runtime.py:249: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/proc/225339/status'), encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+E           ProcessLookupError: [Errno 3] No such process
+
+/usr/lib/python3.10/pathlib.py:1135: ProcessLookupError
+=========================== short test summary info ============================
+FAILED src/rinbo_control/test/test_runtime.py::test_parent_death_terminates_owned_child[True]
+1 failed, 327 passed in 74.61s (0:01:14)

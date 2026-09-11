@@ -1,0 +1,52 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_emergency_latches_bridge_against_later_different_cli ___________
+
+mode = 'ensure-on', expect = 0, options = ('--confirm-relay',)
+r = CompletedProcess(args=['/usr/bin/python3', '/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/test/power_cli_fixtu..._operation.py", line 131, in preflight\n    if estop_pub is not None:\nNameError: name \'estop_pub\' is not defined\n')
+
+    def cli(mode,*options,expect=0):
+        r=subprocess.run([sys.executable,str(FIXTURE),mode,'--json','--wait-for-subscriber-s','4',
+                          '--verify-timeout-s','1',*options],text=True,capture_output=True,timeout=35)
+>       try:result=json.loads(r.stdout.strip().splitlines()[-1])
+E       IndexError: list index out of range
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py:20: IndexError
+
+During handling of the above exception, another exception occurred:
+
+mock = <test_power_operation_ros.Mock object at 0xffffbc10c580>
+
+    def test_emergency_latches_bridge_against_later_different_cli(mock):
+>       cli('ensure-on', '--confirm-relay')
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py:203: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+mode = 'ensure-on', expect = 0, options = ('--confirm-relay',)
+r = CompletedProcess(args=['/usr/bin/python3', '/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/test/power_cli_fixtu..._operation.py", line 131, in preflight\n    if estop_pub is not None:\nNameError: name \'estop_pub\' is not defined\n')
+
+    def cli(mode,*options,expect=0):
+        r=subprocess.run([sys.executable,str(FIXTURE),mode,'--json','--wait-for-subscriber-s','4',
+                          '--verify-timeout-s','1',*options],text=True,capture_output=True,timeout=35)
+        try:result=json.loads(r.stdout.strip().splitlines()[-1])
+>       except Exception:pytest.fail(f'No JSON: {r.returncode} {r.stdout} {r.stderr}')
+E       Failed: No JSON: 1  Traceback (most recent call last):
+E         File "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/test/power_cli_fixture.py", line 11, in <module>
+E           tool.main()
+E         File "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py", line 791, in main
+E           _main(actual)
+E         File "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py", line 867, in _main
+E           _run_ros(args)
+E         File "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py", line 895, in _run_ros
+E           result = node.run()
+E         File "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py", line 256, in run
+E           status=self.preflight()
+E         File "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py", line 131, in preflight
+E           if estop_pub is not None:
+E       NameError: name 'estop_pub' is not defined
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py:21: Failed
+=========================== short test summary info ============================
+FAILED src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_emergency_latches_bridge_against_later_different_cli
+1 failed, 11 deselected in 1.50s

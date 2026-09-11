@@ -1,0 +1,40 @@
+.....................F..........                                         [100%]
+=================================== FAILURES ===================================
+______________________ test_real_socket_and_base64_client ______________________
+
+ctl = <rinbo_control.panel_server.Controller object at 0xffffb3e39ab0>
+tmp_path = PosixPath('/tmp/pytest-of-jetson/pytest-21/test_real_socket_and_base64_cl0')
+capsys = <_pytest.capture.CaptureFixture object at 0xffffb3e4c910>
+
+    def test_real_socket_and_base64_client(ctl, tmp_path, capsys):
+        path = tmp_path/'api.sock'
+        server = Server(str(path), Handler); server.controller = ctl
+        thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+        client_path = Path(__file__).resolve().parents[3]/'tools/rslip_panel_client.py'
+        spec = importlib.util.spec_from_file_location('panel_client_test', client_path)
+        client = importlib.util.module_from_spec(spec); spec.loader.exec_module(client)
+        client.SOCKET = path
+        try:
+            req = request()
+            encoded = base64.b64encode(json.dumps(req).encode()).decode()
+            assert decode(encoded) == req
+            assert client.main(['--request-base64', encoded]) == 0
+            assert json.loads(capsys.readouterr().out)['status'] == 'started'
+            done(ctl, req)
+            # Drop read-only streams repeatedly; native operation count cannot change.
+            for _ in range(2):
+                with socket.socket(socket.AF_UNIX) as s:
+                    s.settimeout(3); s.connect(str(path))
+                    monitor = request('ReadLogs'); monitor['stream'] = True
+                    s.sendall((json.dumps(monitor)+'\n').encode())
+>                   assert b'RSLIP_MONITOR_HEARTBEAT=1' in s.recv(16384)
+E                   assert b'RSLIP_MONITOR_HEARTBEAT=1' in b'RSLIP_ACTION_CONTEXT=GUI\nRSLIP_ACTION_STATUS={"kind": "GUI", "protocol": 1, "request_id": "37e75faab039435a98985aa5...son": "", "exit_code": 0, "controller_epoch": "d4628c1b92ce475987bd48f9b8b8219f", "native_exit_code": 0, "data": {}}\n'
+E                    +  where b'RSLIP_ACTION_CONTEXT=GUI\nRSLIP_ACTION_STATUS={"kind": "GUI", "protocol": 1, "request_id": "37e75faab039435a98985aa5...son": "", "exit_code": 0, "controller_epoch": "d4628c1b92ce475987bd48f9b8b8219f", "native_exit_code": 0, "data": {}}\n' = <built-in method recv of socket object at 0xffffb3d62080>(16384)
+E                    +    where <built-in method recv of socket object at 0xffffb3d62080> = <socket.socket fd=37, family=AddressFamily.AF_UNIX, type=SocketKind.SOCK_STREAM, proto=0, raddr=/tmp/pytest-of-jetson/pytest-21/test_real_socket_and_base64_cl0/api.sock>.recv
+
+src/rinbo_control/test/test_panel_api.py:193: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     rinbo.panel.d4628c1b92ce475987bd48f9b8b8219f:panel_server.py:83 {"sequence": 1, "epoch": "d4628c1b92ce475987bd48f9b8b8219f", "kind": "GUI", "line": "RSLIP_ACTION_STATUS={\"kind\": \"GUI\", \"protocol\": 1, \"request_id\": \"37e75faab039435a98985aa5fbd86d9e\", \"action\": \"Communications\", \"operation_id\": \"37e75faab039435a98985aa5fbd86d9e\", \"status\": \"completed\", \"reason\": \"\", \"exit_code\": 0, \"controller_epoch\": \"d4628c1b92ce475987bd48f9b8b8219f\", \"native_exit_code\": 0, \"data\": {}}"}
+=========================== short test summary info ============================
+FAILED src/rinbo_control/test/test_panel_api.py::test_real_socket_and_base64_client
+1 failed, 31 passed in 3.38s

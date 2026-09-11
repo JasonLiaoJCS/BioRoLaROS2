@@ -246,7 +246,11 @@ def test_parent_death_terminates_owned_child(tmp_path, ignore_interrupt):
         end=time.monotonic()+3
         while time.monotonic()<end:
             status=Path(f'/proc/{child_pid}/status')
-            if not status.exists() or '\nState:\tZ' in status.read_text():
+            try:
+                state = status.read_text()
+            except (FileNotFoundError, ProcessLookupError):
+                break  # Guardian reaped the child between lookup and read.
+            if '\nState:\tZ' in state:
                 break
             time.sleep(.02)
         else:

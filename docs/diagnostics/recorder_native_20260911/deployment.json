@@ -1,0 +1,123 @@
+{
+  "version": "native-recorder-v2-20260911",
+  "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder",
+  "files": [
+    {
+      "path": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali",
+      "exists": true,
+      "symlink": null,
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/0",
+      "before_sha256": "3ba6b4dd107de9ecfa936f3d471229e8c2507aa09202a4ac2eb6dc0619b5718e",
+      "after_sha256": "03a254c67235a79fdf8e709e96ae7610afd73a75f2e0e469e1fcdf6c4fa9a5c3"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing",
+      "exists": true,
+      "symlink": null,
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/1",
+      "before_sha256": "a34a7326bff5b0e16b855517d4c15528a0a690e3afeec5b667c0d853e8e78917",
+      "after_sha256": "6884f1dbcdc439c501ef7f37021a00b5474dcc2f53c9801e9ba7e2b02f287f00"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod",
+      "exists": true,
+      "symlink": null,
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/2",
+      "before_sha256": "42e9ae6b798febec963583b674e0714b75e6c005fde7d3e56a5c562d799a4fc1",
+      "after_sha256": "eb4bd12ca634e22e711253a00a8d62aad2c1e7813138636558304b990ac0d5a6"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual",
+      "exists": true,
+      "symlink": null,
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/3",
+      "before_sha256": "9360dde73defa0f484b9bd384b7d886759f6451e20a1c8f53307241802d0b2a3",
+      "after_sha256": "03dfa8cd52c0f249aa9021137ebf29a6fd724934a3dcb0def80bee301a2bfdb5"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/lib/rinbo_data_recorder/rinbo_data_recorder",
+      "exists": true,
+      "symlink": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/4",
+      "before_sha256": "bfeae6d0caf24066158480b21f638a47b348fecddbb85cf66ccd8bf7e0ff87d7",
+      "after_sha256": "a6fb03d68b7bab32f334789cc9b005c139674efe01376183415dcc007039bfb3",
+      "after_symlink": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/releases/native-recorder-v2-20260911/rinbo_data_recorder"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/config/diagnostic_bag_qos.yaml",
+      "exists": false,
+      "symlink": null,
+      "after_sha256": "5048557366f21776b8a21b973b44f7d8eaec15e02a270ecde8158b10148c4446"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/config/logging_tripod_safety.yaml",
+      "exists": true,
+      "symlink": "/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/config/logging_tripod_safety.yaml",
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/6",
+      "before_sha256": "c0904cfe288f657bec5f9aabb534449c59675a0e8a774e0c5fb2cea7b5ce4f1d",
+      "after_sha256": "c0904cfe288f657bec5f9aabb534449c59675a0e8a774e0c5fb2cea7b5ce4f1d"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/launch/record_experiment.launch.py",
+      "exists": true,
+      "symlink": "/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/launch/record_experiment.launch.py",
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/7",
+      "before_sha256": "d102a84f878ea566771291bb59e775dd45c650c75c2dcd036c6721e28e6ebc24",
+      "after_sha256": "d102a84f878ea566771291bb59e775dd45c650c75c2dcd036c6721e28e6ebc24"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/share/rinbo_data_recorder/package.xml",
+      "exists": true,
+      "symlink": "/home/jetson/rinbo_ros_ws/src/rinbo_data_recorder/package.xml",
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/8",
+      "before_sha256": "05bcd65bef452390988e2d27e2690f49fda2c0dfe9006054f715c9ea686d97a2",
+      "after_sha256": "05bcd65bef452390988e2d27e2690f49fda2c0dfe9006054f715c9ea686d97a2"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/connection_recovery.py",
+      "exists": true,
+      "symlink": null,
+      "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-151727-recorder/9",
+      "before_sha256": "b6b5c7e0c30e550ace219ecf9bcaf4c79ff4ea4b5f8a481c70827e4b307d126b",
+      "after_sha256": "05b3078a0be4ef5b1c4f6338051376336e525f315dad58d3da3f2badd9b696c2"
+    },
+    {
+      "path": "/home/jetson/.config/systemd/user/rinbo-recorder.service",
+      "exists": false,
+      "symlink": null,
+      "after_sha256": "158b34d39c1c96f27a8a04279281e0e329e81fcb901591f58e46c095d6d7d504"
+    }
+  ],
+  "service_started": false,
+  "processes_signalled": [],
+  "source_sha256": {
+    "src/rinbo_fsm/src/bridge_input_discovery.hpp": "59303c53954f3929edd8d4839c141072926f86730b055d4f05abef2f6a5a9c57",
+    "src/rinbo_fsm/src/control_velocity.hpp": "13118fea1df02af445283f4a54e8a46b2fef3f84e7cfc2cfd14c542d93ba4865",
+    "src/rinbo_fsm/src/disabled_legs.hpp": "378c37d98af8b44e9d83364e09fb74b97ea778b9b5e7cd6a7bae304baaa75cc0",
+    "src/rinbo_fsm/src/latest_state_qos.hpp": "40366bb9d4d0d37a80f1f06f99b1c2840da43e46b7c4759caea9c32d1f78879a",
+    "src/rinbo_fsm/src/manual_motion.hpp": "f4b7852c7ccb12d5677d04b6753a3220cd1f3d3a48ad2ba86d0c8c6f1b61af2c",
+    "src/rinbo_fsm/src/motion_effort.hpp": "60f6ff4ca13c38069f17e08f5aa053a2a3ab69538711df53131057bcfa858612",
+    "src/rinbo_fsm/src/motor_arbiter_handshake.hpp": "82a23bc86c7ef2fd1799ba49fb2909a5fed2697830ece7a23520cbb9cb6b90b3",
+    "src/rinbo_fsm/src/motor_tracking.hpp": "f3d273c99486bdc110c2a14012fda3c4bbe52342ea6e0b16f50647105cb8343f",
+    "src/rinbo_fsm/src/rinbo_cali.cpp": "694f726483c881beb2ee25456d259b5ccf35c8ec231dd26ebc71e24334e4b7d3",
+    "src/rinbo_fsm/src/rinbo_legs.cpp": "bdd0a5388edc2c3a09b40ee807f0c4110e417bccf78a63d5e77a822b484f7696",
+    "src/rinbo_fsm/src/rinbo_manual.cpp": "17180912d1ec1837c400bcfd87ef2ab9316347d9b586afd2553858f2cbeec400",
+    "src/rinbo_fsm/src/rinbo_power_guard.hpp": "a5eb7f531c7053d573faf9e3b2a9f5d667b2ab36ff8aa856c585c10c4b39dfa0",
+    "src/rinbo_fsm/src/rinbo_sin_sweep.cpp": "d98396fed265d745e1925aa47c69576ecbf24e03c7ae112da4b24108ec5cd0f3",
+    "src/rinbo_fsm/src/rinbo_standing.cpp": "74c11a6fc0174c2f5d1ec93e945cda7372aa572e3402966d15e3933e849bcc9d",
+    "src/rinbo_fsm/src/rinbo_tripod.cpp": "135212da7a80cf26444c9cba1ea5659da9f5f905659f344e0a4fee0f7eb9ae4d",
+    "src/rinbo_fsm/src/robot_config.cpp": "656ffd994ce044e2d284e73815982a15ebf72d5a2eb467356a8526b3754869bc",
+    "src/rinbo_fsm/src/robot_config.hpp": "acf0a6417df7865336811e7b0b87a534cc2ef57c64d817614a33bb460d58305e",
+    "src/rinbo_fsm/src/ros_input_guard.hpp": "b741405fdabad32dd0a3deccdae4a1d6dafeaebb55aea284a235b095dd5c235e",
+    "src/rinbo_fsm/src/safety_invariants.hpp": "2479547abdbc91603de8c88933bb5ae122b9ff1167e44caad26c3e72b89267bc",
+    "src/rinbo_fsm/src/safety_recording.hpp": "4db33394f241b96c6e089bdf871c4a960ea7d394e0256609e817bb99625f1fa5",
+    "src/rinbo_fsm/src/tripod_power_policy.hpp": "9ff45e997bf47981606d5a06afe39d2583176830f3b740b30a860114fd345f85",
+    "src/rinbo_fsm/src/tripod_reference.hpp": "b9f73e2e2058f40ef6ab713c837c48871ad7e56a704c989faa7dd61772e2da66",
+    "src/rinbo_data_recorder/src/recorder_methods.inc": "1936f5aec31d1702b4d9534ad7a4af635334ca5ceb32ab5f718aa58b6b0f8d95",
+    "src/rinbo_data_recorder/src/recorder_support.hpp": "7cc7123c33c1f932cde792a96374fea8ed2e804c1f72c0090257f9c76a54a6d9",
+    "src/rinbo_data_recorder/src/rinbo_data_recorder.cpp": "715a00f5529e0004f18ab3a96f2baf438da3d8ca2e64348939d9323ad1680cd6",
+    "src/rinbo_data_recorder/config/diagnostic_bag_qos.yaml": "5048557366f21776b8a21b973b44f7d8eaec15e02a270ecde8158b10148c4446",
+    "src/rinbo_data_recorder/config/logging_tripod_safety.yaml": "c0904cfe288f657bec5f9aabb534449c59675a0e8a774e0c5fb2cea7b5ce4f1d",
+    "src/rinbo_data_recorder/launch/record_experiment.launch.py": "d102a84f878ea566771291bb59e775dd45c650c75c2dcd036c6721e28e6ebc24"
+  }
+}

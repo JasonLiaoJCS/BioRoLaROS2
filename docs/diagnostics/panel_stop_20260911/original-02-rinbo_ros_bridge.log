@@ -1,0 +1,14 @@
+[INFO] [1789112215.630070591] [rinbo_ros2_bridge]: Motor arbiter: timeout=100ms max_age=100ms rearm=5 disabled packets disable_resend=20ms heartbeat=50ms status=20ms max_pwm=3300.0 servo=[0,65535] CORE_IP=192.168.30.254
+[ERROR] [1789112216.062488085] [rinbo_ros2_bridge]: MOTOR SAFETY LATCHED: bridge startup requires consecutive fresh all-disabled commands
+[INFO] [1789112254.122015809] [rinbo_ros2_bridge]: Shutdown safety sequence completed: requested 8 all-disabled motor packets and 3 all-off power packets
+[INFO] [1789112254.122156839] [rinbo_ros2_bridge]: Rinbo ROS2 Bridge is killed
+Receive from Publisher 192.168.30.8:41117
+Successful Create acceptor socket
+Successful Connected as subscriber 192.168.30.8:41117
+Receive from Publisher 192.168.30.8:38299
+Successful Create acceptor socket
+Successful Connected as subscriber 192.168.30.8:38299
+Successful Connected from publisher to subscriber 192.168.30.254:38127
+Receive from Subscriber 192.168.30.254:38127
+Successful Connected from publisher to subscriber 192.168.30.254:34129
+Receive from Subscriber 192.168.30.254:34129

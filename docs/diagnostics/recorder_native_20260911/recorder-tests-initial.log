@@ -1,0 +1,21 @@
+......F                                                                  [100%]
+=================================== FAILURES ===================================
+_______________ test_noninteractive_client_export_does_not_stop ________________
+
+recorder = <test_native_api.Fixture object at 0xffff6b6aae00>
+
+    def test_noninteractive_client_export_does_not_stop(recorder):
+        r=recorder;r.call('start','download');r.feed()
+        client=Path(__file__).resolve().parents[3]/'tools/rinbo_recorder_client.py'
+        result=subprocess.run([sys.executable,str(client),'export','--domain','232','--no-start','--json'],
+            text=True,capture_output=True,timeout=20)
+>       assert result.returncode==0,result.stderr
+E       AssertionError: Existing native recorder API is unreachable; recording/closed state is unknown; query again after reconnection.
+E         
+E       assert 31 == 0
+E        +  where 31 = CompletedProcess(args=['/usr/bin/python3', '/home/jetson/rinbo_ros_ws/tools/rinbo_recorder_client.py', 'export', '--do...rr='Existing native recorder API is unreachable; recording/closed state is unknown; query again after reconnection.\n').returncode
+
+src/rinbo_data_recorder/test/test_native_api.py:171: AssertionError
+=========================== short test summary info ============================
+FAILED src/rinbo_data_recorder/test/test_native_api.py::test_noninteractive_client_export_does_not_stop
+1 failed, 6 passed, 1 deselected in 11.85s

@@ -1,0 +1,22 @@
+{
+  "pid": 53632,
+  "present": true,
+  "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+  "mapped_sha256": "bfeae6d0caf24066158480b21f638a47b348fecddbb85cf66ccd8bf7e0ff87d7",
+  "stat": "53632 (rinbo_data_reco) S 1 53632 53632 0 -1 1077936128 2371 742 82 1 5811 1175 0 2 20 0 10 0 276275 583172096 1876 18446744073709551615 187650499346432 187650503401462 281474390055120 0 0 0 0 0 16386 0 0 0 17 0 0 0 0 0 0 187650503470632 187650503525128 187650839658496 281474390058103 281474390058284 281474390058284 281474390060950 0\n",
+  "same_start_ticks": true,
+  "same_mapped_image": true,
+  "open_recording_files": [
+    {
+      "fd": "22",
+      "path": "/home/jetson/rinbo_logs/20260911_143610_tripod_current_debug_20260911_143608/summary.csv",
+      "size": 72734074
+    },
+    {
+      "fd": "23",
+      "path": "/home/jetson/rinbo_logs/20260911_143610_tripod_current_debug_20260911_143608/events.csv",
+      "size": 0
+    }
+  ],
+  "same_open_files": true
+}

@@ -1,0 +1,69 @@
+[
+  {
+    "action": "CheckConnection",
+    "exit_code": 0,
+    "response": {
+      "protocol": 1,
+      "request_id": "a07395bcbb86423692e7482d09f2d5c4",
+      "action": "CheckConnection",
+      "operation_id": "a07395bcbb86423692e7482d09f2d5c4",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "04be7db4338f4ce3b723cb2c0a09b3d0",
+      "data": {
+        "readiness": "backend_unavailable",
+        "reason": "communications_not_established"
+      },
+      "emergency_latched": false,
+      "active_operation": null,
+      "operations": []
+    },
+    "stderr": ""
+  },
+  {
+    "action": "ReadLogs",
+    "exit_code": 0,
+    "response": {
+      "protocol": 1,
+      "request_id": "4ed3433f5f2a4988a1ca02bed55c3cb9",
+      "action": "ReadLogs",
+      "operation_id": "4ed3433f5f2a4988a1ca02bed55c3cb9",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "04be7db4338f4ce3b723cb2c0a09b3d0",
+      "events": [],
+      "operations": []
+    },
+    "stderr": ""
+  },
+  {
+    "action": "FpgaConsole",
+    "exit_code": 21,
+    "response": {
+      "protocol": 1,
+      "request_id": "8450a34487bb49d7ac12b4f81e353c8f",
+      "action": "FpgaConsole",
+      "operation_id": "8450a34487bb49d7ac12b4f81e353c8f",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    "stderr": ""
+  },
+  {
+    "action": "PhysicalCleanup",
+    "exit_code": 21,
+    "response": {
+      "protocol": 1,
+      "request_id": "c4d7f09ae86e4b8d99382df4196213e6",
+      "action": "PhysicalCleanup",
+      "operation_id": "c4d7f09ae86e4b8d99382df4196213e6",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    "stderr": ""
+  }
+]

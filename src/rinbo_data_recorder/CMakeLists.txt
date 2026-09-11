@@ -13,6 +13,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(rcl_interfaces REQUIRED)
 find_package(rinbo_msgs REQUIRED)
 
 add_executable(rinbo_data_recorder src/rinbo_data_recorder.cpp)
@@ -21,6 +22,7 @@ ament_target_dependencies(rinbo_data_recorder
   rclcpp
   std_msgs
   std_srvs
+  rcl_interfaces
   rinbo_msgs
 )
 

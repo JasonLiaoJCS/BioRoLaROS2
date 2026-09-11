@@ -1,0 +1,8 @@
+[
+  {
+    "pid": 53632,
+    "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+    "argv": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/lib/rinbo_data_recorder/rinbo_data_recorder --ros-args -p auto_start:=false -r /motor/command:=/rslip/recorder/motor_requested ",
+    "stat": "53632 (rinbo_data_reco) S 1 53632 53632 0 -1 1077936128 2367 742 81 1 4972 1009 0 2 20 0 10 0 276275 582565888 1867 18446744073709551615 187650499346432 187650503401462 281474390055120 0 0 0 0 0 16386 0 0 0 17 1 0 0 0 0 0 187650503470632 187650503525128 187650839658496 281474390058103 281474390058284 281474390058284 281474390060950 0\n"
+  }
+]

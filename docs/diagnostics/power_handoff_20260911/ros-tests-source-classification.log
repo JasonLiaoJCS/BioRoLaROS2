@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge
+plugins: ament-lint-0.12.11, ament-flake8-0.12.11, ament-pep257-0.12.11, ament-copyright-0.12.11, launch-testing-1.0.7, launch-testing-ros-0.19.8, ament-xmllint-0.12.11, anyio-4.8.0, colcon-core-0.18.4, cov-3.0.0
+collecting ... collected 10 items
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_sequence_handoff_repeat_and_lost_reply PASSED [ 10%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_single_operation_and_partial_sequence PASSED [ 20%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_backend_and_fault_preflight_send_nothing PASSED [ 30%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_partial_ack_timeout_cleanup_and_unknown_off PASSED [ 40%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_extra_publisher_cannot_enable_but_off_can_ack PASSED [ 50%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_off_preempts_between_stages PASSED [ 60%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_unsafe_current_blocks_already_satisfied_without_power_toggle PASSED [ 70%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works FAILED [ 80%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_nonadjacent_old_backend_ack_cannot_authorize_retry PASSED [ 90%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_bridge_rejection_has_request_and_source_and_off_bypasses_rogue PASSED [100%]
+
+=================================== FAILURES ===================================
+___ test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works ____
+
+mock = <test_power_operation_ros.Mock object at 0xffff58e4c5b0>
+
+    def test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works(mock):
+        p=subprocess.Popen([sys.executable,str(FIXTURE),'ensure-on','--confirm-relay','--json',
+            '--wait-for-subscriber-s','4','--step-delay-s','3'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        try:
+            mock.wait(lambda:mock.status['feedback_mask']==1,8)
+            mock.restart()
+            out,err=p.communicate(timeout=20)
+            result=json.loads(out.strip().splitlines()[-1])
+>           assert p.returncode==31 and ('source_changed' in result['reason'] or 'epoch_changed' in result['reason']),(out,err)
+E           AssertionError: ('{"schema_version": 1, "request_id": "2c248df567d143d4936b31afec961cd7", "operation": "ensure-on", "status": "rejecte...revision": 15, "hash": "fixture-r15", "disabled_legs": ["L3"], "enabled_legs": ["L1", "L2", "R1", "R2", "R3"]}}
+E             ', '')
+E           assert (20 == 31
+E             +20
+E             -31)
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py:157: AssertionError
+- generated xml file: /home/jetson/rinbo_ros_ws/docs/diagnostics/power_handoff_20260911/ros-tests.xml -
+=========================== short test summary info ============================
+FAILED src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works
+==================== 1 failed, 9 passed in 60.32s (0:01:00) ====================

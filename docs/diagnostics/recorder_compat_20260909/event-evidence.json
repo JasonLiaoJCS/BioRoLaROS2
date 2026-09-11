@@ -1,0 +1,295 @@
+{
+  "captured_at": "2026-09-10T00:04:07.686999+08:00",
+  "events": [
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 12,
+      "text": "[INFO] [1788968617.440567504] [rinbo_cali]: Motor arbiter epoch confirmed: rinbo_ros2_bridge/boot-18d3b175968621fb-24d4e2a5a6-411b92e4-8d043447-fe2e65ea-5abcc180:1"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 15,
+      "text": "[INFO] [1788968617.541976193] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 5"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 18,
+      "text": "[INFO] [1788968617.583150304] [rinbo_cali]: Bridge acknowledged active command sequence 8"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 28,
+      "text": "[INFO] [1788968618.586889372] [rinbo_cali]: CALIBRATION TRACE (raw counts, normalized velocity/PWM): L1: raw=-1444 target_raw=-1326 velocity=5461 pwm=68 enable=1 dir=0 | L2: raw=-1484 target_raw=-1346 velocity=5461 pwm=61 enable=1 dir=0 | L3: raw=1 target_raw=1 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=1524 target_raw=1387 velocity=4681 pwm=64 enable=1 dir=1 | R2: raw=1556 target_raw=1377 velocity=7802 pwm=43 enable=1 dir=1 | R3: raw=1523 target_raw=1380 velocity=4681 pwm=60 enable=1 dir=1"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 30,
+      "text": "[INFO] [1788968619.087256668] [rinbo_cali]: CALIBRATION TRACE (raw counts, normalized velocity/PWM): L1: raw=-4223 target_raw=-4092 velocity=2675 pwm=65 enable=1 dir=0 | L2: raw=-4289 target_raw=-4112 velocity=2675 pwm=49 enable=1 dir=0 | L3: raw=1 target_raw=1 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=4305 target_raw=4153 velocity=3440 pwm=58 enable=1 dir=1 | R2: raw=4315 target_raw=4143 velocity=3058 pwm=51 enable=1 dir=1 | R3: raw=4303 target_raw=4146 velocity=2675 pwm=57 enable=1 dir=1"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 75,
+      "text": "[INFO] [1788968627.587728417] [rinbo_cali]: L2: DONE! Zero feedback confirmed."
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 84,
+      "text": "[INFO] [1788968627.946475215] [rinbo_cali]: State: DONE (Press Ctrl+C to continue)"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 107,
+      "text": "[INFO] [1788968636.504792138] [rinbo_cali]: CALIBRATION HANDOFF READY: callbacks stopped, motor output disabled, receipt preserved."
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-982dd989c25b43189c854f733021e5f5/rinbo_cali.log",
+      "line": 109,
+      "text": "Schema version: 1; revision: 15; SHA256: 5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 14,
+      "text": "[INFO] [1788968640.425870811] [rinbo_standing]: Motor arbiter epoch confirmed: rinbo_ros2_bridge/boot-18d3b175968621fb-24d4e2a5a6-411b92e4-8d043447-fe2e65ea-5abcc180:1"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 16,
+      "text": "[WARN] [1788968640.442053666] [rinbo_standing]: Motor arbiter epoch changed during uncommitted rearm; using new baseline rinbo_ros2_bridge/boot-18d3b175968621fb-24d4e2a5a6-411b92e4-8d043447-fe2e65ea-5abcc180:2"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 18,
+      "text": "[INFO] [1788968640.522373809] [rinbo_standing]: Bridge acknowledged disabled-command rearm sequence 5"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 21,
+      "text": "[INFO] [1788968640.528526646] [rinbo_standing]: Bridge acknowledged active command sequence 6"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 57,
+      "text": "[INFO] [1788968646.199280104] [rinbo_standing]: L2: DONE! arrival=position_only, required_stable_s=0.000, pos: -27664, err: 96, tolerance: 1000"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 326,
+      "text": "[INFO] [1788968706.125661446] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=-27588 target_raw=-27647 velocity=-0 pwm=6 enable=1 dir=0 | L2: raw=-27663 target_raw=-27760 velocity=-0 pwm=10 enable=1 dir=0 | L3: raw=1 target_raw=1 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=27617 target_raw=27648 velocity=0 pwm=3 enable=1 dir=1 | R2: raw=27612 target_raw=27648 velocity=0 pwm=4 enable=1 dir=1 | R3: raw=27597 target_raw=27648 velocity=0 pwm=5 enable=1 dir=1"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 329,
+      "text": "[INFO] [1788968706.625764618] [rinbo_standing]: STANDING TRACE (raw counts, normalized velocity/PWM): L1: raw=-27588 target_raw=-27647 velocity=-0 pwm=6 enable=1 dir=0 | L2: raw=-27663 target_raw=-27760 velocity=-0 pwm=10 enable=1 dir=0 | L3: raw=1 target_raw=1 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=27617 target_raw=27648 velocity=0 pwm=3 enable=1 dir=1 | R2: raw=27612 target_raw=27648 velocity=0 pwm=4 enable=1 dir=1 | R3: raw=27597 target_raw=27648 velocity=0 pwm=5 enable=1 dir=1"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 331,
+      "text": "STANDING SAFETY STOP: expected exactly one /motor/command bridge subscriber after arming"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-731cea2dbff44acb9426ca7620cbcc79/rinbo_standing.log",
+      "line": 335,
+      "text": "Schema version: 1; revision: 15; SHA256: 5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 1,
+      "text": "[INFO] [1788968779.757818057] [rinbo_cali]: DISCOVERY WAIT: waiting for /motor/state /power/state  identity; no motor command publisher yet"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 2,
+      "text": "[INFO] [1788968779.778265220] [rinbo_cali]: DISCOVERY READY: Bridge input identities resolved; fresh-input and arbiter checks follow"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 3,
+      "text": "[INFO] [1788968779.778931990] [rinbo_cali]: Motion effort: kp=0.3500 kd=0.0020 k_ff=0.0200 friction_pwm=0.0 fade_counts_s=153.6"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 4,
+      "text": "[INFO] [1788968779.779701100] [rinbo_cali]: L3: SKIPPED (main drive disabled)"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 5,
+      "text": "[INFO] [1788968779.795465539] [rinbo_cali]: === Calibration FSM Started: 5 healthy legs ==="
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 6,
+      "text": "[INFO] [1788968779.795629800] [rinbo_cali]: Servo targets: sl1=740, sl2=2565, sl3=3283, sr1=1944, sr2=2071, sr3=989"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 7,
+      "text": "[INFO] [1788968779.795805325] [rinbo_cali]: DC target velocity: 0.63 rad/s"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 8,
+      "text": "[INFO] [1788968779.795855758] [rinbo_cali]: Main-drive PWM cap: 500.0"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 9,
+      "text": "[INFO] [1788968779.795882639] [rinbo_cali]: State: SERVO_HOMING"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 10,
+      "text": "[WARN] [1788968779.795909776] [rinbo_cali]: supported_leg_test: hardware.disabled_legs=[L3]. Remaining legs follow independent test references; robot support/suspension is required, with no ground stability guarantee. Mask disables main drives only; global servo control still commands every connected servo, requiring physical isolation where needed."
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 11,
+      "text": "[INFO] [1788968779.796545345] [rinbo_cali]: Motor arbiter reports ready=true"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 12,
+      "text": "[INFO] [1788968779.796690373] [rinbo_cali]: Motor arbiter epoch confirmed: rinbo_ros2_bridge/boot-18d3b175968621fb-24d4e2a5a6-411b92e4-8d043447-fe2e65ea-5abcc180:2"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 13,
+      "text": "[WARN] [1788968779.796863338] [rinbo_cali]: Motor output remains disabled: waiting to send disabled rearm commands"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 14,
+      "text": "[INFO] [1788968779.818086778] [rinbo_cali]: Motor arbiter reports ready=false"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 15,
+      "text": "[WARN] [1788968779.818277920] [rinbo_cali]: Motor arbiter epoch changed during uncommitted rearm; using new baseline rinbo_ros2_bridge/boot-18d3b175968621fb-24d4e2a5a6-411b92e4-8d043447-fe2e65ea-5abcc180:3"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 16,
+      "text": "[INFO] [1788968779.897759784] [rinbo_cali]: Motor arbiter reports ready=true"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 17,
+      "text": "[INFO] [1788968779.897909100] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 5"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 18,
+      "text": "[INFO] [1788968779.937997322] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 19,
+      "text": "[WARN] [1788968779.938342772] [rinbo_cali]: Motion remains paused: waiting for correlated /rinbo/motor_active_ack"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 20,
+      "text": "[INFO] [1788968779.939581271] [rinbo_cali]: Bridge acknowledged active command sequence 8"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 21,
+      "text": "[INFO] [1788968779.940896091] [rinbo_cali]: SERVO_HOMING | Servos: [740 2566 3284 1945 2072 990]"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 22,
+      "text": "[INFO] [1788968779.940969725] [rinbo_cali]: State: WAIT_SERVO"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 23,
+      "text": "[INFO] [1788968779.941104801] [rinbo_cali]: CALIBRATION TRACE (raw counts, normalized velocity/PWM): L1: raw=-27588 target_raw=-27588 velocity=-0 pwm=0 enable=0 dir=0 | L2: raw=-27663 target_raw=-27663 velocity=-0 pwm=0 enable=0 dir=0 | L3: raw=1 target_raw=1 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=27617 target_raw=27617 velocity=0 pwm=-0 enable=0 dir=0 | R2: raw=27612 target_raw=27612 velocity=0 pwm=-0 enable=0 dir=0 | R3: raw=27597 target_raw=27597 velocity=0 pwm=-0 enable=0 dir=0"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 24,
+      "text": "[INFO] [1788968779.942481991] [rinbo_cali]: WAIT_SERVO | Servos: [740 2566 3284 1945 2072 990] | All homed: YES"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 25,
+      "text": "[INFO] [1788968780.441356865] [rinbo_cali]: All 5 healthy servos homed! State: DC_SPINNING"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 26,
+      "text": "[INFO] [1788968780.441907472] [rinbo_cali]: CALIBRATION TRACE (raw counts, normalized velocity/PWM): L1: raw=-27588 target_raw=-27588 velocity=-0 pwm=0 enable=0 dir=0 | L2: raw=-27663 target_raw=-27663 velocity=-0 pwm=0 enable=0 dir=0 | L3: raw=1 target_raw=1 velocity=-0 pwm=0 enable=0 dir=0 | R1: raw=27617 target_raw=27617 velocity=0 pwm=-0 enable=0 dir=0 | R2: raw=27612 target_raw=27612 velocity=0 pwm=-0 enable=0 dir=0 | R3: raw=27597 target_raw=27597 velocity=0 pwm=-0 enable=0 dir=0"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 27,
+      "text": "[INFO] [1788968780.443388889] [rinbo_cali]: DC motors initialized!"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 28,
+      "text": "[INFO] [1788968780.443565342] [rinbo_cali]: DC_SPINNING | t: 0.00 | Healthy complete: 0/5 | SKIPPED: 1 | Hall: [1 1 1 1 1 1]"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 29,
+      "text": "[ERROR] [1788968780.624420376] [rinbo_cali]: CALIBRATION SAFETY STOP: opposite encoder travel: L2 start=-27663.000000 actual=-27131.000000 expected=decreasing counts"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 30,
+      "text": "CALIBRATION SAFETY STOP: opposite encoder travel: L2 start=-27663.000000 actual=-27131.000000 expected=decreasing counts"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/direct-92ad145f5a4f48869acba3a5d4050b7b/rinbo_cali.log",
+      "line": 33,
+      "text": "Schema version: 1; revision: 15; SHA256: 5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 2,
+      "text": "[ERROR] [1788968596.038341216] [rinbo_ros2_bridge]: MOTOR SAFETY LATCHED: bridge startup requires consecutive fresh all-disabled commands"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 8,
+      "text": "[WARN] [1788968617.540931373] [rinbo_ros2_bridge]: Motor safety latch cleared after consecutive fresh all-disabled commands"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 9,
+      "text": "[ERROR] [1788968640.441727640] [rinbo_ros2_bridge]: MOTOR SAFETY LATCHED: the sole /motor/command publisher changed; disabled-command rearm is required"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 15,
+      "text": "[WARN] [1788968640.522025030] [rinbo_ros2_bridge]: Motor safety latch cleared after consecutive fresh all-disabled commands"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 16,
+      "text": "[ERROR] [1788968779.816966651] [rinbo_ros2_bridge]: MOTOR SAFETY LATCHED: the sole /motor/command publisher changed; disabled-command rearm is required"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 22,
+      "text": "[WARN] [1788968779.897226329] [rinbo_ros2_bridge]: Motor safety latch cleared after consecutive fresh all-disabled commands"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 23,
+      "text": "[ERROR] [1788968798.911484948] [rinbo_ros2_bridge]: MOTOR SAFETY LATCHED: the sole /motor/command publisher changed; disabled-command rearm is required"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 29,
+      "text": "[WARN] [1788968798.921832924] [rinbo_ros2_bridge]: Motor safety latch cleared after consecutive fresh all-disabled commands"
+    },
+    {
+      "path": "/tmp/rslip-launcher/20260909-234305-494/rinbo_ros_bridge.log",
+      "line": 30,
+      "text": "[INFO] [1788968888.462073759] [rinbo_ros2_bridge]: Shutdown safety sequence completed: requested 8 all-disabled motor packets and 3 all-off power packets"
+    }
+  ]
+}

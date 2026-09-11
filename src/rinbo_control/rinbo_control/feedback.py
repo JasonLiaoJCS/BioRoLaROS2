@@ -6,6 +6,12 @@ import time
 from .plans import LEGS
 
 
+class MotionStopUnknown(RuntimeError):
+    def __init__(self, reason, data, code=31):
+        super().__init__(reason)
+        self.code, self.data = code, data
+
+
 class Feedback:
     def __init__(self):
         import rclpy
@@ -94,15 +100,38 @@ class Feedback:
         self.motor_output = (bool(msg.data), time.monotonic())
 
     def wait_motor_disabled(self, cancel=lambda:False):
+        return self._wait_motor_disabled(cancel, stopping=False)
+
+    def wait_motor_stopped(self, cancel=lambda:False):
+        """Same fresh disabled gate, with stop-specific evidence and errors."""
+        return self._wait_motor_disabled(cancel, stopping=True)
+
+    def _wait_motor_disabled(self, cancel, stopping):
         entered = time.monotonic()
         while time.monotonic()-entered < 6:
             if cancel():
+                if stopping:
+                    raise MotionStopUnknown('motion_stop_superseded: higher priority stop in progress',
+                                            {'motor_output_enabled': None, 'verified': False}, 40)
                 raise RuntimeError('已取消上電前檢查')
             output = self.motor_output
             if (output and not output[0] and output[1] > entered and
                     time.monotonic()-output[1] < .2 and not self.writers()):
-                return
+                return {'motor_output_enabled': False, 'verified': True,
+                        'state_source': '/rinbo/motor_output_enabled',
+                        'observed_monotonic': output[1], 'command_publishers': []}
             self.spin(.02)
+        if stopping:
+            output = self.motor_output
+            raise MotionStopUnknown(
+                'motion_stop_unverified: 未取得本次停止後的新 motor output=false 回讀及零命令發布者；未執行開電',
+                {'motor_output_enabled': None, 'verified': False,
+                 'bridge_count': self.bridge_count(), 'command_publishers': self.writers(),
+                 'last_motor_output': None if not output else output[0],
+                 'last_motor_output_age_s': None if not output else time.monotonic()-output[1],
+                 'power_action': 'none', 'power_state': 'unknown',
+                 'recovery_action': 'Communications',
+                 'recovery': '先重建通訊取得新回讀，再明確 Stop；無回讀不代表已停止或已關電。'})
         raise RuntimeError('未確認 motor output=false 且 motor command 發布者為零；不開 Relay')
 
     def wait_power_ready(self, disabled_legs, cancel=lambda:False):

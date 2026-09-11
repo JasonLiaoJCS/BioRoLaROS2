@@ -1,0 +1,266 @@
+{
+  "created": "20260911-145029",
+  "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-145029",
+  "files": [
+    {
+      "path": "/home/jetson/rinbo_ros_ws/build/rinbo_ros_bridge/rinbo_ros_bridge",
+      "source": "/tmp/rinbo-power-handoff-build/rinbo_ros_bridge",
+      "before_sha256": "330b9557c4000e9dcaeb198be22723143a8b9a7623c59cc34eae55df99804070",
+      "sha256": "330b9557c4000e9dcaeb198be22723143a8b9a7623c59cc34eae55df99804070"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/lowlevel_bridge_node.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/lowlevel_bridge_node.py",
+      "before_sha256": "f3b242f8c952e5f25fd513476bf5c0a5897fb766003f9a58fb5f2af926ff5f96",
+      "sha256": "f3b242f8c952e5f25fd513476bf5c0a5897fb766003f9a58fb5f2af926ff5f96"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/power_operation.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py",
+      "before_sha256": "e9f872fcc9dfc92ace2301749f5bf77cc9b89b3186498181596f96cb2c015887",
+      "sha256": "8a7b0056a02e09c5015323bbe38f55cb57b042326932f723ebb8322eea225cbe"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/biorola_bringup_plan.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_bringup_plan.py",
+      "before_sha256": "3cff662194d9ed2d61d6f8eb20b1d46c61f4ab6fd9870320a6419774ccad2b99",
+      "sha256": "3cff662194d9ed2d61d6f8eb20b1d46c61f4ab6fd9870320a6419774ccad2b99"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/bridge_base.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/bridge_base.py",
+      "before_sha256": "1413d44d319508c53dea07bcd8e76ca6d1430f2facd702b545317d61d2c4aaf5",
+      "sha256": "1413d44d319508c53dea07bcd8e76ca6d1430f2facd702b545317d61d2c4aaf5"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/__init__.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/__init__.py",
+      "before_sha256": "50f5b3e6ec83bb75eba1b4dc81cc1aa97df554ca56660121f7154e755cb2721b",
+      "sha256": "50f5b3e6ec83bb75eba1b4dc81cc1aa97df554ca56660121f7154e755cb2721b"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/rinbo_power_tool.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py",
+      "before_sha256": "46253e85398278a3a7409743852bb5ed697b83b07625e1005062a3f1b78be057",
+      "sha256": "e79110149364e865edd28807f094aef721551bf1f1205192a7f9e22c46f912f3"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/biorola_fault_diag.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_fault_diag.py",
+      "before_sha256": "a1fbbc85234268cc2868faa9ed5b5d99330a86c8f4e59961dc9edf5e718db02b",
+      "sha256": "a1fbbc85234268cc2868faa9ed5b5d99330a86c8f4e59961dc9edf5e718db02b"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/sbrio_udp_bridge.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/sbrio_udp_bridge.py",
+      "before_sha256": "6920514e5b5d9efb671ba21e625c83cc7579a0674fc242232dc0194ad4726cab",
+      "sha256": "6920514e5b5d9efb671ba21e625c83cc7579a0674fc242232dc0194ad4726cab"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/mock_bridge.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/mock_bridge.py",
+      "before_sha256": "b04a64fd7d0c6a4165ad6e3a48b32f76cb5fe45723a1c132899f9c67a806b77b",
+      "sha256": "b04a64fd7d0c6a4165ad6e3a48b32f76cb5fe45723a1c132899f9c67a806b77b"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/serial_bridge.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/serial_bridge.py",
+      "before_sha256": "24f27e729eba29e8a485ffd603867b28ddecafc032fcee642bb43bd26eca2f7b",
+      "sha256": "24f27e729eba29e8a485ffd603867b28ddecafc032fcee642bb43bd26eca2f7b"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/rinbo_ros_backend.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_ros_backend.py",
+      "before_sha256": "2a97be1209376f4dc7c43bcd2765e7a04ea6f8ba8091ac5e83e9c1071d135b77",
+      "sha256": "2a97be1209376f4dc7c43bcd2765e7a04ea6f8ba8091ac5e83e9c1071d135b77"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/biorola_servo_probe.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/biorola_servo_probe.py",
+      "before_sha256": "cd8aa2e4fd3ec49b3023de1f514eea4a674c45760b6e9d3ddbf70bdd0669e320",
+      "sha256": "cd8aa2e4fd3ec49b3023de1f514eea4a674c45760b6e9d3ddbf70bdd0669e320"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages/redrhex_lowlevel_bridge/rinbo_bringup_check.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_bringup_check.py",
+      "before_sha256": "1a8ad252b5ea5df2abd4686466ea8cb8b4971777f786dcc48175b1968fe426d0",
+      "sha256": "1a8ad252b5ea5df2abd4686466ea8cb8b4971777f786dcc48175b1968fe426d0"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/connection_recovery.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/connection_recovery.py",
+      "before_sha256": "b6b5c7e0c30e550ace219ecf9bcaf4c79ff4ea4b5f8a481c70827e4b307d126b",
+      "sha256": "b6b5c7e0c30e550ace219ecf9bcaf4c79ff4ea4b5f8a481c70827e4b307d126b"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/plans.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/plans.py",
+      "before_sha256": "a235cd194d4d767d466e7df54f9b26d1c85216d24503c24806edcd1722941b2e",
+      "sha256": "a235cd194d4d767d466e7df54f9b26d1c85216d24503c24806edcd1722941b2e"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_server.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_server.py",
+      "before_sha256": "9b837bf99b8fd5a3244012369050f2e78cbbfca21c49e60fdc7cdd358d5e5900",
+      "sha256": "de68d991e46eacce35c5dfaa997f88232b0406ba6f35fcc140989edf0acdf712"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/feedback.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/feedback.py",
+      "before_sha256": "5d6dca607dd70b883f08819eb7caa0225574ff6e4749328a3efd922ca437b565",
+      "sha256": "5d6dca607dd70b883f08819eb7caa0225574ff6e4749328a3efd922ca437b565"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/terminal.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/terminal.py",
+      "before_sha256": "eb65a29175ba154a9c7627634c7f3f9fb05e07fa936a533007473e585ba16543",
+      "sha256": "eb65a29175ba154a9c7627634c7f3f9fb05e07fa936a533007473e585ba16543"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/guardian.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/guardian.py",
+      "before_sha256": "6cf880ab8b94c4e2de00d4ad6f12181b9ebdae1be552bc907a10a6213c2a3522",
+      "sha256": "6cf880ab8b94c4e2de00d4ad6f12181b9ebdae1be552bc907a10a6213c2a3522"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/sbrio.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/sbrio.py",
+      "before_sha256": "b2acec94d4101d920e1270d4890eb0dcbfedaee32e9e505afdd3ff6c0b9691f8",
+      "sha256": "b2acec94d4101d920e1270d4890eb0dcbfedaee32e9e505afdd3ff6c0b9691f8"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/presentation.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/presentation.py",
+      "before_sha256": "544a14fd7128858b758763fbd002d48a34bf0ce72a091d5f4ad3aad282f839fc",
+      "sha256": "544a14fd7128858b758763fbd002d48a34bf0ce72a091d5f4ad3aad282f839fc"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/__init__.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/__init__.py",
+      "before_sha256": "a191c309eb89e9a5f904d838d01a259dab32bcd11c6c3958d911493ea32183c9",
+      "sha256": "a191c309eb89e9a5f904d838d01a259dab32bcd11c6c3958d911493ea32183c9"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/runtime.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/runtime.py",
+      "before_sha256": "797adf83806e868e067b988f220eddeb69efe0a1323b53123619750b5dd2cb30",
+      "sha256": "797adf83806e868e067b988f220eddeb69efe0a1323b53123619750b5dd2cb30"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/library.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/library.py",
+      "before_sha256": "95ba185c53a299ace54153634bddd792022f4f022ccf598d265a977878abaa74",
+      "sha256": "95ba185c53a299ace54153634bddd792022f4f022ccf598d265a977878abaa74"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/console.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/console.py",
+      "before_sha256": "bc9f2f58deed222874ed5a88f5eedb1a8d7ee3866a3fa0de6e2c8339a7100f2f",
+      "sha256": "bc9f2f58deed222874ed5a88f5eedb1a8d7ee3866a3fa0de6e2c8339a7100f2f"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/calibration_progress.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/calibration_progress.py",
+      "before_sha256": "29d00bf2f65fc19127949b9f3c0af8e55968bd189466f0dce1cda7d43958204e",
+      "sha256": "29d00bf2f65fc19127949b9f3c0af8e55968bd189466f0dce1cda7d43958204e"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_protocol.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_protocol.py",
+      "before_sha256": "2bb1a8b1d7e3fd3116df980e158d2fd3d4b091a038e661447ac6792b67793b40",
+      "sha256": "2bb1a8b1d7e3fd3116df980e158d2fd3d4b091a038e661447ac6792b67793b40"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/demo.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/demo.py",
+      "before_sha256": "5a1f42cd3424857ab007b5c87f8e56ced02c898000654e653455deba7ebf7c51",
+      "sha256": "5a1f42cd3424857ab007b5c87f8e56ced02c898000654e653455deba7ebf7c51"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/motion_limits.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/motion_limits.py",
+      "before_sha256": "0957c8d72f32ab329858155bfe4946b7c38cdeffcb531100fb2be201979a3b0e",
+      "sha256": "0957c8d72f32ab329858155bfe4946b7c38cdeffcb531100fb2be201979a3b0e"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/ssh_auth.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/ssh_auth.py",
+      "before_sha256": "65a697b748092fc436138ae23e1c3f09eea6d5ddce5d3257fd659d31be213fa1",
+      "sha256": "65a697b748092fc436138ae23e1c3f09eea6d5ddce5d3257fd659d31be213fa1"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/sim_motion_limits.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/sim_motion_limits.py",
+      "before_sha256": "2360a6afeb7c2dc46f399190455ea2750211f901704dcb1f7e3456dbc90425d8",
+      "sha256": "2360a6afeb7c2dc46f399190455ea2750211f901704dcb1f7e3456dbc90425d8"
+    },
+    {
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_native.py",
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_native.py",
+      "before_sha256": "64dc55589faf848c3621a3f3403b741bca27c6aafe8557fbae41f2481b809be2",
+      "sha256": "7307319683ef15328845d2d89edc393b4e543da73e151d7fa4118655e1fcaf13"
+    }
+  ],
+  "hardware_started": false,
+  "controller_service": "enabled; starts inert, never restores actions",
+  "deployed": true,
+  "linger": true,
+  "prior_backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-144333",
+  "readonly_verification": {
+    "controller_state": {
+      "protocol": 1,
+      "request_id": "d1a5a2514e204743bbd46200c097fbcc",
+      "action": "CheckConnection",
+      "operation_id": "d1a5a2514e204743bbd46200c097fbcc",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "data": {
+        "readiness": "backend_unavailable",
+        "reason": "communications_not_established"
+      },
+      "emergency_latched": false,
+      "active_operation": null,
+      "operations": [
+        {
+          "protocol": 1,
+          "request_id": "e422bbeb08674d37889025aaff2e9e3c",
+          "action": "PhysicalCleanup",
+          "operation_id": "e422bbeb08674d37889025aaff2e9e3c",
+          "status": "unsupported",
+          "reason": "manual handoff required; physical power is not inferred",
+          "exit_code": 21
+        },
+        {
+          "protocol": 1,
+          "request_id": "c4d7f09ae86e4b8d99382df4196213e6",
+          "action": "PhysicalCleanup",
+          "operation_id": "c4d7f09ae86e4b8d99382df4196213e6",
+          "status": "unsupported",
+          "reason": "manual handoff required; physical power is not inferred",
+          "exit_code": 21
+        },
+        {
+          "protocol": 1,
+          "request_id": "8450a34487bb49d7ac12b4f81e353c8f",
+          "action": "FpgaConsole",
+          "operation_id": "8450a34487bb49d7ac12b4f81e353c8f",
+          "status": "unsupported",
+          "reason": "manual handoff required; physical power is not inferred",
+          "exit_code": 21
+        }
+      ]
+    },
+    "monitor_reconnections": [
+      "RSLIP_MONITOR_HEARTBEAT=1",
+      "RSLIP_MONITOR_HEARTBEAT=1"
+    ],
+    "hardware_commands_sent": false
+  },
+  "api_artifacts": {
+    "/home/jetson/rinbo_ros_ws/tools/rslip_panel_client.py": "b0aa7b6c69197ec6ecb39da7c10b53511387d6dbf7ff32f0ded6abacad92f8a4",
+    "/home/jetson/rinbo_ros_ws/tools/rslip_panel_server.sh": "d5b9282ec9964d62d3fd6f99a1718840e408d23609b572da632ab5d12ec8f82b",
+    "/home/jetson/rinbo_ros_ws/config/systemd/rinbo-panel.service": "916527d57904edca9ff891186d63c95b8dc3143526b7c1c9435087f785bb117d"
+  }
+}

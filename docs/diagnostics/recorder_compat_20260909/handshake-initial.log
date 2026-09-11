@@ -1,0 +1,47 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 7 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MotorCommandGraph
+[ RUN      ] MotorCommandGraph.AllowsOnlyUniqueBridgeAndAuditedPassiveRecorder
+[       OK ] MotorCommandGraph.AllowsOnlyUniqueBridgeAndAuditedPassiveRecorder (1 ms)
+[----------] 1 test from MotorCommandGraph (1 ms total)
+
+[----------] 6 tests from RecorderHandshake
+[ RUN      ] RecorderHandshake.RecorderJoinLeaveAndRearmKeepBridgePinned
+unknown file: Failure
+C++ exception with description "failed to create guard condition: context argument is null, at ./src/rcl/guard_condition.c:65" thrown in the test fixture's constructor.
+[  FAILED  ] RecorderHandshake.RecorderJoinLeaveAndRearmKeepBridgePinned (40 ms)
+[ RUN      ] RecorderHandshake.RecorderAloneCannotRearmAndTimeoutNamesMissingBridge
+unknown file: Failure
+C++ exception with description "failed to create guard condition: context argument is null, at ./src/rcl/guard_condition.c:65" thrown in the test fixture's constructor.
+[  FAILED  ] RecorderHandshake.RecorderAloneCannotRearmAndTimeoutNamesMissingBridge (0 ms)
+[ RUN      ] RecorderHandshake.SecondBridgeAfterArmingIsTerminal
+unknown file: Failure
+C++ exception with description "failed to create guard condition: context argument is null, at ./src/rcl/guard_condition.c:65" thrown in the test fixture's constructor.
+[  FAILED  ] RecorderHandshake.SecondBridgeAfterArmingIsTerminal (0 ms)
+[ RUN      ] RecorderHandshake.RecorderMotorPublisherCannotUseObserverException
+unknown file: Failure
+C++ exception with description "failed to create guard condition: context argument is null, at ./src/rcl/guard_condition.c:65" thrown in the test fixture's constructor.
+[  FAILED  ] RecorderHandshake.RecorderMotorPublisherCannotUseObserverException (0 ms)
+[ RUN      ] RecorderHandshake.RecorderPowerPublisherCannotUseObserverException
+unknown file: Failure
+C++ exception with description "failed to create guard condition: context argument is null, at ./src/rcl/guard_condition.c:65" thrown in the test fixture's constructor.
+[  FAILED  ] RecorderHandshake.RecorderPowerPublisherCannotUseObserverException (0 ms)
+[ RUN      ] RecorderHandshake.OldEpochAckCannotArmAndNewEpochRequiresMatchingAck
+unknown file: Failure
+C++ exception with description "failed to create guard condition: context argument is null, at ./src/rcl/guard_condition.c:65" thrown in the test fixture's constructor.
+[  FAILED  ] RecorderHandshake.OldEpochAckCannotArmAndNewEpochRequiresMatchingAck (0 ms)
+[----------] 6 tests from RecorderHandshake (40 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 2 test suites ran. (41 ms total)
+[  PASSED  ] 1 test.
+[  FAILED  ] 6 tests, listed below:
+[  FAILED  ] RecorderHandshake.RecorderJoinLeaveAndRearmKeepBridgePinned
+[  FAILED  ] RecorderHandshake.RecorderAloneCannotRearmAndTimeoutNamesMissingBridge
+[  FAILED  ] RecorderHandshake.SecondBridgeAfterArmingIsTerminal
+[  FAILED  ] RecorderHandshake.RecorderMotorPublisherCannotUseObserverException
+[  FAILED  ] RecorderHandshake.RecorderPowerPublisherCannotUseObserverException
+[  FAILED  ] RecorderHandshake.OldEpochAckCannotArmAndNewEpochRequiresMatchingAck
+
+ 6 FAILED TESTS

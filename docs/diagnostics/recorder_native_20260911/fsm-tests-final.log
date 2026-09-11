@@ -1,0 +1,33 @@
+Internal ctest changing into directory: /tmp/rinbo-fsm-recorder-v2-build
+Test project /tmp/rinbo-fsm-recorder-v2-build
+      Start  1: test_motor_recorder_compat
+ 1/12 Test  #1: test_motor_recorder_compat .......   Passed    3.44 sec
+      Start  2: test_motor_arbiter_handshake
+ 2/12 Test  #2: test_motor_arbiter_handshake .....   Passed    0.47 sec
+      Start  3: test_latest_state_safety
+ 3/12 Test  #3: test_latest_state_safety .........   Passed    4.57 sec
+      Start  4: test_rinbo_sin_sweep_retired
+ 4/12 Test  #4: test_rinbo_sin_sweep_retired .....   Passed    0.03 sec
+      Start  5: test_robot_config
+ 5/12 Test  #5: test_robot_config ................   Passed    2.31 sec
+      Start  6: test_cali_multileg
+ 6/12 Test  #6: test_cali_multileg ...............   Passed    3.11 sec
+      Start  7: test_standing_multileg
+ 7/12 Test  #7: test_standing_multileg ...........   Passed    2.56 sec
+      Start  8: test_tripod_multileg
+ 8/12 Test  #8: test_tripod_multileg .............   Passed    5.99 sec
+      Start  9: test_manual_motion
+ 9/12 Test  #9: test_manual_motion ...............   Passed    0.17 sec
+      Start 10: test_manual_controller
+10/12 Test #10: test_manual_controller ...........   Passed   16.52 sec
+      Start 11: test_control_velocity
+11/12 Test #11: test_control_velocity ............   Passed    0.19 sec
+      Start 12: test_motion_effort
+12/12 Test #12: test_motion_effort ...............   Passed    0.20 sec
+
+100% tests passed, 0 tests failed out of 12
+
+Label Time Summary:
+gtest    =  39.52 sec*proc (11 tests)
+
+Total Test time (real) =  39.59 sec

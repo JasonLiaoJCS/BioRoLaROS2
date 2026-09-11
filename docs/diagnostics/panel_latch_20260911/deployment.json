@@ -1,0 +1,13 @@
+{
+  "version": "panel-latch-v3-20260911",
+  "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_server.py",
+  "installed": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_server.py",
+  "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-162956-panel-latch",
+  "before_sha256": "b29584c15be931636a0b43ee8c198c42b9b9249feea34519ae49cd886e4f1e3d",
+  "sha256": "d87f7e34b5a3ab9a7c96fc47dc4452c6ecb09d3a71f5d949469b44b907f983e6",
+  "files_installed": true,
+  "service_restarted": true,
+  "hardware_commands_sent": false,
+  "runtime_activation": "active",
+  "activation_record": "activation.json"
+}

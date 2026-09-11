@@ -76,6 +76,17 @@ install(DIRECTORY
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
+  add_executable(recorder_safety_fixture EXCLUDE_FROM_ALL test/recorder_safety_fixture.cpp)
+  target_include_directories(recorder_safety_fixture PRIVATE src)
+  ament_target_dependencies(recorder_safety_fixture rclcpp rinbo_msgs std_msgs)
+  ament_add_gtest(test_motor_recorder_compat
+    test/test_motor_recorder_compat.cpp
+    ENV ROS_DOMAIN_ID=231 ROS_LOCALHOST_ONLY=1
+    TIMEOUT 60
+  )
+  target_include_directories(test_motor_recorder_compat PRIVATE src)
+  ament_target_dependencies(test_motor_recorder_compat rclcpp rinbo_msgs std_msgs)
+  set_tests_properties(test_motor_recorder_compat PROPERTIES RUN_SERIAL TRUE)
   ament_add_gtest(test_motor_arbiter_handshake
     test/test_motor_arbiter_handshake.cpp
     ENV ROS_DOMAIN_ID=231 ROS_LOCALHOST_ONLY=1

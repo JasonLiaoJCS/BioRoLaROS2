@@ -1,0 +1,53 @@
+Consolidate compiler generated dependencies of target rinbo_sin_sweep
+Consolidate compiler generated dependencies of target robot_config
+[  5%] Built target rinbo_sin_sweep
+[ 10%] Built target robot_config
+Consolidate compiler generated dependencies of target gtest_main
+Consolidate compiler generated dependencies of target gtest
+[ 15%] Built target gtest_main
+[ 20%] Built target gtest
+Consolidate compiler generated dependencies of target rinbo_legs
+Consolidate compiler generated dependencies of target rinbo_manual
+[ 25%] Built target rinbo_legs
+[ 30%] Built target rinbo_manual
+Consolidate compiler generated dependencies of target rinbo_cali
+Consolidate compiler generated dependencies of target rinbo_standing
+[ 32%] Building CXX object CMakeFiles/rinbo_cali.dir/src/rinbo_cali.cpp.o
+[ 35%] Building CXX object CMakeFiles/rinbo_standing.dir/src/rinbo_standing.cpp.o
+[ 37%] Linking CXX executable rinbo_standing
+[ 37%] Built target rinbo_standing
+Consolidate compiler generated dependencies of target rinbo_tripod
+[ 42%] Built target rinbo_tripod
+Consolidate compiler generated dependencies of target test_motor_recorder_compat
+[ 47%] Built target test_motor_recorder_compat
+Consolidate compiler generated dependencies of target test_motor_arbiter_handshake
+[ 52%] Built target test_motor_arbiter_handshake
+Consolidate compiler generated dependencies of target test_latest_state_safety
+[ 57%] Built target test_latest_state_safety
+Consolidate compiler generated dependencies of target test_robot_config
+[ 62%] Built target test_robot_config
+Consolidate compiler generated dependencies of target test_cali_multileg
+[ 65%] Building CXX object CMakeFiles/test_cali_multileg.dir/test/test_cali_multileg.cpp.o
+[ 67%] Linking CXX executable rinbo_cali
+[ 67%] Built target rinbo_cali
+Consolidate compiler generated dependencies of target test_standing_multileg
+[ 70%] Building CXX object CMakeFiles/test_standing_multileg.dir/test/test_standing_multileg.cpp.o
+[ 72%] Linking CXX executable test_standing_multileg
+[ 72%] Built target test_standing_multileg
+Consolidate compiler generated dependencies of target test_tripod_multileg
+[ 75%] Building CXX object CMakeFiles/test_tripod_multileg.dir/test/test_tripod_multileg.cpp.o
+[ 77%] Linking CXX executable test_cali_multileg
+[ 77%] Built target test_cali_multileg
+Consolidate compiler generated dependencies of target test_manual_motion
+[ 82%] Built target test_manual_motion
+Consolidate compiler generated dependencies of target test_manual_controller
+[ 87%] Built target test_manual_controller
+Consolidate compiler generated dependencies of target test_control_velocity
+[ 92%] Built target test_control_velocity
+Consolidate compiler generated dependencies of target test_motion_effort
+[ 97%] Built target test_motion_effort
+[100%] Linking CXX executable test_tripod_multileg
+[100%] Built target test_tripod_multileg
+[ 50%] Building CXX object CMakeFiles/recorder_safety_fixture.dir/test/recorder_safety_fixture.cpp.o
+[100%] Linking CXX executable recorder_safety_fixture
+[100%] Built target recorder_safety_fixture

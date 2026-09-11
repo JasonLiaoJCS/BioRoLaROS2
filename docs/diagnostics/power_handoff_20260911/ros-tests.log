@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/jetson/rinbo_ros_ws/src/redrhex_lowlevel_bridge
+plugins: ament-lint-0.12.11, ament-flake8-0.12.11, ament-pep257-0.12.11, ament-copyright-0.12.11, launch-testing-1.0.7, launch-testing-ros-0.19.8, ament-xmllint-0.12.11, anyio-4.8.0, colcon-core-0.18.4, cov-3.0.0
+collecting ... collected 10 items
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_sequence_handoff_repeat_and_lost_reply PASSED [ 10%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_single_operation_and_partial_sequence PASSED [ 20%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_backend_and_fault_preflight_send_nothing PASSED [ 30%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_partial_ack_timeout_cleanup_and_unknown_off PASSED [ 40%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_extra_publisher_cannot_enable_but_off_can_ack PASSED [ 50%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_off_preempts_between_stages PASSED [ 60%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_unsafe_current_blocks_already_satisfied_without_power_toggle PASSED [ 70%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works PASSED [ 80%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_nonadjacent_old_backend_ack_cannot_authorize_retry PASSED [ 90%]
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py::test_bridge_rejection_has_request_and_source_and_off_bypasses_rogue PASSED [100%]
+
+- generated xml file: /home/jetson/rinbo_ros_ws/docs/diagnostics/power_handoff_20260911/ros-tests.xml -
+======================== 10 passed in 63.69s (0:01:03) =========================

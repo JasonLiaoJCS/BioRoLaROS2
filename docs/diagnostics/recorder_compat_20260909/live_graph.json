@@ -1,0 +1,372 @@
+{
+  "/motor/command": {
+    "publishers": [
+      {
+        "node_name": "rinbo_cali",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/MotorCmdStamped",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          113,
+          172,
+          217,
+          60,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          18,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "subscribers": [
+      {
+        "node_name": "rinbo_data_recorder",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/MotorCmdStamped",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          36,
+          76,
+          48,
+          242,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          23,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "node_name": "rinbo_ros2_bridge",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/MotorCmdStamped",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          230,
+          163,
+          22,
+          107,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          18,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "/power/command": {
+    "publishers": [],
+    "subscribers": [
+      {
+        "node_name": "rinbo_data_recorder",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/PowerCmdStamped",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          36,
+          76,
+          48,
+          242,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          25,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "node_name": "rinbo_ros2_bridge",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/PowerCmdStamped",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          230,
+          163,
+          22,
+          107,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          19,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "/rinbo/motor_arbiter_epoch": {
+    "publishers": [
+      {
+        "node_name": "rinbo_ros2_bridge",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/Header",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          230,
+          163,
+          22,
+          107,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          27,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "subscribers": [
+      {
+        "node_name": "rinbo_cali",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/Header",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          113,
+          172,
+          217,
+          60,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          20,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "/rinbo/motor_rearm_ack": {
+    "publishers": [
+      {
+        "node_name": "rinbo_ros2_bridge",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/Header",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          230,
+          163,
+          22,
+          107,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          28,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "subscribers": [
+      {
+        "node_name": "rinbo_cali",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/Header",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          113,
+          172,
+          217,
+          60,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          22,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "/rinbo/motor_active_ack": {
+    "publishers": [
+      {
+        "node_name": "rinbo_ros2_bridge",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/Header",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          230,
+          163,
+          22,
+          107,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          29,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "subscribers": [
+      {
+        "node_name": "rinbo_cali",
+        "namespace": "/",
+        "type": "rinbo_msgs/msg/Header",
+        "gid": [
+          1,
+          15,
+          91,
+          255,
+          113,
+          172,
+          217,
+          60,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          23,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+基準：standard_20260909_r15
+來源／執行檔有變動（不代表參數一定改了，需比對基準來源）：
+  src/rinbo_fsm/src/rinbo_tripod.cpp
+  src/rinbo_fsm/src/rinbo_cali.cpp
+  src/rinbo_fsm/src/rinbo_standing.cpp
+  src/rinbo_fsm/src/rinbo_manual.cpp
+  src/rinbo_fsm/src/motor_arbiter_handshake.hpp
+  src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp
+  src/rinbo_control/rinbo_control/motion_limits.py

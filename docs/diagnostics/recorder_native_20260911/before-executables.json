@@ -1,0 +1,63 @@
+{
+  "ament_prefix_path": "/home/jetson/rinbo_ros_ws/install/rinbo_control:/home/jetson/rinbo_ros_ws/install/rinbo_ros_bridge:/home/jetson/rinbo_ros_ws/install/rinbo_monitor:/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge:/home/jetson/rinbo_ros_ws/install/rinbo_fsm:/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder:/home/jetson/rinbo_ros_ws/install/rinbo_msgs:/home/jetson/rinbo_ros_ws/install/redrhex_rl_controller:/home/jetson/rinbo_ros_ws/install/redrhex_msgs:/opt/ros/humble",
+  "pythonpath": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages:/home/jetson/rinbo_ros_ws/build/rinbo_monitor:/home/jetson/rinbo_ros_ws/install/rinbo_monitor/lib/python3.10/site-packages:/home/jetson/rinbo_ros_ws/install/redrhex_lowlevel_bridge/lib/python3.10/site-packages:/home/jetson/rinbo_ros_ws/install/rinbo_msgs/local/lib/python3.10/dist-packages:/home/jetson/rinbo_ros_ws/install/redrhex_rl_controller/lib/python3.10/site-packages:/home/jetson/rinbo_ros_ws/install/redrhex_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages:/usr/local/lib/python3.10/site-packages/:",
+  "executables": [
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_cali",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_cali",
+      "exists": true,
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_cali",
+      "sha256": "3ba6b4dd107de9ecfa936f3d471229e8c2507aa09202a4ac2eb6dc0619b5718e",
+      "mtime": 1788964188.050958,
+      "symlink": true
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_standing",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_standing",
+      "exists": true,
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_standing",
+      "sha256": "a34a7326bff5b0e16b855517d4c15528a0a690e3afeec5b667c0d853e8e78917",
+      "mtime": 1788964228.5201573,
+      "symlink": true
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_tripod",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_tripod",
+      "exists": true,
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_tripod",
+      "sha256": "42e9ae6b798febec963583b674e0714b75e6c005fde7d3e56a5c562d799a4fc1",
+      "mtime": 1788964297.3821876,
+      "symlink": true
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_tripod_rslip",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_tripod_rslip",
+      "exists": false,
+      "resolved": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_tripod_rslip"
+    },
+    {
+      "package": "rinbo_fsm",
+      "name": "rinbo_manual",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_fsm/lib/rinbo_fsm/rinbo_manual",
+      "exists": true,
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_fsm/rinbo_manual",
+      "sha256": "9360dde73defa0f484b9bd384b7d886759f6451e20a1c8f53307241802d0b2a3",
+      "mtime": 1788964127.5051541,
+      "symlink": true
+    },
+    {
+      "package": "rinbo_data_recorder",
+      "name": "rinbo_data_recorder",
+      "path": "/home/jetson/rinbo_ros_ws/install/rinbo_data_recorder/lib/rinbo_data_recorder/rinbo_data_recorder",
+      "exists": true,
+      "resolved": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+      "sha256": "bfeae6d0caf24066158480b21f638a47b348fecddbb85cf66ccd8bf7e0ff87d7",
+      "mtime": 1788875993.401979,
+      "symlink": true
+    }
+  ]
+}

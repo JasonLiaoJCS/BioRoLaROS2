@@ -1,0 +1,47 @@
+usage: rinbo_power_tool [-h] [--assert-estop] [--json]
+                        [--request-id REQUEST_ID] [--topic TOPIC]
+                        [--state-topic STATE_TOPIC] [--repeat REPEAT]
+                        [--repeat-delay-s REPEAT_DELAY_S]
+                        [--step-delay-s STEP_DELAY_S]
+                        [--wait-for-subscriber-s WAIT_FOR_SUBSCRIBER_S]
+                        [--status-timeout-s STATUS_TIMEOUT_S]
+                        [--verify-timeout-s VERIFY_TIMEOUT_S]
+                        [--allow-no-subscriber] [--dry-run] [--clean]
+                        [--trigger] [--include-relay] [--confirm-relay]
+                        [--disabled-leg DISABLED_LEG]
+                        {off,digital,sensors,relay,sequence,status,ensure-on,ready}
+
+Publish BioRoLaROS2/RhexROS2 rinbo_msgs/PowerCmdStamped safely.
+
+positional arguments:
+  {off,digital,sensors,relay,sequence,status,ensure-on,ready}
+
+options:
+  -h, --help            show this help message and exit
+  --assert-estop        Off only: assert and verify the native sticky /estop
+                        latch.
+  --json                One machine-readable result; stable exit codes.
+  --request-id REQUEST_ID
+                        Diagnostic request identifier (new id per invocation).
+  --topic TOPIC
+  --state-topic STATE_TOPIC
+  --repeat REPEAT
+  --repeat-delay-s REPEAT_DELAY_S
+  --step-delay-s STEP_DELAY_S
+  --wait-for-subscriber-s WAIT_FOR_SUBSCRIBER_S
+  --status-timeout-s STATUS_TIMEOUT_S
+  --verify-timeout-s VERIFY_TIMEOUT_S
+                        Require matching /power/state feedback after every
+                        command.
+  --allow-no-subscriber
+                        Publish even if /power/command has no visible
+                        subscriber. Usually not recommended.
+  --dry-run
+  --clean
+  --trigger
+  --include-relay       For sequence mode, also publish power=true after
+                        digital and signal.
+  --confirm-relay       Required for any command that sets power=true.
+  --disabled-leg DISABLED_LEG
+                        Retired: configure the shared Orin mask with ros2 run
+                        rinbo_fsm rinbo_legs.

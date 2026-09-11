@@ -1,0 +1,560 @@
+Consolidate compiler generated dependencies of target rinbo_ros_bridge
+[ 50%] Building CXX object CMakeFiles/rinbo_ros_bridge.dir/src/rinbo_ros_bridge.cpp.o
+In file included from /home/jetson/rinbo_ros_ws/install/include/grpcpp/support/callback_common.h:28,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/server_context.h:34,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/server_interface.h:31,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/server.h:32,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/grpcpp.h:57,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:9,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/grpcpp/support/global_callback_hook.h: In member function ‘virtual void grpc::DefaultGlobalCallbackHook::RunCallback(grpc_call*, absl::lts_20250127::FunctionRef<void()>)’:
+/home/jetson/rinbo_ros_ws/install/include/grpcpp/support/global_callback_hook.h:48:31: warning: unused parameter ‘call’ [-Wunused-parameter]
+   48 |   void RunCallback(grpc_call* call,
+      |                    ~~~~~~~~~~~^~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual void core::Communicator::call(std::string&, uint32_t&, float&)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:42:40: warning: unused parameter ‘ip’ [-Wunused-parameter]
+   42 |         virtual void call(std::string &ip, uint32_t &port, float &freq) {}
+      |                           ~~~~~~~~~~~~~^~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:42:54: warning: unused parameter ‘port’ [-Wunused-parameter]
+   42 |         virtual void call(std::string &ip, uint32_t &port, float &freq) {}
+      |                                            ~~~~~~~~~~^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:42:67: warning: unused parameter ‘freq’ [-Wunused-parameter]
+   42 |         virtual void call(std::string &ip, uint32_t &port, float &freq) {}
+      |                                                            ~~~~~~~^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual void core::Communicator::request_handler(google::protobuf::Any, core::ServingReply&)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:43:60: warning: unused parameter ‘request’ [-Wunused-parameter]
+   43 |         virtual void request_handler(google::protobuf::Any request, ServingReply &reply) {}
+      |                                      ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:43:83: warning: unused parameter ‘reply’ [-Wunused-parameter]
+   43 |         virtual void request_handler(google::protobuf::Any request, ServingReply &reply) {}
+      |                                                                     ~~~~~~~~~~~~~~^~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual grpc::Status core::ConnectionServiceImpl::Subscriber(grpc::ServerContext*, const core::SubscriberRequest*, core::SubscriberReply*)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:218:42: warning: unused parameter ‘context’ [-Wunused-parameter]
+  218 |         Status Subscriber(ServerContext* context, const SubscriberRequest* request,
+      |                           ~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:219:42: warning: unused parameter ‘reply’ [-Wunused-parameter]
+  219 |                         SubscriberReply* reply) override {
+      |                         ~~~~~~~~~~~~~~~~~^~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual grpc::Status core::ConnectionServiceImpl::Publisher(grpc::ServerContext*, const core::PublisherRequest*, core::PublisherReply*)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:229:41: warning: unused parameter ‘context’ [-Wunused-parameter]
+  229 |         Status Publisher(ServerContext* context, const PublisherRequest* request,
+      |                          ~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual grpc::Status core::ServerClientServiceImpl::Serving(grpc::ServerContext*, const core::ServingRequest*, core::ServingReply*)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:251:39: warning: unused parameter ‘context’ [-Wunused-parameter]
+  251 |         Status Serving(ServerContext* context, const ServingRequest* request,
+      |                        ~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp: In function ‘int main(int, char**)’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:1221:53: warning: unused variable ‘grpc_motor_state_sub’ [-Wunused-variable]
+ 1221 |     core::Subscriber<motor_msg::MotorStateStamped> &grpc_motor_state_sub = nh_.subscribe<motor_msg::MotorStateStamped>("motor/state", 1000, grpc_motor_state_cb);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:1222:53: warning: unused variable ‘grpc_power_state_sub’ [-Wunused-variable]
+ 1222 |     core::Subscriber<power_msg::PowerStateStamped> &grpc_power_state_sub = nh_.subscribe<power_msg::PowerStateStamped>("power/state", 1000, grpc_power_state_cb);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘void core::Publisher<T>::publish(T) [with T = motor_msg::MotorCmdStamped]’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:527:36:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:76:35: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   76 |             int siz = msg.ByteSize() + 4;
+      |                       ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:80:59: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   80 |             coded_output->WriteLittleEndian32(msg.ByteSize());
+      |                                               ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:84:34: warning: comparison of integer expressions of different signedness: ‘std::queue<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+   84 |             if (msg_queue.size() > maxSize) msg_queue.pop();
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘void core::Publisher<T>::publish(T) [with T = power_msg::PowerCmdStamped]’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:737:67:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:76:35: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   76 |             int siz = msg.ByteSize() + 4;
+      |                       ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:80:59: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   80 |             coded_output->WriteLittleEndian32(msg.ByteSize());
+      |                                               ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:84:34: warning: comparison of integer expressions of different signedness: ‘std::queue<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+   84 |             if (msg_queue.size() > maxSize) msg_queue.pop();
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Subscriber<T>::Subscriber(std::string, float, void (*)(T), core::NodeHandler*) [with T = motor_msg::MotorStateStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Subscriber<motor_msg::MotorStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Subscriber<motor_msg::MotorStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:172:83:   required from ‘core::Subscriber<T>& core::NodeHandler::subscribe(std::string, float, void (*)(T)) [with T = motor_msg::MotorStateStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:1221:119:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:69:21: warning: ‘core::Subscriber<motor_msg::MotorStateStamped>::topic_name’ will be initialized after [-Wreorder]
+   69 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning:   ‘float core::Subscriber<motor_msg::MotorStateStamped>::rate’ [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning: ‘core::Subscriber<motor_msg::MotorStateStamped>::rate’ will be initialized after [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning:   ‘void (* core::Subscriber<motor_msg::MotorStateStamped>::cb_func)(motor_msg::MotorStateStamped)’ [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning: ‘core::Subscriber<motor_msg::MotorStateStamped>::cb_func’ will be initialized after [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:57:22: warning:   ‘core::NodeHandler* core::Subscriber<motor_msg::MotorStateStamped>::nh_’ [-Wreorder]
+   57 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:288:65: warning: comparison of integer expressions of different signedness: ‘std::queue<motor_msg::MotorStateStamped, std::deque<motor_msg::MotorStateStamped, std::allocator<motor_msg::MotorStateStamped> > >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  288 |                                     if (this->msgs_queue.size() > maxSize) this->msgs_queue.pop();
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Subscriber<T>::Subscriber(std::string, float, void (*)(T), core::NodeHandler*) [with T = power_msg::PowerStateStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Subscriber<power_msg::PowerStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Subscriber<power_msg::PowerStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:172:83:   required from ‘core::Subscriber<T>& core::NodeHandler::subscribe(std::string, float, void (*)(T)) [with T = power_msg::PowerStateStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:1222:119:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:69:21: warning: ‘core::Subscriber<power_msg::PowerStateStamped>::topic_name’ will be initialized after [-Wreorder]
+   69 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning:   ‘float core::Subscriber<power_msg::PowerStateStamped>::rate’ [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning: ‘core::Subscriber<power_msg::PowerStateStamped>::rate’ will be initialized after [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning:   ‘void (* core::Subscriber<power_msg::PowerStateStamped>::cb_func)(power_msg::PowerStateStamped)’ [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning: ‘core::Subscriber<power_msg::PowerStateStamped>::cb_func’ will be initialized after [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:57:22: warning:   ‘core::NodeHandler* core::Subscriber<power_msg::PowerStateStamped>::nh_’ [-Wreorder]
+   57 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:288:65: warning: comparison of integer expressions of different signedness: ‘std::queue<power_msg::PowerStateStamped, std::deque<power_msg::PowerStateStamped, std::allocator<power_msg::PowerStateStamped> > >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  288 |                                     if (this->msgs_queue.size() > maxSize) this->msgs_queue.pop();
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Publisher<T>::Publisher(std::string, core::NodeHandler*) [with T = motor_msg::MotorCmdStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Publisher<motor_msg::MotorCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Publisher<motor_msg::MotorCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:180:82:   required from ‘core::Publisher<T>& core::NodeHandler::advertise(std::string) [with T = motor_msg::MotorCmdStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:1223:69:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:121:21: warning: ‘core::Publisher<motor_msg::MotorCmdStamped>::topic_name’ will be initialized after [-Wreorder]
+  121 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:118:22: warning:   ‘core::NodeHandler* core::Publisher<motor_msg::MotorCmdStamped>::nh_’ [-Wreorder]
+  118 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:354:5: warning:   when initialized here [-Wreorder]
+  354 |     Publisher<T>::Publisher(std::string topic, NodeHandler *nh) :
+      |     ^~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Publisher<T>::Publisher(std::string, core::NodeHandler*) [with T = power_msg::PowerCmdStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Publisher<power_msg::PowerCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Publisher<power_msg::PowerCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:180:82:   required from ‘core::Publisher<T>& core::NodeHandler::advertise(std::string) [with T = power_msg::PowerCmdStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:1224:69:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:121:21: warning: ‘core::Publisher<power_msg::PowerCmdStamped>::topic_name’ will be initialized after [-Wreorder]
+  121 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:118:22: warning:   ‘core::NodeHandler* core::Publisher<power_msg::PowerCmdStamped>::nh_’ [-Wreorder]
+  118 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp:25:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:354:5: warning:   when initialized here [-Wreorder]
+  354 |     Publisher<T>::Publisher(std::string topic, NodeHandler *nh) :
+      |     ^~~~~~~~~~~~
+[100%] Linking CXX executable rinbo_ros_bridge
+[100%] Built target rinbo_ros_bridge
+Consolidate compiler generated dependencies of target power_operation_mock_bridge
+[ 50%] Building CXX object CMakeFiles/power_operation_mock_bridge.dir/test/power_operation_mock_bridge.cpp.o
+In file included from /home/jetson/rinbo_ros_ws/install/include/grpcpp/support/callback_common.h:28,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/server_context.h:34,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/server_interface.h:31,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/server.h:32,
+                 from /home/jetson/rinbo_ros_ws/install/include/grpcpp/grpcpp.h:57,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:9,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/grpcpp/support/global_callback_hook.h: In member function ‘virtual void grpc::DefaultGlobalCallbackHook::RunCallback(grpc_call*, absl::lts_20250127::FunctionRef<void()>)’:
+/home/jetson/rinbo_ros_ws/install/include/grpcpp/support/global_callback_hook.h:48:31: warning: unused parameter ‘call’ [-Wunused-parameter]
+   48 |   void RunCallback(grpc_call* call,
+      |                    ~~~~~~~~~~~^~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual void core::Communicator::call(std::string&, uint32_t&, float&)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:42:40: warning: unused parameter ‘ip’ [-Wunused-parameter]
+   42 |         virtual void call(std::string &ip, uint32_t &port, float &freq) {}
+      |                           ~~~~~~~~~~~~~^~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:42:54: warning: unused parameter ‘port’ [-Wunused-parameter]
+   42 |         virtual void call(std::string &ip, uint32_t &port, float &freq) {}
+      |                                            ~~~~~~~~~~^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:42:67: warning: unused parameter ‘freq’ [-Wunused-parameter]
+   42 |         virtual void call(std::string &ip, uint32_t &port, float &freq) {}
+      |                                                            ~~~~~~~^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual void core::Communicator::request_handler(google::protobuf::Any, core::ServingReply&)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:43:60: warning: unused parameter ‘request’ [-Wunused-parameter]
+   43 |         virtual void request_handler(google::protobuf::Any request, ServingReply &reply) {}
+      |                                      ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:43:83: warning: unused parameter ‘reply’ [-Wunused-parameter]
+   43 |         virtual void request_handler(google::protobuf::Any request, ServingReply &reply) {}
+      |                                                                     ~~~~~~~~~~~~~~^~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual grpc::Status core::ConnectionServiceImpl::Subscriber(grpc::ServerContext*, const core::SubscriberRequest*, core::SubscriberReply*)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:218:42: warning: unused parameter ‘context’ [-Wunused-parameter]
+  218 |         Status Subscriber(ServerContext* context, const SubscriberRequest* request,
+      |                           ~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:219:42: warning: unused parameter ‘reply’ [-Wunused-parameter]
+  219 |                         SubscriberReply* reply) override {
+      |                         ~~~~~~~~~~~~~~~~~^~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual grpc::Status core::ConnectionServiceImpl::Publisher(grpc::ServerContext*, const core::PublisherRequest*, core::PublisherReply*)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:229:41: warning: unused parameter ‘context’ [-Wunused-parameter]
+  229 |         Status Publisher(ServerContext* context, const PublisherRequest* request,
+      |                          ~~~~~~~~~~~~~~~^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In member function ‘virtual grpc::Status core::ServerClientServiceImpl::Serving(grpc::ServerContext*, const core::ServingRequest*, core::ServingReply*)’:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:251:39: warning: unused parameter ‘context’ [-Wunused-parameter]
+  251 |         Status Serving(ServerContext* context, const ServingRequest* request,
+      |                        ~~~~~~~~~~~~~~~^~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp: In function ‘int unused_production_bridge_main(int, char**)’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:1221:53: warning: unused variable ‘grpc_motor_state_sub’ [-Wunused-variable]
+ 1221 |     core::Subscriber<motor_msg::MotorStateStamped> &grpc_motor_state_sub = nh_.subscribe<motor_msg::MotorStateStamped>("motor/state", 1000, grpc_motor_state_cb);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:1222:53: warning: unused variable ‘grpc_power_state_sub’ [-Wunused-variable]
+ 1222 |     core::Subscriber<power_msg::PowerStateStamped> &grpc_power_state_sub = nh_.subscribe<power_msg::PowerStateStamped>("power/state", 1000, grpc_power_state_cb);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp: In function ‘int main(int, char**)’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:40:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   40 |     if(rclcpp::ok())rclcpp::shutdown();return 0;
+      |     ^~
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:40:40: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   40 |     if(rclcpp::ok())rclcpp::shutdown();return 0;
+      |                                        ^~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘void core::Publisher<T>::publish(T) [with T = motor_msg::MotorCmdStamped]’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:527:36:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:76:35: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   76 |             int siz = msg.ByteSize() + 4;
+      |                       ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:80:59: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   80 |             coded_output->WriteLittleEndian32(msg.ByteSize());
+      |                                               ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:84:34: warning: comparison of integer expressions of different signedness: ‘std::queue<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+   84 |             if (msg_queue.size() > maxSize) msg_queue.pop();
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘void core::Publisher<T>::publish(T) [with T = power_msg::PowerCmdStamped]’:
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:737:67:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:76:35: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   76 |             int siz = msg.ByteSize() + 4;
+      |                       ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:80:59: warning: ‘int google::protobuf::MessageLite::ByteSize() const’ is deprecated: Please use ByteSizeLong() instead [-Wdeprecated-declarations]
+   80 |             coded_output->WriteLittleEndian32(msg.ByteSize());
+      |                                               ~~~~~~~~~~~~^~
+In file included from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/generated_enum_util.h:20,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/extension_set.h:36,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/descriptor.h:56,
+                 from /home/jetson/rinbo_ros_ws/install/include/google/protobuf/message.h:108,
+                 from /home/jetson/rinbo_ros_ws/install/include/TCPSocket.h:3,
+                 from /home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:6,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/google/protobuf/message_lite.h:827:59: note: declared here
+  827 |   [[deprecated("Please use ByteSizeLong() instead")]] int ByteSize() const {
+      |                                                           ^~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:84:34: warning: comparison of integer expressions of different signedness: ‘std::queue<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+   84 |             if (msg_queue.size() > maxSize) msg_queue.pop();
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Subscriber<T>::Subscriber(std::string, float, void (*)(T), core::NodeHandler*) [with T = motor_msg::MotorStateStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Subscriber<motor_msg::MotorStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Subscriber<motor_msg::MotorStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<motor_msg::MotorStateStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Alloc = std::allocator<core::Subscriber<motor_msg::MotorStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Subscriber<motor_msg::MotorStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(motor_msg::MotorStateStamped), core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:172:83:   required from ‘core::Subscriber<T>& core::NodeHandler::subscribe(std::string, float, void (*)(T)) [with T = motor_msg::MotorStateStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:1221:119:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:69:21: warning: ‘core::Subscriber<motor_msg::MotorStateStamped>::topic_name’ will be initialized after [-Wreorder]
+   69 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning:   ‘float core::Subscriber<motor_msg::MotorStateStamped>::rate’ [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning: ‘core::Subscriber<motor_msg::MotorStateStamped>::rate’ will be initialized after [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning:   ‘void (* core::Subscriber<motor_msg::MotorStateStamped>::cb_func)(motor_msg::MotorStateStamped)’ [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning: ‘core::Subscriber<motor_msg::MotorStateStamped>::cb_func’ will be initialized after [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:57:22: warning:   ‘core::NodeHandler* core::Subscriber<motor_msg::MotorStateStamped>::nh_’ [-Wreorder]
+   57 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:288:65: warning: comparison of integer expressions of different signedness: ‘std::queue<motor_msg::MotorStateStamped, std::deque<motor_msg::MotorStateStamped, std::allocator<motor_msg::MotorStateStamped> > >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  288 |                                     if (this->msgs_queue.size() > maxSize) this->msgs_queue.pop();
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Subscriber<T>::Subscriber(std::string, float, void (*)(T), core::NodeHandler*) [with T = power_msg::PowerStateStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Subscriber<power_msg::PowerStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Subscriber<power_msg::PowerStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}; _Tp = core::Subscriber<power_msg::PowerStateStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Alloc = std::allocator<core::Subscriber<power_msg::PowerStateStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Subscriber<power_msg::PowerStateStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, float&, void (*&)(power_msg::PowerStateStamped), core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:172:83:   required from ‘core::Subscriber<T>& core::NodeHandler::subscribe(std::string, float, void (*)(T)) [with T = power_msg::PowerStateStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:1222:119:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:69:21: warning: ‘core::Subscriber<power_msg::PowerStateStamped>::topic_name’ will be initialized after [-Wreorder]
+   69 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning:   ‘float core::Subscriber<power_msg::PowerStateStamped>::rate’ [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:66:15: warning: ‘core::Subscriber<power_msg::PowerStateStamped>::rate’ will be initialized after [-Wreorder]
+   66 |         float rate;
+      |               ^~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning:   ‘void (* core::Subscriber<power_msg::PowerStateStamped>::cb_func)(power_msg::PowerStateStamped)’ [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:58:22: warning: ‘core::Subscriber<power_msg::PowerStateStamped>::cb_func’ will be initialized after [-Wreorder]
+   58 |         FunctionType cb_func;
+      |                      ^~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:57:22: warning:   ‘core::NodeHandler* core::Subscriber<power_msg::PowerStateStamped>::nh_’ [-Wreorder]
+   57 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:261:5: warning:   when initialized here [-Wreorder]
+  261 |     Subscriber<T>::Subscriber(std::string topic, float freq, void (*func)(T), NodeHandler *nh) :
+      |     ^~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:288:65: warning: comparison of integer expressions of different signedness: ‘std::queue<power_msg::PowerStateStamped, std::deque<power_msg::PowerStateStamped, std::allocator<power_msg::PowerStateStamped> > >::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  288 |                                     if (this->msgs_queue.size() > maxSize) this->msgs_queue.pop();
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Publisher<T>::Publisher(std::string, core::NodeHandler*) [with T = motor_msg::MotorCmdStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Publisher<motor_msg::MotorCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Publisher<motor_msg::MotorCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<motor_msg::MotorCmdStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Alloc = std::allocator<core::Publisher<motor_msg::MotorCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Publisher<motor_msg::MotorCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:180:82:   required from ‘core::Publisher<T>& core::NodeHandler::advertise(std::string) [with T = motor_msg::MotorCmdStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:1223:69:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:121:21: warning: ‘core::Publisher<motor_msg::MotorCmdStamped>::topic_name’ will be initialized after [-Wreorder]
+  121 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:118:22: warning:   ‘core::NodeHandler* core::Publisher<motor_msg::MotorCmdStamped>::nh_’ [-Wreorder]
+  118 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:354:5: warning:   when initialized here [-Wreorder]
+  354 |     Publisher<T>::Publisher(std::string topic, NodeHandler *nh) :
+      |     ^~~~~~~~~~~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h: In instantiation of ‘core::Publisher<T>::Publisher(std::string, core::NodeHandler*) [with T = power_msg::PowerCmdStamped; std::string = std::__cxx11::basic_string<char>]’:
+/usr/include/c++/11/ext/new_allocator.h:162:4:   required from ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = core::Publisher<power_msg::PowerCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>]’
+/usr/include/c++/11/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = core::Publisher<power_msg::PowerCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}; _Tp = core::Publisher<power_msg::PowerCmdStamped>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Alloc = std::allocator<core::Publisher<power_msg::PowerCmdStamped> >; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = core::Publisher<power_msg::PowerCmdStamped>; _Args = {std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, core::NodeHandler*}]’
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:180:82:   required from ‘core::Publisher<T>& core::NodeHandler::advertise(std::string) [with T = power_msg::PowerCmdStamped; std::string = std::__cxx11::basic_string<char>]’
+/home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:1224:69:   required from here
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:121:21: warning: ‘core::Publisher<power_msg::PowerCmdStamped>::topic_name’ will be initialized after [-Wreorder]
+  121 |         std::string topic_name;
+      |                     ^~~~~~~~~~
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:118:22: warning:   ‘core::NodeHandler* core::Publisher<power_msg::PowerCmdStamped>::nh_’ [-Wreorder]
+  118 |         NodeHandler* nh_;
+      |                      ^~~
+In file included from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/../src/rinbo_ros_bridge.cpp:25,
+                 from /home/jetson/rinbo_ros_ws/src/rinbo_ros_bridge/test/power_operation_mock_bridge.cpp:4:
+/home/jetson/rinbo_ros_ws/install/include/NodeHandler.h:354:5: warning:   when initialized here [-Wreorder]
+  354 |     Publisher<T>::Publisher(std::string topic, NodeHandler *nh) :
+      |     ^~~~~~~~~~~~
+[100%] Linking CXX executable power_operation_mock_bridge
+[100%] Built target power_operation_mock_bridge
+[ 66%] Built target gtest_main
+[ 66%] Built target gtest
+Consolidate compiler generated dependencies of target test_power_operation_protocol
+[100%] Built target test_power_operation_protocol

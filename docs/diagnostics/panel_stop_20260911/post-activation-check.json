@@ -1,0 +1,975 @@
+{
+  "protocol": 1,
+  "request_id": "cc38beb0ace24570afd7556eb9542bc1",
+  "action": "CheckConnection",
+  "operation_id": "cc38beb0ace24570afd7556eb9542bc1",
+  "status": "completed",
+  "reason": "",
+  "exit_code": 0,
+  "controller_epoch": "d345aca5fa38474fa17cb45155af978b",
+  "controller_version": "panel-stop-v2-20260911",
+  "data": {
+    "readiness": "backend_unavailable",
+    "reason": "communications_not_established",
+    "power_state": "unknown",
+    "panel_backend": {
+      "connected_target": null,
+      "owned_bridge": null,
+      "feedback_initialized": false,
+      "remote_initialized": false,
+      "remote_owned": false,
+      "previous_completed_stop": null,
+      "power_protocol_age_s": null,
+      "power_protocol": null
+    }
+  },
+  "emergency_latched": true,
+  "active_operation": null,
+  "operations": [
+    {
+      "protocol": 1,
+      "request_id": "3cfb9ea56b9543e092eb0e38d05469f2",
+      "action": "EmergencyStop",
+      "operation_id": "3cfb9ea56b9543e092eb0e38d05469f2",
+      "status": "rejected",
+      "reason": "controller_busy: observe current operation; no request queued",
+      "exit_code": 20
+    },
+    {
+      "protocol": 1,
+      "request_id": "ee7c2bce5f8b412884948722bdc09b1d",
+      "action": "EmergencyStop",
+      "operation_id": "ee7c2bce5f8b412884948722bdc09b1d",
+      "status": "rejected",
+      "reason": "controller_busy: observe current operation; no request queued",
+      "exit_code": 20
+    },
+    {
+      "protocol": 1,
+      "request_id": "e2905b64119143ad890c9c332298ac97",
+      "action": "Stop",
+      "operation_id": "e2905b64119143ad890c9c332298ac97",
+      "status": "failed",
+      "reason": "ACK timeout (3.0s): stage=off; last_guard_violation=None; relay state UNKNOWN",
+      "exit_code": 30,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 30,
+      "data": {
+        "schema_version": 1,
+        "request_id": "e2905b64119143ad890c9c332298ac97",
+        "operation": "off",
+        "status": "ack_timeout",
+        "exit_code": 30,
+        "command_sent": true,
+        "readiness": "backend_unavailable",
+        "epoch": null,
+        "generation": null,
+        "state_source": "/rinbo_ros2_bridge",
+        "reason": "ACK timeout (3.0s): stage=off; last_guard_violation=None; relay state UNKNOWN",
+        "recovery": "verify connection/readiness; for ownership/fault require verified off; do not automatically retry power",
+        "acknowledgement": null,
+        "last_verified_state": null,
+        "bridge_rejection": {
+          "request_id": null,
+          "publisher_gid": null,
+          "sequence": null,
+          "reason": null
+        },
+        "leg_configuration": null
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "83e01a1cfba548f593c0517ece8ac127",
+      "action": "Stop",
+      "operation_id": "83e01a1cfba548f593c0517ece8ac127",
+      "status": "failed",
+      "reason": "ACK timeout (3.0s): stage=off; last_guard_violation=None; relay state UNKNOWN",
+      "exit_code": 30,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 30,
+      "data": {
+        "schema_version": 1,
+        "request_id": "83e01a1cfba548f593c0517ece8ac127",
+        "operation": "off",
+        "status": "ack_timeout",
+        "exit_code": 30,
+        "command_sent": true,
+        "readiness": "backend_unavailable",
+        "epoch": null,
+        "generation": null,
+        "state_source": "/rinbo_ros2_bridge",
+        "reason": "ACK timeout (3.0s): stage=off; last_guard_violation=None; relay state UNKNOWN",
+        "recovery": "verify connection/readiness; for ownership/fault require verified off; do not automatically retry power",
+        "acknowledgement": null,
+        "last_verified_state": null,
+        "bridge_rejection": {
+          "request_id": null,
+          "publisher_gid": null,
+          "sequence": null,
+          "reason": null
+        },
+        "leg_configuration": null
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "1a0f668a55f6445cb8705dbb328003ad",
+      "action": "Stop",
+      "operation_id": "1a0f668a55f6445cb8705dbb328003ad",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 0,
+      "data": {
+        "verified_off": true,
+        "native_owned_services_cleanup": "completed",
+        "motion": {
+          "motor_output_enabled": false,
+          "verified": true,
+          "prior_motion_failure": null
+        },
+        "power": {
+          "schema_version": 1,
+          "request_id": "1a0f668a55f6445cb8705dbb328003ad",
+          "operation": "off",
+          "status": "success",
+          "exit_code": 0,
+          "command_sent": true,
+          "readiness": "ready",
+          "epoch": "rinbo_ros2_bridge/boot-18d4342c1064ff4f-5eb629bf307-803cbbc0-cbd27cdc-16008714-0c986802",
+          "generation": 1,
+          "state_source": "/rinbo_ros2_bridge",
+          "reason": "",
+          "recovery": null,
+          "acknowledgement": {
+            "topic": "/power/state",
+            "digital": false,
+            "signal": false,
+            "power": false,
+            "clean": false,
+            "trigger": false,
+            "channels": [
+              {
+                "index": 0,
+                "voltage_v": 23.1659,
+                "current_a": 1.0880999999999998
+              },
+              {
+                "index": 1,
+                "voltage_v": 0.0312,
+                "current_a": 0.13030000000000008
+              },
+              {
+                "index": 2,
+                "voltage_v": 0.1225,
+                "current_a": 0.012199999999999989
+              },
+              {
+                "index": 3,
+                "voltage_v": 0.1331,
+                "current_a": 0.06040000000000001
+              },
+              {
+                "index": 4,
+                "voltage_v": 0.1669,
+                "current_a": 0.10729999999999995
+              },
+              {
+                "index": 5,
+                "voltage_v": 0.2004,
+                "current_a": 0.15749999999999975
+              },
+              {
+                "index": 6,
+                "voltage_v": 0.2218,
+                "current_a": 0.1623000000000001
+              },
+              {
+                "index": 7,
+                "voltage_v": 0.1563,
+                "current_a": 0.1673
+              }
+            ],
+            "bus_voltage_v": 0.1563,
+            "bus_current_a": 0.1673,
+            "leg_configuration": null,
+            "disabled_legs": null,
+            "healthy_leg_current_channels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "max_healthy_leg_current_a": 0.1623000000000001,
+            "ack_kind": "command_correlated",
+            "request_id": "1a0f668a55f6445cb8705dbb328003ad",
+            "epoch": "rinbo_ros2_bridge/boot-18d4342c1064ff4f-5eb629bf307-803cbbc0-cbd27cdc-16008714-0c986802",
+            "generation": 1,
+            "command_sequence": 3,
+            "publisher_gid": "010f5bff3037194c00000000000013030000000000000000",
+            "feedback_sequence": 1863443,
+            "feedback_stamp_ns": 1789114539759795273,
+            "healthy_samples": 1,
+            "estop_asserted": false
+          },
+          "last_verified_state": null,
+          "bridge_rejection": {
+            "request_id": "",
+            "publisher_gid": "",
+            "sequence": 0,
+            "reason": ""
+          },
+          "leg_configuration": null
+        }
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "5a4afffe98474cf48769a0ab9a7fe8c8",
+      "action": "Communications",
+      "operation_id": "5a4afffe98474cf48769a0ab9a7fe8c8",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 0,
+      "data": {
+        "connection": {
+          "bridge_count": 1,
+          "writers": [],
+          "motor_fresh": true,
+          "power_fresh": true,
+          "sensors_on": false,
+          "relay_on": false,
+          "voltage": 0.1563,
+          "legs": {
+            "L1": {
+              "angle_deg": -0.006510416666666667,
+              "hall": false
+            },
+            "L2": {
+              "angle_deg": -0.006510416666666667,
+              "hall": false
+            },
+            "L3": {
+              "angle_deg": -0.006510416666666667,
+              "hall": true
+            },
+            "R1": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            },
+            "R2": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            },
+            "R3": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            }
+          },
+          "problem": ""
+        },
+        "native": {
+          "schema_version": 1,
+          "request_id": "5a4afffe98474cf48769a0ab9a7fe8c8",
+          "operation": "ready",
+          "status": "ready",
+          "exit_code": 0,
+          "command_sent": false,
+          "readiness": "ready",
+          "epoch": "rinbo_ros2_bridge/boot-18d4342c1064ff4f-5eb629bf307-803cbbc0-cbd27cdc-16008714-0c986802",
+          "generation": 0,
+          "state_source": "/rinbo_ros2_bridge",
+          "reason": "",
+          "recovery": null,
+          "acknowledgement": {
+            "topic": "/power/state",
+            "digital": false,
+            "signal": false,
+            "power": false,
+            "clean": false,
+            "trigger": false,
+            "channels": [
+              {
+                "index": 0,
+                "voltage_v": 23.1726,
+                "current_a": 1.0231000000000003
+              },
+              {
+                "index": 1,
+                "voltage_v": 0.0312,
+                "current_a": 0.11030000000000006
+              },
+              {
+                "index": 2,
+                "voltage_v": 0.1225,
+                "current_a": 0.0671999999999997
+              },
+              {
+                "index": 3,
+                "voltage_v": 0.1331,
+                "current_a": 0.07040000000000024
+              },
+              {
+                "index": 4,
+                "voltage_v": 0.1669,
+                "current_a": 0.12729999999999997
+              },
+              {
+                "index": 5,
+                "voltage_v": 0.2004,
+                "current_a": 0.15749999999999975
+              },
+              {
+                "index": 6,
+                "voltage_v": 0.2218,
+                "current_a": 0.22730000000000006
+              },
+              {
+                "index": 7,
+                "voltage_v": 0.1563,
+                "current_a": 0.19229999999999992
+              }
+            ],
+            "bus_voltage_v": 0.1563,
+            "bus_current_a": 0.19229999999999992,
+            "leg_configuration": {
+              "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+              "schema_version": 1,
+              "revision": 15,
+              "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+              "disabled_legs": [
+                "L3"
+              ],
+              "enabled_legs": [
+                "L1",
+                "L2",
+                "R1",
+                "R2",
+                "R3"
+              ]
+            },
+            "disabled_legs": [
+              "L3"
+            ],
+            "healthy_leg_current_channels": [
+              1,
+              2,
+              4,
+              5,
+              6
+            ],
+            "max_healthy_leg_current_a": 0.22730000000000006,
+            "feedback_sequence": 3975,
+            "feedback_stamp_ns": 1789112319466750894,
+            "request_id": "5a4afffe98474cf48769a0ab9a7fe8c8",
+            "epoch": "rinbo_ros2_bridge/boot-18d4342c1064ff4f-5eb629bf307-803cbbc0-cbd27cdc-16008714-0c986802",
+            "generation": 0
+          },
+          "last_verified_state": null,
+          "bridge_rejection": {
+            "request_id": "",
+            "publisher_gid": "",
+            "sequence": 0,
+            "reason": ""
+          },
+          "leg_configuration": {
+            "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+            "schema_version": 1,
+            "revision": 15,
+            "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+            "disabled_legs": [
+              "L3"
+            ],
+            "enabled_legs": [
+              "L1",
+              "L2",
+              "R1",
+              "R2",
+              "R3"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "cf72eecb059d4322806df5ebe98128ba",
+      "action": "PhysicalCleanup",
+      "operation_id": "cf72eecb059d4322806df5ebe98128ba",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    {
+      "protocol": 1,
+      "request_id": "8a936525e37f4b9c8d532114ccd83772",
+      "action": "PhysicalCleanup",
+      "operation_id": "8a936525e37f4b9c8d532114ccd83772",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    {
+      "protocol": 1,
+      "request_id": "013bfdf2e8dd408497899d79d94e5067",
+      "action": "PhysicalCleanup",
+      "operation_id": "013bfdf2e8dd408497899d79d94e5067",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    {
+      "protocol": 1,
+      "request_id": "a31e639999124f868a1e6461792ba54d",
+      "action": "Stop",
+      "operation_id": "a31e639999124f868a1e6461792ba54d",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 0,
+      "data": {
+        "verified_off": true,
+        "native_owned_services_cleanup": "completed",
+        "motion": {
+          "motor_output_enabled": false,
+          "verified": true,
+          "prior_motion_failure": null
+        },
+        "power": {
+          "schema_version": 1,
+          "request_id": "a31e639999124f868a1e6461792ba54d",
+          "operation": "off",
+          "status": "success",
+          "exit_code": 0,
+          "command_sent": true,
+          "readiness": "ready",
+          "epoch": "rinbo_ros2_bridge/boot-18d43414bbee9619-5d40e2589f1-89b79586-e7108ec2-6166bea3-92958707",
+          "generation": 1,
+          "state_source": "/rinbo_ros2_bridge",
+          "reason": "",
+          "recovery": null,
+          "acknowledgement": {
+            "topic": "/power/state",
+            "digital": false,
+            "signal": false,
+            "power": false,
+            "clean": false,
+            "trigger": false,
+            "channels": [
+              {
+                "index": 0,
+                "voltage_v": 23.1726,
+                "current_a": 1.0106000000000002
+              },
+              {
+                "index": 1,
+                "voltage_v": 0.0312,
+                "current_a": 0.12029999999999985
+              },
+              {
+                "index": 2,
+                "voltage_v": 0.1225,
+                "current_a": 0.0371999999999999
+              },
+              {
+                "index": 3,
+                "voltage_v": 0.1331,
+                "current_a": 0.08539999999999992
+              },
+              {
+                "index": 4,
+                "voltage_v": 0.1669,
+                "current_a": 0.09730000000000016
+              },
+              {
+                "index": 5,
+                "voltage_v": 0.2004,
+                "current_a": 0.11749999999999972
+              },
+              {
+                "index": 6,
+                "voltage_v": 0.2218,
+                "current_a": 0.18230000000000013
+              },
+              {
+                "index": 7,
+                "voltage_v": 0.1563,
+                "current_a": 0.15729999999999977
+              }
+            ],
+            "bus_voltage_v": 0.1563,
+            "bus_current_a": 0.15729999999999977,
+            "leg_configuration": null,
+            "disabled_legs": null,
+            "healthy_leg_current_channels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "max_healthy_leg_current_a": 0.18230000000000013,
+            "ack_kind": "command_correlated",
+            "request_id": "a31e639999124f868a1e6461792ba54d",
+            "epoch": "rinbo_ros2_bridge/boot-18d43414bbee9619-5d40e2589f1-89b79586-e7108ec2-6166bea3-92958707",
+            "generation": 1,
+            "command_sequence": 3,
+            "publisher_gid": "010f5bff5d257a2700000000000013030000000000000000",
+            "feedback_sequence": 32176,
+            "feedback_stamp_ns": 1789112252937078928,
+            "healthy_samples": 1,
+            "estop_asserted": false
+          },
+          "last_verified_state": null,
+          "bridge_rejection": {
+            "request_id": "",
+            "publisher_gid": "",
+            "sequence": 0,
+            "reason": ""
+          },
+          "leg_configuration": null
+        }
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "f95d05fad08844dcaadecdfe8fb4ccad",
+      "action": "Communications",
+      "operation_id": "f95d05fad08844dcaadecdfe8fb4ccad",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 0,
+      "data": {
+        "connection": {
+          "bridge_count": 1,
+          "writers": [],
+          "motor_fresh": true,
+          "power_fresh": true,
+          "sensors_on": false,
+          "relay_on": false,
+          "voltage": 0.1563,
+          "legs": {
+            "L1": {
+              "angle_deg": -0.006510416666666667,
+              "hall": false
+            },
+            "L2": {
+              "angle_deg": -0.006510416666666667,
+              "hall": false
+            },
+            "L3": {
+              "angle_deg": -0.006510416666666667,
+              "hall": true
+            },
+            "R1": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            },
+            "R2": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            },
+            "R3": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            }
+          },
+          "problem": ""
+        },
+        "native": {
+          "schema_version": 1,
+          "request_id": "f95d05fad08844dcaadecdfe8fb4ccad",
+          "operation": "ready",
+          "status": "ready",
+          "exit_code": 0,
+          "command_sent": false,
+          "readiness": "ready",
+          "epoch": "rinbo_ros2_bridge/boot-18d43414bbee9619-5d40e2589f1-89b79586-e7108ec2-6166bea3-92958707",
+          "generation": 0,
+          "state_source": "/rinbo_ros2_bridge",
+          "reason": "",
+          "recovery": null,
+          "acknowledgement": {
+            "topic": "/power/state",
+            "digital": false,
+            "signal": false,
+            "power": false,
+            "clean": false,
+            "trigger": false,
+            "channels": [
+              {
+                "index": 0,
+                "voltage_v": 23.1659,
+                "current_a": 0.9931000000000001
+              },
+              {
+                "index": 1,
+                "voltage_v": 0.0312,
+                "current_a": 0.11529999999999996
+              },
+              {
+                "index": 2,
+                "voltage_v": 0.1225,
+                "current_a": 0.022199999999999775
+              },
+              {
+                "index": 3,
+                "voltage_v": 0.1331,
+                "current_a": 0.09040000000000026
+              },
+              {
+                "index": 4,
+                "voltage_v": 0.1669,
+                "current_a": 0.12230000000000008
+              },
+              {
+                "index": 5,
+                "voltage_v": 0.2004,
+                "current_a": 0.12749999999999995
+              },
+              {
+                "index": 6,
+                "voltage_v": 0.2218,
+                "current_a": 0.1623000000000001
+              },
+              {
+                "index": 7,
+                "voltage_v": 0.1563,
+                "current_a": 0.2022999999999997
+              }
+            ],
+            "bus_voltage_v": 0.1563,
+            "bus_current_a": 0.2022999999999997,
+            "leg_configuration": {
+              "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+              "schema_version": 1,
+              "revision": 15,
+              "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+              "disabled_legs": [
+                "L3"
+              ],
+              "enabled_legs": [
+                "L1",
+                "L2",
+                "R1",
+                "R2",
+                "R3"
+              ]
+            },
+            "disabled_legs": [
+              "L3"
+            ],
+            "healthy_leg_current_channels": [
+              1,
+              2,
+              4,
+              5,
+              6
+            ],
+            "max_healthy_leg_current_a": 0.1623000000000001,
+            "feedback_sequence": 29380,
+            "feedback_stamp_ns": 1789112249600774178,
+            "request_id": "f95d05fad08844dcaadecdfe8fb4ccad",
+            "epoch": "rinbo_ros2_bridge/boot-18d43414bbee9619-5d40e2589f1-89b79586-e7108ec2-6166bea3-92958707",
+            "generation": 0
+          },
+          "last_verified_state": null,
+          "bridge_rejection": {
+            "request_id": "",
+            "publisher_gid": "",
+            "sequence": 0,
+            "reason": ""
+          },
+          "leg_configuration": {
+            "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+            "schema_version": 1,
+            "revision": 15,
+            "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+            "disabled_legs": [
+              "L3"
+            ],
+            "enabled_legs": [
+              "L1",
+              "L2",
+              "R1",
+              "R2",
+              "R3"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "241cd598e72a436d8a0a098203ba0160",
+      "action": "Communications",
+      "operation_id": "241cd598e72a436d8a0a098203ba0160",
+      "status": "completed",
+      "reason": "",
+      "exit_code": 0,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 0,
+      "data": {
+        "connection": {
+          "bridge_count": 1,
+          "writers": [],
+          "motor_fresh": true,
+          "power_fresh": true,
+          "sensors_on": false,
+          "relay_on": false,
+          "voltage": 0.1563,
+          "legs": {
+            "L1": {
+              "angle_deg": -0.006510416666666667,
+              "hall": false
+            },
+            "L2": {
+              "angle_deg": -0.006510416666666667,
+              "hall": false
+            },
+            "L3": {
+              "angle_deg": -0.006510416666666667,
+              "hall": true
+            },
+            "R1": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            },
+            "R2": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            },
+            "R3": {
+              "angle_deg": 0.006510416666666667,
+              "hall": false
+            }
+          },
+          "problem": ""
+        },
+        "native": {
+          "schema_version": 1,
+          "request_id": "241cd598e72a436d8a0a098203ba0160",
+          "operation": "ready",
+          "status": "ready",
+          "exit_code": 0,
+          "command_sent": false,
+          "readiness": "ready",
+          "epoch": "rinbo_ros2_bridge/boot-18d43414bbee9619-5d40e2589f1-89b79586-e7108ec2-6166bea3-92958707",
+          "generation": 0,
+          "state_source": "/rinbo_ros2_bridge",
+          "reason": "",
+          "recovery": null,
+          "acknowledgement": {
+            "topic": "/power/state",
+            "digital": false,
+            "signal": false,
+            "power": false,
+            "clean": false,
+            "trigger": false,
+            "channels": [
+              {
+                "index": 0,
+                "voltage_v": 23.1793,
+                "current_a": 1.0231000000000003
+              },
+              {
+                "index": 1,
+                "voltage_v": 0.0312,
+                "current_a": 0.13529999999999998
+              },
+              {
+                "index": 2,
+                "voltage_v": 0.1225,
+                "current_a": 0.012199999999999989
+              },
+              {
+                "index": 3,
+                "voltage_v": 0.1331,
+                "current_a": 0.10539999999999994
+              },
+              {
+                "index": 4,
+                "voltage_v": 0.1669,
+                "current_a": 0.07229999999999981
+              },
+              {
+                "index": 5,
+                "voltage_v": 0.2004,
+                "current_a": 0.17749999999999977
+              },
+              {
+                "index": 6,
+                "voltage_v": 0.2218,
+                "current_a": 0.20230000000000015
+              },
+              {
+                "index": 7,
+                "voltage_v": 0.1563,
+                "current_a": 0.1473
+              }
+            ],
+            "bus_voltage_v": 0.1563,
+            "bus_current_a": 0.1473,
+            "leg_configuration": {
+              "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+              "schema_version": 1,
+              "revision": 15,
+              "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+              "disabled_legs": [
+                "L3"
+              ],
+              "enabled_legs": [
+                "L1",
+                "L2",
+                "R1",
+                "R2",
+                "R3"
+              ]
+            },
+            "disabled_legs": [
+              "L3"
+            ],
+            "healthy_leg_current_channels": [
+              1,
+              2,
+              4,
+              5,
+              6
+            ],
+            "max_healthy_leg_current_a": 0.20230000000000015,
+            "feedback_sequence": 4575,
+            "feedback_stamp_ns": 1789112219868137964,
+            "request_id": "241cd598e72a436d8a0a098203ba0160",
+            "epoch": "rinbo_ros2_bridge/boot-18d43414bbee9619-5d40e2589f1-89b79586-e7108ec2-6166bea3-92958707",
+            "generation": 0
+          },
+          "last_verified_state": null,
+          "bridge_rejection": {
+            "request_id": "",
+            "publisher_gid": "",
+            "sequence": 0,
+            "reason": ""
+          },
+          "leg_configuration": {
+            "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+            "schema_version": 1,
+            "revision": 15,
+            "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+            "disabled_legs": [
+              "L3"
+            ],
+            "enabled_legs": [
+              "L1",
+              "L2",
+              "R1",
+              "R2",
+              "R3"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "933e966a0d4e493fbf554a37ea2757dd",
+      "action": "Stop",
+      "operation_id": "933e966a0d4e493fbf554a37ea2757dd",
+      "status": "rejected",
+      "reason": "controller_busy: observe current operation; no request queued",
+      "exit_code": 20
+    },
+    {
+      "protocol": 1,
+      "request_id": "95ffd20fea12438f88773b81b863f566",
+      "action": "Stop",
+      "operation_id": "95ffd20fea12438f88773b81b863f566",
+      "status": "rejected",
+      "reason": "controller_busy: observe current operation; no request queued",
+      "exit_code": 20
+    },
+    {
+      "protocol": 1,
+      "request_id": "821c5f1e32de44419157e1cc32c25db7",
+      "action": "StopMotion",
+      "operation_id": "821c5f1e32de44419157e1cc32c25db7",
+      "status": "failed",
+      "reason": "未確認 motor output=false 且 motor command 發布者為零；不開 Relay",
+      "exit_code": 20,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 20,
+      "data": null
+    },
+    {
+      "protocol": 1,
+      "request_id": "3396238271af4fec990fcb3335dc2385",
+      "action": "Stop",
+      "operation_id": "3396238271af4fec990fcb3335dc2385",
+      "status": "failed",
+      "reason": "ACK timeout (3.0s): stage=off; last_guard_violation=None; relay state UNKNOWN",
+      "exit_code": 30,
+      "controller_epoch": "efbb50a35d384f8ebf1d7305a351253e",
+      "native_exit_code": 30,
+      "data": {
+        "schema_version": 1,
+        "request_id": "3396238271af4fec990fcb3335dc2385",
+        "operation": "off",
+        "status": "ack_timeout",
+        "exit_code": 30,
+        "command_sent": true,
+        "readiness": "backend_unavailable",
+        "epoch": null,
+        "generation": null,
+        "state_source": "/rinbo_ros2_bridge",
+        "reason": "ACK timeout (3.0s): stage=off; last_guard_violation=None; relay state UNKNOWN",
+        "recovery": "verify connection/readiness; for ownership/fault require verified off; do not automatically retry power",
+        "acknowledgement": null,
+        "last_verified_state": null,
+        "bridge_rejection": {
+          "request_id": null,
+          "publisher_gid": null,
+          "sequence": null,
+          "reason": null
+        },
+        "leg_configuration": null
+      }
+    },
+    {
+      "protocol": 1,
+      "request_id": "e422bbeb08674d37889025aaff2e9e3c",
+      "action": "PhysicalCleanup",
+      "operation_id": "e422bbeb08674d37889025aaff2e9e3c",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    {
+      "protocol": 1,
+      "request_id": "c4d7f09ae86e4b8d99382df4196213e6",
+      "action": "PhysicalCleanup",
+      "operation_id": "c4d7f09ae86e4b8d99382df4196213e6",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    },
+    {
+      "protocol": 1,
+      "request_id": "8450a34487bb49d7ac12b4f81e353c8f",
+      "action": "FpgaConsole",
+      "operation_id": "8450a34487bb49d7ac12b4f81e353c8f",
+      "status": "unsupported",
+      "reason": "manual handoff required; physical power is not inferred",
+      "exit_code": 21
+    }
+  ],
+  "native_exit_code": 0
+}

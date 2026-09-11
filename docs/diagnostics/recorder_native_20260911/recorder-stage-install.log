@@ -1,0 +1,26 @@
+-- Install configuration: "Release"
+-- Installing: /tmp/rinbo-recorder-v2-stage/lib/rinbo_data_recorder/rinbo_data_recorder
+-- Set runtime path of "/tmp/rinbo-recorder-v2-stage/lib/rinbo_data_recorder/rinbo_data_recorder" to ""
+-- Installing: /tmp/rinbo-recorder-v2-stage/bin/rinbo_log_control
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/config
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/config/diagnostic_bag_qos.yaml
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/config/logging_tripod_safety.yaml
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/launch
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/launch/__pycache__
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/launch/__pycache__/record_experiment.launch.cpython-310.pyc
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/launch/record_experiment.launch.py
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/ament_index/resource_index/package_run_dependencies/rinbo_data_recorder
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/ament_index/resource_index/parent_prefix_path/rinbo_data_recorder
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/environment/ament_prefix_path.sh
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/environment/ament_prefix_path.dsv
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/environment/path.sh
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/environment/path.dsv
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/local_setup.bash
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/local_setup.sh
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/local_setup.zsh
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/local_setup.dsv
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/package.dsv
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/ament_index/resource_index/packages/rinbo_data_recorder
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/cmake/rinbo_data_recorderConfig.cmake
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/cmake/rinbo_data_recorderConfig-version.cmake
+-- Installing: /tmp/rinbo-recorder-v2-stage/share/rinbo_data_recorder/package.xml

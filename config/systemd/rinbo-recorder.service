@@ -1,0 +1,13 @@
+[Unit]
+Description=Rinbo native recording observer (no hardware ownership)
+
+[Service]
+Type=simple
+ExecStart=/home/jetson/rinbo_ros_ws/tools/rinbo_recorder_server.sh
+Restart=no
+KillSignal=SIGINT
+TimeoutStopSec=20
+UMask=0077
+
+[Install]
+WantedBy=default.target

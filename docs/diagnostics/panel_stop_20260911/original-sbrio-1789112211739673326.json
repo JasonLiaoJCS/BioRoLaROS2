@@ -1,0 +1,8 @@
+{
+  "action": "start",
+  "returncode": 0,
+  "output": "NI Linux Real-Time (run mode)\n\nLog in with your NI-Auth credentials.\n\nsbRIO: FPGA SHA-256 符合 v6.6。\nRINBO_BOOT=894a9dac-4c94-4968-8cc2-31db690d71c0\nRINBO_EXISTING_CORE=\nRINBO_EXISTING_DRIVER=\nsbRIO: 啟動 core PID=8764；日誌 /home/admin/.local/state/rinbo-control/aea20a611ff54619a3a698c9fe6d21fe/core-log.Gz2UNS\nsbRIO: 啟動 driver PID=8778；日誌 /home/admin/.local/state/rinbo-control/aea20a611ff54619a3a698c9fe6d21fe/driver-log.uwvukW\nsbRIO: Session opened (Success) 已確認。\nRINBO_OWNED=1\nRINBO_SBRIO_READY\n",
+  "ip": "192.168.30.254",
+  "port": 50051,
+  "token": "aea20a611ff54619a3a698c9fe6d21fe"
+}

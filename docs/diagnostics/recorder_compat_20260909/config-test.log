@@ -1,0 +1,69 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 30 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 30 tests from ConfigTest
+[ RUN      ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters
+[       OK ] ConfigTest.EveryMaskRoundTripsAndPreservesSafetyParameters (1093 ms)
+[ RUN      ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent
+[       OK ] ConfigTest.ManagementOperationsNormalizeAreAtomicAndIdempotent (102 ms)
+[ RUN      ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts
+[       OK ] ConfigTest.MotionTuningUpdatesAllModesPreservesLimitsAndInvalidatesReceipts (89 ms)
+[ RUN      ] ConfigTest.CorruptMissingUnsupportedAndConflictingConfigFailClosed
+[       OK ] ConfigTest.CorruptMissingUnsupportedAndConflictingConfigFailClosed (113 ms)
+[ RUN      ] ConfigTest.UnreadableConfigurationFailsWithoutReinitialization
+[       OK ] ConfigTest.UnreadableConfigurationFailsWithoutReinitialization (3 ms)
+[ RUN      ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped
+[       OK ] ConfigTest.LocksRejectChangesAndConcurrentMotionUntilStopped (23 ms)
+[ RUN      ] ConfigTest.IndependentWriterLockAndReaderSnapshot
+[       OK ] ConfigTest.IndependentWriterLockAndReaderSnapshot (13 ms)
+[ RUN      ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts
+[       OK ] ConfigTest.ConfigurationChangesAndNewAttemptsInvalidateStageReceipts (91 ms)
+[ RUN      ] ConfigTest.ManualEditsCannotReuseCalibrationAtSameRevision
+[       OK ] ConfigTest.ManualEditsCannotReuseCalibrationAtSameRevision (20 ms)
+[ RUN      ] ConfigTest.ReceiptReplacementIsAtomicAndPinnedToConfiguration
+[       OK ] ConfigTest.ReceiptReplacementIsAtomicAndPinnedToConfiguration (193 ms)
+[ RUN      ] ConfigTest.CompletionRejectsExternalRevisionOrHashChange
+[       OK ] ConfigTest.CompletionRejectsExternalRevisionOrHashChange (25 ms)
+[ RUN      ] ConfigTest.FailedStandingInvalidatesCalibrationAndNewAttemptCannotResurrectIt
+[       OK ] ConfigTest.FailedStandingInvalidatesCalibrationAndNewAttemptCannotResurrectIt (30 ms)
+[ RUN      ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart
+[       OK ] ConfigTest.AllDisabledCanBeSavedButNoMotionStageCanStart (21 ms)
+[ RUN      ] ConfigTest.ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt
+[       OK ] ConfigTest.ManualRequiresCalibrationAndInvalidatesStandingWithoutApprovingIt (29 ms)
+[ RUN      ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot
+[       OK ] ConfigTest.ScopedReceiptsCoverOnlySelectedLegsAndNeverApproveWholeRobot (33 ms)
+[ RUN      ] ConfigTest.ReadinessCheckDoesNotChangeOrCreateStageReceipts
+[       OK ] ConfigTest.ReadinessCheckDoesNotChangeOrCreateStageReceipts (26 ms)
+[ RUN      ] ConfigTest.ProcessInspectionDistinguishesMotionFromCommunication
+[       OK ] ConfigTest.ProcessInspectionDistinguishesMotionFromCommunication (2 ms)
+[ RUN      ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites
+[       OK ] ConfigTest.TripodTuningPreservesOnlyValidUnchangedPrerequisites (31 ms)
+[ RUN      ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion
+[       OK ] ConfigTest.TripodTuningPreviewIsReadOnlyEvenDuringMotion (17 ms)
+[ RUN      ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts
+[       OK ] ConfigTest.TripodTuningNeverCreatesMissingOrInvalidReceipts (41 ms)
+[ RUN      ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters
+[       OK ] ConfigTest.TripodTuningRejectsProtectedKeysInvalidNumbersAndActiveWriters (4 ms)
+[ RUN      ] ConfigTest.TripodFilterAndRestoredGainsKeepOtherStagesAndRejectInvalidFilter
+[       OK ] ConfigTest.TripodFilterAndRestoredGainsKeepOtherStagesAndRejectInvalidFilter (15 ms)
+[ RUN      ] ConfigTest.TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers
+[       OK ] ConfigTest.TripodPositionPolicyIsExplicitReversibleAndKeepsOtherControllers (47 ms)
+[ RUN      ] ConfigTest.TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts
+[       OK ] ConfigTest.TripodPositionPolicyCannotBypassBusyOrRecreateInvalidReceipts (11 ms)
+[ RUN      ] ConfigTest.MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings
+[       OK ] ConfigTest.MotionLimitsAreAtomicTypedRevisionCheckedAndPreserveUnrelatedSettings (34 ms)
+[ RUN      ] ConfigTest.MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy
+[       OK ] ConfigTest.MotionLimitsCarryOnlyUnchangedPrerequisitesAndCannotEditWhileBusy (74 ms)
+[ RUN      ] ConfigTest.TripodRawPwm3300IsTypedAtomicAndDoesNotRaiseOtherControllerCaps
+[       OK ] ConfigTest.TripodRawPwm3300IsTypedAtomicAndDoesNotRaiseOtherControllerCaps (49 ms)
+[ RUN      ] ConfigTest.TripodSlewIsOptionalAndOnlyTripodSettingsChange
+[       OK ] ConfigTest.TripodSlewIsOptionalAndOnlyTripodSettingsChange (39 ms)
+[ RUN      ] ConfigTest.AcceptedChoicesKeepManualControlIndependentAndSharedGuardsIntact
+[       OK ] ConfigTest.AcceptedChoicesKeepManualControlIndependentAndSharedGuardsIntact (23 ms)
+[ RUN      ] ConfigTest.LegacyManualInheritanceAndNewBlockValidation
+[       OK ] ConfigTest.LegacyManualInheritanceAndNewBlockValidation (11 ms)
+[----------] 30 tests from ConfigTest (2312 ms total)
+
+[----------] Global test environment tear-down
+[==========] 30 tests from 1 test suite ran. (2312 ms total)
+[  PASSED  ] 30 tests.

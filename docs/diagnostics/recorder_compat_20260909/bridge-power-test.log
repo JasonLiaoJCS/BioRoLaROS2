@@ -1,0 +1,41 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 16 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 16 tests from PowerCommandEpochGuard
+[ RUN      ] PowerCommandEpochGuard.ClassifiesAndSanitizesTrueAllOff
+[       OK ] PowerCommandEpochGuard.ClassifiesAndSanitizesTrueAllOff (0 ms)
+[ RUN      ] PowerCommandEpochGuard.ClassifiesOnlyValidEnergizingPayloads
+[       OK ] PowerCommandEpochGuard.ClassifiesOnlyValidEnergizingPayloads (1 ms)
+[ RUN      ] PowerCommandEpochGuard.DifferentProcessOffSequenceRelayIsAccepted
+[       OK ] PowerCommandEpochGuard.DifferentProcessOffSequenceRelayIsAccepted (0 ms)
+[ RUN      ] PowerCommandEpochGuard.SameSourceRelayOffOpensSafePublisherHandoff
+[       OK ] PowerCommandEpochGuard.SameSourceRelayOffOpensSafePublisherHandoff (0 ms)
+[ RUN      ] PowerCommandEpochGuard.PublisherChangeWithoutBoundaryRejectsAndDoesNotTakeOver
+[       OK ] PowerCommandEpochGuard.PublisherChangeWithoutBoundaryRejectsAndDoesNotTakeOver (0 ms)
+[ RUN      ] PowerCommandEpochGuard.TrueAllOffAllowsAReplacementPublisher
+[       OK ] PowerCommandEpochGuard.TrueAllOffAllowsAReplacementPublisher (0 ms)
+[ RUN      ] PowerCommandEpochGuard.UnauthenticatedSequenceCannotOpenHandoffBoundary
+[       OK ] PowerCommandEpochGuard.UnauthenticatedSequenceCannotOpenHandoffBoundary (0 ms)
+[ RUN      ] PowerCommandEpochGuard.SkippedSamePublisherSequenceRejectsWithoutAdvancing
+[       OK ] PowerCommandEpochGuard.SkippedSamePublisherSequenceRejectsWithoutAdvancing (0 ms)
+[ RUN      ] PowerCommandEpochGuard.RequiresExactlyOnePublisher
+[       OK ] PowerCommandEpochGuard.RequiresExactlyOnePublisher (0 ms)
+[ RUN      ] PowerCommandEpochGuard.RejectsPublisherGraphQueryFailure
+[       OK ] PowerCommandEpochGuard.RejectsPublisherGraphQueryFailure (0 ms)
+[ RUN      ] PowerCommandEpochGuard.CallbackGidMustMatchTheSoleGraphPublisher
+[       OK ] PowerCommandEpochGuard.CallbackGidMustMatchTheSoleGraphPublisher (0 ms)
+[ RUN      ] PowerCommandEpochGuard.RejectsWrongPublisherNodeOrNamespace
+[       OK ] PowerCommandEpochGuard.RejectsWrongPublisherNodeOrNamespace (0 ms)
+[ RUN      ] PowerCommandEpochGuard.RejectsZeroDuplicateBackwardAndSkippedSequences
+[       OK ] PowerCommandEpochGuard.RejectsZeroDuplicateBackwardAndSkippedSequences (0 ms)
+[ RUN      ] PowerCommandEpochGuard.RejectsMalformedStaleAndFutureStamps
+[       OK ] PowerCommandEpochGuard.RejectsMalformedStaleAndFutureStamps (4 ms)
+[ RUN      ] PowerCommandEpochGuard.RejectsDuplicateOrBackwardStamp
+[       OK ] PowerCommandEpochGuard.RejectsDuplicateOrBackwardStamp (0 ms)
+[ RUN      ] PowerCommandEpochGuard.RejectsNonEnergizingKindAtAuthenticatedGate
+[       OK ] PowerCommandEpochGuard.RejectsNonEnergizingKindAtAuthenticatedGate (0 ms)
+[----------] 16 tests from PowerCommandEpochGuard (5 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test suite ran. (7 ms total)
+[  PASSED  ] 16 tests.

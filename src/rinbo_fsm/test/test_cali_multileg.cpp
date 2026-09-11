@@ -65,6 +65,26 @@ struct CalibrationOfflineTestAccess {
         halls[0] = !hall_triggered;
         f.handle_dc_spinning(cmd,p,v,halls,time(10.1));
     }
+    static void l2_negative_origin(CalibrationFSM& f) {
+        std::array<float,6> p{}, v{};
+        std::array<bool,6> halls{}; halls.fill(true);
+        rinbo_msgs::msg::MotorCmdStamped cmd;
+        p[1] = -27663;
+        f.handle_dc_spinning(cmd, p, v, halls, time(10));
+        f.set_leg_cmd(cmd, 1, true, 50, false);
+        EXPECT_FALSE(cmd.l2.direction);
+        EXPECT_EQ(cmd.l2.voltage, 50);
+        f.set_leg_cmd(cmd, 1, true, -50, false);
+        EXPECT_TRUE(cmd.l2.direction);
+        EXPECT_EQ(cmd.l2.voltage, 50);
+        p[1] = -27163;  // exactly 500 counts: preserve the existing strict bound
+        f.handle_dc_spinning(cmd, p, v, halls, time(10.17));
+        EXPECT_FALSE(f.safety_stopped_);
+        EXPECT_LT(f.trace_targets_[1], -27663);  // requested search decreases raw counts
+        EXPECT_FALSE(cmd.l2.direction);
+        p[1] = -27131;
+        f.handle_dc_spinning(cmd, p, v, halls, time(10.181));
+    }
     static bool stopped(const CalibrationFSM& f){return f.safety_stopped_;}
     static std::string reason(const CalibrationFSM& f){return f.safety_stop_reason_;}
     static LegState leg(const CalibrationFSM& f,int i){return f.leg_states_[i];}
@@ -116,6 +136,16 @@ TEST_F(CaliMultiLegTest, WrongDirectionCannotBeHiddenByFindingHall) {
         EXPECT_FALSE(Access::done(f));
         EXPECT_NE(Access::reason(f).find("opposite encoder travel: L1"),std::string::npos);
     }
+}
+
+TEST_F(CaliMultiLegTest, ObservedL2ReverseTravelFromNegativeOriginStillStops) {
+    rinbo_config::MotionSession session(rinbo_config::Stage::Calibration, path);
+    CalibrationFSM f(session);
+    Access::l2_negative_origin(f);
+    EXPECT_TRUE(Access::stopped(f));
+    EXPECT_NE(Access::reason(f).find("opposite encoder travel: L2 start=-27663"), std::string::npos);
+    EXPECT_NE(Access::reason(f).find("actual=-27131"), std::string::npos);
+    EXPECT_FALSE(std::filesystem::exists(path.string() + ".calibration.json"));
 }
 
 TEST_F(CaliMultiLegTest, ManualPlanValuesOnlySelectLegsAndDoNotOverrideCalibrationParameters) {

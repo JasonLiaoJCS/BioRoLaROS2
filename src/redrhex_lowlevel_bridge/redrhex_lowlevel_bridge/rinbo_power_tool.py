@@ -308,11 +308,12 @@ def _power_feedback_header_key(
 def print_dry_run(args: argparse.Namespace) -> None:
     configuration = args.leg_configuration
     config_summary = configuration.summary() if configuration is not None else None
-    if args.mode == "status":
+    if args.mode in ("status", "ready"):
         print(json.dumps({"state_topic": args.state_topic, "mode": "status", "dry_run": True, "leg_configuration": config_summary}, indent=2))
         return
     modes = ["digital", "sensors"]
-    if args.mode == "sequence":
+    if args.mode in ("sequence", "ensure-on"):
+        if args.mode == "ensure-on": args.include_relay = True
         if args.include_relay:
             modes.append("relay")
     else:
@@ -351,7 +352,7 @@ class RinboPowerTool(Node):
         # violate the single-writer safety contract of another process.
         self.pub = (
             None
-            if args.mode == "status"
+            if args.mode in ("status", "ready") or getattr(args, "protocol_v2", False)
             else self.create_publisher(PowerCmdStamped, args.topic, 10)
         )
         self.create_subscription(PowerStateStamped, args.state_topic, self._on_power_state, 10)
@@ -740,7 +741,10 @@ class RinboPowerTool(Node):
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Publish BioRoLaROS2/RhexROS2 rinbo_msgs/PowerCmdStamped safely.")
-    parser.add_argument("mode", choices=["off", "digital", "sensors", "relay", "sequence", "status"])
+    parser.add_argument("mode", choices=["off", "digital", "sensors", "relay", "sequence", "status", "ensure-on", "ready"])
+    parser.add_argument("--assert-estop", action="store_true", help="Off only: assert and verify the native sticky /estop latch.")
+    parser.add_argument("--json", action="store_true", help="One machine-readable result; stable exit codes.")
+    parser.add_argument("--request-id", default=None, help="Diagnostic request identifier (new id per invocation).")
     parser.add_argument("--topic", default=POWER_COMMAND_TOPIC)
     parser.add_argument("--state-topic", default=POWER_STATE_TOPIC)
     parser.add_argument("--repeat", type=int, default=3)
@@ -781,17 +785,45 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv=None) -> None:
+    import sys
+    actual=list(sys.argv[1:] if argv is None else argv)
+    try:
+        _main(actual)
+    except SystemExit as exc:
+        # Argparse/confirmation errors occur before a node exists. Runtime
+        # failures already emitted their correlated result and numeric code.
+        if "--json" in actual and (isinstance(exc.code,str) or exc.code==2):
+            code=2 if exc.code==2 else 10
+            print(json.dumps(dict(schema_version=1,status="not_sent",exit_code=code,
+                                  command_sent=False,reason=str(exc.code))))
+            raise SystemExit(code) from exc
+        raise
+
+
+def _main(argv=None) -> None:
     parser = build_parser()
     args = parser.parse_args(argv)
+    args.protocol_v2 = True
+    if args.assert_estop and args.mode != "off":
+        parser.error("--assert-estop is supported only with off")
+    if args.request_id is not None:
+        import re
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", args.request_id):
+            parser.error("--request-id requires 1..80 letters/digits/_/-")
+    for field, low, high in (("wait_for_subscriber_s", .1, 30),
+                             ("step_delay_s", 0, 5), ("status_timeout_s", .1, 30)):
+        value=getattr(args,field)
+        if not math.isfinite(value) or not low <= value <= high:
+            parser.error(f"--{field.replace('_','-')} must be in [{low}, {high}]")
     if args.disabled_leg is not None:
         raise SystemExit(
             "--disabled-leg is retired and cannot override the Orin configuration. "
             "Use ros2 run rinbo_fsm rinbo_legs on Orin."
         )
-    wants_relay = args.mode == "relay" or (args.mode == "sequence" and args.include_relay)
+    wants_relay = args.mode in ("relay", "ensure-on") or (args.mode == "sequence" and args.include_relay)
     if wants_relay and not args.confirm_relay and not args.dry_run:
         raise SystemExit("Refusing power=true without --confirm-relay. Keep E-stop ready and rerun intentionally.")
-    if args.mode == "status":
+    if args.mode in ("status", "ready"):
         if args.state_topic != POWER_STATE_TOPIC:
             raise SystemExit(
                 "Power status requires the exact /power/state topic."
@@ -830,10 +862,14 @@ def main(argv=None) -> None:
             if args.dry_run:
                 print_dry_run(args)
                 return
-            if configuration is not None:
+            if configuration is not None and not args.json:
                 print(json.dumps({"leg_configuration": configuration.summary()}, indent=2))
             _run_ros(args)
     except RuntimeError as exc:
+        if args.json:
+            print(json.dumps(dict(schema_version=1,request_id=args.request_id,operation=args.mode,
+                                  status="not_sent",exit_code=10,command_sent=False,reason=str(exc))))
+            raise SystemExit(10) from exc
         raise SystemExit(f"[FATAL] {exc}") from exc
 
 
@@ -853,8 +889,15 @@ def _run_ros(args: argparse.Namespace) -> None:
         previous_handlers[signum] = signal.getsignal(signum)
         signal.signal(signum, _request_stop)
     try:
-        node = RinboPowerTool(args)
-        node.run()
+        if getattr(args, "protocol_v2", False):
+            from .power_operation import PowerSession
+            node = PowerSession(args)
+            result = node.run()
+            print(json.dumps(result, ensure_ascii=False))
+            if result["exit_code"]: raise SystemExit(result["exit_code"])
+        else:
+            node = RinboPowerTool(args)
+            node.run()
     except (KeyboardInterrupt, ExternalShutdownException, RCLError) as exc:
         off_published = False
         if node is not None and args.mode != "status":
@@ -864,6 +907,11 @@ def _run_ros(args: argparse.Namespace) -> None:
             if off_published
             else "No best-effort power-off could be published; "
         )
+        if getattr(args,"protocol_v2",False):
+            from .power_operation import EXIT_CODES
+            result=(node.result("interrupted",cleanup) if node is not None else
+                    dict(schema_version=1,status="interrupted",exit_code=40,command_sent=False,reason=cleanup))
+            print(json.dumps(result));raise SystemExit(EXIT_CODES["interrupted"]) from exc
         raise SystemExit(
             "Power command/status was interrupted before verified completion; "
             f"relay state is UNKNOWN. {cleanup}"
@@ -871,6 +919,11 @@ def _run_ros(args: argparse.Namespace) -> None:
             "acknowledged power-off/status check."
         ) from exc
     except RuntimeError as exc:
+        if getattr(args,"protocol_v2",False):
+            result=(node.result("state_unknown" if node.sent else "not_sent",str(exc)) if node is not None else
+                    dict(schema_version=1,request_id=args.request_id,operation=args.mode,
+                         status="not_sent",exit_code=10,command_sent=False,reason=str(exc)))
+            print(json.dumps(result));raise SystemExit(result["exit_code"]) from exc
         raise SystemExit(str(exc)) from exc
     finally:
         if node is not None:

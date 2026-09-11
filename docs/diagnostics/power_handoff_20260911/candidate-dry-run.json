@@ -1,0 +1,74 @@
+[
+  {
+    "topic": "/power/command",
+    "digital": true,
+    "signal": false,
+    "power": false,
+    "clean": false,
+    "trigger": false,
+    "leg_configuration": {
+      "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+      "schema_version": 1,
+      "revision": 15,
+      "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+      "disabled_legs": [
+        "L3"
+      ],
+      "enabled_legs": [
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "R3"
+      ]
+    }
+  },
+  {
+    "topic": "/power/command",
+    "digital": true,
+    "signal": true,
+    "power": false,
+    "clean": false,
+    "trigger": false,
+    "leg_configuration": {
+      "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+      "schema_version": 1,
+      "revision": 15,
+      "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+      "disabled_legs": [
+        "L3"
+      ],
+      "enabled_legs": [
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "R3"
+      ]
+    }
+  },
+  {
+    "topic": "/power/command",
+    "digital": true,
+    "signal": true,
+    "power": true,
+    "clean": false,
+    "trigger": false,
+    "leg_configuration": {
+      "path": "/home/jetson/redrhex_site/rinbo_fsm_disabled_leg.yaml",
+      "schema_version": 1,
+      "revision": 15,
+      "hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+      "disabled_legs": [
+        "L3"
+      ],
+      "enabled_legs": [
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "R3"
+      ]
+    }
+  }
+]

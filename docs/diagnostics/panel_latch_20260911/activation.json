@@ -1,0 +1,30 @@
+{
+  "activated_at": "2026-09-11T16:30:31.015616+08:00",
+  "controller_version": "panel-latch-v3-20260911",
+  "controller_epoch": "b8ea7d987db441c1a2be210b7fcb449f",
+  "service": "MainPID=274294\nActiveState=active\n",
+  "preceding_operator_stop": "573675fd94e740b2984cbbfb4cd46c6f",
+  "emergency_latched": false,
+  "readiness": "backend_unavailable",
+  "recovery_action": "Communications",
+  "recorder_and_mirror_preserved": [
+    {
+      "pid": 53631,
+      "exe": "/usr/bin/python3.10",
+      "start_ticks": "276275",
+      "sha256": "c4408788fddefb8db9a0ba0ab56941d10fa52be0bf6bb423f07c3a2ca5fd9665",
+      "open_csv": []
+    },
+    {
+      "pid": 53632,
+      "exe": "/home/jetson/rinbo_ros_ws/build/rinbo_data_recorder/rinbo_data_recorder",
+      "start_ticks": "276275",
+      "sha256": "bfeae6d0caf24066158480b21f638a47b348fecddbb85cf66ccd8bf7e0ff87d7",
+      "open_csv": [
+        "/home/jetson/rinbo_logs/20260911_143610_tripod_current_debug_20260911_143608/summary.csv",
+        "/home/jetson/rinbo_logs/20260911_143610_tripod_current_debug_20260911_143608/events.csv"
+      ]
+    }
+  ],
+  "hardware_commands_sent": false
+}

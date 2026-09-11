@@ -255,8 +255,16 @@ esac
 '''
 
 
+class RemoteServiceError(RuntimeError):
+    def __init__(self, reason, code, log):
+        super().__init__(reason)
+        self.code = code
+        self.data = {'native_exit_code': code, 'native_log': str(log)}
+
+
 class RemoteServices:
-    def __init__(self, state_dir, progress=print, log_dir=None):
+    def __init__(self, state_dir, progress=print, log_dir=None, noninteractive=False):
+        self.noninteractive = noninteractive
         self.record = Path(state_dir)/'sbrio-session.json'
         self.log_dir = Path(log_dir) if log_dir else Path(state_dir)/'logs'
         self.progress = progress
@@ -293,6 +301,9 @@ class RemoteServices:
         options, env = automatic_auth(self.session['ip'], self.transport.name)
         if env is not None:
             self.progress('正在自動登入 sbRIO（使用本機已設定的密碼）…')
+        elif self.noninteractive:
+            options = ['-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes']
+            self.progress('使用本機 SSH 金鑰登入；若尚未設定憑證，請先在 Orin 設定登入。')
         else:
             self.progress('正在登入 sbRIO；請在提示時輸入密碼。此位址尚未設定自動登入。')
         log = self.log_dir/f'sbrio-{time.time_ns()}.json'
@@ -318,8 +329,9 @@ class RemoteServices:
                       if line.startswith('RINBO_ERROR=')]
             reason = errors[0] if errors else (details[-1] if details else
                      f'沒有收到完成標記（SSH 結束碼 {result.returncode}）')
-            raise RuntimeError(f'{reason}\n通訊未就緒；詳細日誌：{log}。'
-                               '已保留程序紀錄，可用原位址再按 1 檢查；不會繼續上電。')
+            raise RemoteServiceError(f'{reason}\n通訊未就緒；詳細日誌：{log}。'
+                               '已保留程序紀錄，可用原位址再按 1 檢查；不會繼續上電。',
+                               result.returncode or 20, log)
         return result.stdout
 
     def start(self, ip, port):

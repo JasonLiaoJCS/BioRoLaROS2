@@ -397,3 +397,18 @@ TEST(PowerCommandEpochGuard, RejectsNonEnergizingKindAtAuthenticatedGate) {
 }
 
 }  // namespace
+
+TEST(PowerCommandEpochGuard, ExplicitRelayReleaseStillAuthenticatesAndNeverAllowsPowerOn) {
+    Guard guard;
+    ASSERT_FALSE(accept(guard, Kind::kPowerOn, gid(1), 1, kNowNs));
+    EXPECT_TRUE(guard.accept_energizing(Kind::kPowerOn, sole_publisher(gid(2)), gid(2),
+        header(1,kNowNs), kNowNs, kMaxAgeNs, true));
+    auto foreign = sole_publisher(gid(2)); foreign.sole_node_name = "foreign";
+    EXPECT_TRUE(guard.accept_energizing(Kind::kRelayOffSequence, foreign, gid(2),
+        header(1,kNowNs), kNowNs, kMaxAgeNs, true));
+    EXPECT_TRUE(guard.accept_energizing(Kind::kRelayOffSequence, sole_publisher(gid(2)), gid(2),
+        header(1,kNowNs-2*kMaxAgeNs), kNowNs, kMaxAgeNs, true));
+    EXPECT_FALSE(guard.accept_energizing(Kind::kRelayOffSequence, sole_publisher(gid(2)), gid(2),
+        header(1,kNowNs), kNowNs, kMaxAgeNs, true));
+    EXPECT_TRUE(guard.can_handoff());
+}

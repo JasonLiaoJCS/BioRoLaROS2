@@ -104,7 +104,8 @@ public:
         const PublisherGid &received_gid,
         const Header &header,
         int64_t observed_ns,
-        int64_t max_age_ns) {
+        int64_t max_age_ns,
+        bool authenticated_relay_release = false) {
         if (kind != CommandKind::kRelayOffSequence &&
             kind != CommandKind::kPowerOn) {
             return "power command is not a valid energizing command";
@@ -135,7 +136,8 @@ public:
 
         const bool publisher_changed =
             publisher_seen_ && graph.sole_publisher_gid != last_publisher_gid_;
-        if (publisher_changed && !next_publisher_handoff_allowed_) {
+        if (publisher_changed && !next_publisher_handoff_allowed_ &&
+            !(authenticated_relay_release && kind == CommandKind::kRelayOffSequence)) {
             return "the sole /power/command publisher changed without an authenticated relay-off boundary";
         }
         if (header.stamp_nanosec >= 1000000000U) {
@@ -184,6 +186,12 @@ public:
             kind == CommandKind::kRelayOffSequence;
         return std::nullopt;
     }
+
+    bool can_handoff() const noexcept { return !publisher_seen_ || next_publisher_handoff_allowed_; }
+    bool publisher_changed(const PublisherGid& gid) const noexcept {
+        return publisher_seen_ && gid != last_publisher_gid_;
+    }
+    bool has_owner() const noexcept { return publisher_seen_; }
 
 private:
     static constexpr const char *kExpectedPublisherNodeName =

@@ -1,0 +1,49 @@
+{
+  "prepared_at": "2026-09-11T14:28:21.280573+08:00",
+  "deployed": false,
+  "candidate_root": "/home/jetson/.local/state/rinbo-power-handoff/20260911/candidate",
+  "source_sha256": {
+    "src/rinbo_ros_bridge/src/rinbo_ros_bridge.cpp": "1ab3d60a5e07fcf4924ec89eda409410921a689e0b37cdb43115d086908be841",
+    "src/rinbo_ros_bridge/src/power_command_epoch_guard.hpp": "e2feccf8cc494dc614b030d1c01b9721b656ec5e6c457763d5fc3414225e70dc",
+    "src/rinbo_ros_bridge/src/power_operation_protocol.hpp": "5e68fb853484001a73cf3ca1c6a0bad98edfe96bf9559db91043219af9043068",
+    "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/rinbo_power_tool.py": "46253e85398278a3a7409743852bb5ed697b83b07625e1005062a3f1b78be057",
+    "src/redrhex_lowlevel_bridge/redrhex_lowlevel_bridge/power_operation.py": "1a75ece12dd25cbb1be4de8d0ac6222a5fca837303a6da5593d55715bc9d8a72"
+  },
+  "candidate_sha256": {
+    "bin/rinbo_ros_bridge": "7428a9cceb05b2966291620d9bb8a84e919aa9b7bf69e3efc3e915aaeb7b2dc6",
+    "python/redrhex_lowlevel_bridge/lowlevel_bridge_node.py": "f3b242f8c952e5f25fd513476bf5c0a5897fb766003f9a58fb5f2af926ff5f96",
+    "python/redrhex_lowlevel_bridge/power_operation.py": "1a75ece12dd25cbb1be4de8d0ac6222a5fca837303a6da5593d55715bc9d8a72",
+    "python/redrhex_lowlevel_bridge/biorola_bringup_plan.py": "3cff662194d9ed2d61d6f8eb20b1d46c61f4ab6fd9870320a6419774ccad2b99",
+    "python/redrhex_lowlevel_bridge/bridge_base.py": "1413d44d319508c53dea07bcd8e76ca6d1430f2facd702b545317d61d2c4aaf5",
+    "python/redrhex_lowlevel_bridge/__init__.py": "50f5b3e6ec83bb75eba1b4dc81cc1aa97df554ca56660121f7154e755cb2721b",
+    "python/redrhex_lowlevel_bridge/rinbo_power_tool.py": "46253e85398278a3a7409743852bb5ed697b83b07625e1005062a3f1b78be057",
+    "python/redrhex_lowlevel_bridge/biorola_fault_diag.py": "a1fbbc85234268cc2868faa9ed5b5d99330a86c8f4e59961dc9edf5e718db02b",
+    "python/redrhex_lowlevel_bridge/sbrio_udp_bridge.py": "6920514e5b5d9efb671ba21e625c83cc7579a0674fc242232dc0194ad4726cab",
+    "python/redrhex_lowlevel_bridge/mock_bridge.py": "b04a64fd7d0c6a4165ad6e3a48b32f76cb5fe45723a1c132899f9c67a806b77b",
+    "python/redrhex_lowlevel_bridge/serial_bridge.py": "24f27e729eba29e8a485ffd603867b28ddecafc032fcee642bb43bd26eca2f7b",
+    "python/redrhex_lowlevel_bridge/rinbo_ros_backend.py": "2a97be1209376f4dc7c43bcd2765e7a04ea6f8ba8091ac5e83e9c1071d135b77",
+    "python/redrhex_lowlevel_bridge/biorola_servo_probe.py": "cd8aa2e4fd3ec49b3023de1f514eea4a674c45760b6e9d3ddbf70bdd0669e320",
+    "python/redrhex_lowlevel_bridge/rinbo_bringup_check.py": "1a8ad252b5ea5df2abd4686466ea8cb8b4971777f786dcc48175b1968fe426d0",
+    "python/redrhex_lowlevel_bridge/__pycache__/rinbo_power_tool.cpython-310.pyc": "4aa5a80382c6e68b7327ba10bc457cb6449a484458fa167f2ced1c2857baa407",
+    "python/redrhex_lowlevel_bridge/__pycache__/__init__.cpython-310.pyc": "9b49614eeea7a25dcd400e9e0ce02901a092b47f65a16ffb0ec298297c37d2b9"
+  },
+  "site_revision": 15,
+  "site_hash": "5866b8ee7bb6a7733c0757fb0d7dd35995a1f78e3a5ec4defe6507c130c13129",
+  "parameter_differences": [],
+  "hardware_tests_run": false,
+  "production_services_started_or_stopped": false,
+  "tests": {
+    "cpp_tests": 26,
+    "cpp_suites": 3,
+    "lowlevel_pytest": 384,
+    "control_panel_pytest": 264,
+    "production_callbacks_dds_integration": 10,
+    "total": 684,
+    "result": "all passed",
+    "ros_domain_id": 232,
+    "ros_localhost_only": true
+  },
+  "finalized_at": "2026-09-11T14:31:08.885188+08:00",
+  "deployed_binary_unchanged": true,
+  "deployed_python_unchanged": true
+}

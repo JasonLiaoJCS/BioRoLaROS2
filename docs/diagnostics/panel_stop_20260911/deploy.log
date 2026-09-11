@@ -1,0 +1,34 @@
+{
+  "version": "panel-stop-v2-20260911",
+  "backup": "/home/jetson/.local/state/rinbo-deploy-backups/20260911-161409-panel-stop",
+  "files_installed": true,
+  "service_restarted": false,
+  "hardware_commands_sent": false,
+  "runtime_activation": "pending_operator_verified_stop",
+  "files": [
+    {
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/feedback.py",
+      "installed": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/feedback.py",
+      "before_sha256": "5d6dca607dd70b883f08819eb7caa0225574ff6e4749328a3efd922ca437b565",
+      "sha256": "be5d7262487b80045006ff6b250ff44cee5378d6fe1084cd71349095024e9e7a"
+    },
+    {
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_native.py",
+      "installed": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_native.py",
+      "before_sha256": "7307319683ef15328845d2d89edc393b4e543da73e151d7fa4118655e1fcaf13",
+      "sha256": "bf3a10aa120e6fabf6cb76e7ace4ddb4bfdc42906804f913031418a1dc6fffa1"
+    },
+    {
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_server.py",
+      "installed": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_server.py",
+      "before_sha256": "de68d991e46eacce35c5dfaa997f88232b0406ba6f35fcc140989edf0acdf712",
+      "sha256": "b29584c15be931636a0b43ee8c198c42b9b9249feea34519ae49cd886e4f1e3d"
+    },
+    {
+      "source": "/home/jetson/rinbo_ros_ws/src/rinbo_control/rinbo_control/panel_protocol.py",
+      "installed": "/home/jetson/rinbo_ros_ws/install/rinbo_control/lib/python3.10/site-packages/rinbo_control/panel_protocol.py",
+      "before_sha256": "2bb1a8b1d7e3fd3116df980e158d2fd3d4b091a038e661447ac6792b67793b40",
+      "sha256": "3162a18d367bb78a6b73871bc1d3e19dfeb6c67c2467b12db8f2116205850226"
+    }
+  ]
+}

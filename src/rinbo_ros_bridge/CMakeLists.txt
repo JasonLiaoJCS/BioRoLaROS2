@@ -197,6 +197,13 @@ install(DIRECTORY
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_power_operation_protocol test/test_power_operation_protocol.cpp)
+  target_include_directories(test_power_operation_protocol PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+  # Reuse production link libraries; this test main never initializes Core.
+  add_executable(power_operation_mock_bridge EXCLUDE_FROM_ALL test/power_operation_mock_bridge.cpp)
+  get_target_property(POWER_TEST_LIBS rinbo_ros_bridge LINK_LIBRARIES)
+  target_link_libraries(power_operation_mock_bridge ${POWER_TEST_LIBS})
+  ament_target_dependencies(power_operation_mock_bridge rclcpp rinbo_msgs std_msgs)
 
   ament_add_gtest(test_motor_output_limits test/test_motor_output_limits.cpp)
   target_include_directories(test_motor_output_limits PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)

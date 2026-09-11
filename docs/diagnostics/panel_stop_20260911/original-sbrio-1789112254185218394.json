@@ -1,0 +1,8 @@
+{
+  "action": "stop",
+  "returncode": 0,
+  "output": "sbRIO: 已停止本操作台啟動的 driver。\nsbRIO: 已停止本操作台啟動的 core。\nRINBO_SBRIO_STOPPED\n",
+  "ip": "192.168.30.254",
+  "port": 50051,
+  "token": "aea20a611ff54619a3a698c9fe6d21fe"
+}

@@ -1,0 +1,4 @@
+{
+  "rinbo-panel.service": "MainPID=131178\nLoadState=loaded\nActiveState=active\nUnitFileState=enabled\n",
+  "rinbo-recorder.service": "MainPID=0\nLoadState=loaded\nActiveState=inactive\nUnitFileState=disabled\n"
+}

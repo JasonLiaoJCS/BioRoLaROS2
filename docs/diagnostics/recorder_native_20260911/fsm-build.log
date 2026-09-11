@@ -1,0 +1,67 @@
+[  2%] Building CXX object CMakeFiles/robot_config.dir/src/robot_config.cpp.o
+[  5%] Building CXX object CMakeFiles/rinbo_sin_sweep.dir/src/rinbo_sin_sweep.cpp.o
+[  7%] Linking CXX executable rinbo_sin_sweep
+[  7%] Built target rinbo_sin_sweep
+[ 10%] Building CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[ 12%] Linking CXX static library libgtest_main.a
+[ 12%] Built target gtest_main
+[ 15%] Building CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+[ 17%] Linking CXX static library libgtest.a
+[ 17%] Built target gtest
+[ 20%] Building CXX object CMakeFiles/test_motor_recorder_compat.dir/test/test_motor_recorder_compat.cpp.o
+[ 22%] Linking CXX static library librobot_config.a
+[ 22%] Built target robot_config
+[ 25%] Building CXX object CMakeFiles/test_motor_arbiter_handshake.dir/test/test_motor_arbiter_handshake.cpp.o
+[ 27%] Linking CXX executable test_motor_arbiter_handshake
+[ 27%] Built target test_motor_arbiter_handshake
+[ 30%] Building CXX object CMakeFiles/test_latest_state_safety.dir/test/test_latest_state_safety.cpp.o
+[ 32%] Linking CXX executable test_motor_recorder_compat
+[ 32%] Built target test_motor_recorder_compat
+[ 35%] Building CXX object CMakeFiles/test_robot_config.dir/test/test_robot_config.cpp.o
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp: In member function ‘virtual void {anonymous}::ConfigTest_IndependentWriterLockAndReaderSnapshot_Test::TestBody()’:
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp:160:74: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  160 |         try {PathLock lock(path.string()+".lock");char signal='x';::write(ready[1],&signal,1);read(release[0],&signal,1);_exit(0);}
+      |                                                                   ~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/jetson/rinbo_ros_ws/src/rinbo_fsm/test/test_robot_config.cpp:160:99: warning: ignoring return value of ‘ssize_t read(int, void*, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  160 |         try {PathLock lock(path.string()+".lock");char signal='x';::write(ready[1],&signal,1);read(release[0],&signal,1);_exit(0);}
+      |                                                                                               ~~~~^~~~~~~~~~~~~~~~~~~~~~
+[ 37%] Linking CXX executable test_latest_state_safety
+[ 37%] Built target test_latest_state_safety
+[ 40%] Building CXX object CMakeFiles/test_cali_multileg.dir/test/test_cali_multileg.cpp.o
+[ 42%] Linking CXX executable test_robot_config
+[ 42%] Built target test_robot_config
+[ 45%] Building CXX object CMakeFiles/test_standing_multileg.dir/test/test_standing_multileg.cpp.o
+[ 47%] Linking CXX executable test_standing_multileg
+[ 47%] Built target test_standing_multileg
+[ 50%] Building CXX object CMakeFiles/test_tripod_multileg.dir/test/test_tripod_multileg.cpp.o
+[ 52%] Linking CXX executable test_cali_multileg
+[ 52%] Built target test_cali_multileg
+[ 55%] Building CXX object CMakeFiles/test_manual_motion.dir/test/test_manual_motion.cpp.o
+[ 57%] Linking CXX executable test_manual_motion
+[ 57%] Built target test_manual_motion
+[ 60%] Building CXX object CMakeFiles/test_manual_controller.dir/test/test_manual_controller.cpp.o
+[ 62%] Linking CXX executable test_tripod_multileg
+[ 62%] Built target test_tripod_multileg
+[ 65%] Building CXX object CMakeFiles/test_control_velocity.dir/test/test_control_velocity.cpp.o
+[ 67%] Linking CXX executable test_control_velocity
+[ 67%] Built target test_control_velocity
+[ 70%] Building CXX object CMakeFiles/test_motion_effort.dir/test/test_motion_effort.cpp.o
+[ 72%] Linking CXX executable test_motion_effort
+[ 72%] Built target test_motion_effort
+[ 75%] Building CXX object CMakeFiles/rinbo_legs.dir/src/rinbo_legs.cpp.o
+[ 77%] Linking CXX executable rinbo_legs
+[ 77%] Built target rinbo_legs
+[ 80%] Building CXX object CMakeFiles/rinbo_manual.dir/src/rinbo_manual.cpp.o
+[ 82%] Linking CXX executable test_manual_controller
+[ 82%] Built target test_manual_controller
+[ 85%] Building CXX object CMakeFiles/rinbo_cali.dir/src/rinbo_cali.cpp.o
+[ 87%] Linking CXX executable rinbo_manual
+[ 87%] Built target rinbo_manual
+[ 90%] Building CXX object CMakeFiles/rinbo_standing.dir/src/rinbo_standing.cpp.o
+[ 92%] Linking CXX executable rinbo_cali
+[ 92%] Built target rinbo_cali
+[ 95%] Building CXX object CMakeFiles/rinbo_tripod.dir/src/rinbo_tripod.cpp.o
+[ 97%] Linking CXX executable rinbo_standing
+[ 97%] Built target rinbo_standing
+[100%] Linking CXX executable rinbo_tripod
+[100%] Built target rinbo_tripod

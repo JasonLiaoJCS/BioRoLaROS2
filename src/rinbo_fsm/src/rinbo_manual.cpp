@@ -101,7 +101,7 @@ public:
     }
 private:
     uint32_t publish(rinbo_msgs::msg::MotorCmdStamped cmd, const std::string& frame = "") {
-        if (stopping_ || !handshake_->ready_for_output(command_->get_subscription_count()))
+        if (stopping_ || !handshake_->ready_for_output())
             cmd = rinbo_msgs::msg::MotorCmdStamped{};
         rinbo_fsm::enforce_disabled_leg_commands(cmd, disabled_);
         const bool active = cmd.l1.enable || cmd.l2.enable || cmd.l3.enable ||
@@ -196,8 +196,7 @@ private:
         const double ros_now = now().seconds();
         if (ros_now < previous_ros_) { stop("ROS clock moved backward", true); return; }
         previous_ros_ = ros_now;
-        const auto count = command_->get_subscription_count();
-        if (const auto why = handshake_->violation(count)) { stop(*why, true); return; }
+        if (const auto why = handshake_->violation()) { stop(*why, true); return; }
         if (motor_received_) {
             if (const auto why = motor_input_->publisher_violation()) { stop(*why, true); return; }
         }
@@ -209,8 +208,8 @@ private:
             stop("missing/stale /motor/state", true); return;
         }
         if (const auto why = power_->violation(ros_now, start_ros_)) { stop(*why, true); return; }
-        if (!handshake_->ready_for_output(count)) {
-            if (handshake_->mark_rearm_command_about_to_publish(count)) {
+        if (!handshake_->ready_for_output()) {
+            if (handshake_->mark_rearm_command_about_to_publish()) {
                 const auto seq = publish_disabled(handshake_->rearm_frame_id());
                 if (!handshake_->record_rearm_command_published(seq)) stop("cannot record rearm ACK request", true);
             }
@@ -228,7 +227,7 @@ private:
             rinbo_msgs::msg::MotorCmdStamped probe;
             rinbo_manual::set_outputs(probe, plan_, disabled_.mask(), {}, cap_, true);
             const auto seq = publish(probe, handshake_->active_probe_frame_id());
-            if (!handshake_->mark_active_command_published(count, seq)) stop("cannot record active probe", true);
+            if (!handshake_->mark_active_command_published(seq)) stop("cannot record active probe", true);
             return;
         }
         if (!trajectory_) {
@@ -327,6 +326,9 @@ private:
 
 #ifndef RINBO_FSM_OFFLINE_TEST
 int main(int argc, char** argv) {
+    if(argc==2 && std::string(argv[1])=="--version") {
+        std::puts("native-observer-v2-20260911 unique-bridge+passive-recorder");return 0;
+    }
     try {
         std::string path, preview;
         bool execute = false, check_ready = false;

@@ -1,0 +1,61 @@
+Running main() from /opt/ros/humble/src/gtest_vendor/src/gtest_main.cc
+[==========] Running 8 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MotorCommandGraph
+[ RUN      ] MotorCommandGraph.AllowsOnlyUniqueBridgeAndAuditedPassiveRecorder
+[       OK ] MotorCommandGraph.AllowsOnlyUniqueBridgeAndAuditedPassiveRecorder (0 ms)
+[----------] 1 test from MotorCommandGraph (0 ms total)
+
+[----------] 7 tests from RecorderHandshake
+[ RUN      ] RecorderHandshake.RecorderJoinLeaveAndRearmKeepBridgePinned
+[INFO] [1788970334.035335766] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970334.035736576] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[INFO] [1788970334.046895697] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 1
+[INFO] [1788970334.057744442] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[INFO] [1788970334.752926075] [rinbo_cali]: Bridge acknowledged active command sequence 3
+[       OK ] RecorderHandshake.RecorderJoinLeaveAndRearmKeepBridgePinned (1113 ms)
+[ RUN      ] RecorderHandshake.RecorderAloneCannotRearmAndTimeoutNamesMissingBridge
+[INFO] [1788970334.849455378] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970334.850547085] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[       OK ] RecorderHandshake.RecorderAloneCannotRearmAndTimeoutNamesMissingBridge (1073 ms)
+[ RUN      ] RecorderHandshake.SecondBridgeAfterArmingIsTerminal
+[INFO] [1788970335.937910622] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970335.938368201] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[INFO] [1788970335.953158739] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 1
+[INFO] [1788970335.965778663] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[ERROR] [1788970335.982166488] [rinbo_cali]: /motor/command requires exactly one expected Bridge subscriber, got 2 (passive recorder excluded)
+[       OK ] RecorderHandshake.SecondBridgeAfterArmingIsTerminal (383 ms)
+[ RUN      ] RecorderHandshake.RecorderMotorPublisherCannotUseObserverException
+[INFO] [1788970336.303436515] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970336.304317689] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[INFO] [1788970336.317148531] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 1
+[INFO] [1788970336.329249434] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[ERROR] [1788970336.347499000] [rinbo_cali]: /motor/command requires exactly one controller publisher, got 2
+[       OK ] RecorderHandshake.RecorderMotorPublisherCannotUseObserverException (140 ms)
+[ RUN      ] RecorderHandshake.RecorderPowerPublisherCannotUseObserverException
+[INFO] [1788970336.449417171] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970336.450269256] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[INFO] [1788970336.463035808] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 1
+[INFO] [1788970336.474403574] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[ERROR] [1788970336.488582192] [rinbo_cali]: /power/command has a recorder publisher or unexpected command type
+[       OK ] RecorderHandshake.RecorderPowerPublisherCannotUseObserverException (135 ms)
+[ RUN      ] RecorderHandshake.OldEpochAckCannotArmAndNewEpochRequiresMatchingAck
+[INFO] [1788970336.617544320] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970336.618202128] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[WARN] [1788970336.926269081] [rinbo_cali]: Motor arbiter epoch changed during uncommitted rearm; using new baseline test-boot:8
+[INFO] [1788970337.240280178] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 56
+[INFO] [1788970337.251072090] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[ERROR] [1788970337.261937828] [rinbo_cali]: motor arbiter Bridge boot/latch epoch changed from test-boot:8 to test-boot:9
+[       OK ] RecorderHandshake.OldEpochAckCannotArmAndNewEpochRequiresMatchingAck (754 ms)
+[ RUN      ] RecorderHandshake.OldSessionAndUnpublishedSequenceAcksStayRejected
+[INFO] [1788970337.323566342] [rinbo_cali]: Motor arbiter reports ready=true
+[INFO] [1788970337.323765035] [rinbo_cali]: Motor arbiter epoch confirmed: test-boot:7
+[INFO] [1788970337.454474501] [rinbo_cali]: Bridge acknowledged disabled-command rearm sequence 2
+[INFO] [1788970337.465527123] [rinbo_cali]: Motor arbiter rearm ACK and post-ACK ready state confirmed
+[INFO] [1788970337.519585052] [rinbo_cali]: Bridge acknowledged active command sequence 4
+[       OK ] RecorderHandshake.OldSessionAndUnpublishedSequenceAcksStayRejected (278 ms)
+[----------] 7 tests from RecorderHandshake (3880 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 2 test suites ran. (4405 ms total)
+[  PASSED  ] 8 tests.

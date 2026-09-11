@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="10" time="60.288" timestamp="2026-09-11T14:27:52.993983" hostname="yahboom"><testcase classname="test.test_power_operation_ros" name="test_sequence_handoff_repeat_and_lost_reply" time="10.426" /><testcase classname="test.test_power_operation_ros" name="test_single_operation_and_partial_sequence" time="8.878" /><testcase classname="test.test_power_operation_ros" name="test_backend_and_fault_preflight_send_nothing" time="8.725" /><testcase classname="test.test_power_operation_ros" name="test_partial_ack_timeout_cleanup_and_unknown_off" time="4.820" /><testcase classname="test.test_power_operation_ros" name="test_extra_publisher_cannot_enable_but_off_can_ack" time="4.473" /><testcase classname="test.test_power_operation_ros" name="test_off_preempts_between_stages" time="4.442" /><testcase classname="test.test_power_operation_ros" name="test_unsafe_current_blocks_already_satisfied_without_power_toggle" time="4.462" /><testcase classname="test.test_power_operation_ros" name="test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works" time="1.420"><failure message="AssertionError: ('{&quot;schema_version&quot;: 1, &quot;request_id&quot;: &quot;2c248df567d143d4936b31afec961cd7&quot;, &quot;operation&quot;: &quot;ensure-on&quot;, &quot;status&quot;: &quot;rejecte...revision&quot;: 15, &quot;hash&quot;: &quot;fixture-r15&quot;, &quot;disabled_legs&quot;: [&quot;L3&quot;], &quot;enabled_legs&quot;: [&quot;L1&quot;, &quot;L2&quot;, &quot;R1&quot;, &quot;R2&quot;, &quot;R3&quot;]}}&#10;  ', '')&#10;assert (20 == 31&#10;  +20&#10;  -31)">mock = &lt;test_power_operation_ros.Mock object at 0xffff58e4c5b0&gt;
+
+    def test_bridge_restart_fences_inflight_operation_and_fresh_off_still_works(mock):
+        p=subprocess.Popen([sys.executable,str(FIXTURE),'ensure-on','--confirm-relay','--json',
+            '--wait-for-subscriber-s','4','--step-delay-s','3'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        try:
+            mock.wait(lambda:mock.status['feedback_mask']==1,8)
+            mock.restart()
+            out,err=p.communicate(timeout=20)
+            result=json.loads(out.strip().splitlines()[-1])
+&gt;           assert p.returncode==31 and ('source_changed' in result['reason'] or 'epoch_changed' in result['reason']),(out,err)
+E           AssertionError: ('{"schema_version": 1, "request_id": "2c248df567d143d4936b31afec961cd7", "operation": "ensure-on", "status": "rejecte...revision": 15, "hash": "fixture-r15", "disabled_legs": ["L3"], "enabled_legs": ["L1", "L2", "R1", "R2", "R3"]}}
+E             ', '')
+E           assert (20 == 31
+E             +20
+E             -31)
+
+src/redrhex_lowlevel_bridge/test/test_power_operation_ros.py:157: AssertionError</failure></testcase><testcase classname="test.test_power_operation_ros" name="test_nonadjacent_old_backend_ack_cannot_authorize_retry" time="10.455" /><testcase classname="test.test_power_operation_ros" name="test_bridge_rejection_has_request_and_source_and_off_bypasses_rogue" time="1.978" /></testsuite></testsuites>

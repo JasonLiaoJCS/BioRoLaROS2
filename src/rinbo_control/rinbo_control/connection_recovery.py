@@ -70,7 +70,7 @@ def find_motion(executables, domain, proc_root=Path('/proc')):
             if process.exe not in allowed or process.domain != str(domain):
                 continue
             args = (directory/'cmdline').read_bytes().split(b'\0')
-            if any(flag in args for flag in (b'--help', b'--check-config', b'--check-ready')):
+            if any(flag in args for flag in (b'--help', b'--check-config', b'--check-ready', b'--version')):
                 continue
             if Path(process.exe).name == 'rinbo_manual' and b'--execute' not in args:
                 continue  # Plan validation/CSV preview is an offline query.

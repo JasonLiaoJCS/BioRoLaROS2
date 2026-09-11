@@ -7,6 +7,8 @@
 #include <sstream>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <atomic>
+#include <thread>
 
 namespace {
 namespace fs = std::filesystem;
@@ -182,6 +184,64 @@ TEST_F(ConfigTest, ManualEditsCannotReuseCalibrationAtSameRevision) {
     {MotionSession c(Stage::Calibration,path);c.complete();}
     change([](auto& d){d["parameters"]["rinbo_cali"]["max_pwm"]=70.0;});
     EXPECT_THROW(MotionSession(Stage::Standing,path),std::exception);
+}
+
+TEST_F(ConfigTest, ReceiptReplacementIsAtomicAndPinnedToConfiguration) {
+    MotionSession session(Stage::Calibration, path);
+    session.complete();
+    const auto receipt_path = path.string() + ".calibration.json";
+    const auto expected = session.config();
+    std::atomic<bool> done{false};
+    std::atomic<int> reads{0}, invalid{0};
+    std::thread reader([&] {
+        while (!done.load()) {
+            try {
+                const auto receipt = YAML::LoadFile(receipt_path);
+                if (receipt["revision"].as<int64_t>() != expected.revision() ||
+                    receipt["hash"].as<std::string>() != expected.hash() ||
+                    receipt["stage"].as<std::string>() != "Calibration" ||
+                    receipt["legs"].size() != expected.enabled_legs().size()) ++invalid;
+            } catch (...) { ++invalid; }
+            ++reads;
+        }
+    });
+    // Repeated commits exercise real fsync+rename while a reader opens the path.
+    for (int i = 0; i < 30; ++i) {
+        EXPECT_NO_THROW(session.complete());
+    }
+    done = true;
+    reader.join();
+    EXPECT_GT(reads.load(), 0);
+    EXPECT_EQ(invalid.load(), 0);
+    for (const auto& entry : fs::directory_iterator(dir))
+        EXPECT_EQ(entry.path().filename().string().find(".tmp."), std::string::npos);
+}
+
+TEST_F(ConfigTest, CompletionRejectsExternalRevisionOrHashChange) {
+    for (bool change_revision : {false, true}) {
+        MotionSession session(Stage::Calibration, path);
+        session.complete();
+        change([&](auto& document) {
+            if (change_revision) document["revision"] = session.config().revision() + 1;
+            else document["parameters"]["rinbo_cali"]["max_pwm"] = 71.0;
+        });
+        EXPECT_THROW(session.complete(), std::exception);
+        EXPECT_FALSE(fs::exists(path.string() + ".calibration.json"));
+        EXPECT_FALSE(fs::exists(path.string() + ".standing.json"));
+    }
+}
+
+TEST_F(ConfigTest, FailedStandingInvalidatesCalibrationAndNewAttemptCannotResurrectIt) {
+    { MotionSession calibration(Stage::Calibration, path); calibration.complete(); }
+    {
+        MotionSession standing(Stage::Standing, path);
+        standing.complete();
+        standing.invalidate();  // includes the recorder-induced safety stop
+    }
+    EXPECT_FALSE(fs::exists(path.string() + ".calibration.json"));
+    EXPECT_THROW(MotionSession(Stage::Tripod, path), std::exception);
+    { MotionSession calibration(Stage::Calibration, path); }
+    EXPECT_THROW(MotionSession(Stage::Standing, path), std::exception);
 }
 TEST_F(ConfigTest, AllDisabledCanBeSavedButNoMotionStageCanStart) {
     update_disabled_legs(path,"set",{"L1","L2","L3","R1","R2","R3"});
